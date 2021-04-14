@@ -1,0 +1,64 @@
+# shellcheck shell=sh disable=SC2039
+
+# author:       Li Junhao           l@x-cmd.com    edwinjhlee.github.io
+# maintainer:   Li Junhao
+
+
+
+_gt_request_complete() {
+    local cur opts prev
+    COMPREPLY=()
+
+    if [ -n "${BASH_VERSION}" ]; then
+        cur="${COMP_WORDS[COMP_CWORD]}"
+        prev="${COMP_WORDS[COMP_CWORD - 1]}"
+        case "$prev" in
+        gt_request)
+            opts="get post put patch delete"
+            COMPREPLY=($(compgen -W "${opts}" -- "${cur}"))
+            return 0
+            ;;
+        get)
+            opts="multi"
+            COMPREPLY=($(compgen -W "${opts}" -- "${cur}"))
+            return 0
+            ;;
+        post | put)
+            opts="json form text bin"
+            COMPREPLY=($(compgen -W "${opts}" -- "${cur}"))
+            return 0
+            ;;
+        patch | delete | *)
+            return 0
+            ;;
+        esac
+
+    elif [ -n "${ZSH_VERSION}" ]; then
+        prev="${words[CURRENT - 1]}"
+        _arguments -C \
+            '1: :(get post put patch delete)' \
+            '*::arg:->args'
+        case "$prev" in
+        get)
+            _arguments -C \
+                "1: :(multi)"
+            return 0
+            ;;
+        post | put)
+            _arguments -C \
+                "1: :(json form text bin)"
+            return 0
+            ;;
+        patch | delete | *)
+            return 0
+            ;;
+        esac
+        return 0
+    fi
+}
+
+if [ -n "${BASH_VERSION}" ]; then
+    complete -F _gt_request_complete gt_request
+else
+    compdef _gt_request_complete gt_request
+fi
