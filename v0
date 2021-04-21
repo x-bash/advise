@@ -28,14 +28,16 @@ comp(){
     local whole="${COMP_WORDS[*]:1:$((COMP_CWORD-1))}"
 
     IFS=    # $'\n'
+
+    local prev="${COMP_WORDS[$((COMP_CWORD-1))]}"
     local cur="${COMP_WORDS[COMP_CWORD]}"
 
     dbg "!!! |$whole|" >&2
     dbg "!!! |$cur|" >&2
 
-    if [[ "$cur" == -* ]]; then
+    if [[ "$prev" == -* ]]; then
         local opts
-        opts="$(json keys ".$whole" | json_unescape | grep -v "\#")"
+        opts="$(json values ".$whole" | json_unescape | grep -v "\#")"
         [ "$opts" == "null" ] && return
 
         if [[ "$opts" == "#> "* ]]; then
