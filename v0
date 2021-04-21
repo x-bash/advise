@@ -3,62 +3,138 @@
 # author:       Li Junhao           l@x-cmd.com    edwinjhlee.github.io
 # maintainer:   Li Junhao
 
+if [ -n "$BASH_VERSION" ]; then
 
+dbg(){
+    # echo "$@" >&2
+    :
+}
 
-_gt_request_complete() {
-    local cur opts prev
-    COMPREPLY=()
+str_trim_right () 
+{ 
+    local var="$*";
+    var="${var%"${var##*[![:space:]]}"}";
+    echo -n "$var"
+}
 
-    if [ -n "${BASH_VERSION}" ]; then
-        cur="${COMP_WORDS[COMP_CWORD]}"
-        prev="${COMP_WORDS[COMP_CWORD - 1]}"
-        case "$prev" in
-        gt_request)
-            opts="get post put patch delete"
-            COMPREPLY=($(compgen -W "${opts}" -- "${cur}"))
-            return 0
-            ;;
-        get)
-            opts="multi"
-            COMPREPLY=($(compgen -W "${opts}" -- "${cur}"))
-            return 0
-            ;;
-        post | put)
-            opts="json form text bin"
-            COMPREPLY=($(compgen -W "${opts}" -- "${cur}"))
-            return 0
-            ;;
-        patch | delete | *)
-            return 0
-            ;;
-        esac
+# Must be using bash
+comp(){
+    if [ "${#COMP_WORDS[@]}" != "$COMP_CWORD" ]; then
+       dbg "WRONG! ${#COMP_WORDS[@]} / ${COMP_CWORD} / ${COMP_WORDS[*]}" >&2
+    fi
 
-    elif [ -n "${ZSH_VERSION}" ]; then
-        prev="${words[CURRENT - 1]}"
-        _arguments -C \
-            '1: :(get post put patch delete)' \
-            '*::arg:->args'
-        case "$prev" in
-        get)
-            _arguments -C \
-                "1: :(multi)"
-            return 0
-            ;;
-        post | put)
-            _arguments -C \
-                "1: :(json form text bin)"
-            return 0
-            ;;
-        patch | delete | *)
-            return 0
-            ;;
-        esac
-        return 0
+    # local IFS="$(printf "\003")"
+    local IFS="."
+    local whole="${COMP_WORDS[*]:1:$((COMP_CWORD-1))}"
+
+    IFS=    # $'\n'
+    local cur="${COMP_WORDS[COMP_CWORD]}"
+
+    dbg "!!! |$whole|" >&2
+    dbg "!!! |$cur|" >&2
+
+    if [[ "$cur" == -* ]]; then
+        local opts
+        opts="$(json keys ".$whole" | json_unescape | grep -v "\#")"
+        [ "$opts" == "null" ] && return
+
+        if [[ "$opts" == "#> "* ]]; then
+            opts="$(eval "${opts:2}")"
+        fi
+
+        IFS="
+"
+        COMPREPLY=($(compgen -W "${opts}" -- "${cur}"))
+    else
+        local opts
+        opts="$(json keys ".$whole" | json_unescape | grep -v "\#")"
+        [ "$opts" == "null" ] && return
+
+        dbg "!!! |$opts|" >&2
+        dbg "--- |$(str_trim_right "${opts}")|" >&2
+
+        if [[ "$opts" == "#> "* ]]; then
+            opts="$(eval "${opts:2}")"
+        fi
+
+        IFS="
+"
+        COMPREPLY=($(compgen -W "${opts}" -- "${cur}"))
     fi
 }
 
-if [ -n "${BASH_VERSION}" ]; then
-    complete -F _gt_request_complete gt_request
-else
-    compdef _gt_request_complete gt_request
+compt(){
+    echo "$@"
+}
+
+compt_comp_function(){
+    comp <"test-data.json"
+}
+
+complete -F comp_test_comp_function compt
+
+elif [ -n "$ZSH_VERSION" ]; then
+
+complete(){
+    :
+}
+
 fi
+
+# _gt_request_complete() {
+#     local cur opts prev
+#     COMPREPLY=()
+
+#     if [ -n "${BASH_VERSION}" ]; then
+#         cur="${COMP_WORDS[COMP_CWORD]}"
+#         prev="${COMP_WORDS[COMP_CWORD - 1]}"
+#         case "$prev" in
+#         gt_request)
+#             opts="get post put patch delete"
+#             COMPREPLY=($(compgen -W "${opts}" -- "${cur}"))
+#             return 0
+#             ;;
+#         get)
+#             opts="multi"
+#             COMPREPLY=($(compgen -W "${opts}" -- "${cur}"))
+#             return 0
+#             ;;
+#         post | put)
+#             opts="json form text bin"
+#             COMPREPLY=($(compgen -W "${opts}" -- "${cur}"))
+#             return 0
+#             ;;
+#         patch | delete | *)
+#             return 0
+#             ;;
+#         esac
+
+#     elif [ -n "${ZSH_VERSION}" ]; then
+#         prev="${words[CURRENT - 1]}"
+#         _arguments -C \
+#             '1: :(get post put patch delete)' \
+#             '*::arg:->args'
+#         case "$prev" in
+#         get)
+#             _arguments -C \
+#                 "1: :(multi)"
+#             return 0
+#             ;;
+#         post | put)
+#             _arguments -C \
+#                 "1: :(json form text bin)"
+#             return 0
+#             ;;
+#         patch | delete | *)
+#             return 0
+#             ;;
+#         esac
+#         return 0
+#     fi
+# }
+
+# if [ -n "${BASH_VERSION}" ]; then
+#     complete -F _gt_request_complete gt_request
+# else
+#     compdef _gt_request_complete gt_request
+# fi
