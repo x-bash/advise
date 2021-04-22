@@ -3,6 +3,11 @@
         "#0": null,
         "#1": "#> ls -l | grep ^-",
         "#n": null,
+        "--host": [],
+        "-h": [],
+        "--debug": null,
+        "--verbose": null,
+        "-v": [],
         "info":null,
         "new":null,
         "repo":{
