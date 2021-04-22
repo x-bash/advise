@@ -1,9 +1,11 @@
-# shellcheck shell=sh disable=SC2039
+# shellcheck shell=sh disable=SC2039,3043
 
 # author:       Li Junhao           l@x-cmd.com    edwinjhlee.github.io
 # maintainer:   Li Junhao
 
 if [ -n "$BASH_VERSION" ]; then
+
+xrc json
 
 dbg(){
     # echo "$@" >&2
@@ -73,7 +75,8 @@ compt_comp_function(){
     comp <"test-data.json"
 }
 
-complete -F comp_test_comp_function compt
+# shellcheck disable=SC3044
+complete -F compt_comp_function compt
 
 elif [ -n "$ZSH_VERSION" ]; then
 
