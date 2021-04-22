@@ -1,0 +1,24 @@
+{
+    ":work:":{
+        "#0": null,
+        "#1": "#> ls -l | grep ^-",
+        "#n": null,
+        ":--host:-h:": [],
+        ":--debug:": null,
+        ":-v:--verbose:": null,
+        ":info:i:inf:": null,
+        ":new:n:":null,
+        ":repo:r:":{
+            ":list:":null,
+            ":create:":{
+                ":--owner:":null,
+                ":--has_wiki:":[
+                    "all",
+                    "public",
+                    "protect",
+                    "private"
+                ]
+            }
+        }
+    }
+}

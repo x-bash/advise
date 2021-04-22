@@ -19,20 +19,8 @@ str_trim_right ()
     echo -n "$var"
 }
 
-_advise_handle(){
-    local i
-    local IFS
-    local j
-    for i in "$@"; do
-        IFS=":"
-        for j in $i; do
-            printf "%s\n" "$j"
-        done
-    done
-}
-
 # Must be using bash
-_advise(){
+advise(){
     local data="$1"; shift
 
     if [ "${#COMP_WORDS[@]}" != "$COMP_CWORD" ]; then
@@ -47,22 +35,17 @@ _advise(){
     local whole=""
     local i
     local key
-    local used_keys=()
     for ((i=1; i<COMP_CWORD; ++i)); do
         key=${COMP_WORDS[i]}
         dbg "!!! key |$key|" >&2
         if [[ "$key" == -* ]]; then
             local opts
-            opts="$(json query "$whole.*:$key:*" <"$data")"
+            opts="$(json query "$whole.$key" <"$data")"
             if [ "$opts" != null ]; then
                 i=$((i+1))
             fi
-            # echo "$opts ${key}" >>"tmp.txt"
-            used_keys+=("$key")
         else
-            whole="$whole.*:$key:*"
-            # echo "!!! ${key}" >>"tmp.txt"
-            used_keys=()
+            whole="$whole.$key"
         fi
     done
 
@@ -71,22 +54,19 @@ _advise(){
     local prev="${COMP_WORDS[$((COMP_CWORD-1))]}"
     local cur="${COMP_WORDS[COMP_CWORD]}"
 
+    dbg "!!! whole |${COMP_WORDS[@]}|" >&2
     dbg "!!! whole |$whole|" >&2
     dbg "!!! cur |$cur|" >&2
     dbg "!!! prev |$prev|" >&2
 
     if [[ "$prev" == -* ]]; then
         local opts
-        opts="$(json query "$whole.*:$prev:*"  <"$data" | json_unescape)"
+        opts="$(json query "$whole.$prev"  <"$data" | json_unescape)"
         if [ "$opts" != "null" ]; then
-            whole="$whole.*:$prev:*"
+            whole="$whole.$prev"
             opts="$(json values "${whole:-.}"  <"$data" | json_unescape | grep -v "\#")"            
         else
             opts="$(json keys "${whole:-.}"  <"$data" | json_unescape | grep -v "\#")"
-            local used
-            for used in "${used_keys[@]}"; do
-                opts="$(printf "%s" "$opts" | grep -v ":$used:")"
-            done
         fi
 
         [ "$opts" == "null" ] && return
@@ -94,8 +74,6 @@ _advise(){
         if [[ "$opts" == "#> "* ]]; then
             opts="$(eval "${opts:2}")"
         fi
-
-        opts=( $(_advise_handle "${opts[@]}") )
 
         IFS="
 "
@@ -105,16 +83,12 @@ _advise(){
         opts="$(json keys "${whole:-.}"  <"$data" | json_unescape | grep -v "\#")"
         [ "$opts" == "null" ] && return
 
+        dbg "!!! |$opts|" >&2
+        dbg "--- |$(str_trim_right "${opts}")|" >&2
+
         if [[ "$opts" == "#> "* ]]; then
             opts="$(eval "${opts:2}")"
         fi
-
-        local used
-        for used in "${used_keys[@]}"; do
-            opts="$(printf "%s" "$opts" | grep -v ":$used:")"
-        done
-
-        opts=( $(_advise_handle "${opts[@]}") )
 
         IFS="
 "
@@ -122,20 +96,16 @@ _advise(){
     fi
 }
 
-advise(){
-    local func="${1:?Provide function name}"
-    local filepath="${2:?Provide data paths}"
-    eval "_adviser_of_${func}(){
-        _advise \"$filepath\"    
-    }"
-    complete -F "_adviser_of_${func}" "$func"
+compt(){
+    echo "$@"
 }
 
-# xrc advise
-advise compt "test-data2.json"
+compt_comp_function(){
+    advise "test-data.json"
+}
 
 # shellcheck disable=SC3044
-# complete -F compt_comp_function compt
+complete -F compt_comp_function compt
 
 elif [ -n "$ZSH_VERSION" ]; then
 
