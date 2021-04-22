@@ -20,7 +20,7 @@ str_trim_right ()
 }
 
 # Must be using bash
-comp(){
+advise(){
     if [ "${#COMP_WORDS[@]}" != "$COMP_CWORD" ]; then
        dbg "WRONG! ${#COMP_WORDS[@]} / ${COMP_CWORD} / ${COMP_WORDS[*]}" >&2
     fi
