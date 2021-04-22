@@ -58,6 +58,10 @@ _advise(){
                 i=$((i+1))
             fi
             # echo "$opts ${key}" >>"tmp.txt"
+
+            if [[ "$key" == -*=* ]]; then
+                key="${key%%=*}="
+            fi
             used_keys+=("$key")
         else
             whole="$whole.*:$key:*"
@@ -76,6 +80,11 @@ _advise(){
     dbg "!!! prev |$prev|" >&2
 
     if [[ "$prev" == -* ]]; then
+
+        if [[ "$prev" == -*=* ]]; then
+            prev="${prev%%=*}="
+        fi
+
         local opts
         opts="$(json query "$whole.*:$prev:*"  <"$data" | json_unescape)"
         if [ "$opts" != "null" ]; then
@@ -89,13 +98,28 @@ _advise(){
             done
         fi
 
-        [ "$opts" == "null" ] && return
+        # [ "$opts" == "null" ] && return
 
         if [[ "$opts" == "#> "* ]]; then
             opts="$(eval "${opts:2}")"
         fi
 
-        opts=( $(_advise_handle "${opts[@]}") )
+        if [ -z "$cur" ]; then
+            IFS="
+"
+            local opts2
+            opts2=( $(_advise_handle "${opts[@]}") )
+            opts=()
+            local i
+            
+            for i in ${opts2[@]}; do
+                if [[ ! "$i" =~ ^\- ]]; then
+                    opts+=( "$i" )
+                fi
+            done
+        else
+            opts=( $(_advise_handle "${opts[@]}") )
+        fi
 
         IFS="
 "
@@ -114,7 +138,23 @@ _advise(){
             opts="$(printf "%s" "$opts" | grep -v ":$used:")"
         done
 
-        opts=( $(_advise_handle "${opts[@]}") )
+        if [ -z "$cur" ]; then
+            IFS="
+"
+
+            local opts2
+            opts2=( $(_advise_handle "${opts[@]}") )
+            opts=()
+            local i
+            
+            for i in ${opts2[@]}; do
+                if [[ ! "$i" =~ ^\- ]]; then
+                    opts+=( "$i" )
+                fi
+            done
+        else
+            opts=( $(_advise_handle "${opts[@]}") )
+        fi
 
         IFS="
 "
