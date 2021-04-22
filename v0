@@ -1,4 +1,4 @@
-# shellcheck shell=sh disable=SC2039,3043
+# shellcheck shell=bash disable=SC2039,3043
 
 # author:       Li Junhao           l@x-cmd.com    edwinjhlee.github.io
 # maintainer:   Li Junhao
@@ -21,25 +21,54 @@ str_trim_right ()
 
 # Must be using bash
 advise(){
+    local data="$1"; shift
+
     if [ "${#COMP_WORDS[@]}" != "$COMP_CWORD" ]; then
        dbg "WRONG! ${#COMP_WORDS[@]} / ${COMP_CWORD} / ${COMP_WORDS[*]}" >&2
     fi
 
+    local IFS
     # local IFS="$(printf "\003")"
-    local IFS="."
-    local whole="${COMP_WORDS[*]:1:$((COMP_CWORD-1))}"
+    # local IFS="."
+    # local whole="${COMP_WORDS[*]:1:$((COMP_CWORD-1))}"
+
+    local whole=""
+    local i
+    local key
+    for ((i=1; i<COMP_CWORD; ++i)); do
+        key=${COMP_WORDS[i]}
+        dbg "!!! key |$key|" >&2
+        if [[ "$key" == -* ]]; then
+            local opts
+            opts="$(json query "$whole.$key" <"$data")"
+            if [ "$opts" != null ]; then
+                i=$((i+1))
+            fi
+        else
+            whole="$whole.$key"
+        fi
+    done
 
     IFS=    # $'\n'
 
     local prev="${COMP_WORDS[$((COMP_CWORD-1))]}"
     local cur="${COMP_WORDS[COMP_CWORD]}"
 
-    dbg "!!! |$whole|" >&2
-    dbg "!!! |$cur|" >&2
+    dbg "!!! whole |${COMP_WORDS[@]}|" >&2
+    dbg "!!! whole |$whole|" >&2
+    dbg "!!! cur |$cur|" >&2
+    dbg "!!! prev |$prev|" >&2
 
     if [[ "$prev" == -* ]]; then
         local opts
-        opts="$(json values ".$whole" | json_unescape | grep -v "\#")"
+        opts="$(json query "$whole.$prev"  <"$data" | json_unescape)"
+        if [ "$opts" != "null" ]; then
+            whole="$whole.$prev"
+            opts="$(json values "${whole:-.}"  <"$data" | json_unescape | grep -v "\#")"            
+        else
+            opts="$(json keys "${whole:-.}"  <"$data" | json_unescape | grep -v "\#")"
+        fi
+
         [ "$opts" == "null" ] && return
 
         if [[ "$opts" == "#> "* ]]; then
@@ -51,7 +80,7 @@ advise(){
         COMPREPLY=($(compgen -W "${opts}" -- "${cur}"))
     else
         local opts
-        opts="$(json keys ".$whole" | json_unescape | grep -v "\#")"
+        opts="$(json keys "${whole:-.}"  <"$data" | json_unescape | grep -v "\#")"
         [ "$opts" == "null" ] && return
 
         dbg "!!! |$opts|" >&2
@@ -72,7 +101,7 @@ compt(){
 }
 
 compt_comp_function(){
-    comp <"test-data.json"
+    advise "test-data.json"
 }
 
 # shellcheck disable=SC3044
