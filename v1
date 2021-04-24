@@ -13,14 +13,22 @@ _advise(){
     # s="$*"
     # echo "$s"
 
+#     IFS="
+# "
+
+#     COMPREPLY=( $(awk -f v1.awk 2>/dev/null <<A
+# $(cat "$fp")$(printf "\034")${s}$(printf "\034")
+# A
+# )
+#     )
+
     IFS="
 "
 
-    COMPREPLY=( $(awk -f v1.awk 2>/dev/null <<A
+    COMPREPLY=( $(compgen -W "$(awk -f v1.awk 2>/dev/null <<A
 $(cat "$fp")$(printf "\034")${s}$(printf "\034")
 A
-)
-    )
+)" -- "${COMP_WORDS[COMP_CWORD]}") )
 }
 
 

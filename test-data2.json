@@ -10,7 +10,7 @@
         ":repo:r:":{
             ":list:":null,
             ":create:":{
-                "#3": "#> ls | xargs -n 1",
+                "#3": "#> ls",
                 "#n": [
                     "aaa",
                     "bbb"
