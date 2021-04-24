@@ -3,40 +3,51 @@
 # author:       Li Junhao           l@x-cmd.com    edwinjhlee.github.io
 # maintainer:   Li Junhao
 
-
 if [ -n "$BASH_VERSION" ]; then
 
+    _advise() {
+        local fp="${1:-filepath}"
+        shift
+        local IFS
+        IFS="$(printf "\002")"
 
-_advise(){
-    local fp="${1:-filepath}"; shift
-    local IFS
-    IFS="$(printf "\002")"
+        s="${COMP_WORDS[*]:1}"
 
-    s="${COMP_WORDS[*]:1}"
-
-    # s="$*"
-    # echo "$s"
-
-#     IFS="
-# "
-
-#     COMPREPLY=( $(awk -f v1.awk 2>/dev/null <<A
-# $(cat "$fp")$(printf "\034")${s}$(printf "\034")
-# A
-# )
-#     )
-
-    IFS="
+        IFS="
 "
 
-    COMPREPLY=( $(compgen -W "$(awk -f v1.awk 2>/dev/null <<A
+        COMPREPLY=($(compgen -W "$(
+            awk -f v1.awk 2>/dev/null <<A
 $(cat "$fp")$(printf "\034")${s}$(printf "\034")
 A
-)" -- "${COMP_WORDS[COMP_CWORD]}") )
-}
+        )" -- "${COMP_WORDS[COMP_CWORD]}"))
+    }
 
+elif [ -n "$ZSH_VERSION" ]; then
 
-advise(){
+    _advise() {
+        local fp="${1:-filepath}"
+        shift
+        local IFS
+        IFS="$(printf "\002")"
+
+        s="${COMP_WORDS[*]:1}"
+
+        IFS="
+"
+
+        COMPREPLY=($(compgen -W "$(
+            awk -f v1.awk 2>/dev/null <<A
+$(cat "$fp")$(printf "\034")${s}$(printf "\034")
+A
+        )" -- "${COMP_WORDS[COMP_CWORD]}"))
+    }
+
+    autoload -U +X bashcompinit && bashcompinit
+
+fi
+
+advise() {
     local func="${1:?Provide function name}"
     local filepath="${2:?Provide data paths}"
     eval "_adviser_of_${func}(){
@@ -47,10 +58,3 @@ advise(){
 
 # xrc advise
 advise compt "test-data2.json"
-
-
-elif [ -n "$ZSH_VERSION" ]; then
-
-    :
-
-fi
