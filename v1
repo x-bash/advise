@@ -16,7 +16,7 @@ _advise(){
     IFS="
 "
 
-    COMPREPLY=( $(awk -f v1.awk <<A
+    COMPREPLY=( $(awk -f v1.awk 2>/dev/null <<A
 $(cat "$fp")$(printf "\034")${s}$(printf "\034")
 A
 )

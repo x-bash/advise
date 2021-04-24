@@ -10,9 +10,11 @@
         ":repo:r:":{
             ":list:":null,
             ":create:":{
-                "#0": null,
-                "#1": "#> ls -l | grep ^-",
-                "#n": null,
+                "#3": "#> ls | xargs -n 1",
+                "#n": [
+                    "aaa",
+                    "bbb"
+                ],
                 ":--owner:":null,
                 ":--has_wiki:":[
                     "all",

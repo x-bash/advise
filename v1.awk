@@ -274,19 +274,24 @@ NR==2{
     # print "bbb\t" argarr[arglen]
     argarr[++arglen] = parsed_argarr[parsed_arglen]
 
+
+    cur = argarr[arglen]
+
+    if (cur == "\177") {    # ascii code 127 0x7F 0177 ==> DEL
+        cur = ""
+    }
+
     if (rest_argv_len > 0) {
         # print "used:\t" used_arg
         # print "keypath:\t" final_keypath
         # print "position argument:\t" rest_argv_len
 
+        print_positional_candidates(final_keypath, rest_argv_len)
+
     } else {
 
         prev = argarr[arglen-1]
-        cur = argarr[arglen]
-
-        if (cur == "\177") {    # ascii code 127 0x7F 0177 ==> DEL
-            cur = ""
-        }
+        
 
         # print "used:\t" used_arg
         # print "keypath:\t" final_keypath
@@ -318,24 +323,60 @@ function used_arg_add(keypath, named_arg,
     }
 }
 
+function print_positional_candidates(final_keypath, nth,
+    kp){
+
+    kp = rule_search(final_keypath KEYPATH_SEP "\"#" nth "\"")
+    if (kp != "null") {
+        
+        if (kp == "") {
+            kp = rule_search(final_keypath KEYPATH_SEP "\"#n\"") 
+        }
+
+
+        # print "1111 " rule_get(kp) >"/dev/stderr"
+        print_named_param_candidates(rule_get(kp), cur)
+    }
+}
+
 
 function print_named_param_candidates(rule, cur,
-    es, esl, e, i){
+    es, esl, e, i, data){
 
     # print "print_named_param_candidates"
 
-    gsub(/\"/, "", rule) #"
-    esl = split(rule, es, VAL_SEP)
-    for (i=2; i<=esl; ++i) {
-        e = es[i]
-        if (index(e, cur) == 1) {
-            print e
+    # Must be a list
+
+    if (rule !~ /^\[/) {
+        cmd = substr(rule, 4, length(rule)-4)
+        # print cmd > "/dev/stderr"
+        system(cmd)
+
+        esl = split(data, es, /[\n\ \t]/)
+        for (i=1; i<=esl; ++i) {
+            if (cur == "") {
+                print es[i]
+            } else if (index(es[i], cur) == 1) {
+                print es[i]
+            }
+        }
+    } else {
+        gsub(/\"/, "", rule) #"
+        esl = split(rule, es, VAL_SEP)
+        for (i=2; i<=esl; ++i) {
+            e = es[i]
+
+            if (cur == "") {
+                print e
+            } else if (index(e, cur) == 1) {
+                print e
+            }
         }
     }
 }
 
 function print_candidates(final_keypath, cur,
-    arr, arr_len, e, es, esl, ese, i, j){
+    arr, arr_len, e, es, esl, ese, i, j, output_position){
 
     # print "print_candidates\t" final_keypath "\t|" cur "|"
 
@@ -350,6 +391,10 @@ function print_candidates(final_keypath, cur,
 
     # print "print_candidates\t" final_keypath "\t|" rule "|"
 
+
+    output_position = 0
+    
+
     arr_len = split(rule, arr, VAL_SEP)
     for (i=2; i<=arr_len; ++i) {
         e = arr[i]
@@ -358,12 +403,15 @@ function print_candidates(final_keypath, cur,
             ese = es[j]
 
             # print ese
+            if (ese !~ /^[#-]/) {
+                output_position = 1
+            }
 
-            if (sw == 0) {
-                if (ese !~ /^-/) {
+            if (sw == 0) {  
+                if (ese !~ /-/){                  
                     print ese
                 }
-            } else {     
+            } else {  
                 if (index(ese, cur) == 1) {
                     if (index(used_arg, " " ese " ") == 0) {
                         print ese
@@ -372,5 +420,12 @@ function print_candidates(final_keypath, cur,
             }
         }
     }
+
+
+
+    if (output_position == 0) {
+        print_positional_candidates(final_keypath, 1)
+    }
+
 }
 
