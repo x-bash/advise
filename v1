@@ -3,6 +3,10 @@
 # author:       Li Junhao           l@x-cmd.com    edwinjhlee.github.io
 # maintainer:   Li Junhao
 
+
+if [ -n "$BASH_VERSION" ]; then
+
+
 _advise(){
     local fp="${1:-filepath}"; shift
     local IFS
@@ -43,3 +47,10 @@ advise(){
 
 # xrc advise
 advise compt "test-data2.json"
+
+
+elif [ -n "$ZSH_VERSION" ]; then
+
+    :
+
+fi
