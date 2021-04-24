@@ -3,6 +3,24 @@
 # author:       Li Junhao           l@x-cmd.com    edwinjhlee.github.io
 # maintainer:   Li Junhao
 
+_advise() {
+    local fp="${1:-filepath}"
+    shift
+    local IFS
+    IFS="$(printf "\002")"
+
+    s="${COMP_WORDS[*]:1}"
+
+    IFS="
+"
+
+    COMPREPLY=($(compgen -W "$(
+        awk -f v1.awk 2>/dev/null <<A
+$(cat "$fp")$(printf "\034")${s}$(printf "\034")
+A
+    )" -- "${COMP_WORDS[COMP_CWORD]}"))
+}
+
 if [ -n "$BASH_VERSION" ]; then
 
     _advise() {
