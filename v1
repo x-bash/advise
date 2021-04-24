@@ -10,6 +10,16 @@ _advise() {
     shift
     local IFS
     IFS="$(printf "\002")"
+
+    local cur="${COMP_WORDS[COMP_CWORD]}"
+    if [ "$cur" == "" ]; then
+        # Notice: deal with zsh compatibility problem.
+        # In zsh, When input word is empty, COMP_WORDS[COMP_CWORD] does not exist.
+        # In zsh, When input word is empty, COMP_WORDS[COMP_CWORD] exist, and it is ""
+        # This will result in difference value of "${COMP_WORDS[*]}"
+        COMP_WORDS[COMP_CWORD]=""
+    fi
+
     s="${COMP_WORDS[*]}"
 
     s="${s#*$IFS}"
@@ -21,7 +31,7 @@ _advise() {
         awk -f v1.awk 2>/dev/null <<A
 $(cat "$fp")$(printf "\034")${s}$(printf "\034")
 A
-    )" -- "${COMP_WORDS[COMP_CWORD]}")
+    )" -- "$cur")
 )
 }
 
