@@ -15,13 +15,12 @@ _advise() {
     if [ "$cur" == "" ]; then
         # Notice: deal with zsh compatibility problem.
         # In zsh, When input word is empty, COMP_WORDS[COMP_CWORD] does not exist.
-        # In zsh, When input word is empty, COMP_WORDS[COMP_CWORD] exist, and it is ""
+        # In bash, When input word is empty, COMP_WORDS[COMP_CWORD] exist, and it is ""
         # This will result in difference value of "${COMP_WORDS[*]}"
         COMP_WORDS[COMP_CWORD]=""
     fi
 
     s="${COMP_WORDS[*]}"
-
     s="${s#*$IFS}"
 
     IFS="
