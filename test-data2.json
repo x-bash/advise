@@ -1,16 +1,18 @@
 {
     ":work:":{
-        "#0": null,
-        "#1": "#> ls -l | grep ^-",
-        "#n": null,
+        ":-version:": [],
         ":--host:-h:": [],
-        ":--debug:": null,
+        ":--debug:-d:": null,
         ":-v:--verbose:": null,
+        ":-s:": null,
         ":info:i:inf:": null,
         ":new:n:":null,
         ":repo:r:":{
             ":list:":null,
             ":create:":{
+                "#0": null,
+                "#1": "#> ls -l | grep ^-",
+                "#n": null,
                 ":--owner:":null,
                 ":--has_wiki:":[
                     "all",

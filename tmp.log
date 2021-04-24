@@ -1,0 +1,211 @@
+work--host=abc
+----- work--host=abc
+{
+    ":work:":{
+        ":-version:": [],
+        ":--host:-h:": [],
+        ":--debug:": null,
+        ":-v:--verbose:": null,
+        ":-s:": null,
+        ":info:i:inf:": null,
+        ":new:n:":null,
+        ":repo:r:":{
+            ":list:":null,
+            ":create:":{
+                "#0": null,
+                "#1": "#> ls -l | grep ^-",
+                "#n": null,
+                ":--owner:":null,
+                ":--has_wiki:":[
+                    "all",
+                    "public",
+                    "protect",
+                    "private"
+                ]
+            }
+        }
+    }
+}
+used:	 --host=
+keypath:	":work:"
+prev:	abc
+cur:	
+print_candidates	":work:"	||
+sw=0
+---info
+---i
+---inf
+---new
+---n
+---repo
+---r
+-----
+work--host=abc
+----- work--host=abc
+{
+    ":work:":{
+        ":-version:": [],
+        ":--host:-h:": [],
+        ":--debug:": null,
+        ":-v:--verbose:": null,
+        ":-s:": null,
+        ":info:i:inf:": null,
+        ":new:n:":null,
+        ":repo:r:":{
+            ":list:":null,
+            ":create:":{
+                "#0": null,
+                "#1": "#> ls -l | grep ^-",
+                "#n": null,
+                ":--owner:":null,
+                ":--has_wiki:":[
+                    "all",
+                    "public",
+                    "protect",
+                    "private"
+                ]
+            }
+        }
+    }
+}
+used:	 --host=
+keypath:	":work:"
+prev:	abc
+cur:	
+print_candidates	":work:"	||
+sw=0
+---info
+---i
+---inf
+---new
+---n
+---repo
+---r
+-----
+work--host=abc
+----- work--host=abc
+{
+    ":work:":{
+        ":-version:": [],
+        ":--host:-h:": [],
+        ":--debug:": null,
+        ":-v:--verbose:": null,
+        ":-s:": null,
+        ":info:i:inf:": null,
+        ":new:n:":null,
+        ":repo:r:":{
+            ":list:":null,
+            ":create:":{
+                "#0": null,
+                "#1": "#> ls -l | grep ^-",
+                "#n": null,
+                ":--owner:":null,
+                ":--has_wiki:":[
+                    "all",
+                    "public",
+                    "protect",
+                    "private"
+                ]
+            }
+        }
+    }
+}
+used:	 --host=
+keypath:	":work:"
+prev:	abc
+cur:	
+print_candidates	":work:"	||
+sw=0
+---info
+---i
+---inf
+---new
+---n
+---repo
+---r
+-----
+work--host=abc
+----- work--host=abc
+{
+    ":work:":{
+        ":-version:": [],
+        ":--host:-h:": [],
+        ":--debug:": null,
+        ":-v:--verbose:": null,
+        ":-s:": null,
+        ":info:i:inf:": null,
+        ":new:n:":null,
+        ":repo:r:":{
+            ":list:":null,
+            ":create:":{
+                "#0": null,
+                "#1": "#> ls -l | grep ^-",
+                "#n": null,
+                ":--owner:":null,
+                ":--has_wiki:":[
+                    "all",
+                    "public",
+                    "protect",
+                    "private"
+                ]
+            }
+        }
+    }
+}
+used:	 --host=
+keypath:	":work:"
+prev:	abc
+cur:	
+print_candidates	":work:"	||
+sw=0
+---info
+---i
+---inf
+---new
+---n
+---repo
+---r
+-----
+work--host=abc
+----- work--host=abc
+{
+    ":work:":{
+        ":-version:": [],
+        ":--host:-h:": [],
+        ":--debug:": null,
+        ":-v:--verbose:": null,
+        ":-s:": null,
+        ":info:i:inf:": null,
+        ":new:n:":null,
+        ":repo:r:":{
+            ":list:":null,
+            ":create:":{
+                "#0": null,
+                "#1": "#> ls -l | grep ^-",
+                "#n": null,
+                ":--owner:":null,
+                ":--has_wiki:":[
+                    "all",
+                    "public",
+                    "protect",
+                    "private"
+                ]
+            }
+        }
+    }
+}
+used:	 --host=
+keypath:	":work:"
+prev:	abc
+cur:	
+print_candidates	":work:"	||
+sw=0
+---info
+---i
+---inf
+---new
+---n
+---repo
+---r
+-----
+work--host=abc

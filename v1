@@ -1,0 +1,37 @@
+# shellcheck shell=bash disable=SC2039,3043
+
+# author:       Li Junhao           l@x-cmd.com    edwinjhlee.github.io
+# maintainer:   Li Junhao
+
+_advise(){
+    local fp="${1:-filepath}"; shift
+    local IFS
+    IFS="$(printf "\002")"
+
+    s="${COMP_WORDS[*]:1}"
+
+    # s="$*"
+    # echo "$s"
+
+    IFS="
+"
+
+    COMPREPLY=( $(awk -f v1.awk <<A
+$(cat "$fp")$(printf "\034")${s}$(printf "\034")
+A
+)
+    )
+}
+
+
+advise(){
+    local func="${1:?Provide function name}"
+    local filepath="${2:?Provide data paths}"
+    eval "_adviser_of_${func}(){
+        _advise \"$filepath\"    
+    }"
+    complete -F "_adviser_of_${func}" "$func"
+}
+
+# xrc advise
+advise compt "test-data2.json"
