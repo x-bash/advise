@@ -2,24 +2,21 @@ test123(){
     local fp="${1:-filepath}"; shift
     echo "-----"
     echo "Before awk: $*"
-    local IFS
-    IFS="$(printf "\002")"
-#     awk -f v1.awk <<A
-# $(cat "$fp")$(printf "\034")${COMP_CWORD[*]}"
-# A
+    local IFS=$'\002' # IFS="$(printf "\002")"
 
     s="$*"
 
-    awk -f v1.awk <<A
-$(cat "$fp")$(printf "\034")${s}$(printf "\034")
-A
+    {
+        cat "$fp"
+        printf "\034%s\034" "$s"  # printf "\034${s}\034"
+    } | awk -f v1.awk 2>/dev/null
 
     echo -e "-----\n"
 }
 
 # test123 test-data2.json work ""
 
-test123 test-data2.json work --host=abc ""
+time test123 test-data2.json work --host=abc ""
 # test123 test-data2.json work --host=abc -sv abc ""
 
 # test123 test-data2.json work --host=abc -version -v repo create --has_wiki a
