@@ -154,7 +154,7 @@ function _json_walk(    final, idx, nth){
     #     }
     # }
 
-    json_walk_dict("", "")
+    json_walk_dict(".", "")
 }
 
 # global variable: text, s, s_idx, s_len
@@ -196,7 +196,7 @@ NR==2{
     rest_argv_len = 0
     # rest_argv
 
-    final_keypath = ""
+    final_keypath = "."
 
     for (i=1; i<=parsed_arglen; ++i) {
         arg = parsed_argarr[i]
