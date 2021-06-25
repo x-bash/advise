@@ -41,9 +41,9 @@ if [ -n "$ZSH_VERSION" ]; then
     autoload -U +X bashcompinit compinit && bashcompinit && compinit
 fi
 
-advise() {
+advise(){
     local func="${1:?Provide function name}"
-    local filepath="${2:?Provide data paths}"
+    local filepath="${2:-"$(X_CMD_ADVISE_FUNC_NAME=$func eval "$func" _param_advise_json_items)"}"
     eval "_adviser_of_${func}(){
         _advise \"$filepath\"    
     }"
@@ -53,4 +53,6 @@ advise() {
 fi
 
 # xrc advise
-advise compt "test-data2.json"
+# advise compt -F "test-data2.json"
+# advise compt
+# advise compt -PREFIX "bash ${...}/gitee"
