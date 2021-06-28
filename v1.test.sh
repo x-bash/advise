@@ -16,7 +16,7 @@ test123(){
 
 # test123 test-data2.json work ""
 
-time test123 test-data2.json work --host=abc ""
+time test123 test.2.json work --host=abc ""
 # test123 test-data2.json work --host=abc -sv abc ""
 
 # test123 test-data2.json work --host=abc -version -v repo create --has_wiki a

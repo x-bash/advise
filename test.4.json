@@ -1,0 +1,20 @@
+{
+    "repo": {
+      "--repo|-r": [  ],
+      "--repo2|-r2|m|1": [ [  ],"abc", "cde", "def" ],
+      "--repo2|-r2|m|2": [  ],
+      "--priviledge|-p": [ [  ],"private", "public" ],
+      "--debug": null,
+      "repo": "list_repo",
+      "#1": "list_repo"
+    },
+    "user": {
+      "create": {
+        "--username|-u": [  ]
+      },
+      "create1": null,
+      "create2": null,
+      "create3": null,
+      "create4": null
+    }
+  }

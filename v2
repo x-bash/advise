@@ -1,0 +1,67 @@
+# shellcheck shell=bash disable=SC2039,3043
+
+# author:       Li Junhao           l@x-cmd.com    edwinjhlee.github.io
+# maintainer:   Li Junhao
+
+if [ -n "${ZSH_VERSION}${BASH_VERSION}" ]; then
+
+_advise() {
+    shift
+    local IFS=$'\002' # IFS="$(printf "\002")"
+
+    local cur="${COMP_WORDS[COMP_CWORD]}"
+    if [ "$cur" == "" ]; then
+        # Notice: The following line handle zsh compatibility problem.
+        # In zsh, When input word is empty, COMP_WORDS[COMP_CWORD] does not exist.
+        # In bash, When input word is empty, COMP_WORDS[COMP_CWORD] exist, and it is ""
+        # This will result in difference value of "${COMP_WORDS[*]}"
+        COMP_WORDS[COMP_CWORD]=""
+    fi
+
+    s="${COMP_WORDS[*]}"
+    s="${s#*$IFS}"
+
+    IFS=$'\n'   # Bash/Zsh Only
+
+    # shellcheck disable=SC2207
+    COMPREPLY=( 
+        $(
+            compgen -W "$(
+                {
+                    cat
+                    printf "\034%s\034" "$s"  # printf "\034${s}\034"
+                } | awk -f v1.awk 2>/dev/null
+            )" -- "$cur"
+        )
+    )
+}
+
+if [ -n "$ZSH_VERSION" ]; then
+    autoload -U +X bashcompinit compinit && bashcompinit && compinit
+fi
+
+advise(){
+    local func="${1:?Provide function name}"
+    local filepath="${2}"
+    if [ -z "$filepath" ]; then
+        local filepath=$TMPDIR/.x-cmd/advise_auto_json/$func
+        [ -f "$filepath" ] || {
+            mkdir -p "$(dirname "$filepath")"
+            eval func _param_advise_json_items >"$filepath"
+        }
+    fi
+
+    eval "_adviser_of_${func}(){
+        _advise \"$filepath\"
+    }"
+
+    complete -F "_adviser_of_${func}" "$func"
+}
+
+fi
+
+# xrc advise
+
+advise compt func
+advise compt func "test-data2.json"
+
