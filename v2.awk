@@ -103,33 +103,6 @@ function rule_add_dict_val( keypath, val,
     }    
 }
 
-############
-
-
-# function rule_add(key, val){
-#     if (key == "") return
-#     # key = substr(key, 2)
-#     RULES_RAW[key] = val
-#     # print key  "\t----->\t"  val
-# }
-
-# function rule_search(pat,
-#     key){
-    
-#     pat = "^" pat "$"
-#     for (key in RULES_RAW) {
-#         # print "-->" pat "\t\t" key
-#         if (match(key, pat)) {
-#             return key
-#         }
-#     }
-#     return ""
-# }
-
-# function rule_get(key){
-#     return RULES_RAW[key]
-# }
-
 function json_walk_dict(keypath, indent,    
     data, nth, cur_keypath, cur_indent, key, value){
 
