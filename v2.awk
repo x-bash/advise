@@ -1,3 +1,8 @@
+
+###############################
+# Step 0 Utilities
+###############################
+
 BEGIN{
     false = 0;      true = 1
 
@@ -25,7 +30,6 @@ function debug(msg){
 	print "idx[" s_idx "]  DEBUG:" msg > "/dev/stderr"
 }
 
-
 function json_walk_panic(msg,       start){
     start = s_idx - 10
     if (start <= 0) start = 1
@@ -33,11 +37,15 @@ function json_walk_panic(msg,       start){
     exit 1
 }
 
+###############################
+# Step 1 RULE
+###############################
 BEGIN {
-    RULE_ID_TO_NAME
-    RULE_NAME_ARGNUM
-    RULE_ID_M
-    RULE_ID_CANDIDATES
+    # RULE_ID_TO_NAME
+    # RULE_ID_ARGNUM
+    # RULE_ID_M
+    # RULE_ID_R
+    # RULE_ID_CANDIDATES
 }
 
 function rule_add_key( keypath, key,
@@ -68,9 +76,10 @@ function rule_add_key( keypath, key,
         }
 
         last = keyarr[keyarrlen]
-        if (last == "m") {
-            RULE_ID_M[ keyid ] = true
+        if (last ~ /[rm|mr|r|m]/$/) {
             keyarrlen = keyarrlen - 1
+            if (last ~ "m")     RULE_ID_M[ keyid ] = true
+            if (last ~ "r")     RULE_ID_R[ keyid ] = true
         }
     } else {
         RULE_ID_ARGNUM[ keyid ] = -1    # Means it is subcmd
@@ -103,6 +112,9 @@ function rule_add_dict_val( keypath, val,
     }    
 }
 
+###############################
+# Step 2 JSON: utilities
+###############################
 function json_walk_dict(keypath, indent,    
     data, nth, cur_keypath, cur_indent, key, value){
 
@@ -225,6 +237,10 @@ function json_walk(text,   final, b_s, b_s_idx, b_s_len){
     s = b_s;    s_idx = b_s_idx;    s_len = b_s_len;
 }
 
+###############################
+# Step 3 main
+###############################
+
 NR==1{
     json_walk($0)
 }
@@ -292,16 +308,16 @@ NR==2{
                 argarr[++arglen] = argval
                 cur_option = ""
             } else {
-                keypath = rule_search(final_keypath KEYPATH_SEP pattern_wrap(arg))
-                rule = rule_get(keypath)
-                # print "--- " final_keypath KEYPATH_SEP pattern_wrap(arg)
-                if (rule != "null") {
-                    # TODO: Now problem is: How many arguments
+                optarg_num = RULE_ID_ARGNUM[ cur_option ]
+                for (cur_optarg_index=1; cur_optarg_index<=optarg_num; ++cur_optarg_index) {
                     if (i+1 < parsed_arglen) {
                         argarr[++arglen] = parsed_argarr[++i]
                     }
-                } else {
+                }
+
+                if (cur_optarg_index > optarg_num) {
                     cur_option = ""
+                    cur_optarg_index = 0
                 }
             } 
             
@@ -331,7 +347,6 @@ NR==2{
     # print "bbb\t" argarr[arglen-1]
     # print "bbb\t" argarr[arglen]
     argarr[++arglen] = parsed_argarr[parsed_arglen]
-
 
     cur = argarr[arglen]
 
