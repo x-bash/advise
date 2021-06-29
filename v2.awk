@@ -263,6 +263,8 @@ NR==2{
                 arg = substr(arg, 1, RLENGTH)
             }
 
+            cur_option = arg
+            option_id = RULE_NAME_TO_ID[ keypath KEYPATH_SEP cur_option ]
             if (arg ~ /^--/) {
                 argarr[++arglen] = arg
                 used_arg_add(final_keypath, arg)
@@ -270,15 +272,17 @@ NR==2{
                 if (length(arg) == 2) {
                     argarr[++arglen] = arg
                     used_arg_add(final_keypath, arg)
-                } else if (rule_search(final_keypath KEYPATH_SEP pattern_wrap(arg)) != "") {
+                } else if (option_id != "") {
                     # For some command like java, "java -version"
                     argarr[++arglen] = arg
                     used_arg_add(final_keypath, arg)
                 } else {
+                    # like tar: -xvf => -x -v -f 
                     _arg_tmp_arrlen = split(arg, _arg_tmp_arr, "")
                     for (j=2; j<=_arg_tmp_arrlen; ++j) {
-                        argarr[++arglen] = "-" _arg_tmp_arr[j]
-                        used_arg_add(final_keypath, "-" _arg_tmp_arr[j])
+                        cur_option = "-" _arg_tmp_arr[j]
+                        argarr[++arglen] = cur_option
+                        used_arg_add(final_keypath, cur_option)
                     }
                     arg = argarr[arglen]
                 }
@@ -286,24 +290,29 @@ NR==2{
 
             if (argval != "") {
                 argarr[++arglen] = argval
+                cur_option = ""
             } else {
                 keypath = rule_search(final_keypath KEYPATH_SEP pattern_wrap(arg))
                 rule = rule_get(keypath)
                 # print "--- " final_keypath KEYPATH_SEP pattern_wrap(arg)
                 if (rule != "null") {
+                    # TODO: Now problem is: How many arguments
                     if (i+1 < parsed_arglen) {
                         argarr[++arglen] = parsed_argarr[++i]
                     }
+                } else {
+                    cur_option = ""
                 }
             } 
             
         } else {
+            cur_option = ""
+
             argarr[++arglen] = arg
 
-            cur_search_path = final_keypath KEYPATH_SEP pattern_wrap(arg)
-            keypath = rule_search(cur_search_path)
+            option_id = RULE_NAME_TO_ID[ keypath KEYPATH_SEP arg ]
             
-            if (keypath == "") {
+            if (option_id == "") {
                 # Must be positional argument
                 for (j=i; j<=parsed_arglen; ++j) {
                     rest_argv[++rest_argv_len] = parsed_argarr[j]
@@ -311,8 +320,8 @@ NR==2{
                 break
             }
 
-            # subcommand
-            final_keypath = keypath
+            # Must be subcommand argument
+            final_keypath = option_id
             used_arg = ""
         }
         
@@ -339,25 +348,23 @@ NR==2{
 
     } else {
 
+        # cur_option
+        # last_optarg_index
         prev = argarr[arglen-1]
         
-
         # print "used:\t" used_arg
         # print "keypath:\t" final_keypath
         # print "prev:\t" prev
         # print "cur:\t" cur
 
 
-        if (prev ~ /^-/) {
-            keypath = rule_search(final_keypath KEYPATH_SEP pattern_wrap(prev))
-            rule = rule_get(keypath)
-            if (rule == "null") {
-                print_candidates(final_keypath, cur)
-            } else {
-                print_named_param_candidates(rule, cur)
-            }
+        if (cur_option != "") {
+            option_id = RULE_NAME_TO_ID[ final_keypath KEYPATH_SEP cur_option ] "|" last_optarg_index
+            # RULE_ID_CANDIDATES[ option_id ]
+            show_candidates( option_id, cur )
         } else {
-            print_candidates(final_keypath, cur)
+            # list subcmd or options or postional arguments
+            show_candidates( final_keypath, cur )
         }
     }
 
