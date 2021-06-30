@@ -19,6 +19,13 @@ function str_wrap(s){
     return "\"" s "\""
 }
 
+function str_startswith(src, prefix){
+    if (substr(src, 1, length(prefix)) == prefix) {
+        return true
+    }
+    return false
+}
+
 function pattern_wrap(s){
     return "\"[^\003]*:" s ":[^\003]*\""
     # return "\"[^-\034\035]*:" s ":[^-\034\035]*\""
@@ -45,6 +52,7 @@ BEGIN {
     # RULE_ID_ARGNUM
     # RULE_ID_M
     # RULE_ID_R
+    # RULE_ID_R_LIST
     # RULE_ID_CANDIDATES
 }
 
@@ -79,7 +87,10 @@ function rule_add_key( keypath, key,
         if (last ~ /[rm|mr|r|m]/$/) {
             keyarrlen = keyarrlen - 1
             if (last ~ "m")     RULE_ID_M[ keyid ] = true
-            if (last ~ "r")     RULE_ID_R[ keyid ] = true
+            if (last ~ "r")     {
+                RULE_ID_R[ keyid ] = true
+                RULE_ID_R_LIST = RULE_ID_R_LIST "\n" keyid
+            }
         }
     } else {
         RULE_ID_ARGNUM[ keyid ] = -1    # Means it is subcmd
@@ -251,15 +262,11 @@ NR==2{
     gsub("\n", "\001", argstr)
     parsed_arglen = split(argstr, parsed_argarr, "\002")
 
-    # prev = parsed_argarr[parsed_arglen-1]
-    # cur = parsed_argarr[parsed_arglen]
-    
     ruleregex = ""
 
     arglen=0
     used_arg = ""
     rest_argv_len = 0
-    # rest_argv
 
     final_keypath = "."
 
@@ -281,29 +288,43 @@ NR==2{
 
             cur_option = arg
             option_id = RULE_NAME_TO_ID[ keypath KEYPATH_SEP cur_option ]
-            if (arg ~ /^--/) {
+
+            if (option_id != "") {
                 argarr[++arglen] = arg
-                used_arg_add(final_keypath, arg)
+                used_arg_add(final_keypath, option_id)
             } else {
-                if (length(arg) == 2) {
-                    argarr[++arglen] = arg
-                    used_arg_add(final_keypath, arg)
-                } else if (option_id != "") {
-                    # For some command like java, "java -version"
-                    argarr[++arglen] = arg
-                    used_arg_add(final_keypath, arg)
-                } else {
+                is_compact_argument = 0
+                if (arg ~ /^-[^-]/) {
                     # like tar: -xvf => -x -v -f 
                     _arg_tmp_arrlen = split(arg, _arg_tmp_arr, "")
                     for (j=2; j<=_arg_tmp_arrlen; ++j) {
                         cur_option = "-" _arg_tmp_arr[j]
-                        argarr[++arglen] = cur_option
-                        used_arg_add(final_keypath, cur_option)
+                        option_id = RULE_NAME_TO_ID[ keypath KEYPATH_SEP cur_option ]
+                        if (option_id == "") {
+                            is_compact_argument = -1
+                            break
+                        }
                     }
-                    arg = argarr[arglen]
+
+                    if (is_compact_argument == 0) {
+                        for (j=2; j<=_arg_tmp_arrlen; ++j) {
+                            argarr[++arglen] = cur_option
+                            used_arg_add(final_keypath, option_id)
+                        }
+                        arg = argarr[arglen]
+                        is_compact_argument = 1
+                    }
+                }
+
+                if (is_compact_argument != 1) {
+                    # Must be positional argument
+                    for (j=i; j<=parsed_arglen; ++j) {
+                        rest_argv[++rest_argv_len] = parsed_argarr[j]
+                    }
                 }
             }
 
+            # handle optarg value
             if (argval != "") {
                 argarr[++arglen] = argval
                 cur_option = ""
@@ -343,9 +364,6 @@ NR==2{
         
     }
 
-    # print "aaa\t" parsed_argarr[parsed_arglen-1]
-    # print "bbb\t" argarr[arglen-1]
-    # print "bbb\t" argarr[arglen]
     argarr[++arglen] = parsed_argarr[parsed_arglen]
 
     cur = argarr[arglen]
@@ -354,29 +372,17 @@ NR==2{
         cur = ""
     }
 
+    all_required = is_all_required_provided()
+
     if (rest_argv_len > 0) {
-        # print "used:\t" used_arg
-        # print "keypath:\t" final_keypath
-        # print "position argument:\t" rest_argv_len
-
-        print_positional_candidates(final_keypath, rest_argv_len)
-
+        print_positional_candidates(final_keypath, cur, rest_argv_len)
     } else {
-
-        # cur_option
-        # last_optarg_index
         prev = argarr[arglen-1]
-        
-        # print "used:\t" used_arg
-        # print "keypath:\t" final_keypath
-        # print "prev:\t" prev
-        # print "cur:\t" cur
-
 
         if (cur_option != "") {
             option_id = RULE_NAME_TO_ID[ final_keypath KEYPATH_SEP cur_option ] "|" last_optarg_index
             # RULE_ID_CANDIDATES[ option_id ]
-            show_candidates( option_id, cur )
+            show_option_candidates( final_keypath, option_id, cur )
         } else {
             # list subcmd or options or postional arguments
             show_candidates( final_keypath, cur )
@@ -385,118 +391,95 @@ NR==2{
 
 }
 
-function used_arg_add(keypath, named_arg,
-    kp, arr, arrlen, i) {
-    kp = rule_search(keypath KEYPATH_SEP pattern_wrap(named_arg))
-    arrlen = split(substr(kp, length(keypath)), arr, ":")
-    for (i=2; i<arrlen; ++i) {
-        used_arg = used_arg " " arr[i] " "
-    }
-}
+function used_arg_add(keypath, option_id,
+    arr, arrlen, i, elem) {
 
-function print_positional_candidates(final_keypath, nth,
-    kp){
+    arrlen = split(option_id, arr, "|")
+    RULE_ID_R[ option_id ] = 100
 
-    kp = rule_search(final_keypath KEYPATH_SEP "\"#" nth "\"")
-    if (kp != "null") {
-        
-        if (kp == "") {
-            kp = rule_search(final_keypath KEYPATH_SEP "\"#n\"") 
-        }
-
-
-        # print "1111 " rule_get(kp) >"/dev/stderr"
-        print_named_param_candidates(rule_get(kp), cur)
-    }
-}
-
-
-function print_named_param_candidates(rule, cur,
-    es, esl, e, i, data){
-
-    # print "print_named_param_candidates"
-
-    # Must be a list
-
-    if (rule !~ /^\[/) {
-        cmd = substr(rule, 4, length(rule)-4)
-        # print cmd > "/dev/stderr"
-        system(cmd)
-
-        esl = split(data, es, /[\n\ \t]/)
-        for (i=1; i<=esl; ++i) {
-            if (cur == "") {
-                print es[i]
-            } else if (index(es[i], cur) == 1) {
-                print es[i]
-            }
-        }
-    } else {
-        gsub(/\"/, "", rule) #"
-        esl = split(rule, es, VAL_SEP)
-        for (i=2; i<=esl; ++i) {
-            e = es[i]
-
-            if (cur == "") {
-                print e
-            } else if (index(e, cur) == 1) {
-                print e
-            }
+    for (i=2; i<=arrlen; ++i) {
+        elem = arr[i]
+        if (elem ~ /^-/) {
+            used_arg = used_arg "\n" elem
         }
     }
 }
 
-function print_candidates(final_keypath, cur,
-    arr, arr_len, e, es, esl, ese, i, j, output_position){
+function is_all_required_provided(      arr, arrlen, i, elem){
+    arrlen = split(RULE_ID_R_LIST, arr, "\n")
+    for (i=2; i<=arrlen; ++i) {
+        elem = arr[i]
+        if (elem !== 100) {
+            return false
+        }
+    }
+    return true
+}
 
-    # print "print_candidates\t" final_keypath "\t|" cur "|"
+function print_candidate(candidates,
+    can, i, can_arr_len, can_arr ){
 
-    if (cur == "") {
-        sw = 0
-    } else {
-        sw = 1
+    candidates = RULE_ID_CANDIDATES[ final_keypath ]
+
+    if ( str_startswith( candidates, "#!>" ) ) {
+        # print command line
     }
 
-    keypath = rule_search(final_keypath)
-    rule = rule_get(keypath FUNC_SEP_KEY)
+    can_arr_len = split( substr(candidates, 2), can_arr, "\n" )
+    for (i=1; i<=can_arr_len; ++i) {
+        can = can_arr[i]
+        if (str_startswith( can, cur )) print can
+    }
+}
 
-    # print "print_candidates\t" final_keypath "\t|" rule "|"
+function show_option_candidates(final_keypath, option_id, cur,
+    can, i, can_arr_len, can_arr){
 
+    candidates = RULE_ID_CANDIDATES[ final_keypath ]
+    show_candidate(candidates)
+}
 
-    output_position = 0
+# That is most complicated.
+function show_positional_candidates(final_keypath, cur, rest_argv_len,
+    car_arr, can_arr_len, num){
+
+    if (all_required == false) {
+        return
+    }
+
+    candidates = RULE_ID_CANDIDATES[ final_keypath KEYPATH_SEP "#" rest_argv_len ]
+    if (candidates != "") {
+        print_candidate( candidates )
+        return
+    }
+
+    candidates = RULE_ID_CANDIDATES[ final_keypath KEYPATH_SEP "#n" ]
+    if (candidates != "") {
+        print_candidate( candidates )
+        return
+    }
     
+}
 
-    arr_len = split(rule, arr, VAL_SEP)
-    for (i=2; i<=arr_len; ++i) {
-        e = arr[i]
-        esl = split(e, es, ":")
-        for (j=2; j<esl; ++j) {
-            ese = es[j]
+# That is most complicated.
+function show_candidates(final_keypath, cur, 
+    car_arr, can_arr_len, num){
 
-            # print ese
-            if (ese !~ /^[#-]/) {
-                output_position = 1
-            }
+    candidates = RULE_ID_CANDIDATES[ final_keypath ]
+    can_arr_len = split( substr(candidates, 2), can_arr, "\n")
+    for (i=1; i<=can_arr_len; ++i) {
+        can = can_arr[i]
 
-            if (sw == 0) {  
-                if (ese !~ /-/){                  
-                    print ese
-                }
-            } else {  
-                if (index(ese, cur) == 1) {
-                    if (index(used_arg, " " ese " ") == 0) {
-                        print ese
-                    }
-                }
-            }
+        if ( (can == "#n") || (can ~ /^#[0-9]+$/) )
+        {
+            continue
+        }
+
+        if (str_startswith( can, cur )) {
+            print can
         }
     }
 
-
-
-    if (output_position == 0) {
-        print_positional_candidates(final_keypath, 1)
-    }
-
+    show_positional_candidates( final_keypath, cur, 1 )
 }
 
