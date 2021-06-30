@@ -30,7 +30,7 @@ _advise() {
         } | awk -f v2.awk 2>/dev/null
     )"
 
-    echo "cmd:" "$s" "$result" >> 1.debug.txt
+    echo "cmd:" "$s" "$cur" >> 1.debug.txt
 
     local cmd="${result##"*#> "}"
     local cmd_result=""

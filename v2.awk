@@ -406,7 +406,6 @@ NR==2{
         print_list_candidate(candidates)
     } else {
         # debug("show_candidates\t" current_keypath "\t" cur "\t" RULE_ID_CANDIDATES[current_keypath])
-
         # list subcmd or options or postional arguments
         show_candidates( current_keypath, cur )
     }
@@ -505,10 +504,11 @@ function show_candidates(final_keypath, cur,
     show_positional_candidates( final_keypath, cur, 1 )
 }
 
+# NOTICE: option_id = option / subcmd id
 function print_candidate_with_optionid( option_id, cur,
     can_arr, can_arr_len, can, i){
 
-    if ( (length(cur)>0) && (cur !~ /^-/) ) return
+    # if ( (length(cur) > 0) && (cur !~ /^-/) ) return
     # if ( length(cur) == 0)  cur = "-"
     # if ( cur !~ /^-/ ) return
 
@@ -518,15 +518,25 @@ function print_candidate_with_optionid( option_id, cur,
     option_id = can_arr[ can_arr_len ]
 
     can_arr_len = split( option_id, can_arr, "|" )
+
     if (option_id ~ /^-/) {
-        if (cur == "")  cur = "-"
-        else if (cur !~ /^-/)  return
+        # It is option
+        if (cur == "") return
+        # if (option_id ~ /^-[^-]/) || (cur !~ /^-/)) 
+        if (! cur ~ /^-/ ) return
+
+        if (cur == "-") {
+            for (i=1; i<=can_arr_len; ++i) {
+                can = can_arr[i]
+                if (can ~ /^-[^-]/) print can
+            }
+            return
+        }
+        
     }
 
     for (i=1; i<=can_arr_len; ++i) {
         can = can_arr[i]
-        if (str_startswith( can, cur )) {
-            print can
-        }
+        if (str_startswith( can, cur )) print can
     }
 }
