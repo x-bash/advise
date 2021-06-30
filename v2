@@ -23,15 +23,22 @@ _advise() {
 
     IFS=$'\n'   # Bash/Zsh Only
 
+    local result="$(
+        {
+            cat
+            printf "\034%s\034" "$s"  # printf "\034${s}\034"
+        } | awk -f v1.awk 2>/dev/null
+    )"
+
+    local cmd="${result#"#> "}"
+    if [ "$cmd" = "$result" ]; then
+        result="$(eval "$cmd")"
+    fi
+
     # shellcheck disable=SC2207
     COMPREPLY=( 
         $(
-            compgen -W "$(
-                {
-                    cat
-                    printf "\034%s\034" "$s"  # printf "\034${s}\034"
-                } | awk -f v1.awk 2>/dev/null
-            )" -- "$cur"
+            compgen -W "$result" -- "$cur"
         )
     )
 }

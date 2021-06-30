@@ -1,12 +1,14 @@
 {
     "repo": {
-      "--repo|-r": [  ],
-      "--repo2|-r2|m|1": [ [  ],"abc", "cde", "def" ],
+      "--repo|-r": [ "abc", "cde", "def" ],
+      "--repo2|-r2|m|1": [ "abc", "cde", "def" ],
       "--repo2|-r2|m|2": [  ],
-      "--priviledge|-p": [ [  ],"private", "public" ],
+      "--priviledge|-p": [ "private", "public" ],
       "--debug": null,
       "repo": "list_repo",
-      "#1": "list_repo"
+      "#1": "list_repo_1",
+      "#2": ["#2-1", "#2-2", "#2-3"],
+      "#n": ["#n-1", "#n-2", "#n-3"]
     },
     "user": {
       "create": {
