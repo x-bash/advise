@@ -30,8 +30,6 @@ _advise() {
         } | awk -f v2.awk 2>/dev/null
     )"
 
-    echo "cmd:" "$s" "$cur" >> 1.debug.txt
-
     local cmd="${result##"*#> "}"
     local cmd_result=""
     if [ "$cmd" != "$result" ]; then
@@ -42,7 +40,8 @@ _advise() {
     # shellcheck disable=SC2207
     COMPREPLY=(
         $(
-            compgen -W "$cmd_result $result" -- "$cur"
+            compgen -W "$result
+$cmd_result" -- "$cur"
         )
     )
 }

@@ -18,13 +18,13 @@ test123(){
 # test123 test-data2.json work r
 
 # time test123 test/3.json ""
-# time test123 test/3.json r
+time test123 test/3.json r
 # time test123 test/3.json repo --debug --repo abc --
 # time test123 test/3.json repo --debug --repo abc -
 # time test123 test/3.json repo --debug --repo abc 1 ""
 # time test123 test/3.json repo --debug --repo abc 1 2 ""
 # time test123 test/3.json repo --debug --repo abc ""
-time test123 test/3.json repo --debug -r3 3 ""
+# time test123 test/3.json repo --debug -r3 3 ""
 
 # time test123 test/3.json user create ""
 # time test123 test/3.json repo --repo2 ""
