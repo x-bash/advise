@@ -57,7 +57,7 @@ advise(){
         local filepath=$TMPDIR/.x-cmd/advise_auto_json/$func
         [ -f "$filepath" ] || {
             mkdir -p "$(dirname "$filepath")"
-            eval func _param_advise_json_items >"$filepath"
+            eval "$func" _param_advise_json_items >"$filepath"
         }
     fi
 
