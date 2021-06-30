@@ -344,7 +344,6 @@ NR==2{
             
         } else {
             cur_option = ""
-
             argarr[++arglen] = arg
 
             option_id = RULE_NAME_TO_ID[ keypath KEYPATH_SEP arg ]
@@ -377,8 +376,6 @@ NR==2{
     if (rest_argv_len > 0) {
         print_positional_candidates(final_keypath, cur, rest_argv_len)
     } else {
-        prev = argarr[arglen-1]
-
         if (cur_option != "") {
             option_id = RULE_NAME_TO_ID[ final_keypath KEYPATH_SEP cur_option ] "|" last_optarg_index
             # RULE_ID_CANDIDATES[ option_id ]
