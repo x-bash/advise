@@ -69,9 +69,3 @@ advise(){
 }
 
 fi
-
-# xrc advise
-
-# advise compt
-advise compt "./test/3.json"
-
