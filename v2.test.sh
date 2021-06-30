@@ -17,15 +17,15 @@ test123(){
 
 # test123 test-data2.json work ""
 
-# time test123 test/4.json repo --debug --repo abc --
-# time test123 test/4.json repo --debug --repo abc 1 ""
-# time test123 test/4.json repo --debug --repo abc 1 2 ""
+# time test123 test/3.json repo --debug --repo abc --
+# time test123 test/3.json repo --debug --repo abc 1 ""
+# time test123 test/3.json repo --debug --repo abc 1 2 ""
+# time test123 test/3.json repo --debug --repo abc ""
+time test123 test/3.json repo --debug -r3 3 ""
 
-time test123 test/4.json user create ""
+# time test123 test/3.json user create ""
+# time test123 test/3.json repo --repo2 ""
+# time test123 test/3.json repo --repo2 "abc" ""
+# time test123 test/3.json user create1 ""
 
-# test123 test-data2.json work --host=abc -sv abc ""
-
-# test123 test-data2.json work --host=abc -version -v repo create --has_wiki a
-# test123 test-data2.json work --host=abc -v repo create --has_wiki
-# test123 test-data2.json work --host=abc -v ""
 

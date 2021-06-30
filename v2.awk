@@ -83,8 +83,8 @@ function rule_add_key( keypath, key,
         # options
         last = keyarr[keyarrlen]
         if ( match(last, /^[0-9]+$/) ) {
-            keyid = substr(keyid, 1, length(keyid)-RLENGTH)
-            num = substr(keyid, length(keyid)-RLENGTH+1)
+            keyid = substr(keyid, 1, length(keyid)-RLENGTH-1)
+            num = last
             tmp = RULE_ID_ARGNUM[ keyid ] || 0
             if (tmp < num) {
                 RULE_ID_ARGNUM[ keyid ] = num
@@ -274,6 +274,7 @@ function json_walk(text,   final, b_s, b_s_idx, b_s_len){
 ###############################
 
 NR==1{
+    # debug("json_walk")
     json_walk($0)
 }
 
@@ -353,6 +354,8 @@ NR==2{
                 for (cur_optarg_index=1; cur_optarg_index<=optarg_num; ++cur_optarg_index) {
                     if (i+1 < parsed_arglen) {
                         argarr[++arglen] = parsed_argarr[++i]
+                    } else {
+                        break
                     }
                 }
 
@@ -393,11 +396,11 @@ NR==2{
     } else if (cur_option_alias != "") {
         option_id = RULE_ALIAS_TO_ID[ current_keypath KEYPATH_SEP cur_option_alias ]
 
-        candidates = RULE_ID_CANDIDATES[ option_id "|" last_optarg_index ]
-        if (candidates != "") {
+        candidates = RULE_ID_CANDIDATES[ option_id "|" cur_optarg_index ]
+        if (candidates == "") {
             candidates = RULE_ID_CANDIDATES[ option_id ]
         }
-        # debug("print_list_candidate")
+        # debug("print_list_candidate:\t" candidates "\t" option_id "\t " cur_optarg_index)
         print_list_candidate(candidates)
     } else {
         # debug("show_candidates")
@@ -413,6 +416,7 @@ BEGIN{
 
 function used_option_add(option_id){
     # debug("used_option_add:\t" option_id)
+    RULE_ID_R[ option_id ] = 100
     used_option_list = used_option_list "\n" option_id
 }
 
@@ -422,9 +426,10 @@ function used_option_clear(){
 
 function is_all_required_provided(      arr, arrlen, i, elem){
     arrlen = split(RULE_ID_R_LIST, arr, "\n")
+    
     for (i=2; i<=arrlen; ++i) {
         elem = arr[i]
-        if (elem != 100) {
+        if (RULE_ID_R[elem] != 100) {
             return false
         }
     }
@@ -468,14 +473,15 @@ function show_positional_candidates(final_keypath, cur, rest_argv_len,
 
 # That is most complicated.
 function show_candidates(final_keypath, cur, 
-    car_arr, can_arr_len,
+    can_arr, can_arr_len,
     num, used_option_set){
 
-    can_arr_len = split( used_option_list, car_arr, "\n" )
+    can_arr_len = split( used_option_list, can_arr, "\n" )
     for (i=2; i<=can_arr_len; ++i) {
-        used_option_set[ car_arr[i] ] = true
+        if (RULE_ID_M[ can_arr[i] ] != true) {
+            used_option_set[ car_arr[i] ] = true
+        }
     }
-
 
     candidates = RULE_ID_CANDIDATES[ final_keypath ]
 
@@ -495,7 +501,9 @@ function show_candidates(final_keypath, cur,
 function print_candidate_with_optionid( option_id, cur,
     car_arr, can_arr_len, can, i){
 
-    if ( (length(cur)>0) && (cur !~ /^-/) ) return
+    # if ( (length(cur)>0) && (cur !~ /^-/) ) return
+    if ( length(cur) == 0)  cur = "-"
+    if ( cur !~ /^-/ ) return
 
     can_arr_len = split( option_id, can_arr, KEYPATH_SEP )
     option_id = can_arr[ can_arr_len ]

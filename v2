@@ -30,15 +30,17 @@ _advise() {
         } | awk -f v1.awk 2>/dev/null
     )"
 
-    local cmd="${result#"#> "}"
-    if [ "$cmd" = "$result" ]; then
-        result="$(eval "$cmd")"
+    local cmd="${result##"*#> "}"
+    local cmd_result=""
+    if [ "$cmd" != "$result" ]; then
+        cmd_result="$(eval "$cmd")"
+        result="${result%"*#> "*}"
     fi
 
     # shellcheck disable=SC2207
-    COMPREPLY=( 
+    COMPREPLY=(
         $(
-            compgen -W "$result" -- "$cur"
+            compgen -W "$cmd_result $result" -- "$cur"
         )
     )
 }
