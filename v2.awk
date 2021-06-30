@@ -447,15 +447,21 @@ function show_positional_candidates(final_keypath, cur, rest_argv_len,
 
 # That is most complicated.
 function show_candidates(final_keypath, cur, 
-    car_arr, can_arr_len, num){
+    car_arr, can_arr_len, num, used_option_set){
 
-
-    used_options
+    can_arr_len = split( used_option_list, can_arr, "\n" )
+    for (i=2; i<=can_arr_len; ++i) {
+        can = can_arr[i]
+        used_option_set[ can ] = 1
+    }
 
     candidates = RULE_ID_CANDIDATES[ final_keypath ]
-    can_arr_len = split( substr(candidates, 2), can_arr, "\n")
+    can_arr_len = split( candidates, can_arr, "\n")
     for (i=1; i<=can_arr_len; ++i) {
         can = can_arr[i]
+        if (used_option_set[ can ] == 1) {
+            continue
+        }
 
         if ( (can == "#n") || (can ~ /^#[0-9]+$/) )
         {
