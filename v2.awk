@@ -365,8 +365,6 @@ NR==2{
         cur = ""
     }
 
-    all_required = is_all_required_provided()
-
     if (rest_argv_len > 0) {
         print_positional_candidates(final_keypath, cur, rest_argv_len)
     } else {
@@ -434,9 +432,8 @@ function show_option_candidates(final_keypath, option_id, cur,
 function show_positional_candidates(final_keypath, cur, rest_argv_len,
     car_arr, can_arr_len, num){
 
-    if (all_required == false) {
-        return
-    }
+    if (is_all_required_provided() == false) return
+
 
     candidates = RULE_ID_CANDIDATES[ final_keypath KEYPATH_SEP "#" rest_argv_len ]
     if (candidates != "") {
