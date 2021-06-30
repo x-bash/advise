@@ -290,7 +290,6 @@ NR==2{
             option_id = RULE_NAME_TO_ID[ keypath KEYPATH_SEP cur_option ]
 
             if (option_id != "") {
-                argarr[++arglen] = arg
                 used_arg_add(final_keypath, option_id)
             } else {
                 is_compact_argument = 0
@@ -326,7 +325,6 @@ NR==2{
 
             # handle optarg value
             if (argval != "") {
-                argarr[++arglen] = argval
                 cur_option = ""
             } else {
                 optarg_num = RULE_ID_ARGNUM[ cur_option ]
@@ -344,8 +342,6 @@ NR==2{
             
         } else {
             cur_option = ""
-            argarr[++arglen] = arg
-
             option_id = RULE_NAME_TO_ID[ keypath KEYPATH_SEP arg ]
             
             if (option_id == "") {
@@ -363,9 +359,7 @@ NR==2{
         
     }
 
-    argarr[++arglen] = parsed_argarr[parsed_arglen]
-
-    cur = argarr[arglen]
+    cur = parsed_argarr[parsed_arglen]
 
     if (cur == "\177") {    # ascii code 127 0x7F 0177 ==> DEL
         cur = ""
