@@ -96,20 +96,21 @@ function rule_add_key( keypath, key,
         RULE_ID_ARGNUM[ keyid ] = -1    # Means it is subcmd
     }
 
-    tmp = ""
+    # tmp = ""
     for (i=1; i<=keyarrlen; ++i) {
         e = keyarr[i]
         RULE_NAME_TO_ID[ KEYPREFIX e ] = keyid
-        tmp = tmp " " e
+        # tmp = tmp " " e
     }
-    RULE_ID_CANDIDATES[ keypath ] = RULE_ID_CANDIDATES[ keypath ] tmp
+    # RULE_ID_CANDIDATES[ keypath ] = RULE_ID_CANDIDATES[ keypath ] tmp
+    RULE_ID_CANDIDATES[ keypath ] = RULE_ID_CANDIDATES[ keypath ] "\n" keyid
 }
 
 function rule_add_list_val( keypath, val,
     num, tmp ) {
 
     val = substr(val, 2, length(val)-2)     # Notice: simple unwrap
-    RULE_ID_CANDIDATES[ keypath ] = RULE_ID_CANDIDATES[ keypath ] " " val   # unwrap val
+    RULE_ID_CANDIDATES[ keypath ] = RULE_ID_CANDIDATES[ keypath ] "\n" val   # unwrap val
 }
 
 function rule_add_dict_val( keypath, val,
@@ -265,7 +266,6 @@ NR==2{
     ruleregex = ""
 
     arglen=0
-    used_arg = ""
     rest_argv_len = 0
 
     final_keypath = "."
@@ -290,7 +290,7 @@ NR==2{
             option_id = RULE_NAME_TO_ID[ keypath KEYPATH_SEP cur_option ]
 
             if (option_id != "") {
-                used_arg_add(final_keypath, option_id)
+                used_option_add( option_id )
             } else {
                 is_compact_argument = 0
                 if (arg ~ /^-[^-]/) {
@@ -308,7 +308,7 @@ NR==2{
                     if (is_compact_argument == 0) {
                         for (j=2; j<=_arg_tmp_arrlen; ++j) {
                             argarr[++arglen] = cur_option
-                            used_arg_add(final_keypath, option_id)
+                            used_option_add( option_id )
                         }
                         arg = argarr[arglen]
                         is_compact_argument = 1
@@ -338,8 +338,7 @@ NR==2{
                     cur_option = ""
                     cur_optarg_index = 0
                 }
-            } 
-            
+            }
         } else {
             cur_option = ""
             option_id = RULE_NAME_TO_ID[ keypath KEYPATH_SEP arg ]
@@ -354,9 +353,8 @@ NR==2{
 
             # Must be subcommand argument
             final_keypath = option_id
-            used_arg = ""
+            used_option_clear( )
         }
-        
     }
 
     cur = parsed_argarr[parsed_arglen]
@@ -380,18 +378,16 @@ NR==2{
 
 }
 
-function used_arg_add(keypath, option_id,
-    arr, arrlen, i, elem) {
+BEGIN{
+    used_option_list = ""
+}
 
-    arrlen = split(option_id, arr, "|")
-    RULE_ID_R[ option_id ] = 100
+function used_option_add(option_id){
+    used_option_list = used_option_list "\n" option_id
+}
 
-    for (i=2; i<=arrlen; ++i) {
-        elem = arr[i]
-        if (elem ~ /^-/) {
-            used_arg = used_arg "\n" elem
-        }
-    }
+function used_option_clear(){
+    used_option_list = ""
 }
 
 function is_all_required_provided(      arr, arrlen, i, elem){
@@ -405,7 +401,7 @@ function is_all_required_provided(      arr, arrlen, i, elem){
     return true
 }
 
-function print_candidate(candidates,
+function print_list_candidate(candidates,
     can, i, can_arr_len, can_arr ){
 
     candidates = RULE_ID_CANDIDATES[ final_keypath ]
@@ -437,13 +433,13 @@ function show_positional_candidates(final_keypath, cur, rest_argv_len,
 
     candidates = RULE_ID_CANDIDATES[ final_keypath KEYPATH_SEP "#" rest_argv_len ]
     if (candidates != "") {
-        print_candidate( candidates )
+        print_list_candidate( candidates )
         return
     }
 
     candidates = RULE_ID_CANDIDATES[ final_keypath KEYPATH_SEP "#n" ]
     if (candidates != "") {
-        print_candidate( candidates )
+        print_list_candidate( candidates )
         return
     }
     
@@ -452,6 +448,9 @@ function show_positional_candidates(final_keypath, cur, rest_argv_len,
 # That is most complicated.
 function show_candidates(final_keypath, cur, 
     car_arr, can_arr_len, num){
+
+
+    used_options
 
     candidates = RULE_ID_CANDIDATES[ final_keypath ]
     can_arr_len = split( substr(candidates, 2), can_arr, "\n")
@@ -463,6 +462,7 @@ function show_candidates(final_keypath, cur,
             continue
         }
 
+        # Get rid of complicated id
         if (str_startswith( can, cur )) {
             print can
         }
