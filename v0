@@ -25,7 +25,8 @@ _advise() {
 
     IFS=$'\n'   # Bash/Zsh Only
 
-    local result="$(
+    local result
+    result="$(
         {
             cat
             printf "\034%s\034" "$s"  # printf "\034${s}\034"
@@ -60,7 +61,7 @@ advise(){
         [ -f "$filepath" ] || {
             mkdir -p "$(dirname "$filepath")"
             local content
-            content="$(X_CMD_ADVISE_FUNC_NAME=$func eval "$func" _param_advise_json_items)"
+            content="$(X_CMD_ADVISE_FUNC_NAME=$func eval "$func" _x_cmd_advise_json)"
             if [ $? = 126 ]; then
                 printf "%s" "$content" >"$filepath"
             fi
@@ -68,7 +69,7 @@ advise(){
     fi
 
     eval "_adviser_of_${func}(){
-        [ -f "$filepath" ] && _advise <\"$filepath\"
+        [ -f \"$filepath\" ] && _advise <\"$filepath\"
     }"
 
     complete -F "_adviser_of_${func}" "$func"
