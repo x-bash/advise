@@ -1,4 +1,4 @@
-# shellcheck shell=bash disable=SC2039,3043
+# shellcheck shell=bash disable=SC2039,3043,1073
 
 # author:       Li Junhao           l@x-cmd.com    edwinjhlee.github.io
 # maintainer:   Li Junhao

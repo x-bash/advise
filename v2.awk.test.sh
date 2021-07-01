@@ -1,3 +1,4 @@
+# shellcheck shell=bash
 
 test123(){
     local fp="${1:-filepath}"; shift
