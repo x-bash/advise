@@ -32,7 +32,9 @@ compt1(){
   }
 }
 A
+    return 126
     fi
 }
 
+xrc advise
 advise compt1

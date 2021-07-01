@@ -68,7 +68,7 @@ advise(){
     fi
 
     eval "_adviser_of_${func}(){
-        _advise <\"$filepath\"
+        [ -f "$filepath" ] && _advise <\"$filepath\"
     }"
 
     complete -F "_adviser_of_${func}" "$func"
