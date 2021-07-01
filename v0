@@ -5,7 +5,7 @@
 
 if [ -n "${ZSH_VERSION}${BASH_VERSION}" ]; then
 
-ADVISE_AWK_PATH="$(xrc which advise/v2.awk)"
+ADVISE_AWK_PATH="$(xrc which advise/v0.awk)"
 
 _advise() {
     shift

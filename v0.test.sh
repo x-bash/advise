@@ -1,6 +1,6 @@
 # shellcheck shell=bash
 
-. ./v2
+. ./v0
 
 # advise compt
 advise compt "./test/3.json"
