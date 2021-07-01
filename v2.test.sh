@@ -36,5 +36,9 @@ A
     fi
 }
 
-xrc advise
-advise compt1
+if [ -n "${BASH_VERSION}${ZSH_VERSION}" ] && [ "${-#*i}" != "$-" ]; then
+    # TODO: using global variable
+# if xrc advise status; then
+    xrc advise
+    advise compt1
+fi

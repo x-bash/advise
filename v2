@@ -74,4 +74,8 @@ advise(){
     complete -F "_adviser_of_${func}" "$func"
 }
 
+else
+
+echo "advise is only available in 'bash' or 'zsh'." >/dev/stderr
+
 fi
