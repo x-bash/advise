@@ -289,9 +289,7 @@ NR==2{
         print_positional_candidates(final_keypath, rest_argv_len)
 
     } else {
-
         prev = argarr[arglen-1]
-        
 
         # print "used:\t" used_arg
         # print "keypath:\t" final_keypath
