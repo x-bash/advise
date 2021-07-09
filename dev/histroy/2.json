@@ -1,0 +1,28 @@
+{
+    ":work:":{
+        ":-version:": [],
+        ":--host:-h:": [],
+        ":--debug:-d:": null,
+        ":-v:--verbose:": null,
+        ":-s:": null,
+        ":info:i:inf:": null,
+        ":new:n:":null,
+        ":repo:r:":{
+            ":list:":null,
+            ":create:":{
+                "#3": "#> ls",
+                "#n": [
+                    "aaa",
+                    "bbb"
+                ],
+                ":--owner:":null,
+                ":--has_wiki:":[
+                    "all",
+                    "public",
+                    "protect",
+                    "private"
+                ]
+            }
+        }
+    }
+}

@@ -432,6 +432,7 @@ function is_all_required_provided(      arr, arrlen, i, elem){
     for (i=2; i<=arrlen; ++i) {
         elem = arr[i]
         if (RULE_ID_R[elem] != 100) {
+            # debug("is_all_required_provided failed at:\t" elem)
             return false
         }
     }
@@ -459,6 +460,7 @@ function show_positional_candidates(final_keypath, cur, rest_argv_len,
 
     all_required = is_all_required_provided()
     if ( all_required == false ) return 
+    # debug("show_positional_candidates()  all_required=true")
 
     candidates = RULE_ID_CANDIDATES[ final_keypath KEYPATH_SEP "#" rest_argv_len ]
     if (candidates != "") {
@@ -506,13 +508,14 @@ function show_candidates(final_keypath, cur,
 
 # NOTICE: option_id = option / subcmd id
 function print_candidate_with_optionid( option_id, cur,
-    can_arr, can_arr_len, can, i){
+    can_arr, can_arr_len, can, i, is_required){
 
     # if ( (length(cur) > 0) && (cur !~ /^-/) ) return
     # if ( length(cur) == 0)  cur = "-"
     # if ( cur !~ /^-/ ) return
 
-    # debug( "print_candidate_with_optionid\t" option_id)
+    # debug( "print_candidate_with_optionid\t" option_id "\t>" RULE_ID_R[option_id])
+    is_required = RULE_ID_R[option_id]
 
     can_arr_len = split( option_id, can_arr, KEYPATH_SEP )
     option_id = can_arr[ can_arr_len ]
@@ -521,9 +524,11 @@ function print_candidate_with_optionid( option_id, cur,
 
     if (option_id ~ /^-/) {
         # It is option
-        if (cur == "") return
-        # if (option_id ~ /^-[^-]/) || (cur !~ /^-/)) 
-        if (! cur ~ /^-/ ) return
+        if (is_required != true) {
+            if (cur == "") return
+            # if (option_id ~ /^-[^-]/) || (cur !~ /^-/))
+            if (! cur ~ /^-/ ) return
+        }
 
         if (cur == "-") {
             for (i=1; i<=can_arr_len; ++i) {
