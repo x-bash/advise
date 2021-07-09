@@ -58,7 +58,10 @@ function json_walk_panic(msg,       start){
 BEGIN {
     # RULE_ID_TO_NAME
     # RULE_ID_ARGNUM
-    # RULE_ID_M
+    
+    # RULE_ID_M     false:1   true:0   REQUIRED_PROVIDED:100
+    REQUIRED_PROVIDED = 100
+
     # RULE_ID_R
     # RULE_ID_R_LIST
     # RULE_ID_CANDIDATES
@@ -418,7 +421,7 @@ BEGIN{
 
 function used_option_add(option_id){
     # debug("used_option_add:\t" option_id)
-    RULE_ID_R[ option_id ] = 100
+    RULE_ID_R[ option_id ] = REQUIRED_PROVIDED
     used_option_list = used_option_list "\n" option_id
 }
 
@@ -431,7 +434,7 @@ function is_all_required_provided(      arr, arrlen, i, elem){
     
     for (i=2; i<=arrlen; ++i) {
         elem = arr[i]
-        if (RULE_ID_R[elem] != 100) {
+        if (RULE_ID_R[elem] != REQUIRED_PROVIDED) {
             # debug("is_all_required_provided failed at:\t" elem)
             return false
         }
