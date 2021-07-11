@@ -56,7 +56,11 @@ fi
 advise(){
     local func="${1:?Provide function name}"
     local filepath="${2}"
-    if [ -z "$filepath" ]; then
+
+    if [ - = "$filepath" ]; then
+        filepath=$TMPDIR/.x-cmd/advise_auto_json/$func
+        cat >"$filepath"
+    elif [ -z "$filepath" ]; then
         local filepath=$TMPDIR/.x-cmd/advise_auto_json/$func
         [ -f "$filepath" ] || {
             mkdir -p "$(dirname "$filepath")"
