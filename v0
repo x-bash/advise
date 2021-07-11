@@ -62,14 +62,18 @@ advise(){
         cat >"$filepath"
     elif [ -z "$filepath" ]; then
         local filepath=$TMPDIR/.x-cmd/advise_auto_json/$func
-        [ -f "$filepath" ] || {
+        # TODO: reduce by checking cache under some condition
+        # [ -f "$filepath" ] || {
             mkdir -p "$(dirname "$filepath")"
             local content
             content="$(X_CMD_ADVISE_FUNC_NAME=$func eval "$func" _x_cmd_advise_json)"
             if [ $? = 126 ]; then
                 printf "%s" "$content" >"$filepath"
             fi
-        }
+        # }
+    else
+        cp "$filepath" "$TMPDIR/.x-cmd/advise_auto_json/$func"
+        filepath="$TMPDIR/.x-cmd/advise_auto_json/$func"
     fi
 
     eval "_adviser_of_${func}(){
