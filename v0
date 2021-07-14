@@ -33,11 +33,14 @@ _advise() {
         } | awk -f "$ADVISE_AWK_PATH" 2>/dev/null
     )"
 
-    local cmd="${result##"*#> "}"
+    echo "result: $result" >>"$HOME/fuck.txt"
+    local cmd="${result##*#> }"
+    echo "cmd: $cmd" >>"$HOME/fuck.txt"
     local cmd_result=""
     if [ "$cmd" != "$result" ]; then
+        echo "$cmd" >>"$HOME/fuck.txt"
         cmd_result="$(eval "$cmd")"
-        result="${result%"*#> "*}"
+        result="${result%%#> *}"
     fi
 
     # shellcheck disable=SC2207
