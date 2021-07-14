@@ -22,7 +22,9 @@ function str_wrap(s){
 
 function str_unwrap(s){
     # return "\"" s "\""
-    return substr(s, 2, length(s)-2)
+    s = substr(s, 2, length(s)-2)
+    gsub(/\\"/, "\"", s)
+    return s
 }
 
 function str_startswith(src, prefix,    len){
