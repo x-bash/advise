@@ -33,12 +33,9 @@ _advise() {
         } | awk -f "$ADVISE_AWK_PATH" 2>/dev/null
     )"
 
-    echo "result: $result" >>"$HOME/fuck.txt"
     local cmd="${result##*#> }"
-    echo "cmd: $cmd" >>"$HOME/fuck.txt"
     local cmd_result=""
     if [ "$cmd" != "$result" ]; then
-        echo "$cmd" >>"$HOME/fuck.txt"
         cmd_result="$(eval "$cmd")"
         result="${result%%#> *}"
     fi
