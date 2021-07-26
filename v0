@@ -57,6 +57,7 @@ advise(){
     local func="${1:?Provide function name}"
     local filepath="${2}"
     local tmp_filepath=${TMPDIR%/}/.x-cmd/advise_auto_json/$func
+    mkdir -p "$(dirname "$tmp_filepath")"
 
     if [ - = "$filepath" ]; then
         filepath=$tmp_filepath
@@ -65,7 +66,6 @@ advise(){
         local filepath=$tmp_filepath
         # TODO: reduce by checking cache under some condition
         # [ -f "$filepath" ] || {
-            mkdir -p "$(dirname "$filepath")"
             local content
             content="$(X_CMD_ADVISE_FUNC_NAME=$func eval "$func" _x_cmd_advise_json)"
             if [ $? = 126 ]; then
