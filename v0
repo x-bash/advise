@@ -56,12 +56,13 @@ fi
 advise(){
     local func="${1:?Provide function name}"
     local filepath="${2}"
+    local tmp_filepath=${TMPDIR%/}/.x-cmd/advise_auto_json/$func
 
     if [ - = "$filepath" ]; then
-        filepath=$TMPDIR/.x-cmd/advise_auto_json/$func
+        filepath=$tmp_filepath
         cat >"$filepath"
     elif [ -z "$filepath" ]; then
-        local filepath=$TMPDIR/.x-cmd/advise_auto_json/$func
+        local filepath=$tmp_filepath
         # TODO: reduce by checking cache under some condition
         # [ -f "$filepath" ] || {
             mkdir -p "$(dirname "$filepath")"
@@ -72,8 +73,8 @@ advise(){
             fi
         # }
     else
-        cp "$filepath" "$TMPDIR/.x-cmd/advise_auto_json/$func"
-        filepath="$TMPDIR/.x-cmd/advise_auto_json/$func"
+        cp "$filepath" "$tmp_filepath"
+        filepath="$tmp_filepath"
     fi
 
     eval "_adviser_of_${func}(){
