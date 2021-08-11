@@ -64,14 +64,13 @@ advise(){
         cat >"$filepath"
     elif [ -z "$filepath" ]; then
         local filepath=$tmp_filepath
-        # TODO: reduce by checking cache under some condition
-        # [ -f "$filepath" ] || {
+        if [ -n "$___XRC_UDPATE" ] || [ ! -f "$filepath" ]; then
             local content
             content="$(X_CMD_ADVISE_FUNC_NAME=$func eval "$func" _x_cmd_advise_json)"
             if [ $? = 126 ]; then
                 printf "%s" "$content" >"$filepath"
             fi
-        # }
+        fi
     else
         cp "$filepath" "$tmp_filepath"
         filepath="$tmp_filepath"
