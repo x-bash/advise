@@ -13,8 +13,10 @@ advise(){
     local op="${1:?Provide subcommand}"
     case "$op" in
         ls)
+            shift
             ls "$@" "${TMPDIR%/}/.x-cmd/advise_auto_json" ;;
         rm)
+            shift
             rm -rf "${TMPDIR%/}/.x-cmd/advise_auto_json"/*  ;;
         cat)
             shift
