@@ -37,7 +37,7 @@ A
             ;;
         init)
             shift 1
-            _advies_main "$@" ;;
+            _advise_main "$@" ;;
         *)
             _advise_main "$@" ;;
     esac
