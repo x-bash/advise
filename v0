@@ -12,10 +12,30 @@ ADVISE_AWK_PATH="$(xrc which advise/v0.awk)"
 advise(){
     local op="${1:?Provide subcommand}"
     case "$op" in
-        :ls)
-            ls "${TMPDIR%/}/.x-cmd/advise_auto_json" ;;
-        :rm)
+        ls)
+            ls "$@" "${TMPDIR%/}/.x-cmd/advise_auto_json" ;;
+        rm)
             rm -rf "${TMPDIR%/}/.x-cmd/advise_auto_json"/*  ;;
+        cat)
+            shift
+            local mod
+            for mod in "$@"; do
+                cat "${TMPDIR%/}/.x-cmd/advise_auto_json/$mod"
+            done
+            ;;
+        _x_cmd_advise_json)
+            cat <<A
+{
+    "ls": null,
+    "rm": null,
+    "cat": "ls ${TMPDIR%/}/.x-cmd/advise_auto_json/"
+}
+A
+            return 126
+            ;;
+        init)
+            shift 1
+            _advies_main "$@" ;;
         *)
             _advise_main "$@" ;;
     esac
@@ -98,6 +118,8 @@ $cmd_result" -- "$cur"
         )
     )
 }
+
+advise init advise
 
 if [ -n "$ZSH_VERSION" ]; then
     autoload -U +X bashcompinit compinit && bashcompinit && compinit
