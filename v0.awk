@@ -1,7 +1,5 @@
 
-###############################
-# Step 0 Utilities
-###############################
+# Section: utilities
 
 BEGIN{
     false = 0;      true = 1
@@ -54,13 +52,14 @@ function json_walk_panic(msg,       start){
     exit 1
 }
 
-###############################
-# Step 1 RULE
-###############################
+# EndSection
+
+# Section: RULE
+
 BEGIN {
     # RULE_ID_TO_NAME
     # RULE_ID_ARGNUM
-    
+
     # RULE_ID_M     false:1   true:0   REQUIRED_PROVIDED:100
     REQUIRED_PROVIDED = 100
 
@@ -74,7 +73,7 @@ function rule_add_key( keypath, key,
 
     # key = str_unwrap( key )  # Notice: simple unwrap
 
-    
+
     keyarrlen = split(key, keyarr, "|")
     first = keyarr[2]
 
@@ -135,7 +134,7 @@ function rule_add_list_val( keypath, val,
     }
 
     # debug("rule_add_list_val\t" keypath "\t" val)
-    
+
     RULE_ID_CANDIDATES[ keypath ] = RULE_ID_CANDIDATES[ keypath ] "\n" val   # unwrap val
 }
 
@@ -147,20 +146,21 @@ function rule_add_dict_val( keypath, val,
         # No candidates
     } else {
         RULE_ID_CANDIDATES[ keypath ] = "#> " str_unwrap( val )
-    }    
+    }
 }
 
-###############################
-# Step 2 JSON: utilities
-###############################
-function json_walk_dict(keypath, indent,    
+# EndSection
+
+# Section: JSON: utilities
+
+function json_walk_dict(keypath, indent,
     data, nth, cur_keypath, cur_indent, key, value){
 
     if (s != "{") {
         # debug("json_walk_dict() fails" )
         return false
     }
-    
+
     nth = -1
     s = JSON_TOKENS[++s_idx]
 
@@ -183,7 +183,7 @@ function json_walk_dict(keypath, indent,
 
         s = JSON_TOKENS[++s_idx]
         if (s != ":") json_walk_panic("json_walk_dict() Expect :")
-        
+
         s = JSON_TOKENS[++s_idx]            # Value
         json_walk_value(cur_keypath, cur_indent, "dict")
 
@@ -202,7 +202,7 @@ function json_walk_array(keypath, indent,
     s = JSON_TOKENS[++s_idx]
 
     data="["
-    
+
     while (1) {
         nth++;
         if (s == "]") {
@@ -214,7 +214,7 @@ function json_walk_array(keypath, indent,
         # if (s == ",")  json_walk_panic("json_walk_array() Expect a value but get " s)
         json_walk_value(cur_keypath, cur_indent, "list")
         # debug("json_walk_array() value: " result)
-        
+
         data = data VAL_SEP result
 
         if (s == ",")   s = JSON_TOKENS[++s_idx]
@@ -260,7 +260,7 @@ function _json_walk(    final, idx, nth){
 # global variable: text, s, s_idx, s_len
 function json_walk(text,   final, b_s, b_s_idx, b_s_len){
     b_s = s;    b_s_idx = s_idx;    b_s_len = s_len;
-    
+
     result = "";
     gsub(/^\357\273\277|^\377\376|^\376\377|"[^"\\\001-\037]*((\\[^u\001-\037]|\\u[0-9a-fA-F][0-9a-fA-F][0-9a-fA-F][0-9a-fA-F])[^"\\\001-\037]*)*"|-?(0|[1-9][0-9]*)([.][0-9]+)?([eE][+-]?[0-9]+)?|null|false|true|[ \t\n\r]+|./, "\n&", text)
     # gsub(/^\357\273\277|^\377\376|^\376\377|"[^"\\\000-\037]*((\\[^u\000-\037]|\\u[0-9a-fA-F][0-9a-fA-F][0-9a-fA-F][0-9a-fA-F])[^"\\\000-\037]*)*"|-?(0|[1-9][0-9]*)([.][0-9]+)?([eE][+-]?[0-9]+)?|null|false|true|[ \t\n\r]+|./, "\n&", text)
@@ -274,10 +274,9 @@ function json_walk(text,   final, b_s, b_s_idx, b_s_len){
     s = b_s;    s_idx = b_s_idx;    s_len = b_s_len;
 }
 
-###############################
-# Step 3 main
-###############################
+# EndSection
 
+# Section: Main
 NR==1{
     # debug("json_walk")
     json_walk($0)
@@ -322,7 +321,7 @@ NR==2{
             } else {
                 is_compact_argument = 0
                 if (arg ~ /^-[^-]/) {
-                    # like tar: -xvf => -x -v -f 
+                    # like tar: -xvf => -x -v -f
                     _arg_tmp_arrlen = split(arg, _arg_tmp_arr, "")
                     for (j=2; j<=_arg_tmp_arrlen; ++j) {
                         cur_option_alias = "-" _arg_tmp_arr[j]
@@ -376,7 +375,7 @@ NR==2{
             option_id = RULE_ALIAS_TO_ID[ current_keypath KEYPATH_SEP arg ]
 
             # debug("2\t" option_id "\t|" current_keypath KEYPATH_SEP arg)
-            
+
             if (option_id == "") {
                 # Must be positional argument
                 for (j=i; j<=parsed_arglen; ++j) {
@@ -417,6 +416,9 @@ NR==2{
 
 }
 
+# EndSection
+
+# Section: used_option
 BEGIN{
     used_option_list = ""
 }
@@ -431,9 +433,13 @@ function used_option_clear(){
     used_option_list = ""
 }
 
+# EndSection
+
+# Section: candidates
+
 function is_all_required_provided(      arr, arrlen, i, elem){
     arrlen = split(RULE_ID_R_LIST, arr, "\n")
-    
+
     for (i=2; i<=arrlen; ++i) {
         elem = arr[i]
         if (RULE_ID_R[elem] != REQUIRED_PROVIDED) {
@@ -464,7 +470,7 @@ function show_positional_candidates(final_keypath, cur, rest_argv_len,
     candidates, all_required){
 
     all_required = is_all_required_provided()
-    if ( all_required == false ) return 
+    if ( all_required == false ) return
     # debug("show_positional_candidates()  all_required=true")
 
     candidates = RULE_ID_CANDIDATES[ final_keypath KEYPATH_SEP "#" rest_argv_len ]
@@ -477,11 +483,11 @@ function show_positional_candidates(final_keypath, cur, rest_argv_len,
     if (candidates != "") {
         print_list_candidate( candidates )
         return
-    }   
+    }
 }
 
 # That is most complicated.
-function show_candidates(final_keypath, cur, 
+function show_candidates(final_keypath, cur,
     can_arr, can_arr_len,
     num, used_option_set){
 
@@ -542,7 +548,7 @@ function print_candidate_with_optionid( option_id, cur,
             }
             return
         }
-        
+
     }
 
     for (i=1; i<=can_arr_len; ++i) {
@@ -550,3 +556,5 @@ function print_candidate_with_optionid( option_id, cur,
         if (str_startswith( can, cur )) print can
     }
 }
+
+# EndSection
