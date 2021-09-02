@@ -5,7 +5,79 @@
 
 if [ -n "${ZSH_VERSION}${BASH_VERSION}" ]; then
 
+xrc log init advise
+
 ADVISE_AWK_PATH="$(xrc which advise/v0.awk)"
+
+advise(){
+    local op="${1:?Provide subcommand}"
+    case "$op" in
+        ls)
+            shift
+            ls "$@" "${TMPDIR%/}/.x-cmd/advise_auto_json" ;;
+        rm)
+            shift
+            rm -rf "${TMPDIR%/}/.x-cmd/advise_auto_json"/*  ;;
+        cat)
+            shift
+            local mod
+            for mod in "$@"; do
+                cat "${TMPDIR%/}/.x-cmd/advise_auto_json/$mod"
+            done
+            ;;
+        _x_cmd_advise_json)
+            cat <<A
+{
+    "ls": null,
+    "rm": null,
+    "cat": "ls ${TMPDIR%/}/.x-cmd/advise_auto_json/"
+}
+A
+            return 126
+            ;;
+        init)
+            shift 1
+            _advise_main "$@" ;;
+        *)
+            _advise_main "$@" ;;
+    esac
+}
+
+_advise_main(){
+    local func="${1:?Provide function name}"
+    local filepath="${2}"
+    local tmp_filepath=${TMPDIR%/}/.x-cmd/advise_auto_json/$func
+    mkdir -p "$(dirname "$tmp_filepath")"
+
+    if [ - = "$filepath" ]; then
+        filepath=$tmp_filepath
+        advise_log "Pipe standard input to $filepath"
+        cat >"$filepath"
+    elif [ -z "$filepath" ]; then
+        local filepath=$tmp_filepath
+        if [ -n "$___XRC_UDPATE" ] || [ ! -f "$filepath" ]; then
+            advise_log debug "Pipe the result of \"$func _x_cmd_advise_json\" to $filepath"
+            local content
+            content="$(X_CMD_ADVISE_FUNC_NAME=$func eval "$func" _x_cmd_advise_json)"
+            if [ $? = 126 ]; then
+                printf "%s" "$content" >"$filepath"
+            else
+                advise_log warn "Fail to write file because the return code of \"$func _x_cmd_advise_json\" is not 126."
+                return 0
+            fi
+        fi
+    else
+        advise_log debug "Copy self-defined file $filepath to $tmp_filepath"
+        cp "$filepath" "$tmp_filepath"
+        filepath="$tmp_filepath"
+    fi
+
+    eval "_adviser_of_${func}(){
+        [ -f \"$filepath\" ] && _advise <\"$filepath\"
+    }"
+
+    complete -F "_adviser_of_${func}" "$func"
+}
 
 _advise() {
     shift
@@ -49,42 +121,14 @@ $cmd_result" -- "$cur"
     )
 }
 
+advise init advise
+
 if [ -n "$ZSH_VERSION" ]; then
     autoload -U +X bashcompinit compinit && bashcompinit && compinit
 fi
 
-advise(){
-    local func="${1:?Provide function name}"
-    local filepath="${2}"
-    local tmp_filepath=${TMPDIR%/}/.x-cmd/advise_auto_json/$func
-    mkdir -p "$(dirname "$tmp_filepath")"
-
-    if [ - = "$filepath" ]; then
-        filepath=$tmp_filepath
-        cat >"$filepath"
-    elif [ -z "$filepath" ]; then
-        local filepath=$tmp_filepath
-        if [ -n "$___XRC_UDPATE" ] || [ ! -f "$filepath" ]; then
-            local content
-            content="$(X_CMD_ADVISE_FUNC_NAME=$func eval "$func" _x_cmd_advise_json)"
-            if [ $? = 126 ]; then
-                printf "%s" "$content" >"$filepath"
-            fi
-        fi
-    else
-        cp "$filepath" "$tmp_filepath"
-        filepath="$tmp_filepath"
-    fi
-
-    eval "_adviser_of_${func}(){
-        [ -f \"$filepath\" ] && _advise <\"$filepath\"
-    }"
-
-    complete -F "_adviser_of_${func}" "$func"
-}
-
 else
 
-echo "advise is only available in 'bash' or 'zsh'." >/dev/stderr
+advise_log info "advise is only available in 'bash' or 'zsh'."
 
 fi
