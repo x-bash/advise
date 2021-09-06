@@ -18,6 +18,14 @@ advise(){
         rm)
             shift
             rm -rf "${TMPDIR%/}/.x-cmd/advise_auto_json"/*  ;;
+        which)
+            shift;
+            if [ "$#" -eq 0 ]; then
+                printf "%s" "${TMPDIR%/}/.x-cmd/advise_auto_json"
+            else
+                printf "%s/%s" "${TMPDIR%/}/.x-cmd/advise_auto_json" "$1"
+            fi
+            ;;
         cat)
             shift
             local mod
@@ -84,6 +92,9 @@ _advise() {
     local IFS=$'\002' # IFS="$(printf "\002")"
 
     local cur="${COMP_WORDS[COMP_CWORD]}"
+
+    # _get_comp_words_by_ref -n : cur
+
     if [ "$cur" == "" ]; then
         # Notice: The following line handle zsh compatibility problem.
         # In zsh, When input word is empty, COMP_WORDS[COMP_CWORD] does not exist.

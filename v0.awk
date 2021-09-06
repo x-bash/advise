@@ -346,6 +346,16 @@ NR==1{
     json_walk($0)
 }
 
+# Use object
+
+BEGIN {
+    COLON_ARG_EXISTED = false
+}
+
+function get_colon_argument_optionid(keypath,      _id){
+    return RULE_ALIAS_TO_ID[ keypath KEYPATH_SEP "--@" ]
+}
+
 NR==2{
     argstr = $0
     if ( argstr == "" ) argstr = "" # "." "\002"
@@ -371,6 +381,7 @@ NR==2{
         arg = parsed_argarr[i]
 
         argval = ""
+
         if (arg ~ /^-/) {
             if (match(arg, /^--?[A-Za-z0-9_+-]+=/)){
                 argval = substr(arg, RLENGTH+1)
@@ -435,6 +446,16 @@ NR==2{
                 }
             }
         } else {
+
+            # skip ":<object>"
+            if ( (arg ~ /^:/) ) {
+                if ( get_colon_argument_optionid( current_keypath ) != "") {
+                    COLON_ARG_EXISTED = true
+                    continue
+                }
+            }
+
+
             cur_option_alias = ""
             option_id = RULE_ALIAS_TO_ID[ current_keypath KEYPATH_SEP arg ]
 
@@ -451,6 +472,8 @@ NR==2{
             # Must be subcommand argument
             current_keypath = option_id
             used_option_clear( )
+
+            COLON_ARG_EXISTED = false
         }
     }
 
@@ -458,6 +481,17 @@ NR==2{
 
     if (cur == "\177") {    # ascii code 127 0x7F 0177 ==> DEL
         cur = ""
+    }
+
+    if ( (cur ~ /^@/ ) ) {
+        option_id = get_colon_argument_optionid( current_keypath )
+
+        if (option_id != "") {
+            candidates = RULE_ID_CANDIDATES[ option_id ]
+            # debug(option_id "\t" candidates)
+            print_list_candidate( candidates, cur )
+            exit 0
+        }
     }
 
 
@@ -601,6 +635,10 @@ function show_candidates(final_keypath, cur,
     }
 
     show_positional_candidates( final_keypath, cur, 1 )
+
+    if ( "" != get_colon_argument_optionid( final_keypath ) ) {
+        print "@"
+    }
 }
 
 # NOTICE: option_id = option / subcmd id
