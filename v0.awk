@@ -10,6 +10,7 @@ BEGIN{
     KEYPATH_SEP = ","
     # KEYPATH_SEP = "-"
     VAL_SEP = "\n"
+    KV_SEP = RS
     FUNC_SEP = "\004"
     FUNC_SEP_LEN = FUNC_SEP "len"
 }
@@ -48,8 +49,14 @@ function debug(msg){
 function json_walk_panic(msg,       start){
     start = s_idx - 10
     if (start <= 0) start = 1
-    print (msg " [index=" s_idx "]:\n-------------------\n" JSON_TOKENS[s_idx -2] "\n" JSON_TOKENS[s_idx -1] "\n" s "\n" JSON_TOKENS[s_idx + 1] "\n-------------------") > "/dev/stderr"
+    print (msg " [index=" s_idx "]:\n-------------------\n" JSON_TOKENS[s_idx -2] "\n" JSON_TOKENS[s_idx -1] "\n" JSON_TOKENS[s_idx ] "\n" JSON_TOKENS[s_idx + 1] "\n" JSON_TOKENS[s_idx + 2] "\n-------------------") > "/dev/stderr"
     exit 1
+}
+
+function json_walk_log(msg,       start){
+    start = s_idx - 10
+    if (start <= 0) start = 1
+    print (msg " [index=" s_idx "]:\n-------------------\n" JSON_TOKENS[s_idx -2] "\n" JSON_TOKENS[s_idx -1] "\n" JSON_TOKENS[s_idx ] "\n" JSON_TOKENS[s_idx + 1] "\n" JSON_TOKENS[s_idx + 2] "\n-------------------") > "/dev/stderr"
 }
 
 # EndSection
@@ -156,7 +163,7 @@ function rule_add_dict_val( keypath, val,
 # Section: JSON: utilities
 
 function json_walk_dict_as_candidates(keypath,
-    s, _tmp, _res){
+    _tmp, _res){
 
     nth = -1
     s = JSON_TOKENS[ ++s_idx ]
@@ -170,24 +177,29 @@ function json_walk_dict_as_candidates(keypath,
 
         key = str_unwrap( s )
         s = JSON_TOKENS[ ++s_idx ]
-        if (s != ":") json_walk_panic("json_walk_dict() Expect :")
+        if (s != ":") json_walk_panic("json_walk_dict_as_candidates() Expect : but get " s)
         s = JSON_TOKENS[ ++s_idx ]
-        val = str_unwrap( s )
 
-        # Assume being a string
-        _tmp = s
-
-        if (val == "[") {
+        if (s == "[") {
             _tmp = ""
+            # TODO: prevent infinite loop
             while (1) {
                 s = JSON_TOKENS[ ++s_idx ]
-                if (s == ",") s = JSON_TOKENS[ ++s_idx ]
-                if (s == "]") break
-                _tmp = _tmp "\n" s
+                if (s == ",") {
+                    s = JSON_TOKENS[ ++s_idx ]
+                }
+                if (s == "]") {
+                    s = JSON_TOKENS[ ++s_idx ]
+                    break
+                }
+                _tmp = _tmp "\n" str_unwrap( s )
             }
+        } else {
+            _tmp = "#> " str_unwrap( s )
         }
 
-        _res = _res "\t" key "\t" _tmp
+        _res = _res KV_SEP key KV_SEP _tmp
+        if (s == ",") s = JSON_TOKENS[++s_idx]
     }
 
     RULE_ID_CANDIDATES[ keypath ] = _res
@@ -227,12 +239,16 @@ function json_walk_dict(keypath, indent,
 
         s = JSON_TOKENS[++s_idx]            # Value
 
-        if ( (s == "{") && (key ~ /^-/) ) {
+        if ( (s == "{") && (key ~ /^[-\#]/) )
+        {
             # It means it is an struct candidate
-            json_walk_dict_as_candidates(keypath)
+            json_walk_dict_as_candidates(cur_keypath)
+            # json_walk_log("json_walk_dict !!! " s)
+            # print "s is " s > "/dev/stderr"
         } else {
-            json_walk_value(cur_keypath, cur_indent, "dict", key)
+            json_walk_value(cur_keypath, cur_indent, "dict")
         }
+        # json_walk_value(cur_keypath, cur_indent, "dict")
 
         if (s == ",") s = JSON_TOKENS[++s_idx]
     }
@@ -443,6 +459,7 @@ NR==2{
         cur = ""
     }
 
+
     if (rest_argv_len > 0) {
         # debug("show_positional_candidates:\t" rest_argv_len )
         show_positional_candidates( current_keypath, cur, rest_argv_len)
@@ -453,8 +470,8 @@ NR==2{
         if (candidates == "") {
             candidates = RULE_ID_CANDIDATES[ option_id ]
         }
-        # debug("print_list_candidate:\t" candidates "\t" option_id "\t " cur_optarg_index)
-        print_list_candidate(candidates)
+        # debug("print_list_candidate:\t can: " candidates "\t opt: " option_id "\t optarg: " cur_optarg_index)
+        print_list_candidate(candidates, cur)
     } else {
         # debug("show_candidates\t" current_keypath "\t" cur "\t" RULE_ID_CANDIDATES[current_keypath])
         # list subcmd or options or postional arguments
@@ -497,19 +514,37 @@ function is_all_required_provided(      arr, arrlen, i, elem){
     return true
 }
 
-function print_list_candidate(candidates,
-    can, i, can_arr_len, can_arr ){
+function print_list_candidate(candidates, cur,
+    can, i, can_arr_len, can_arr, _key ){
 
     if ( str_startswith( candidates, "#> " ) ) {
         # print command line
         print candidates
     }
 
-    can_arr_len = split( candidates, can_arr, "\n" )
-    for (i=2; i<=can_arr_len; ++i) {
-        can = can_arr[i]
-        if (str_startswith( can, cur )) print can
+
+    if (candidates !~ "^" KV_SEP) {
+        can_arr_len = split( candidates, can_arr, "\n" )
+        for (i=2; i<=can_arr_len; ++i) {
+            can = can_arr[i]
+            if (str_startswith( can, cur )) print can
+        }
+        return
     }
+
+    gsub("\n", "\001", candidates)
+    can_arr_len = split(candidates, can_arr, KV_SEP)
+    for (i=2; i<=can_arr_len; i=i+2) {
+        _key = can_arr[i]
+        # print "list _key ----- " _key "|"
+        if ( (_key == "*") || ( ( _key != "*" ) && (cur != "") && (cur ~ "^" _key) ) ) {
+            _val = can_arr[i + 1]
+            gsub("\001", "\n", _val)
+            print_list_candidate( _val )
+            return
+        }
+    }
+
 }
 
 # That is most complicated.
@@ -521,14 +556,15 @@ function show_positional_candidates(final_keypath, cur, rest_argv_len,
     # debug("show_positional_candidates()  all_required=true")
 
     candidates = RULE_ID_CANDIDATES[ final_keypath KEYPATH_SEP "#" rest_argv_len ]
+    debug("show_positional_candidates(): CANDIDATES\n" candidates)
     if (candidates != "") {
-        print_list_candidate( candidates )
+        print_list_candidate( candidates, cur )
         return
     }
 
     candidates = RULE_ID_CANDIDATES[ final_keypath KEYPATH_SEP "#n" ]
     if (candidates != "") {
-        print_list_candidate( candidates )
+        print_list_candidate( candidates, cur )
         return
     }
 }

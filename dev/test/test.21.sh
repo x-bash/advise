@@ -26,6 +26,7 @@ test123(){
 # time test123 "$dir/21.json" repo ""
 # time test123 "$dir/21.json" user create --username ""
 # time test123 "$dir/21.json" user create --username "c:"
+# cat "$dir/21.json"
 time test123 "$dir/21.json" "+"
 
 # time test123 "$dir/3.json" repo --debug --repo abc --
