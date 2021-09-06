@@ -172,6 +172,7 @@ function json_walk_dict_as_candidates(keypath,
 
     while (1) {
         if (s == "}") {
+            s = JSON_TOKENS[++s_idx];
             break
         }
 
@@ -556,7 +557,7 @@ function show_positional_candidates(final_keypath, cur, rest_argv_len,
     # debug("show_positional_candidates()  all_required=true")
 
     candidates = RULE_ID_CANDIDATES[ final_keypath KEYPATH_SEP "#" rest_argv_len ]
-    debug("show_positional_candidates(): CANDIDATES\n" candidates)
+    # debug("show_positional_candidates(): CANDIDATES\n" candidates)
     if (candidates != "") {
         print_list_candidate( candidates, cur )
         return
