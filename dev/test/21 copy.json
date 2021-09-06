@@ -14,13 +14,20 @@
         "create": {
             "--username|-u": {
                 "e":    [ "edwinjhlee", "labve" ],
-                "c:":   [ "c:abc", "c:aaa" ],
-                "*":    [ "e", "c:" ]
+                "c:":   [ "c:abc", "c:aaa" ]
             }
         },
         "create1": null,
         "create2": null,
         "create3": null,
         "create4": null
+    },
+    "#1": {
+        "+" : [ "+abc", "+cde" ],
+        "*" : [ "a", "b", "+" ]
+    },
+    "--abc": {
+        "+" : [ "+a", "+b", "+c" ],
+        "*" : [ "all", "verbose", "+" ]
     }
 }
