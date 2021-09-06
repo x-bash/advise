@@ -82,6 +82,8 @@ function rule_add_key( keypath, key,
     KEYPREFIX = keypath KEYPATH_SEP
     keyid = KEYPREFIX key
 
+    # It is an option
+    # TODO: add code for it is an option :<Object name>
 
     if (first ~ /-/) {
         # options

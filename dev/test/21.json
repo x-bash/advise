@@ -21,9 +21,10 @@
         "create2": null,
         "create3": null,
         "create4": null,
-        ":": {
-            ":a": [ ":abc" ], 
-            ":b": [ ":bab" ]
+        "--:": {
+            ":a": [ ":abc" ],
+            ":b": [ ":bab" ],
+            "*": [ ":abc" ]
         }
     }
 }
