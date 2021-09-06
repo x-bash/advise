@@ -155,6 +155,45 @@ function rule_add_dict_val( keypath, val,
 
 # Section: JSON: utilities
 
+function json_walk_dict_as_candidates(keypath,
+    s, _tmp, _res){
+
+    nth = -1
+    s = JSON_TOKENS[ ++s_idx ]
+
+    _res = ""
+
+    while (1) {
+        if (s == "}") {
+            break
+        }
+
+        key = str_unwrap( s )
+        s = JSON_TOKENS[ ++s_idx ]
+        if (s != ":") json_walk_panic("json_walk_dict() Expect :")
+        s = JSON_TOKENS[ ++s_idx ]
+        val = str_unwrap( s )
+
+        # Assume being a string
+        _tmp = s
+
+        if (val == "[") {
+            _tmp = ""
+            while (1) {
+                s = JSON_TOKENS[ ++s_idx ]
+                if (s == ",") s = JSON_TOKENS[ ++s_idx ]
+                if (s == "]") break
+                _tmp = _tmp "\n" s
+            }
+        }
+
+        _res = _res "\t" key "\t" _tmp
+    }
+
+    RULE_ID_CANDIDATES[ keypath ] = _res
+
+}
+
 function json_walk_dict(keypath, indent,
     data, nth, cur_keypath, cur_indent, key, value){
 
@@ -187,7 +226,13 @@ function json_walk_dict(keypath, indent,
         if (s != ":") json_walk_panic("json_walk_dict() Expect :")
 
         s = JSON_TOKENS[++s_idx]            # Value
-        json_walk_value(cur_keypath, cur_indent, "dict")
+
+        if ( (s == "{") && (key ~ /^-/) ) {
+            # It means it is an struct candidate
+            json_walk_dict_as_candidates(keypath)
+        } else {
+            json_walk_value(cur_keypath, cur_indent, "dict", key)
+        }
 
         if (s == ",") s = JSON_TOKENS[++s_idx]
     }
