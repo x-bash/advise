@@ -24,8 +24,9 @@ test123(){
 # test123 test-data2.json work r
 
 # time test123 "$dir/21.json" repo ""
-time test123 "$dir/21.json" user create --username ""
-time test123 "$dir/21.json" user create --username "c:"
+# time test123 "$dir/21.json" user create --username ""
+# time test123 "$dir/21.json" user create --username "c:"
+time test123 "$dir/21.json" "+"
 
 # time test123 "$dir/3.json" repo --debug --repo abc --
 # time test123 "$dir/3.json" repo --debug --repo abc -

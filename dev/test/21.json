@@ -22,5 +22,7 @@
         "create2": null,
         "create3": null,
         "create4": null
-    }
+    },
+    "#1": ["+a", "+b"],
+    "--:": [ ":a", ":b", ":c" ]
 }
