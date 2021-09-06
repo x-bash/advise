@@ -33,6 +33,8 @@ time test123 "$dir/21.json" --value "+"
 
 time test123 "$dir/21.json" --value +a ""
 
+time test123 "$dir/21.json" --value +a :a repo
+
 # time test123 "$dir/3.json" repo --debug --repo abc --
 # time test123 "$dir/3.json" repo --debug --repo abc -
 # time test123 "$dir/3.json" repo --debug --repo abc 1 ""
