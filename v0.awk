@@ -556,7 +556,9 @@ function show_positional_candidates(final_keypath, cur, rest_argv_len,
     if ( all_required == false ) return
     # debug("show_positional_candidates()  all_required=true")
 
-    candidates = RULE_ID_CANDIDATES[ final_keypath KEYPATH_SEP "#" rest_argv_len ]
+    RULE_ID = RULE_ALIAS_TO_ID[ final_keypath KEYPATH_SEP "#" rest_argv_len ]
+
+    candidates = RULE_ID_CANDIDATES[ RULE_ID ]
     # debug("show_positional_candidates(): CANDIDATES\n" candidates)
     if (candidates != "") {
         print_list_candidate( candidates, cur )
