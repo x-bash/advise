@@ -88,7 +88,7 @@ _advise_main(){
 }
 
 _advise() {
-    shift
+    shift 2>/dev/null
     local IFS=$'\002' # IFS="$(printf "\002")"
 
     local cur="${COMP_WORDS[COMP_CWORD]}"
