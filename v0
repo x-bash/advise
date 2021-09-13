@@ -70,7 +70,7 @@ ___advise_ls(){
     fi
 
     if [ "${localdir%/*}" = "${localdir}" ]; then
-        folder="."
+        folder=""
         pattern="${localdir}"
 
     else
@@ -78,7 +78,13 @@ ___advise_ls(){
         pattern="${localdir##*/}"
     fi
 
-    ls "${folder}" | awk -v folder="$folder" "\$0~/^$pattern/{ print folder \"/\" \$0; }"
+    ls "${folder:-.}" | awk -v folder="$folder" -v pattern="$pattern" 'match($0, "^" pattern){
+        if (folder == "") {
+            print $0
+        } else {
+            print folder "/" $0
+        }
+    }'
 
     # local l
     # ls "${localdir}" | while read -r l; do
