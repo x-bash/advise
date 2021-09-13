@@ -137,6 +137,8 @@ A
 
 # EndSection
 
+# Section : main
+
 _advise_main(){
     local func="${1:?Provide function name}"
     local filepath="${2}"
@@ -217,6 +219,8 @@ $cmd_result" -- "$cur"
         )
     )
 }
+
+# EndSection
 
 advise init advise
 
