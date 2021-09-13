@@ -56,7 +56,7 @@ ___advise_lsd(){
 
     local l
 
-    ls -d "${localdir}"*/ | while read -r l; do
+    ls -d "${localdir}"*/ 2>/dev/null | while read -r l; do
         printf "%s\n" "${l%/}"
     done
 }
