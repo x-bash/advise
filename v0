@@ -5,9 +5,9 @@
 
 if [ -n "${ZSH_VERSION}${BASH_VERSION}" ]; then
 
-xrc log init advise
-
 ADVISE_AWK_PATH="$(xrc which advise/v0.awk)"
+
+xrc log init advise
 
 advise(){
     local op="${1:?Provide subcommand}"
