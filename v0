@@ -62,7 +62,7 @@ ___advise_lsd(){
 }
 
 ___advise_ls(){
-    local localdir="${1:-${cur:-.}}"
+    local localdir="${1:-${cur:-""}}"
 
     if [ -z "$localdir" ]; then
         ls
