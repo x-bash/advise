@@ -54,18 +54,24 @@ A
 ___advise_lsd(){
     local localdir="${1:-${cur:-.}}"
 
+    local l
+
     ls -d "${localdir}"*/ | while read -r l; do
         printf "%s\n" "${l%/}"
     done
 }
 
-# TODO: list only files
-___advise_lsf(){
+___advise_ls(){
     local localdir="${1:-${cur:-.}}"
 
-    ls -d "${localdir}"*/ | while read -r l; do
-        printf "%s\n" "${l%/}"
-    done
+    if [ "${localdir%/*}" = "${localdir}" ]; then
+        ls "${localdir}"
+    else
+        local l
+        ls "${localdir}" | while read -r l; do
+            printf "%s%s\n" "$localdir" "$l"
+        done
+    fi
 }
 
 # 1-10
