@@ -59,6 +59,15 @@ ___advise_lsd(){
     done
 }
 
+# TODO: list only files
+___advise_lsf(){
+    local localdir="${1:-${cur:-.}}"
+
+    ls -d "${localdir}"*/ | while read -r l; do
+        printf "%s\n" "${l%/}"
+    done
+}
+
 # 1-10
 ___advise_seq(){
     local curnum="${cur:-""}"
