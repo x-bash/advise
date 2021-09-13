@@ -64,14 +64,26 @@ ___advise_lsd(){
 ___advise_ls(){
     local localdir="${1:-${cur:-.}}"
 
-    if [ "${localdir%/*}" = "${localdir}" ]; then
-        ls "${localdir}"
-    else
-        local l
-        ls "${localdir}" | while read -r l; do
-            printf "%s%s\n" "$localdir" "$l"
-        done
+    if [ -z "$localdir" ]; then
+        ls
+        return
     fi
+
+    if [ "${localdir%/*}" = "${localdir}" ]; then
+        folder="."
+        pattern="${localdir}"
+
+    else
+        folder="${localdir%/*}"
+        pattern="${localdir##*/}"
+    fi
+
+    ls "${folder}" | awk -v folder="$folder" "\$0~/^$pattern/{ print folder \"/\" \$0; }"
+
+    # local l
+    # ls "${localdir}" | while read -r l; do
+    #     printf "%s%s\n" "$localdir" "$l"
+    # done
 }
 
 # 1-10
