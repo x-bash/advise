@@ -3,9 +3,11 @@
 # author:       Li Junhao           l@x-cmd.com    edwinjhlee.github.io
 # maintainer:   Li Junhao
 
-if [ -n "${ZSH_VERSION}${BASH_VERSION}" ]; then
-
-ADVISE_AWK_PATH="$(xrc which advise/v0.awk)"
+if [ -z "${ZSH_VERSION}${BASH_VERSION}" ]; then
+    xrc_log info "advise is only available in 'bash' or 'zsh'."
+elif ! ___ADVISE_AWK_PATH="$(xrc which advise/v0.awk)"; then
+    xrc_log error "Cannot introduce advise"
+else
 
 xrc log init advise
 
@@ -201,7 +203,7 @@ _advise() {
         {
             cat
             printf "\034%s\034" "$s"  # printf "\034${s}\034"
-        } | awk -f "$ADVISE_AWK_PATH" 2>/dev/null
+        } | awk -f "$___ADVISE_AWK_PATH" 2>/dev/null
     )"
 
     local cmd="${result##*#> }"
@@ -227,9 +229,5 @@ advise init advise
 if [ -n "$ZSH_VERSION" ]; then
     autoload -U +X bashcompinit compinit && bashcompinit && compinit
 fi
-
-else
-
-advise_log info "advise is only available in 'bash' or 'zsh'."
 
 fi
