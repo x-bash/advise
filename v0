@@ -51,6 +51,8 @@ A
     esac
 }
 
+# Section : adviser helper function: ls lsd seq
+
 ___advise_lsd(){
     local localdir="${1:-${cur:-.}}"
 
@@ -131,9 +133,9 @@ BEGIN{
 ' <<A
 A
 
-
-
 }
+
+# EndSection
 
 _advise_main(){
     local func="${1:?Provide function name}"
