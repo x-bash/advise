@@ -84,7 +84,7 @@ ___advise_ls(){
         } else {
             print folder "/" $0
         }
-    }'
+    }' 2>/dev/null
 
     # local l
     # ls "${localdir}" | while read -r l; do
