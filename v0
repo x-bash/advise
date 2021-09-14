@@ -12,16 +12,13 @@ else
 xrc log init advise
 
 advise(){
-    local op="${1:?Provide subcommand}"
+    local op="${1:?Provide subcommand}"; shift
     case "$op" in
         ls)
-            shift
             ls "$@" "${TMPDIR%/}/.x-cmd/advise_auto_json" ;;
         rm)
-            shift
             rm -rf "${TMPDIR%/}/.x-cmd/advise_auto_json"/*  ;;
         which)
-            shift;
             if [ "$#" -eq 0 ]; then
                 printf "%s" "${TMPDIR%/}/.x-cmd/advise_auto_json"
             else
@@ -29,7 +26,6 @@ advise(){
             fi
             ;;
         cat)
-            shift
             local mod
             for mod in "$@"; do
                 cat "${TMPDIR%/}/.x-cmd/advise_auto_json/$mod"
@@ -40,16 +36,20 @@ advise(){
 {
     "ls": null,
     "rm": null,
-    "cat": "ls ${TMPDIR%/}/.x-cmd/advise_auto_json/"
+    "which": "ls ${TMPDIR%/}/.x-cmd/advise_auto_json/",
+    "cat": "ls ${TMPDIR%/}/.x-cmd/advise_auto_json/",
+    "init": null
 }
 A
             return 126
             ;;
         init)
-            shift 1
             _advise_main "$@" ;;
+        "")
+            # TODO: help doc
+            ;;
         *)
-            _advise_main "$@" ;;
+            _advise_main "$op" "$@" ;;
     esac
 }
 
