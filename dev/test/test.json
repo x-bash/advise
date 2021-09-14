@@ -12,11 +12,21 @@
     },
     "user": {
         "create": {
-            "--username|-u": [  ]
+            "--username|-u": {
+                "e":    [ "edwinjhlee", "labve" ],
+                "c:":   [ "c:abc", "c:aaa" ],
+                "*":    [ "e", "c:" ]
+            }
         },
         "create1": null,
         "create2": null,
         "create3": null,
         "create4": null
+    },
+    "#1": [ "abc", "abt", ".c", ":a" ],
+    "--@": {
+        "@a": [ "@a1", "@a2", "@a3" ],
+        "@b": [ "@b1", "@b2", "@b3" ],
+        "*": ["@a", "@b"]
     }
 }
