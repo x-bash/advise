@@ -17,7 +17,7 @@
         },
         "--flag|-f": null,
         "atcmd": {
-            "--@": "___advise_ls"
+            "--@": "ls"
         }
     },
     "rarg": {

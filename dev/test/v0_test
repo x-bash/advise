@@ -15,12 +15,21 @@ A
 
     #FIXME: With no command gen
     assert_stdout "test123 option atcmd @" <<A
-#> ___advise_ls
+#> ls
 A
 }
 
 test_option(){
-    :
+
+    assert_stdout "test123 option -a ''" <<A
+m1-a
+m1-b
+m1-c
+A
+
+    assert_stdout "test123 option --cmd ''" <<A
+#> ___advise_ls
+A
 }
 
 test_rarg(){
@@ -58,4 +67,5 @@ start_test ./dev/test/v0_test
 
 # Section: utilities
 . ./v0
+___ADVISE_AWK_PATH="./v0.awk"
 advise compt "./dev/test/test.json"
