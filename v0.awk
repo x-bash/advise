@@ -43,7 +43,7 @@ function pattern_wrap(s){
 
 function debug(msg){
     # if (dbg == false) return
-	print "idx[" s_idx "]\tDEBUG:   " msg > "/dev/stderr"
+	print "\033[1;31midx[" s_idx "]\tDEBUG:   " msg "\033[0;0m" > "/dev/stderr"
 }
 
 function json_walk_panic(msg,       start){

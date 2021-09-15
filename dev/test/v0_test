@@ -3,9 +3,38 @@
 xrc log advise xrc
 xrc assert
 
+# Section: Testcase for advise awk code
+
+test_at(){
+
+    assert_stdout "test123 option @a" <<A
+@a1
+@a2
+@a3
+A
+
+    #FIXME: With no command gen
+    assert_stdout "test123 option atcmd @" <<A
+#> ___advise_ls
+A
+}
+
+test_option(){
+    :
+}
+
+test_rarg(){
+    assert_stdout "test123 rarg abc ''" <<A
+#> ___advise_lsd; printf '..\n.\n../\n-'
+A
+}
+
+# Section: utilities
+
 test123(){
     local fp="./dev/test/test.json"
     local IFS=$'\002' # IFS="$(printf "\002")"
+    # echo "Before awk: $*" > /dev/stderr
 
     s="$*"
 
@@ -13,14 +42,6 @@ test123(){
         cat "$fp"
         printf "\034%s\034" "$s"  # printf "\034${s}\034"
     } | awk -f "./v0.awk" # 2>/dev/null
-}
-
-test_at(){
-    assert_stdout "test123 @a" <<A
-@a1
-@a2
-@a3
-A
 }
 
 start_test() {
@@ -33,4 +54,8 @@ start_test() {
     done
 }
 
-start_test ./dev/test/v0_test_awk
+start_test ./dev/test/v0_test
+
+# Section: utilities
+. ./v0
+advise compt "./dev/test/test.json"
