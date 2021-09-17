@@ -21,11 +21,25 @@ A
 A
     #FIXME: With no command gen
     assert_stdout "test123 option atcmd @" <<A
-#> ls
+#> ___advise_ls
 A
 }
 
-test_option(){
+test_marg(){
+    assert_stdout "test123 option -a ''" <<A
+m1-a
+m1-b
+m1-c
+A
+
+    assert_stdout "test123 option -a m1-a ''" <<A
+m2-a
+m2-b
+m2-c
+A
+}
+
+test1_option(){
     #FIXME: Some BUG...
 #     assert_stdout "test123 option atcmd @" <<A
 # #> ___advise_ls
@@ -42,36 +56,25 @@ test_option(){
 # m1-c
 # A
 
-    assert_stdout "test123 option -a ''" <<A
-m1-a
-m1-b
-m1-c
+    assert_stdout "test123 option -c ''" <<A
+m3-a
+m3-b
+m3-c
 A
 
     assert_stdout "test123 option --cmd ''" <<A
 #> ___advise_ls
 A
-    assert_stdout "test123 option -a m1-a ''" <<A
-m2-a
-m2-b
-m2-c
+
+    assert_stdout "test123 option --priviledge ''" <<A
+private
+public
 A
 
-#     assert_stdout "test123 option -c ''" <<A
-# m3-a
-# m3-b
-# m3-c
-# A
-
-#     assert_stdout "test123 option --priviledge ''" <<A
-# private
-# public
-# A
-
-#     assert_stdout "test123 option -d ''" <<A
-# e
-# c:
-# A
+    assert_stdout "test123 option -d ''" <<A
+e
+c:
+A
 
     #FIXME: Cannot display labve
 #     assert_stdout "test123 option -d e" <<A
@@ -88,59 +91,58 @@ A
 #     assert_stdout "test123 option --cmd ''" <<A
 # #>___advise_ls
 # A
-
 }
 
-# test_rarg(){
-#     assert_stdout "test123 rarg abc ''" <<A
-# #> ___advise_lsd; printf '..\n.\n../\n-'
-# A
+test_rarg(){
+    assert_stdout "test123 rarg abc ''" <<A
+#> ___advise_lsd; printf '..\n.\n../\n-'
+A
 
-#     assert_stdout "test123 rarg ''"<<A
-# abc
-# abt
-# .c
-# :a
-# A
+    assert_stdout "test123 rarg ''"<<A
+abc
+abt
+.c
+:a
+A
 
-#     assert_stdout "test123 rarg s s ''"<<A
-# #> ___advise_ls
-# A
+    assert_stdout "test123 rarg s s ''"<<A
+#> ___advise_ls
+A
 
-#     assert_stdout "test123 rarg s s s ''"<<A
-# #n-1
-# #n-2
-# #n-3
-# A
-# }
+    assert_stdout "test123 rarg s s s ''"<<A
+[A-Z]
+[a-z]
+[0-9]
+A
+}
 
 test_subcmd(){
-#     assert_stdout "test123 s"<<A
-# subcmd
-# subcommand
-# A
+    assert_stdout "test123 s"<<A
+subcmd
+subcommand
+A
 
-#     assert_stdout "test123 subcmd create"<<A
-# create1
-# create2
-# create3
-# create4
-# A
+    assert_stdout "test123 subcmd create"<<A
+create1
+create2
+create3
+create4
+A
 
-#     assert_stdout "test123 subcmd repo ''"<<A
-# #> ls
-# A
+    assert_stdout "test123 subcmd repo ''"<<A
+#> ls
+A
 
-#     assert_stdout "test123 subcmd ufuu ''"<<A
-# /dev/stdout
-# /dev/stderr
-# A
+    assert_stdout "test123 subcmd --ufuu ''"<<A
+/dev/stdout
+/dev/stderr
+A
 
 
-#     assert_stdout "test123 subcmd -u ''"<<A
-# /dev/stdout
-# /dev/stderr
-# A
+    assert_stdout "test123 subcmd -u ''"<<A
+/dev/stdout
+/dev/stderr
+A
 
     assert_stdout "test123 subcmd  -t ''"<<A
 #>  [ -z "\$(printf "%s" "\$cur" | tr -d [0-9])" ] && echo s,d,m | tr ',' '\n' | xargs -n 1 printf "\$cur%s\n"
@@ -155,13 +157,13 @@ A
 # #> ___advise_seq 1 10000
 # A
 
-#     assert_stdout "test123 subcmd -d ''"<<A
-# ,
-# |
-# -
-# :
-# /
-# A
+    assert_stdout "test123 subcmd -d ''"<<A
+,
+|
+-
+:
+/
+A
 
     #FIXME:
 #     assert_stdout "test123 subcmd -i ''"<<A
@@ -173,19 +175,19 @@ A
 # #> ___advise_seq 1/65535
 # A
 
-#     assert_stdout "test123 subcmd -A ''"<<A
-# [-][[hh]mm]SS
-# A
+    assert_stdout "test123 subcmd -A ''"<<A
+[-][[hh]mm]SS
+A
 
-#     assert_stdout "test123 subcmd -m ''"<<A
-# [[CC]YY]MMDDhhmm[.SS]
-# A
+    assert_stdout "test123 subcmd -m ''"<<A
+[[CC]YY]MMDDhhmm[.SS]
+A
 
-#     assert_stdout "test123 subcmd -q ''"<<A
-# [A-Z]
-# [a-z]
-# [0-9]
-# A
+    assert_stdout "test123 subcmd -q ''"<<A
+[A-Z]
+[a-z]
+[0-9]
+A
 
 }
 
