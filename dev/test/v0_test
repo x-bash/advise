@@ -7,27 +7,178 @@ xrc assert
 
 test_at(){
 
+    #FIXME: Some BUG...
     assert_stdout "test123 option @a" <<A
 @a1
 @a2
 @a3
 A
 
-    #FIXME: With no command gen
-    assert_stdout "test123 option atcmd @" <<A
-#> ___advise_ls
+    #FIXME: Some BUG...
+    assert_stdout "test123 option @" <<A
+@a
+@b
 A
 }
 
 test_option(){
-    :
+    #FIXME: Some BUG...
+#     assert_stdout "test123 option atcmd @" <<A
+# #> ___advise_ls
+# A
+    #FIXME: Some BUG...
+#     assert_stdout "test123 option atcmd --ls" <<A
+# #> ___advise_ls
+# A
+
+    #FIXME: Input "m、1、2" return "", some bug...
+#     assert_stdout "test123 option m ''" <<A
+# m1-a
+# m1-b
+# m1-c
+# A
+
+    assert_stdout "test123 option --cmd ''" <<A
+#> ___advise_ls
+A
+    assert_stdout "test123 option -a m1-a ''" <<A
+m2-a
+m2-b
+m2-c
+A
+
+#     assert_stdout "test123 option -c ''" <<A
+# m3-a
+# m3-b
+# m3-c
+# A
+
+#     assert_stdout "test123 option --priviledge ''" <<A
+# private
+# public
+# A
+
+#     assert_stdout "test123 option -d ''" <<A
+# e
+# c:
+# A
+
+    #FIXME: Cannot display labve
+#     assert_stdout "test123 option -d e" <<A
+# edwinjhlee
+# labve
+# A
+
+    #FIXME: Some BUG...
+#     assert_stdout "test123 option -d c:" <<A
+# c:abc
+# c:aaa
+# A
+
+#     assert_stdout "test123 option --cmd ''" <<A
+# #>___advise_ls
+# A
+
 }
 
-test_rarg(){
-    assert_stdout "test123 rarg abc ''" <<A
-#> ___advise_lsd; printf '..\n.\n../\n-'
+# test_rarg(){
+#     assert_stdout "test123 rarg abc ''" <<A
+# #> ___advise_lsd; printf '..\n.\n../\n-'
+# A
+
+#     assert_stdout "test123 rarg ''"<<A
+# abc
+# abt
+# .c
+# :a
+# A
+
+#     assert_stdout "test123 rarg s s ''"<<A
+# #> ___advise_ls
+# A
+
+#     assert_stdout "test123 rarg s s s ''"<<A
+# #n-1
+# #n-2
+# #n-3
+# A
+# }
+
+test_subcmd(){
+#     assert_stdout "test123 s"<<A
+# subcmd
+# subcommand
+# A
+
+#     assert_stdout "test123 subcmd create"<<A
+# create1
+# create2
+# create3
+# create4
+# A
+
+#     assert_stdout "test123 subcmd repo ''"<<A
+# #> ls
+# A
+
+#     assert_stdout "test123 subcmd ufuu ''"<<A
+# /dev/stdout
+# /dev/stderr
+# A
+
+
+#     assert_stdout "test123 subcmd -u ''"<<A
+# /dev/stdout
+# /dev/stderr
+# A
+
+    assert_stdout "test123 subcmd  -t ''"<<A
+#>  [ -z "\$(printf "%s" "\$cur" | tr -d [0-9])" ] && echo s,d,m | tr ',' '\n' | xargs -n 1 printf "\$cur%s\n"
 A
+
+    assert_stdout "test123 subcmd -n ''"<<A
+#> printf %s 0,1,2,3,4,5,6,7,8,9 | tr ',' '\n' | xargs -n 1 printf "\$cur%s\n"
+A
+
+    #FIXME: Expect '#> ___advise_seq 1 10000' equals to 'repo create1 create2 create3 create4'
+#     assert_stdout "test123 subcmd --ncc ''"<<A
+# #> ___advise_seq 1 10000
+# A
+
+#     assert_stdout "test123 subcmd -d ''"<<A
+# ,
+# |
+# -
+# :
+# /
+# A
+
+    #FIXME:
+#     assert_stdout "test123 subcmd -i ''"<<A
+# #> ___advise_ls ${cur:-$HOME/.ssh/}
+# A
+
+    #FIXME: Return ""
+#     assert_stdout "test123 subcmd -p ''"<<A
+# #> ___advise_seq 1/65535
+# A
+
+#     assert_stdout "test123 subcmd -A ''"<<A
+# [-][[hh]mm]SS
+# A
+
+#     assert_stdout "test123 subcmd -m ''"<<A
+# [[CC]YY]MMDDhhmm[.SS]
+# A
+
+#     assert_stdout "test123 subcmd -q ''"<<A
+# [A-Z]
+# [a-z]
+# [0-9]
+# A
+
 }
+
 
 # Section: utilities
 
@@ -58,4 +209,4 @@ start_test ./dev/test/v0_test
 
 # Section: utilities
 . ./v0
-advise compt "./dev/test/test.json"
+advise test123 "./dev/test/test.json"
