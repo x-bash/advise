@@ -7,21 +7,15 @@ xrc assert
 
 test_at(){
 
-    #FIXME: Some BUG...
     assert_stdout "test123 option @a" <<A
 @a1
 @a2
 @a3
 A
 
-    #FIXME: Some BUG...
     assert_stdout "test123 option @" <<A
 @a
 @b
-A
-    #FIXME: With no command gen
-    assert_stdout "test123 option atcmd @" <<A
-#> ___advise_ls
 A
 }
 
@@ -39,7 +33,18 @@ m2-c
 A
 }
 
-test1_option(){
+test_cmd(){
+
+    assert_stdout "test123 option atcmd @" <<A
+#> ___advise_ls
+A
+
+    assert_stdout "test123 option --cmd ''" <<A
+#> ___advise_ls
+A
+}
+
+test_option(){
     #FIXME: Some BUG...
 #     assert_stdout "test123 option atcmd @" <<A
 # #> ___advise_ls
@@ -62,10 +67,6 @@ m3-b
 m3-c
 A
 
-    assert_stdout "test123 option --cmd ''" <<A
-#> ___advise_ls
-A
-
     assert_stdout "test123 option --priviledge ''" <<A
 private
 public
@@ -76,21 +77,15 @@ e
 c:
 A
 
-    #FIXME: Cannot display labve
-#     assert_stdout "test123 option -d e" <<A
-# edwinjhlee
-# labve
-# A
+    assert_stdout "test123 option -d e" <<A
+edwinjhlee
+labve
+A
 
-    #FIXME: Some BUG...
-#     assert_stdout "test123 option -d c:" <<A
-# c:abc
-# c:aaa
-# A
-
-#     assert_stdout "test123 option --cmd ''" <<A
-# #>___advise_ls
-# A
+    assert_stdout "test123 option -d c:" <<A
+c:abc
+c:aaa
+A
 }
 
 test_rarg(){
