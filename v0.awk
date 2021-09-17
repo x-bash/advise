@@ -80,11 +80,8 @@ function rule_add_key( keypath, key,
 
     # key = str_unwrap( key )  # Notice: simple unwrap
 
-
     keyarrlen = split(key, keyarr, "|")
-    first = keyarr[2]
-
-    # debug( "rule_add_key\t" keypath "\t-- " key "\t-- " keyid "\t-- " first )
+    first = keyarr[1]
 
     KEYPREFIX = keypath KEYPATH_SEP
     keyid = KEYPREFIX key
@@ -107,7 +104,6 @@ function rule_add_key( keypath, key,
             RULE_ID_ARGNUM[ keyid ] = 1
             # Notice: What if value is null ?
         }
-        # debug( "rule_add_key\t" keypath "\t-- " keyid "\t-- " RULE_ID_ARGNUM[ keyid ] )
 
         last = keyarr[keyarrlen]
         if (last ~ /^[rm|mr|r|m]$/) {
@@ -141,8 +137,6 @@ function rule_add_list_val( keypath, val,
     if (match(keypath, KEYPATH_SEP "[0-9]+$") ) {
         keypath = substr( keypath, 1, RSTART-1 )
     }
-
-    # debug("rule_add_list_val\t" keypath "\t" val)
 
     RULE_ID_CANDIDATES[ keypath ] = RULE_ID_CANDIDATES[ keypath ] "\n" val   # unwrap val
 }
@@ -229,7 +223,6 @@ function json_walk_dict(keypath, indent,
         # if (s == ":") { json_walk_panic("json_walk_dict() Expect A value NOT :") }
         key = str_unwrap( s )
         rule_add_key(keypath, key)
-        # debug("before add key:\t" keypath "\t" key "\t" RULE_ID_CANDIDATES[keypath])
         cur_keypath = keypath KEYPATH_SEP key
 
 
@@ -240,7 +233,7 @@ function json_walk_dict(keypath, indent,
 
         s = JSON_TOKENS[++s_idx]            # Value
 
-        if ( (s == "{") && (key ~ /^[-\#]/) )
+        if ( (s == "{") && (key ~ /^[-#]/) )
         {
             # It means it is an struct candidate
             json_walk_dict_as_candidates(cur_keypath)
@@ -259,7 +252,6 @@ function json_walk_dict(keypath, indent,
 
 function json_walk_array(keypath, indent,
     data, nth, cur_keypath, cur_indent, cur_item, comma, count){
-    # debug("json_walk_array start() ")
     if (s != "[")   return false
 
     nth = -1
@@ -358,6 +350,7 @@ function get_colon_argument_optionid(keypath,      _id){
 
 NR==2{
     argstr = $0
+    # debug("argstr: " argstr)
     if ( argstr == "" ) argstr = "" # "." "\002"
 
     gsub("\n", "\001", argstr)
@@ -379,7 +372,6 @@ NR==2{
 
     for (i=1; i<parsed_arglen; ++i) {
         arg = parsed_argarr[i]
-
         argval = ""
 
         if (arg ~ /^-/) {
@@ -455,7 +447,6 @@ NR==2{
                 }
             }
 
-
             cur_option_alias = ""
             option_id = RULE_ALIAS_TO_ID[ current_keypath KEYPATH_SEP arg ]
 
@@ -488,15 +479,12 @@ NR==2{
 
         if (option_id != "") {
             candidates = RULE_ID_CANDIDATES[ option_id ]
-            # debug(option_id "\t" candidates)
             print_list_candidate( candidates, cur )
             exit 0
         }
     }
 
-
     if (rest_argv_len > 0) {
-        # debug("show_positional_candidates:\t" rest_argv_len )
         show_positional_candidates( current_keypath, cur, rest_argv_len)
     } else if (cur_option_alias != "") {
         option_id = RULE_ALIAS_TO_ID[ current_keypath KEYPATH_SEP cur_option_alias ]
@@ -505,14 +493,11 @@ NR==2{
         if (candidates == "") {
             candidates = RULE_ID_CANDIDATES[ option_id ]
         }
-        # debug("print_list_candidate:\t can: " candidates "\t opt: " option_id "\t optarg: " cur_optarg_index)
         print_list_candidate(candidates, cur)
     } else {
-        # debug("show_candidates\t" current_keypath "\t" cur "\t" RULE_ID_CANDIDATES[current_keypath])
         # list subcmd or options or postional arguments
         show_candidates( current_keypath, cur )
     }
-
 }
 
 # EndSection
