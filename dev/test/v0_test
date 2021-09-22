@@ -19,6 +19,28 @@ A
 A
 }
 
+test_hyphen(){
+    assert_stdout "test123 option -" <<A
+-a
+-c
+-p
+-d
+-f
+@
+A
+
+# # FIXME: It should not with --@
+# assert_stdout "test123 option --" <<A
+# --repo3
+# --priviledge
+# --dict
+# --cmd
+# --flag
+# @
+# A
+
+}
+
 test_marg(){
     assert_stdout "test123 option -a ''" <<A
 m1-a
@@ -45,21 +67,13 @@ A
 }
 
 test_option(){
-    #FIXME: Some BUG...
-#     assert_stdout "test123 option atcmd @" <<A
-# #> ___advise_ls
-# A
-    #FIXME: Some BUG...
-#     assert_stdout "test123 option atcmd --ls" <<A
-# #> ___advise_ls
-# A
+    assert_stdout "test123 option atcmd @" <<A
+#> ___advise_ls
+A
 
-    #FIXME: Input "m、1、2" return "", some bug...
-#     assert_stdout "test123 option m ''" <<A
-# m1-a
-# m1-b
-# m1-c
-# A
+    assert_stdout "test123 option atcmd --ls ''" <<A
+#> ___advise_ls
+A
 
     assert_stdout "test123 option -c ''" <<A
 m3-a
