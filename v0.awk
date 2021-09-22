@@ -439,8 +439,8 @@ NR==2{
             }
         } else {
 
-            # skip ":<object>"
-            if ( (arg ~ /^:/) ) {
+            # skip "@<object>"
+            if ( (arg ~ /^@/) ) {
                 if ( get_colon_argument_optionid( current_keypath ) != "") {
                     COLON_ARG_EXISTED = true
                     continue
