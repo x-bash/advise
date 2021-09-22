@@ -17,7 +17,7 @@
         },
         "--flag|-f": null,
         "atcmd": {
-            "--@": "___advise_ls",
+            "--@": "myself_ls",
             "--ls": "___advise_ls"
         }
     },
