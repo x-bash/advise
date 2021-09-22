@@ -147,10 +147,9 @@ A
 #> printf %s 0,1,2,3,4,5,6,7,8,9 | tr ',' '\n' | xargs -n 1 printf "\$cur%s\n"
 A
 
-    #FIXME: Expect '#> ___advise_seq 1 10000' equals to 'repo create1 create2 create3 create4'
-#     assert_stdout "test123 subcmd --ncc ''"<<A
-# #> ___advise_seq 1 10000
-# A
+    assert_stdout "test123 subcmd --ncc ''"<<A
+#> ___advise_seq 1 10000
+A
 
     assert_stdout "test123 subcmd -d ''"<<A
 ,
@@ -160,15 +159,13 @@ A
 /
 A
 
-    #FIXME:
-#     assert_stdout "test123 subcmd -i ''"<<A
-# #> ___advise_ls ${cur:-$HOME/.ssh/}
-# A
+    assert_stdout "test123 subcmd -i ''"<<A
+#> ___advise_ls \${cur:-\$HOME/.ssh/}
+A
 
-    #FIXME: Return ""
-#     assert_stdout "test123 subcmd -p ''"<<A
-# #> ___advise_seq 1/65535
-# A
+    assert_stdout "test123 subcmd -p ''"<<A
+#> ___advise_seq 1/65535
+A
 
     assert_stdout "test123 subcmd -A ''"<<A
 [-][[hh]mm]SS
