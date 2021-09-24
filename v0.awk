@@ -662,7 +662,9 @@ function print_candidate_with_optionid( option_id, cur,
 
     for (i=1; i<=can_arr_len; ++i) {
         can = can_arr[i]
-        if (str_startswith( can, cur )) print can
+        if (str_startswith( can, cur ) && can != "--@") {
+            print can
+        }
     }
 }
 
