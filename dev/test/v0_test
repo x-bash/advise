@@ -18,7 +18,6 @@ A
 @b
 A
 
-    # FIXME: You should print the upper level of option in zsh ???
     assert_stdout "test123 option @a ''" <<A
 atcmd
 @
