@@ -35,15 +35,16 @@ test_hyphen(){
 @
 A
 
-# # FIXME: It should not with --@
-# assert_stdout "test123 option --" <<A
-# --repo3
-# --priviledge
-# --dict
-# --cmd
-# --flag
-# @
-# A
+assert_stdout "test123 option --" <<A
+--repo2
+--repo3
+--priviledge
+--dict
+--cmd
+--flag
+@
+A
+
 }
 
 test_marg(){
