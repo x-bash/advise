@@ -40,6 +40,7 @@ assert_stdout "test123 option --" <<A
 --priviledge
 --dict
 --cmd
+--colon
 --flag
 @
 A
