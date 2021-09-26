@@ -1,7 +1,6 @@
 # shellcheck shell=bash disable=SC2039,3043
 
 # author:       Li Junhao           l@x-cmd.com    edwinjhlee.github.io
-# maintainer:   Li Junhao
 
 if [ -z "${ZSH_VERSION}${BASH_VERSION}" ]; then
     xrc_log info "advise is only available in 'bash' or 'zsh'."
@@ -44,12 +43,37 @@ A
             return 126
             ;;
         init)
-            _advise_main "$@" ;;
+            ___advise_main "$@" ;;
+
+        obj-new)
+            local aliasname="${2:?Provide alias name}"
+            local filepath="${TMPDIR%/}/.x-cmd/advise_auto_json/$op"
+
+            # TODO: There is one more solution. But it is not not worked in ZSH. Please figure it out.
+            # complete -C "___advise_completer \"$filepath\"" "$aliasname"
+
+            # TODO: there is one more problem. Using alias?
+            eval "
+            function ______adviser_of_$op(){
+                ___advise_completer \"$filepath\"
+            }
+            "
+            complete -F "______adviser_of_$op" "$aliasname"
+            ;;
+        obj-del)
+            local aliasname="${2:?Provide alias name}"
+
+            complete -r "$aliasname"
+            if ! complete | grep "______adviser_of_$op" 1>/dev/null 2>&1; then
+                unset -f "______adviser_of_$op"
+            fi
+            ;;
+
         "")
             # TODO: help doc
             ;;
         *)
-            _advise_main "$op" "$@" ;;
+            ___advise_main "$op" "$@" ;;
     esac
 }
 
@@ -141,7 +165,7 @@ A
 
 # Section : main
 
-_advise_main(){
+___advise_main(){
     local func="${1:?Provide function name}"
     local filepath="${2}"
     local tmp_filepath=${TMPDIR%/}/.x-cmd/advise_auto_json/$func
@@ -170,30 +194,28 @@ _advise_main(){
         filepath="$tmp_filepath"
     fi
 
-    eval "_adviser_of_${func}(){
-        [ -f \"$filepath\" ] && _advise <\"$filepath\"
-    }"
-
-    complete -F "_adviser_of_${func}" "$func"
+    complete -F "___advise_completer" "$func"
 }
 
-_advise() {
+___advise_run(){
+    local filepath="${1:?Provide advise json filepath}"
+
+    case "$filepath" in
+        /*) ;;
+        -)  filepath=/dev/stdin;;
+        *)  filepath="${TMPDIR%/}/.x-cmd/advise_auto_json/$func" ;;
+    esac
+
     shift 2>/dev/null
+
     local IFS=$'\002' # IFS="$(printf "\002")"
 
-    local cur="${COMP_WORDS[COMP_CWORD]}"
+    local cur
+    eval cur="\${$#}"
 
-    # _get_comp_words_by_ref -n : cur
+    # TODO: maybe we should handle the zsh problem.
 
-    if [ "$cur" == "" ]; then
-        # Notice: The following line handle zsh compatibility problem.
-        # In zsh, When input word is empty, COMP_WORDS[COMP_CWORD] does not exist.
-        # In bash, When input word is empty, COMP_WORDS[COMP_CWORD] exist, and it is ""
-        # This will result in difference value of "${COMP_WORDS[*]}"
-        COMP_WORDS[COMP_CWORD]=""
-    fi
-
-    s="${COMP_WORDS[*]}"
+    s="$*"
     s="${s#*$IFS}"
 
     IFS=$'\n'   # Bash/Zsh Only
@@ -201,7 +223,7 @@ _advise() {
     local result
     result="$(
         {
-            cat
+            cat "$filepath"
             printf "\034%s\034" "$s"  # printf "\034${s}\034"
         } | awk -f "$___ADVISE_AWK_PATH" 2>/dev/null
     )"
@@ -220,6 +242,19 @@ _advise() {
 $cmd_result" -- "$cur"
         )
     )
+
+}
+
+___advise_completer() {
+    if [ "$#" -eq 0 ]; then
+        if [ -n "$BASH_VERSION" ]; then
+            ___advise_run "${COMP_WORDS[0]}" "${COMP_WORDS[@]}"
+        else
+            ___advise_run "${COMP_WORDS[1]}" "${COMP_WORDS[@]}"
+        fi
+    else
+        ___advise_run "${1}" "$@"
+    fi
 }
 
 # EndSection
