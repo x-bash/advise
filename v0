@@ -42,9 +42,11 @@ advise(){
 A
             return 126
             ;;
-        init)
+        init|new)
             ___advise_main "$@" ;;
-
+        del)
+            complete -r "${1:?Provide function name}"
+            ;;
         obj-new)
             local aliasname="${2:?Provide alias name}"
             local filepath="${TMPDIR%/}/.x-cmd/advise_auto_json/$op"
