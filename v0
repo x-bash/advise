@@ -201,6 +201,7 @@ ___advise_main(){
 
 ___advise_run(){
     local filepath="${1:?Provide advise json filepath}"
+    local offset="${2:-0}"
 
     case "$filepath" in
         /*) ;;
@@ -210,15 +211,52 @@ ___advise_run(){
 
     shift 2>/dev/null
 
+    if [ -n "$BASH_VERSION" ] && [ "${BASH_VERSION#3}" == "${BASH_VERSION}" ]; then
+
+        local words
+        words=( $COMP_LINE )
+        local last="${words[${#words[@]-1}]}"
+        case "$last" in
+            \"*|\'*)        last="$cur" ;;
+            *)
+                if [ "${COMP_LINE# }" != "${COMP_LINE}" ]; then
+                    # ends with space
+                    words+=("")
+                fi
+        esac
+
+        COMP_WORDS=("${words[@]}")
+        COMP_CWORD="${#words[@]}"
+    fi
+
+
+    local cur="${COMP_WORDS[COMP_CWORD]}"
+
+    if [ "$cur" == "" ]; then
+        # Notice: The following line handle zsh compatibility problem.
+        # In zsh, When input word is empty, COMP_WORDS[COMP_CWORD] does not exist.
+        # In bash, When input word is empty, COMP_WORDS[COMP_CWORD] exist, and it is ""
+        # This will result in difference value of "${COMP_WORDS[*]}"
+        COMP_WORDS[COMP_CWORD]=""
+    fi
+
     local IFS=$'\002' # IFS="$(printf "\002")"
 
-    local cur
-    eval cur="\${$#}"
-
-    # TODO: maybe we should handle the zsh problem.
-
-    s="$*"
+    s="${COMP_WORDS[*]}"
     s="${s#*$IFS}"
+
+    local i
+    for i in $(seq "$offset"); do
+        s="${s#*$IFS}"
+    done
+
+    local cur_1="${COMP_WORDS[COMP_CWORD-1]}"
+    case "$cur_1" in
+        *@|*:)
+            s="${s%$cur_1$IFS$cur}"
+            s="${s}${cur_1}$cur"    ;;
+        *)
+    esac
 
     IFS=$'\n'   # Bash/Zsh Only
 
@@ -245,18 +283,21 @@ $cmd_result" -- "$cur"
         )
     )
 
+    if [ -n "$BASH_VERSION" ]; then
+        local i
+        local cur
+        for ((i=1; i<${#COMPREPLY@}; ++i)); do
+            cur="${COMPREPLY[i]}"
+            cur="${cur##*:}"
+            cur="${cur##*@}"
+            COMPREPLY[$i]="$cur"
+        done
+    fi
+
 }
 
 ___advise_completer() {
-    if [ "$#" -eq 0 ]; then
-        if [ -n "$BASH_VERSION" ]; then
-            ___advise_run "${COMP_WORDS[0]}" "${COMP_WORDS[@]}"
-        else
-            ___advise_run "${COMP_WORDS[1]}" "${COMP_WORDS[@]}"
-        fi
-    else
-        ___advise_run "${1}" "$@"
-    fi
+    ___advise_run "${1:-""}"
 }
 
 # EndSection
