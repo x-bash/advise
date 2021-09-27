@@ -25,7 +25,7 @@ _advise() {
     IFS=$'\n'   # Bash/Zsh Only
 
     # shellcheck disable=SC2207
-    COMPREPLY=( 
+    COMPREPLY=(
         $(
             compgen -W "$(
                 {
@@ -45,7 +45,7 @@ advise(){
     local func="${1:?Provide function name}"
     local filepath="${2:-"$(X_CMD_ADVISE_FUNC_NAME=$func eval "$func" _param_advise_json_items)"}"
     eval "_adviser_of_${func}(){
-        _advise \"$filepath\"    
+        _advise \"$filepath\"
     }"
     complete -F "_adviser_of_${func}" "$func"
 }
