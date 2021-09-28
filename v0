@@ -10,6 +10,8 @@ else
 
 xrc log init advise
 
+# Section : advise entry
+
 advise(){
     local op="${1:?Provide subcommand}"; shift
     case "$op" in
@@ -78,6 +80,8 @@ A
             ___advise_main "$op" "$@" ;;
     esac
 }
+
+# EndSection
 
 # Section : adviser helper function: ls lsd seq
 
