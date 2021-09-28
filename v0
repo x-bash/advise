@@ -37,8 +37,12 @@ advise(){
 {
     "ls": null,
     "rm": null,
-    "which": "ls ${TMPDIR%/}/.x-cmd/advise_auto_json/",
-    "cat": "ls ${TMPDIR%/}/.x-cmd/advise_auto_json/",
+    "which": {
+        "#n": "ls ${TMPDIR%/}/.x-cmd/advise_auto_json/"
+    },
+    "cat": {
+        "#n": "ls ${TMPDIR%/}/.x-cmd/advise_auto_json/"
+    }
     "init": null
 }
 A
@@ -203,7 +207,11 @@ ___advise_main(){
 }
 
 ___advise_run(){
-    local resname="${1:?Provide advise json filepath}"
+    if [ -n "$BASH_VERSION" ]; then
+        local resname="${1:-${COMP_WORDS[0]}}"
+    else
+        local resname="${1:-${COMP_WORDS[1]}}"
+    fi
     local offset="${2:-0}"
 
     local filepath
@@ -216,7 +224,6 @@ ___advise_run(){
     shift 2>/dev/null
 
     if [ -n "$BASH_VERSION" ] && [ "${BASH_VERSION#3}" = "${BASH_VERSION}" ]; then
-
         local last="${COMP_WORDS[COMP_CWORD]}"
         case "$last" in
             \"*|\'*)
@@ -251,23 +258,32 @@ ___advise_run(){
 
     local IFS=$'\002' # IFS="$(printf "\002")"
 
+
     s="${COMP_WORDS[*]}"
     s="${s#*$IFS}"
 
-    local i
-    for i in $(seq "$offset"); do
-        s="${s#*$IFS}"
-    done
+
+    if [ "$offset" -ne 0 ]; then
+        local i
+        for i in $(seq "$offset"); do
+            s="${s#*$IFS}"
+        done
+    fi
 
     local cur_1="${COMP_WORDS[COMP_CWORD-1]}"
     case "$cur_1" in
         *@|*:)
-            s="${s%$cur_1$IFS$cur}"
-            s="${s}${cur_1}$cur"    ;;
+            if [ "${COMP_LINE% }" != "${COMP_LINE}" ]; then
+                s="${s%$cur_1$IFS$cur}"
+                s="${s}${cur_1}$cur"
+            fi
+            ;;
         *)
     esac
 
     IFS=$'\n'   # Bash/Zsh Only
+
+    [ -f "$filepath" ] || return
 
     local result
     result="$(
@@ -306,7 +322,8 @@ $cmd_result" -- "$cur"
 }
 
 ___advise_completer() {
-    ___advise_run "${1:-""}"
+    # Interesting ... Passing
+    ___advise_run ""
 }
 
 # EndSection
