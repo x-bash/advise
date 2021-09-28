@@ -10,7 +10,7 @@ else
 
 xrc log init advise
 
-# Section : advise entry
+# Section : advise entrance
 
 advise(){
     local op="${1:?Provide subcommand}"; shift
