@@ -241,9 +241,8 @@ ___advise_run(){
         fi
 
         COMP_WORDS=("${words[@]}")
-        COMP_CWORD="${#words[@]}"
+        COMP_CWORD="$(( ${#words[@]}-1 ))"
     fi
-
 
     local cur="${COMP_WORDS[COMP_CWORD]}"
 
