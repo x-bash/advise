@@ -213,17 +213,22 @@ ___advise_run(){
 
     if [ -n "$BASH_VERSION" ] && [ "${BASH_VERSION#3}" == "${BASH_VERSION}" ]; then
 
-        local words
-        words=( $COMP_LINE )
-        local last="${words[${#words[@]-1}]}"
+        local last="${COMP_WORDS[COMP_CWORD]}"
         case "$last" in
-            \"*|\'*)        last="$cur" ;;
+            \"*|\'*)
+                COMP_LINE="${COMP_LINE%$last}"
+                words=( $COMP_LINE )
+                words+=("$last")
+                ;;
             *)
-                if [ "${COMP_LINE# }" != "${COMP_LINE}" ]; then
-                    # ends with space
-                    words+=("")
-                fi
+                words=( $COMP_LINE )
+                ;;
         esac
+
+        # Ends with space
+        if [ "${COMP_LINE% }" != "${COMP_LINE}" ]; then
+            words+=( "" )
+        fi
 
         COMP_WORDS=("${words[@]}")
         COMP_CWORD="${#words[@]}"
