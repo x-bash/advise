@@ -56,7 +56,6 @@ A
             # TODO: There is one more solution. But it is not not worked in ZSH. Please figure it out.
             # complete -C "___advise_completer \"$filepath\"" "$aliasname"
 
-            # TODO: there is one more problem. Using alias?
             eval "
             function ______adviser_of_$op(){
                 ___advise_completer \"$filepath\"
