@@ -30,6 +30,7 @@
         "#n": ["#n-1", "#n-2", "#n-3"]
     },
     "subcmd|subcommand": {
+        "#1": "___advise_run '' 1",
         "repo": {
             "#1": "ls"
         },

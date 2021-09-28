@@ -256,10 +256,8 @@ ___advise_run(){
 
     local IFS=$'\002' # IFS="$(printf "\002")"
 
-
     s="${COMP_WORDS[*]}"
     s="${s#*$IFS}"
-
 
     if [ "$offset" -ne 0 ]; then
         local i
@@ -316,7 +314,6 @@ $cmd_result" -- "$cur"
             COMPREPLY[$i]="$cur"
         done
     fi
-
 }
 
 ___advise_completer() {
