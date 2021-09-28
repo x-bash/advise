@@ -10,6 +10,8 @@ else
 
 xrc log init advise
 
+# Section : advise entrance
+
 advise(){
     local op="${1:?Provide subcommand}"; shift
     case "$op" in
@@ -35,8 +37,12 @@ advise(){
 {
     "ls": null,
     "rm": null,
-    "which": "ls ${TMPDIR%/}/.x-cmd/advise_auto_json/",
-    "cat": "ls ${TMPDIR%/}/.x-cmd/advise_auto_json/",
+    "which": {
+        "#n": "ls ${TMPDIR%/}/.x-cmd/advise_auto_json/"
+    },
+    "cat": {
+        "#n": "ls ${TMPDIR%/}/.x-cmd/advise_auto_json/"
+    }
     "init": null
 }
 A
@@ -54,7 +60,6 @@ A
             # TODO: There is one more solution. But it is not not worked in ZSH. Please figure it out.
             # complete -C "___advise_completer \"$filepath\"" "$aliasname"
 
-            # TODO: there is one more problem. Using alias?
             eval "
             function ______adviser_of_$op(){
                 ___advise_completer \"$filepath\"
@@ -78,6 +83,8 @@ A
             ___advise_main "$op" "$@" ;;
     esac
 }
+
+# EndSection
 
 # Section : adviser helper function: ls lsd seq
 
@@ -200,30 +207,41 @@ ___advise_main(){
 }
 
 ___advise_run(){
-    local filepath="${1:?Provide advise json filepath}"
-    local offset="${2:-0}"
 
-    case "$filepath" in
-        /*) ;;
-        -)  filepath=/dev/stdin;;
-        *)  filepath="${TMPDIR%/}/.x-cmd/advise_auto_json/$func" ;;
+    local offset="${2:-0}"
+    local zero="${offset}"
+    if [ -n "$ZSH_VERSION" ]; then
+        zero=$((zero+1))
+    fi
+
+    local resname="${1:-${COMP_WORDS[zero]}}"
+
+    local filepath
+    case "$resname" in
+        /*) filepath="$resname" ;;
+        -)  filepath=/dev/stdin ;;
+        *)  filepath="${TMPDIR%/}/.x-cmd/advise_auto_json/$resname" ;;
     esac
 
     shift 2>/dev/null
 
-    if [ -n "$BASH_VERSION" ] && [ "${BASH_VERSION#3}" == "${BASH_VERSION}" ]; then
-
-        local words
-        words=( $COMP_LINE )
-        local last="${words[${#words[@]-1}]}"
+    if [ -n "$BASH_VERSION" ] && [ "${BASH_VERSION#3}" = "${BASH_VERSION}" ]; then
+        local last="${COMP_WORDS[COMP_CWORD]}"
         case "$last" in
-            \"*|\'*)        last="$cur" ;;
+            \"*|\'*)
+                COMP_LINE="${COMP_LINE%$last}"
+                words=( $COMP_LINE )
+                words+=("$last")
+                ;;
             *)
-                if [ "${COMP_LINE# }" != "${COMP_LINE}" ]; then
-                    # ends with space
-                    words+=("")
-                fi
+                words=( $COMP_LINE )
+                ;;
         esac
+
+        # Ends with space
+        if [ "${COMP_LINE% }" != "${COMP_LINE}" ]; then
+            words+=( "" )
+        fi
 
         COMP_WORDS=("${words[@]}")
         COMP_CWORD="${#words[@]}"
@@ -242,23 +260,32 @@ ___advise_run(){
 
     local IFS=$'\002' # IFS="$(printf "\002")"
 
+
     s="${COMP_WORDS[*]}"
     s="${s#*$IFS}"
 
-    local i
-    for i in $(seq "$offset"); do
-        s="${s#*$IFS}"
-    done
+
+    if [ "$offset" -ne 0 ]; then
+        local i
+        for i in $(seq "$offset"); do
+            s="${s#*$IFS}"
+        done
+    fi
 
     local cur_1="${COMP_WORDS[COMP_CWORD-1]}"
     case "$cur_1" in
         *@|*:)
-            s="${s%$cur_1$IFS$cur}"
-            s="${s}${cur_1}$cur"    ;;
+            if [ "${COMP_LINE% }" != "${COMP_LINE}" ]; then
+                s="${s%$cur_1$IFS$cur}"
+                s="${s}${cur_1}$cur"
+            fi
+            ;;
         *)
     esac
 
     IFS=$'\n'   # Bash/Zsh Only
+
+    [ -f "$filepath" ] || return
 
     local result
     result="$(
@@ -286,7 +313,7 @@ $cmd_result" -- "$cur"
     if [ -n "$BASH_VERSION" ]; then
         local i
         local cur
-        for ((i=1; i<${#COMPREPLY@}; ++i)); do
+        for ((i=0; i<${#COMPREPLY[@]}; ++i)); do
             cur="${COMPREPLY[i]}"
             cur="${cur##*:}"
             cur="${cur##*@}"
@@ -297,7 +324,8 @@ $cmd_result" -- "$cur"
 }
 
 ___advise_completer() {
-    ___advise_run "${1:-""}"
+    # Interesting ... Passing
+    ___advise_run ""
 }
 
 # EndSection
