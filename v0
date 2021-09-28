@@ -204,18 +204,19 @@ ___advise_main(){
 }
 
 ___advise_run(){
-    local filepath="${1:?Provide advise json filepath}"
+    local resname="${1:?Provide advise json filepath}"
     local offset="${2:-0}"
 
-    case "$filepath" in
-        /*) ;;
-        -)  filepath=/dev/stdin;;
-        *)  filepath="${TMPDIR%/}/.x-cmd/advise_auto_json/$func" ;;
+    local filepath
+    case "$resname" in
+        /*) filepath="$resname" ;;
+        -)  filepath=/dev/stdin ;;
+        *)  filepath="${TMPDIR%/}/.x-cmd/advise_auto_json/$resname" ;;
     esac
 
     shift 2>/dev/null
 
-    if [ -n "$BASH_VERSION" ] && [ "${BASH_VERSION#3}" == "${BASH_VERSION}" ]; then
+    if [ -n "$BASH_VERSION" ] && [ "${BASH_VERSION#3}" = "${BASH_VERSION}" ]; then
 
         local last="${COMP_WORDS[COMP_CWORD]}"
         case "$last" in
@@ -295,7 +296,7 @@ $cmd_result" -- "$cur"
     if [ -n "$BASH_VERSION" ]; then
         local i
         local cur
-        for ((i=1; i<${#COMPREPLY@}; ++i)); do
+        for ((i=0; i<${#COMPREPLY[@]}; ++i)); do
             cur="${COMPREPLY[i]}"
             cur="${cur##*:}"
             cur="${cur##*@}"
