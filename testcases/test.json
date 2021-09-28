@@ -34,7 +34,7 @@
         "repo": {
             "#1": "ls"
         },
-        "atcmd": "ls",
+        "cmd": "ls",
         "create1": null,
         "create2": null,
         "create3": null,
