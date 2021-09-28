@@ -204,7 +204,7 @@ A
 # Section: utilities
 
 test123(){
-    local fp="./dev/test/test.json"
+    local fp="./testcases/test.json"
     local IFS=$'\002' # IFS="$(printf "\002")"
     # echo "Before awk: $*" > /dev/stderr
 
@@ -231,10 +231,10 @@ start_test() {
     done
 }
 
-start_test ./dev/test/v0_test
+start_test ./testcases/v0_test
 
 # Section: for the interactive ui
 rm -rf test123
 . ./v0
 ___ADVISE_AWK_PATH="./v0.awk"
-advise compt "./dev/test/test.json"
+advise compt "./testcases/test.json"
