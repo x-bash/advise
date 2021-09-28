@@ -210,11 +210,8 @@ ___advise_run(){
 
     local offset="${2:-0}"
     local zero="${offset}"
-    if [ -n "$ZSH_VERSION" ]; then
-        zero=$((zero+1))
-    fi
 
-    local resname="${1:-${COMP_WORDS[zero]}}"
+    local resname="${1:-${COMP_WORDS[${zero}]}}"
 
     local filepath
     case "$resname" in

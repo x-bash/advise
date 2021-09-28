@@ -234,7 +234,7 @@ start_test() {
 start_test ./testcases/v0_test
 
 # Section: for the interactive ui
-rm -rf test123
+rm -rf test.out
 . ./v0
 ___ADVISE_AWK_PATH="./v0.awk"
 advise compt "./testcases/test.json"
