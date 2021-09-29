@@ -188,6 +188,7 @@ ___advise_get_result(){
     s="${COMP_WORDS[*]}"
     s="${s#*$IFS}"
 
+    # TODO: Can be optimized.
     if [ "$offset" -ne 0 ]; then
         local i
         for i in $(seq "$offset"); do
@@ -219,7 +220,15 @@ ___advise_get_result(){
     )"
     IFS="$OLDIFS"
 
-    printf "%s" "$result"
+    local cmd="${result##*#> }"
+    local cmd_result=""
+    if [ "$cmd" != "$result" ]; then
+        cmd_result="$(eval "$cmd")"
+        result="${result%%#> *}"
+    fi
+
+    printf "%s" "$result
+$cmd_result"
 }
 
 # EndSection
