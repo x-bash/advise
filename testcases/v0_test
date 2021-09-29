@@ -138,7 +138,7 @@ test_subcmd(){
     assert_stdout "test123 s"<<A
 subcmd
 subcommand
-#> ___advise_get_result '' 1
+#> advise ls
 A
 
     assert_stdout "test123 subcmd create"<<A

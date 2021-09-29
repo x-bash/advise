@@ -49,5 +49,6 @@
         "--mmm|-m": [ "[[CC]YY]MMDDhhmm[.SS]" ],
         "--qqq|-q": [ "[A-Z]", "[a-z]", "[0-9]" ]
     },
+    "#1": "advise ls",
     "#n": "___advise_get_result '' 1"
 }
