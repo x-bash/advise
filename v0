@@ -376,8 +376,6 @@ __ltrim_completions()
     fi
 }
 
-__ltrim_colon_completions "$cur"
-
 ___advise_completer() {
     # Interesting ... Passing
     ___advise_run ""
