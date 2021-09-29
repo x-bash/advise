@@ -24,6 +24,17 @@ atcmd
 A
 }
 
+test_char(){
+        assert_stdout "test123 subcmd ddd ''"<<A
+,
+|
+-
+:
+/
+@
+A
+}
+
 test_hyphen(){
     assert_stdout "test123 option -" <<A
 -a
@@ -109,6 +120,15 @@ A
 c:abc
 c:aaa
 A
+    assert_stdout "test123 option -d c:a" <<A
+c:abc
+c:aaa
+A
+    assert_stdout "test123 option --colon ''" <<A
+:a
+:b
+:c
+A
 }
 
 test_rarg(){
@@ -131,6 +151,11 @@ A
 [A-Z]
 [a-z]
 [0-9]
+A
+    assert_stdout "test123 rarg s s s s ''"<<A
+#n-1
+#n-2
+#n-3
 A
 }
 
@@ -174,13 +199,13 @@ A
     assert_stdout "test123 subcmd --ncc ''"<<A
 #> ___advise_seq 1 10000
 A
-
     assert_stdout "test123 subcmd -d ''"<<A
 ,
 |
 -
 :
 /
+@
 A
 
     assert_stdout "test123 subcmd -i ''"<<A
@@ -220,7 +245,7 @@ test123(){
     {
         cat "$fp"
         printf "\034%s\034" "$s"  # printf "\034${s}\034"
-    } | awk -f "./v0.awk" # 2>/dev/null
+    } | awk -f "./v0_test.awk" # 2>/dev/null
 }
 
 # list all the file in the directory, and add the @ to the behind of the file name

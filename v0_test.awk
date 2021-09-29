@@ -349,6 +349,8 @@ function get_colon_argument_optionid(keypath,      _id){
 
 NR==2{
     argstr = $0
+    debug("=============================")
+    debug(" ")
     debug("argstr: " argstr)
     if ( argstr == "" ) argstr = "" # "." "\002"
 
@@ -492,7 +494,7 @@ NR==2{
         show_positional_candidates( current_keypath, cur, rest_argv_len)
     } else if (cur_option_alias != "") {
         option_id = RULE_ALIAS_TO_ID[ current_keypath KEYPATH_SEP cur_option_alias ]
-
+        debug("2.75\t\toption_id:"option_id)
         candidates = RULE_ID_CANDIDATES[ option_id "|" cur_optarg_index ]
         if (candidates == "") {
             candidates = RULE_ID_CANDIDATES[ option_id ]
@@ -548,12 +550,14 @@ function print_list_candidate(candidates, cur,
         print candidates
     }
 
-
     if (candidates !~ "^" KV_SEP) {
         can_arr_len = split( candidates, can_arr, "\n" )
         for (i=2; i<=can_arr_len; ++i) {
             can = can_arr[i]
-            if (str_startswith( can, cur )) print can
+            if (str_startswith( can, cur )) {
+                debug("i:"i";\t\tcan:"can)
+                print can
+            }
         }
         return
     }
