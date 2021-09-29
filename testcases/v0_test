@@ -163,6 +163,7 @@ test_subcmd(){
     assert_stdout "test123 s"<<A
 subcmd
 subcommand
+#> advise ls
 A
 
     assert_stdout "test123 subcmd create"<<A
@@ -170,7 +171,6 @@ create1
 create2
 create3
 create4
-#> ___advise_run '' 1
 A
 
     assert_stdout "test123 subcmd repo ''"<<A

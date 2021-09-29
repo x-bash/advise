@@ -15,7 +15,7 @@
             "@b": [ "@b1", "@b2", "@b3" ],
             "*": ["@a", "@b"]
         },
-        "--colon": [":a", ":b", ":c"],
+        "--colon": ["www:a", ":b", ":c"],
         "--flag|-f": null,
         "atcmd": {
             "--@": "myself_ls",
@@ -30,7 +30,6 @@
         "#n": ["#n-1", "#n-2", "#n-3"]
     },
     "subcmd|subcommand": {
-        "#1": "___advise_run '' 1",
         "repo": {
             "#1": "ls"
         },
@@ -50,5 +49,7 @@
         "--AAA|-A": [ "[-][[hh]mm]SS" ],
         "--mmm|-m": [ "[[CC]YY]MMDDhhmm[.SS]" ],
         "--qqq|-q": [ "[A-Z]", "[a-z]", "[0-9]" ]
-    }
+    },
+    "#1": "advise ls",
+    "#n": "___advise_get_result '' 1"
 }
