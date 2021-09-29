@@ -212,6 +212,11 @@ ___advise_run(){
     local zero="${offset}"
 
     local resname="${1:-${COMP_WORDS[${zero}]}}"
+    echo "===========================" >>test.out
+    echo "resname: $resname" >>test.out
+    echo "offset: $offset" >>test.out
+    echo "zero: $zero" >>test.out
+    echo "COMP_WORDS: ${COMP_WORDS[*]}" >>test.out
 
     local filepath
     case "$resname" in
@@ -219,6 +224,8 @@ ___advise_run(){
         -)  filepath=/dev/stdin ;;
         *)  filepath="${TMPDIR%/}/.x-cmd/advise_auto_json/$resname" ;;
     esac
+
+    echo "filepath: $filepath" >>test.out
 
     shift 2>/dev/null
 
@@ -254,6 +261,7 @@ ___advise_run(){
         COMP_WORDS[COMP_CWORD]=""
     fi
 
+    local OLDIFS="$IFS"
     local IFS=$'\002' # IFS="$(printf "\002")"
 
     s="${COMP_WORDS[*]}"
@@ -288,6 +296,14 @@ ___advise_run(){
             printf "\034%s\034" "$s"  # printf "\034${s}\034"
         } | awk -f "$___ADVISE_AWK_PATH" 2>/dev/null
     )"
+    echo "result: $result" >>test.out
+    IFS="$OLDIFS"
+
+    # OK, if offset > 0 you can stop and output
+    if [ "$offset" -gt 0 ]; then
+        echo "$result"
+        return
+    fi
 
     local cmd="${result##*#> }"
     local cmd_result=""
@@ -303,6 +319,7 @@ ___advise_run(){
 $cmd_result" -- "$cur"
         )
     )
+    echo "COMPREPLY: ${COMPREPLY[*]}" >>test.out
 
     if [ -n "$BASH_VERSION" ]; then
         local i
@@ -314,6 +331,7 @@ $cmd_result" -- "$cur"
             COMPREPLY[$i]="$cur"
         done
     fi
+
 }
 
 ___advise_completer() {
