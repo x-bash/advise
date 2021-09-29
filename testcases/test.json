@@ -49,5 +49,5 @@
         "--mmm|-m": [ "[[CC]YY]MMDDhhmm[.SS]" ],
         "--qqq|-q": [ "[A-Z]", "[a-z]", "[0-9]" ]
     },
-    "#n": "___advise_run '' 1"
+    "#n": "___advise_get_result '' 1"
 }

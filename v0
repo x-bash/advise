@@ -170,6 +170,58 @@ A
 
 }
 
+___advise_get_result(){
+    local offset="${2:-0}"
+
+    local resname="${1:-${COMP_WORDS[offset]}}"
+
+    local filepath
+    case "$resname" in
+        /*) filepath="$resname" ;;
+        -)  filepath=/dev/stdin ;;
+        *)  filepath="${TMPDIR%/}/.x-cmd/advise_auto_json/$resname" ;;
+    esac
+
+    local OLDIFS="$IFS"
+    local IFS=$'\002' # IFS="$(printf "\002")"
+
+    s="${COMP_WORDS[*]}"
+    s="${s#*$IFS}"
+
+    if [ "$offset" -ne 0 ]; then
+        local i
+        for i in $(seq "$offset"); do
+            s="${s#*$IFS}"
+        done
+    fi
+
+    local cur_1="${COMP_WORDS[COMP_CWORD-1]}"
+    case "$cur_1" in
+        *@|*:)
+            if [ "${COMP_LINE% }" != "${COMP_LINE}" ]; then
+                s="${s%$cur_1$IFS$cur}"
+                s="${s}${cur_1}$cur"
+            fi
+            ;;
+        *)
+    esac
+
+    IFS=$'\n'   # Bash/Zsh Only
+
+    [ -f "$filepath" ] || return
+
+    local result
+    result="$(
+        {
+            cat "$filepath"
+            printf "\034%s\034" "$s"  # printf "\034${s}\034"
+        } | awk -f "$___ADVISE_AWK_PATH" 2>/dev/null
+    )"
+    IFS="$OLDIFS"
+
+    printf "%s" "$result"
+}
+
 # EndSection
 
 # Section : main
@@ -208,11 +260,7 @@ ___advise_main(){
 
 ___advise_run(){
 
-    local offset="${2:-0}"
-    local zero="${offset}"
-
-    local resname="${1:-${COMP_WORDS[${zero}]}}"
-
+    local resname="${1:-${COMP_WORDS[0]}}"
 
     local filepath
     case "$resname" in
@@ -261,13 +309,6 @@ ___advise_run(){
     s="${COMP_WORDS[*]}"
     s="${s#*$IFS}"
 
-    if [ "$offset" -ne 0 ]; then
-        local i
-        for i in $(seq "$offset"); do
-            s="${s#*$IFS}"
-        done
-    fi
-
     local cur_1="${COMP_WORDS[COMP_CWORD-1]}"
     case "$cur_1" in
         *@|*:)
@@ -291,12 +332,6 @@ ___advise_run(){
         } | awk -f "$___ADVISE_AWK_PATH" 2>/dev/null
     )"
     IFS="$OLDIFS"
-
-    # OK, if offset > 0 you can stop and output
-    if [ "$offset" -gt 0 ]; then
-        printf "%s" "$result"
-        return
-    fi
 
     local cmd="${result##*#> }"
     local cmd_result=""
