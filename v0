@@ -349,7 +349,7 @@ ___advise_run(){
     local cmd="${result##*#> }"
     local cmd_result=""
     if [ "$cmd" != "$result" ]; then
-        cmd_result="$(eval "$cmd")"
+        cmd_result="$(eval "$cmd" 2>/dev/null)"
         result="${result%%#> *}"
     fi
 
