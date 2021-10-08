@@ -386,10 +386,10 @@ ___advise_completer() {
 
 # EndSection
 
-advise init advise
-
 if [ -n "$ZSH_VERSION" ]; then
     autoload -U +X bashcompinit compinit && bashcompinit && compinit
 fi
+
+advise init advise
 
 fi
