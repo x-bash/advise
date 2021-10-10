@@ -1,2 +1,8 @@
 # shellcheck shell=bash
-awk -f ./testcases/demo.awk ./testcases/test.json
+printf "%s" '{}' | awk '
+{
+    str = $0
+    gsub(/^\357\273\277|^\377\376|^\376\377/, "\n&", str)
+    print str
+}
+'
