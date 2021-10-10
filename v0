@@ -185,17 +185,20 @@ ___advise_get_result(){
     local OLDIFS="$IFS"
     local IFS=$'\002' # IFS="$(printf "\002")"
 
+    # Delete $offset numbers from the COMP_WORDS
+    local i
+    local words=()
+    for ((i=0; i<=$(($COMP_CWORD-$offset)); ++i)); do
+        words+=( "${COMP_WORDS[i+offset]}" )
+    done
+
+    COMP_WORDS=("${words[@]}")
+    COMP_CWORD="$(( ${#words[@]}-1 ))"
+
     s="${COMP_WORDS[*]}"
     s="${s#*$IFS}"
 
     # TODO: Can be optimized.
-    if [ "$offset" -ne 0 ]; then
-        local i
-        for i in $(seq "$offset"); do
-            s="${s#*$IFS}"
-        done
-    fi
-
     local cur_1="${COMP_WORDS[COMP_CWORD-1]}"
     case "$cur_1" in
         *@|*:)
@@ -269,6 +272,7 @@ ___advise_main(){
 
 ___advise_run(){
 
+    local offset="${2:-0}"
     local resname="${1:-${COMP_WORDS[0]}}"
 
     local filepath
@@ -345,7 +349,7 @@ ___advise_run(){
     local cmd="${result##*#> }"
     local cmd_result=""
     if [ "$cmd" != "$result" ]; then
-        cmd_result="$(eval "$cmd")"
+        cmd_result="$(eval "$cmd" 2>/dev/null)"
         result="${result%%#> *}"
     fi
 
@@ -359,7 +363,6 @@ $cmd_result" -- "$cur"
 
     __ltrim_completions "$cur" "@"
     __ltrim_completions "$cur" ":"
-
 }
 
 __ltrim_completions()
@@ -376,8 +379,6 @@ __ltrim_completions()
     fi
 }
 
-__ltrim_colon_completions "$cur"
-
 ___advise_completer() {
     # Interesting ... Passing
     ___advise_run ""
@@ -385,10 +386,10 @@ ___advise_completer() {
 
 # EndSection
 
-advise init advise
-
 if [ -n "$ZSH_VERSION" ]; then
     autoload -U +X bashcompinit compinit && bashcompinit && compinit
 fi
+
+advise init advise
 
 fi

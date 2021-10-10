@@ -24,7 +24,7 @@ atcmd
 A
 }
 
-test_char(){
+test1_char(){
         assert_stdout "test123 subcmd ddd ''"<<A
 ,
 |
@@ -125,7 +125,7 @@ c:abc
 c:aaa
 A
     assert_stdout "test123 option --colon ''" <<A
-:a
+www:a
 :b
 :c
 A
@@ -245,7 +245,7 @@ test123(){
     {
         cat "$fp"
         printf "\034%s\034" "$s"  # printf "\034${s}\034"
-    } | awk -f "./v0_test.awk" # 2>/dev/null
+    } | awk -f "./v0.awk" # 2>/dev/null
 }
 
 # list all the file in the directory, and add the @ to the behind of the file name

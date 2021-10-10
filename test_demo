@@ -1,0 +1,2 @@
+# shellcheck shell=bash
+awk -f ./testcases/demo.awk ./testcases/test.json
