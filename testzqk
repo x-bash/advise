@@ -1,0 +1,112 @@
+-a=test1
+-a=test2
+-a=cscs *** 
+cur:-a=;
+i:3 -a=test1 -a=test2 -a=cscs
+-a=test1 -a=test2 -a=cscs
+======
+test1 test2 cscs
+-a=test1
+-a=test2
+-a=cscs *** 
+cur:-a=;
+i:3 -a=test1 -a=test2 -a=cscs
+-a=test1 -a=test2 -a=cscs
+======
+test1 test2 cscs
+-a=test1
+-a=test2
+-a=cscs *** 
+cur:-a=;
+i:3 -a=test1 -a=test2 -a=cscs
+-a=test1 -a=test2 -a=cscs
+======
+test1 test2 cscs
+-a=test1
+-a=test2
+-a=cscs *** 
+cur:-a=;
+i:3 -a=test1 -a=test2 -a=cscs
+-a=test1 -a=test2 -a=cscs
+======
+test1 test2 cscs
+-a=test1
+-a=test2
+-a=cscs *** 
+cur:-a=;
+i:3 -a=test1 -a=test2 -a=cscs
+-a=test1 -a=test2 -a=cscs
+======
+test1 test2 cscs
+-a=test1
+-a=test2
+-a=cscs *** 
+cur:-a=;
+i:3 -a=test1 -a=test2 -a=cscs
+-a=test1 -a=test2 -a=cscs
+======
+test1 test2 cscs
+func:advise
+func:compt
+-a=test1
+-a=test2
+-a=cscs *** 
+cur:-a=;
+i:3 -a=test1 -a=test2 -a=cscs
+-a=test1 -a=test2 -a=cscs
+-a=test1
+-a=test2
+-a=cscs *** 
+cur:-a=t;
+i:3 -a=test1 -a=test2 -a=cscs
+-a=test1 -a=test2 -a=cscs
+-a=test1
+-a=test2
+-a=cscs *** 
+cur:-a=test;
+i:3 -a=test1 -a=test2 -a=cscs
+-a=test1 -a=test2 -a=cscs
+func:advise
+func:compt
+-a=test1
+-a=test2
+-a=cscs *** 
+cur:-a=;
+i:3 -a=test1 -a=test2 -a=cscs
+-a=test1 -a=test2 -a=cscs
+-a=test1
+-a=test2
+-a=cscs *** 
+cur:-a=c;
+i:3 -a=test1 -a=test2 -a=cscs
+-a=test1 -a=test2 -a=cscs
+test1
+test2
+cscs *** 
+cur:;
+i:3 test1 test2 cscs
+test1 test2 cscs
+cscs *** 
+cur:c;
+i:1 cscs
+cscs
+func:advise
+func:compt
+test1
+test2
+cscs *** 
+cur:;
+i:3 test1 test2 cscs
+test1 test2 cscs
+-a=test1
+-a=test2
+-a=cscs *** 
+cur:-a=;
+i:3 -a=test1 -a=test2 -a=cscs
+-a=test1 -a=test2 -a=cscs
+-a=test1
+-a=test2
+-a=cscs *** 
+cur:-a=;
+i:3 -a=test1 -a=test2 -a=cscs
+-a=test1 -a=test2 -a=cscs

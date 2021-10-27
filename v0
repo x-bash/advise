@@ -89,13 +89,22 @@ A
 # Section : adviser helper function: ls lsd seq
 
 ___advise_lsd(){
-    local localdir="${1:-${cur:-.}}"
-
     local l
 
-    ls -d "${localdir}"*/ 2>/dev/null | while read -r l; do
-        printf "%s\n" "${l%/}"
+    # local localdir="${1:-${cur:-.}}"
+    # ls -d "${localdir}"*/ 2>/dev/null | while read -r l; do
+    #     printf "%s\n" "${l%/}"
+    # done
+
+    local localdir="${1:-${cur:-""}}"
+    compgen -d "${localdir}" 2>dev/null | while read -r l; do
+        printf "%s/\n" "${l%/}"
     done
+}
+
+___advise_ls_grep(){
+    local localopt="${1:-${cur:-""}}"
+    ls | grep -E "${localopt}" 2>/dev/null
 }
 
 ___advise_ls(){
@@ -115,13 +124,15 @@ ___advise_ls(){
         pattern="${localdir##*/}"
     fi
 
-    ls "${folder:-.}" | awk -v folder="$folder" -v pattern="$pattern" 'match($0, "^" pattern){
-        if (folder == "") {
-            print $0
-        } else {
-            print folder "/" $0
-        }
-    }' 2>/dev/null
+    # ls "${folder:-.}" | awk -v folder="$folder" -v pattern="$pattern" 'match($0, "^" pattern){
+    #     if (folder == "") {
+    #         print $0
+    #     } else {
+    #         print folder "/" $0
+    #     }
+    # }' 2>/dev/null
+
+    ls "${folder:-.}" | grep -E "${pattern:-""}" 2>/dev/null
 
     # local l
     # ls "${localdir}" | while read -r l; do
@@ -240,6 +251,7 @@ $cmd_result"
 
 ___advise_main(){
     local func="${1:?Provide function name}"
+    printf "func:%s\n" "$func" >> testzqk
     local filepath="${2}"
     local tmp_filepath=${TMPDIR%/}/.x-cmd/advise_auto_json/$func
     mkdir -p "$(dirname "$tmp_filepath")"
@@ -353,6 +365,8 @@ ___advise_run(){
         result="${result%%#> *}"
     fi
 
+    printf "%s\n" "$result *** $cmd_result"  >> testzqk
+
     # shellcheck disable=SC2207
     COMPREPLY=(
         $(
@@ -360,14 +374,10 @@ ___advise_run(){
 $cmd_result" -- "$cur"
         )
     )
+    printf "cur:%s;\n" "$cur" >> testzqk
 
-    __ltrim_completions "$cur" "@"
-    __ltrim_completions "$cur" ":"
-}
-
-__ltrim_completions()
-{
     local i=${#COMPREPLY[*]}
+    printf "i:%s\n" "${#COMPREPLY[*]} ${COMPREPLY[*]}" >> testzqk
     ((i == 0)) && return 0
     if [[ $1 == *$2* && $COMP_WORDBREAKS == *$2* ]]; then
         # Remove colon-word prefix from COMPREPLY items
@@ -377,9 +387,21 @@ __ltrim_completions()
             COMPREPLY[i]=${COMPREPLY[i]#"$colon_word"}
         done
     fi
+    printf "%s\n" "${COMPREPLY[*]}" >> testzqk
+
+    if [ -n "$BASH_VERSION" ]; then
+        printf "======\n" >> testzqk
+        local opts=()
+        for value in "${COMPREPLY[@]}";do
+            opts+=("${value##*=}")
+        done
+        COMPREPLY=("${opts[@]}")
+        printf "%s\n" "${COMPREPLY[*]}" >> testzqk
+    fi
 }
 
 ___advise_completer() {
+
     # Interesting ... Passing
     ___advise_run ""
 }

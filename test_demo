@@ -1,8 +1,50 @@
-# shellcheck shell=bash
-printf "%s" '{}' | awk '
-{
-    str = $0
-    gsub(/^\357\273\277|^\377\376|^\376\377/, "\n&", str)
-    print str
+#!/bin/bash
+
+_cs(){
+    local cur prev result
+    COMPREPLY=()
+    if [ -n "$BASH_VERSION" ] && [ "${BASH_VERSION#3}" = "${BASH_VERSION}" ]; then
+        local last="${COMP_WORDS[COMP_CWORD]}"
+        case "$last" in
+            \"*|\'*)
+                COMP_LINE="${COMP_LINE%$last}"
+                words=( $COMP_LINE )
+                words+=("$last")
+                ;;
+            *)
+                words=( $COMP_LINE )
+                ;;
+        esac
+
+        # Ends with space
+        if [ "${COMP_LINE% }" != "${COMP_LINE}" ]; then
+            words+=( "" )
+        fi
+
+        COMP_WORDS=("${words[@]}")
+        COMP_CWORD="$(( ${#words[@]}-1 ))"
+    fi
+
+    cur="${COMP_WORDS[COMP_CWORD]}"
+    result="-a=test1 -a=test2 -a=cscs"
+    printf "%s\n" "$result *** $cur" >> testzqk
+    case "${cur}" in
+        -a=*)
+            COMPREPLY=( $(compgen -W "$result" -- ${cur}) )
+            ;;
+    esac
+    printf "i:%s\n" "${#COMPREPLY[*]} ${COMPREPLY[*]}" >> testzqk
+
+    if [ -n "$BASH_VERSION" ]; then
+        printf "======\n" >> testzqk
+        local opts=()
+        for value in "${COMPREPLY[@]}";do
+            opts+=("${value##*=}")
+        done
+        COMPREPLY=("${opts[@]}")
+        printf "%s\n" "${COMPREPLY[*]}" >> testzqk
+    fi
+
+    printf "%s\n" "${COMPREPLY[*]}" >> testzqk
 }
-'
+complete -F _cs cs
