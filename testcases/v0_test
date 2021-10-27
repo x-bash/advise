@@ -1,6 +1,6 @@
 # shellcheck shell=bash
 
-xrc log advise xrc
+x log advise xrc
 xrc assert
 
 # Section: Testcase for advise awk code
