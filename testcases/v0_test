@@ -41,11 +41,25 @@ A
 -a=test2
 -a=cscs
 A
-
     assert_stdout "test123 cs -a=t"<<A
 -a=test1
 -a=test2
 -a=cscs
+A
+
+    assert_stdout "test123 cs -b test -"<<A
+-seq
+-a
+-c
+-d
+-e
+A
+    assert_stdout "test123 cs -a=cscs -"<<A
+-seq
+-b
+-c
+-d
+-e
 A
 }
 
