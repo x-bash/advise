@@ -381,7 +381,7 @@ NR==2{
     for (i=1; i<parsed_arglen; ++i) {
         arg = parsed_argarr[i]
         argval = ""
-
+        debug("**"arg)
         if (arg ~ /^-/) {
             debug("##"arg)
             if (match(arg, /^--?[A-Za-z0-9_+-]+=/)){
@@ -508,9 +508,9 @@ NR==2{
         debug("3\t\tcandidates:"candidates";cur:"cur)
         print_list_candidate(candidates, cur)
     } else if(match(cur,/=/)){
-        debug("%%%cur:"substr(cur,1,RSTART-1)";\t\toption_id:"option_id KEYPATH_SEP substr(cur,1,RSTART-1))
-        option_id = option_id KEYPATH_SEP substr(cur,1,RSTART-1)
-        candidates = RULE_ID_CANDIDATES[ option_id ]
+        debug("%%%cur:"substr(cur,1,RSTART-1)";\t\toption_id:"current_keypath KEYPATH_SEP substr(cur,1,RSTART-1)";\t\tcurrent_keypath:"current_keypath)
+        current_keypath = current_keypath KEYPATH_SEP substr(cur,1,RSTART-1)
+        candidates = RULE_ID_CANDIDATES[ current_keypath ]
         debug("candidates:"candidates)
         print_list_candidate(candidates, substr(cur,1,RSTART))
     } else {
@@ -532,6 +532,7 @@ function used_option_add(option_id){
     debug("used_option_add:\t" option_id)
     RULE_ID_R[ option_id ] = REQUIRED_PROVIDED
     used_option_list = used_option_list "\n" option_id
+    debug("used_option_list:\t"used_option_list)
 }
 
 function used_option_clear(){

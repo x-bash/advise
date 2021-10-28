@@ -33,12 +33,7 @@ allexport
 errexit
 ignoreeof
 A
-    assert_stdout "test123 subcommand create"<<A
-create1
-create2
-create3
-create4
-A
+
     assert_stdout "test123 cs -a ''"<<A
 test1
 test2
@@ -50,11 +45,27 @@ A
 -a=cscs
 A
 
-#     assert_stdout "test123 7z a -ax"<<A
-# -ax!
-# -ax@
-# -axr!
-# A
+    assert_stdout "test123 cs -a=t"<<A
+-a=test1
+-a=test2
+-a=cscs
+A
+    assert_stdout "test123 subcmd -u /dev/std create"<<A
+create1
+create2
+create3
+create4
+A
+    assert_stdout "test123 cs -b test -a ''"<<A
+test1
+test2
+cscs
+A
+    assert_stdout "test123 cs -b test -a="<<A
+-a=test1
+-a=test2
+-a=cscs
+A
 }
 
 
