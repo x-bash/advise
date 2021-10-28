@@ -385,8 +385,7 @@ NR==2{
         debug("**"arg";\ti:"i";\tparsed_arglen:"parsed_arglen)
         if (arg ~ /^-/) {
             if(match(arg,/=/)){
-                arg=substr(arg,1,RSTART-1)
-                ++opt_len
+                continue
             }
             debug("##"arg)
             if (match(arg, /^--?[A-Za-z0-9_+-]+=/)){
@@ -441,7 +440,7 @@ NR==2{
                 optarg_num = RULE_ID_ARGNUM[ cur_option_id ]
                 debug("cur_option_id:"cur_option_id";\t\toptarg_num:"optarg_num)
                 for (cur_optarg_index=1; cur_optarg_index<=optarg_num; ++cur_optarg_index) {
-                    if (i+1 < opt_len) {
+                    if (i+1 < parsed_arglen) {
                         argarr[++arglen] = parsed_argarr[++i]
                     } else {
                         break

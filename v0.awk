@@ -364,7 +364,6 @@ NR==2{
     rest_argv_len = 0
 
     current_keypath = "."
-    opt_len = parsed_arglen
 
     for (i=1; i<=parsed_arglen; ++i) {
         arg = parsed_argarr[i]
@@ -378,10 +377,8 @@ NR==2{
 
         if (arg ~ /^-/) {
             if(match(arg,/=/)){
-                arg=substr(arg,1,RSTART-1)
-                ++opt_len
+                continue
             }
-
             if (match(arg, /^--?[A-Za-z0-9_+-]+=/)){
                 argval = substr(arg, RLENGTH+1)
                 arg = substr(arg, 1, RLENGTH)
@@ -432,7 +429,7 @@ NR==2{
                 cur_option_id = RULE_ALIAS_TO_ID[ current_keypath KEYPATH_SEP cur_option_alias ]
                 optarg_num = RULE_ID_ARGNUM[ cur_option_id ]
                 for (cur_optarg_index=1; cur_optarg_index<=optarg_num; ++cur_optarg_index) {
-                    if (i+1 < opt_len) {
+                    if (i+1 < parsed_arglen) {
                         argarr[++arglen] = parsed_argarr[++i]
                     } else {
                         break
@@ -501,7 +498,7 @@ NR==2{
             candidates = RULE_ID_CANDIDATES[ option_id ]
         }
         print_list_candidate(candidates, cur)
-    } else if(match(cur,/=/)){
+    } else if (match(cur,/=/)){
         current_keypath = current_keypath KEYPATH_SEP substr(cur,1,RSTART-1)
         candidates = RULE_ID_CANDIDATES[ current_keypath ]
         print_list_candidate(candidates, substr(cur,1,RSTART))
