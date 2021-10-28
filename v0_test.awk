@@ -371,6 +371,7 @@ NR==2{
     rest_argv_len = 0
 
     current_keypath = "."
+    opt_len = parsed_arglen
 
     for (i=1; i<=parsed_arglen; ++i) {
         arg = parsed_argarr[i]
@@ -381,8 +382,12 @@ NR==2{
     for (i=1; i<parsed_arglen; ++i) {
         arg = parsed_argarr[i]
         argval = ""
-        debug("**"arg)
+        debug("**"arg";\ti:"i";\tparsed_arglen:"parsed_arglen)
         if (arg ~ /^-/) {
+            if(match(arg,/=/)){
+                arg=substr(arg,1,RSTART-1)
+                ++opt_len
+            }
             debug("##"arg)
             if (match(arg, /^--?[A-Za-z0-9_+-]+=/)){
                 argval = substr(arg, RLENGTH+1)
@@ -391,7 +396,7 @@ NR==2{
             debug("###argval:"argval"\t\targ:"arg)
             cur_option_alias = arg
             option_id = RULE_ALIAS_TO_ID[ current_keypath KEYPATH_SEP cur_option_alias ]
-            debug("$$$option_id:"option_id)
+            debug("$$$option_id:"option_id";\t\tcur_option_alias:"cur_option_alias)
             if (option_id != "") {
                 used_option_add( option_id )
             } else {
@@ -422,6 +427,7 @@ NR==2{
                     # Must be positional argument
                     cur_option_alias = ""
                     for (j=i; j<=parsed_arglen; ++j) {
+                        debug("parsed_argarr[j]:"parsed_argarr[j])
                         rest_argv[++rest_argv_len] = parsed_argarr[j]
                     }
                 }
@@ -433,14 +439,15 @@ NR==2{
             } else {
                 cur_option_id = RULE_ALIAS_TO_ID[ current_keypath KEYPATH_SEP cur_option_alias ]
                 optarg_num = RULE_ID_ARGNUM[ cur_option_id ]
+                debug("cur_option_id:"cur_option_id";\t\toptarg_num:"optarg_num)
                 for (cur_optarg_index=1; cur_optarg_index<=optarg_num; ++cur_optarg_index) {
-                    if (i+1 < parsed_arglen) {
+                    if (i+1 < opt_len) {
                         argarr[++arglen] = parsed_argarr[++i]
                     } else {
                         break
                     }
                 }
-
+                debug("cur_optarg_index:"cur_optarg_index";\t\toptarg_num:"optarg_num";\t\topt_len:"opt_len)
                 if (cur_optarg_index > optarg_num) {
                     cur_option_alias = ""
                     cur_optarg_index = 0
@@ -480,6 +487,10 @@ NR==2{
     }
 
     cur = parsed_argarr[parsed_arglen]
+    debug("parsed_arglen:"parsed_arglen";\t\topt_len:"opt_len)
+    debug("par[]:"parsed_argarr[parsed_arglen-1])
+    debug("par[]:"parsed_argarr[parsed_arglen])
+    debug("par[]:"parsed_argarr[parsed_arglen+1])
 
     if (cur == "\177") {    # ascii code 127 0x7F 0177 ==> DEL
         cur = ""
@@ -500,7 +511,7 @@ NR==2{
         show_positional_candidates( current_keypath, cur, rest_argv_len)
     } else if (cur_option_alias != "") {
         option_id = RULE_ALIAS_TO_ID[ current_keypath KEYPATH_SEP cur_option_alias ]
-        debug("2.75\t\toption_id:"option_id)
+        debug("2.75\t\toption_id:"option_id";\t\tcur_option_alias:"cur_option_alias)
         candidates = RULE_ID_CANDIDATES[ option_id "|" cur_optarg_index ]
         if (candidates == "") {
             candidates = RULE_ID_CANDIDATES[ option_id ]
