@@ -496,8 +496,8 @@ NR==2{
         }
         print_list_candidate(candidates, cur)
     } else if (match(cur,/=/)){
-        option_id = option_id KEYPATH_SEP substr(cur,1,RSTART-1)
-        candidates = RULE_ID_CANDIDATES[ option_id ]
+        current_keypath = current_keypath KEYPATH_SEP substr(cur,1,RSTART-1)
+        candidates = RULE_ID_CANDIDATES[ current_keypath ]
         print_list_candidate(candidates, substr(cur,1,RSTART))
     } else {
         # list subcmd or options or postional arguments
