@@ -7,7 +7,7 @@
         "--dict|-d": {
             "e":    [ "edwinjhlee", "labve" ],
             "c:":   [ "c:abc", "c:aaa" ],
-            "*":    [ "e", "c:" ]
+            "*":    [ "e", "c:" ,"a"]
         },
         "--cmd": "___advise_ls",
         "--@": {
@@ -50,5 +50,13 @@
         "--qqq|-q": [ "[A-Z]", "[a-z]", "[0-9]" ]
     },
     "#1": "advise ls",
-    "#n": "___advise_get_result '' 1"
+    "#n": "___advise_get_result '' 1",
+    "cs": {
+        "-seq":"___advise_seq 1/65535",
+        "-b": ["test1","test2"],
+        "-a": ["test1","test2","cscs"],
+        "-c": "___advise_ls ^t",
+        "-d": "___advise_ls testcases/",
+        "-e": "___advise_lsd"
+    }
 }

@@ -89,12 +89,15 @@ A
 # Section : adviser helper function: ls lsd seq
 
 ___advise_lsd(){
-    local localdir="${1:-${cur:-.}}"
-
     local l
+    # local localdir="${1:-${cur:-.}}"
+    # ls -d "${localdir}"*/ 2>/dev/null | while read -r l; do
+    #     printf "%s\n" "${l%/}"
+    # done
 
-    ls -d "${localdir}"*/ 2>/dev/null | while read -r l; do
-        printf "%s\n" "${l%/}"
+    local localdir="${1:-${cur:-""}}"
+    compgen -d "${localdir}" 2>dev/null | while read -r l; do
+        printf "%s/\n" "${l%/}"
     done
 }
 
@@ -115,13 +118,14 @@ ___advise_ls(){
         pattern="${localdir##*/}"
     fi
 
-    ls "${folder:-.}" | awk -v folder="$folder" -v pattern="$pattern" 'match($0, "^" pattern){
-        if (folder == "") {
-            print $0
-        } else {
-            print folder "/" $0
-        }
-    }' 2>/dev/null
+    # ls "${folder:-.}" | awk -v folder="$folder" -v pattern="$pattern" 'match($0, "^" pattern){
+    #     if (folder == "") {
+    #         print $0
+    #     } else {
+    #         print folder "/" $0
+    #     }
+    # }' 2>/dev/null
+    ls "${folder:-.}" | grep -E "${pattern:-""}" 2>/dev/null
 
     # local l
     # ls "${localdir}" | while read -r l; do
@@ -361,12 +365,6 @@ $cmd_result" -- "$cur"
         )
     )
 
-    __ltrim_completions "$cur" "@"
-    __ltrim_completions "$cur" ":"
-}
-
-__ltrim_completions()
-{
     local i=${#COMPREPLY[*]}
     ((i == 0)) && return 0
     if [[ $1 == *$2* && $COMP_WORDBREAKS == *$2* ]]; then
@@ -376,6 +374,14 @@ __ltrim_completions()
         while ((i-- > 0)); do
             COMPREPLY[i]=${COMPREPLY[i]#"$colon_word"}
         done
+    fi
+
+    if [ -n "$BASH_VERSION" ]; then
+        local opts=()
+        for value in "${COMPREPLY[@]}";do
+            opts+=("${value##*=}")
+        done
+        COMPREPLY=("${opts[@]}")
     fi
 }
 
