@@ -57,9 +57,16 @@ A
     assert_stdout "test123 cs -a=cscs -"<<A
 -seq
 -b
+-a
 -c
 -d
 -e
+A
+    assert_stdout "test123 cs -b test -a cscs -e ''"<<A
+#> ___advise_lsd
+A
+    assert_stdout "test123 cs -b test -a=cscs -e ''"<<A
+#> ___advise_lsd
 A
 }
 
