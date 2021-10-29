@@ -24,6 +24,52 @@ atcmd
 A
 }
 
+test_xsxs(){
+    assert_stdout "test123 subcommand create"<<A
+create1
+create2
+create3
+create4
+A
+    assert_stdout "test123 cs -a ''"<<A
+test1
+test2
+cscs
+A
+    assert_stdout "test123 cs -a="<<A
+-a=test1
+-a=test2
+-a=cscs
+A
+    assert_stdout "test123 cs -a=t"<<A
+-a=test1
+-a=test2
+-a=cscs
+A
+
+    assert_stdout "test123 cs -b test -"<<A
+-seq
+-a
+-c
+-d
+-e
+A
+    assert_stdout "test123 cs -a=cscs -"<<A
+-seq
+-b
+-a
+-c
+-d
+-e
+A
+    assert_stdout "test123 cs -b test -a cscs -e ''"<<A
+#> ___advise_lsd
+A
+    assert_stdout "test123 cs -b test -a=cscs -e ''"<<A
+#> ___advise_lsd
+A
+}
+
 test_hyphen(){
     assert_stdout "test123 option -" <<A
 -a
@@ -98,6 +144,7 @@ A
     assert_stdout "test123 option -d ''" <<A
 e
 c:
+a
 A
 
     assert_stdout "test123 option -d e" <<A
