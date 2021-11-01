@@ -23,22 +23,26 @@ atcmd
 @
 A
 }
-test1_ssh(){
-#     assert_stdout "test123 ssh -o A" <<A
-# AddKeysToAgent=yes
-# AddKeysToAgent=ask
-# AddKeysToAgent=confirm
-# AddKeysToAgent=no
-# AddressFamily=any
-# AddressFamily=inet
-# AddressFamily=inet6
-# A
+test_ssh(){
+    assert_stdout "test123 ssh -o AddKeysToAgent=" <<A
+AddKeysToAgent=yes
+AddKeysToAgent=ask
+AddKeysToAgent=confirm
+AddKeysToAgent=no
+A
     assert_stdout "test123 ssh -o A" <<A
 AddKeysToAgent=
 AddressFamily=
 A
 }
-test_xsxs(){
+
+test1_xsxs(){
+    assert_stdout "test123 subcommand create"<<A
+create1
+create2
+create3
+create4
+A
     assert_stdout "test123 cs -a ''"<<A
 test1
 test2
@@ -49,28 +53,7 @@ A
 -a=test2
 -a=cscs
 A
-    assert_stdout "test123 cs -a cscs -c scs="<<A
-scs=bbb
-scs=aaa
-A
-
     assert_stdout "test123 cs -a=t"<<A
--a=test1
--a=test2
--a=cscs
-A
-    assert_stdout "test123 subcmd -u /dev/std create"<<A
-create1
-create2
-create3
-create4
-A
-    assert_stdout "test123 cs -b test -a ''"<<A
-test1
-test2
-cscs
-A
-    assert_stdout "test123 cs -b test -a="<<A
 -a=test1
 -a=test2
 -a=cscs
@@ -185,6 +168,7 @@ A
     assert_stdout "test123 option -d ''" <<A
 e
 c:
+a
 A
 
     assert_stdout "test123 option -d e" <<A
@@ -312,7 +296,7 @@ A
 # Section: utilities
 
 test123(){
-    local fp="./testcases/test.json"
+    local fp="./testcase/test.json"
     local IFS=$'\002' # IFS="$(printf "\002")"
     # echo "Before awk: $*" > /dev/stderr
 
@@ -339,10 +323,10 @@ start_test() {
     done
 }
 
-start_test ./testcases/v0_test
+start_test ./testcase/v0_test
 
 # Section: for the interactive ui
 rm -rf test.out
 . ./v0
 ___ADVISE_AWK_PATH="./v0.awk"
-advise compt "./testcases/test.json"
+advise compt "./testcase/test.json"

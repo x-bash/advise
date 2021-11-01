@@ -594,9 +594,9 @@ function print_list_candidate(candidates, cur,
             can = can_arr[i]
             if (str_startswith( can, cur )) {
                 debug("i:"i";\t\tcan:"can";\t\tcur:"cur)
-                # if (cur !~ /=/ && match(can, /=/)){
-                #     can=substr(can,1,RSTART)
-                # }
+                if (cur !~ /=/ && match(can, /=/)){
+                    can=substr(can,1,RSTART)
+                }
                 if (!a[can]++) print can
             }
         }
