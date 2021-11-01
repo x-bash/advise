@@ -23,17 +23,22 @@ atcmd
 @
 A
 }
+test1_ssh(){
+#     assert_stdout "test123 ssh -o A" <<A
+# AddKeysToAgent=yes
+# AddKeysToAgent=ask
+# AddKeysToAgent=confirm
+# AddKeysToAgent=no
+# AddressFamily=any
+# AddressFamily=inet
+# AddressFamily=inet6
+# A
+    assert_stdout "test123 ssh -o A" <<A
+AddKeysToAgent=
+AddressFamily=
+A
+}
 test_xsxs(){
-    assert_stdout "test123 7z a -t ''"<<A
-7z
-bzip2
-A
-    assert_stdout "test123 sh a a -a ''"<<A
-allexport
-errexit
-ignoreeof
-A
-
     assert_stdout "test123 cs -a ''"<<A
 test1
 test2
@@ -43,6 +48,10 @@ A
 -a=test1
 -a=test2
 -a=cscs
+A
+    assert_stdout "test123 cs -a cscs -c scs="<<A
+scs=bbb
+scs=aaa
 A
 
     assert_stdout "test123 cs -a=t"<<A

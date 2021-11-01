@@ -365,7 +365,7 @@ ___advise_run(){
         result="${result%%#> *}"
     fi
 
-    printf "%s\n" "$result *** $cmd_result"  >> testzqk
+    printf "\n%s\n" "$result *** $cmd_result"  >> testzqk
 
     # shellcheck disable=SC2207
     COMPREPLY=(
@@ -383,6 +383,7 @@ $cmd_result" -- "$cur"
 }
 __ltrim_completions()
 {
+
     local i=${#COMPREPLY[*]}
     printf "i:%s\n" "${#COMPREPLY[*]} ${COMPREPLY[*]}" >> testzqk
     ((i == 0)) && return 0

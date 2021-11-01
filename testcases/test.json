@@ -56,8 +56,22 @@
         "-seq":"___advise_seq 1/65535",
         "-b": ["test1","test2"],
         "-a": ["test1","test2","cscs"],
-        "-c": "___advise_ls ^t",
+        "-c": ["adc=sss","scs=bbb","scs=aaa"],
         "-d": "___advise_ls testcases/",
         "-e": "___advise_lsd"
+    },
+    "ssh": {
+        "-b": null,
+        "-c": "ssh -Q cipher",
+        "-E|-F|-S": "___advise_ls",
+        "-I": null,
+        "-i": "___advise_ls ${cur:-$HOME/.ssh/}",
+        "-J": null,
+        "-l": "compgen -u",
+        "-m": "ssh -Q mac || echo 'hmac-md5 hmac-sha1 umac-64@openssh.com hmac-ripemd160 hmac-sha1-96 hmac-md5-96'",
+        "-O": ["check", "forward", "cancel", "exit stop"],
+        "-o": ["AddKeysToAgent=yes", "AddKeysToAgent=ask", "AddKeysToAgent=confirm", "AddKeysToAgent=no", "AddressFamily=any", "AddressFamily=inet", "AddressFamily=inet6"],
+        "-Q": "ssh -Q help",
+        "-w": null
     }
 }

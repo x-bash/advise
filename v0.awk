@@ -13,6 +13,7 @@ BEGIN{
     KV_SEP = RS
     FUNC_SEP = "\004"
     FUNC_SEP_LEN = FUNC_SEP "len"
+
 }
 
 function str_wrap(s){
@@ -498,10 +499,10 @@ NR==2{
             candidates = RULE_ID_CANDIDATES[ option_id ]
         }
         print_list_candidate(candidates, cur)
-    } else if (match(cur,/=/)){
-        current_keypath = current_keypath KEYPATH_SEP substr(cur,1,RSTART-1)
+    } else if (match(cur,/^-.*=/)){
+        current_keypath = current_keypath KEYPATH_SEP substr(cur,1,RLENGTH-1)
         candidates = RULE_ID_CANDIDATES[ current_keypath ]
-        print_list_candidate(candidates, substr(cur,1,RSTART))
+        print_list_candidate(candidates, substr(cur,1,RLENGTH))
     } else {
         # list subcmd or options or postional arguments
         show_candidates( current_keypath, cur )
@@ -545,7 +546,7 @@ function is_all_required_provided(      arr, arrlen, i, elem){
 function print_list_candidate(candidates, cur,
     can, i, can_arr_len, can_arr, _key ){
 
-    if(match(cur,/.*=$/)){
+    if(match(cur,/^-.*=$/)){
         if (candidates !~ "^" KV_SEP) {
             can_arr_len = split( candidates, can_arr, "\n" )
             for (i=2; i<=can_arr_len; ++i) {
@@ -566,7 +567,9 @@ function print_list_candidate(candidates, cur,
         can_arr_len = split( candidates, can_arr, "\n" )
         for (i=2; i<=can_arr_len; ++i) {
             can = can_arr[i]
-            if (str_startswith( can, cur )) print can
+            if (str_startswith( can, cur )) {
+                if (!a[can]++) print can
+            }
         }
         return
     }
@@ -685,7 +688,7 @@ function print_candidate_with_optionid( option_id, cur,
 
     for (i=1; i<=can_arr_len; ++i) {
         can = can_arr[i]
-        if (str_startswith( can, cur ) && can != "--@" && cur !~ /=$/) {
+        if (str_startswith( can, cur ) && can != "--@" && cur !~ /^-.*=$/) {
             print can
         }
     }
