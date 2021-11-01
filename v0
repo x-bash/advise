@@ -409,18 +409,22 @@ fi
 
 # Section: man
 
+___advise_man_exists(){
+    [ -d "$___X_CMD_ROOT/.tmp/advise/src" ]
+}
+
 ___advise_man_update(){
     local ___X_CMD_CURL_UPDATE="${___X_CMD_CURL_UPDATE}"
 
     local CACHE="$___X_CMD_ROOT/.tmp/advise/all.tar.gz"
     local srcfolder="$___X_CMD_ROOT/.tmp/advise/src"
 
-    if find "$CACHE" -mmin 6000 2>/dev/null 1>&2; then
-        ___X_CMD_CURL_UPDATE=1
-        return
-    else
-        [ -d "$srcfolder" ] && return
-    fi
+    # if find "$CACHE" -mmin 6000 2>/dev/null 1>&2; then
+    #     ___X_CMD_CURL_UPDATE=1
+    #     return
+    # else
+    #     [ -d "$srcfolder" ] && return
+    # fi
 
     local url="https://gitee.com/x-cmd/advise/raw/main/dist/all.tgz"
     if [ "$___X_CMD_IN_CHINA_NET" != 1 ]; then
@@ -435,14 +439,14 @@ ___advise_man_update(){
 }
 
 ___advise_man_ls(){
-    if ___advise_man_update; then
+    if ___advise_man_exists || ___advise_man_update; then
         ls "$___X_CMD_ROOT/.tmp/advise/src"
     fi
 }
 
 ___advise_man_which(){
     local name="${1:?Provide name}"
-    if ___advise_man_update; then
+    if ___advise_man_exists || ___advise_man_update; then
         local p="$___X_CMD_ROOT/.tmp/advise/src/$name/advise.json"
         [ -f "$p" ] && printf "%s" "$p"
     fi
