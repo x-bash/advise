@@ -48,6 +48,8 @@ advise(){
 A
             return 126
             ;;
+        man)
+            ___advise_man "$@" ;;
         init|new)
             ___advise_main "$@" ;;
         del)
@@ -279,11 +281,15 @@ ___advise_run(){
     local offset="${2:-0}"
     local resname="${1:-${COMP_WORDS[0]}}"
 
+    if [ -z "$___ADVISE_RUN_CMD_FOLDER" ]; then
+        ___ADVISE_RUN_CMD_FOLDER="${TMPDIR%/}/.x-cmd/advise_auto_json"
+    fi
+
     local filepath
     case "$resname" in
         /*) filepath="$resname" ;;
         -)  filepath=/dev/stdin ;;
-        *)  filepath="${TMPDIR%/}/.x-cmd/advise_auto_json/$resname" ;;
+        *)  filepath="$___ADVISE_RUN_CMD_FOLDER/$resname" ;;
     esac
 
     shift 2>/dev/null
@@ -388,7 +394,7 @@ __ltrim_completions()
 
 ___advise_completer() {
     # Interesting ... Passing
-    ___advise_run ""
+    ___ADVISE_RUN_CMD_FOLDER= ___advise_run ""
 }
 
 # EndSection
@@ -400,3 +406,84 @@ fi
 advise init advise
 
 fi
+
+# Section: man
+
+___advise_man_update(){
+    local ___X_CMD_CURL_UPDATE="${___X_CMD_CURL_UPDATE}"
+
+    local CACHE="$___X_CMD_ROOT/.tmp/advise/all.tar.gz"
+    local srcfolder="$___X_CMD_ROOT/.tmp/advise/src"
+
+    if find "$CACHE" -mmin 6000 2>/dev/null 1>&2; then
+        ___X_CMD_CURL_UPDATE=1
+        return
+    else
+        [ -d "$srcfolder" ] && return
+    fi
+
+    local url="https://gitee.com/x-cmd/advise/raw/main/dist/all.tgz"
+    if [ "$___X_CMD_IN_CHINA_NET" != 1 ]; then
+        url="https://raw.githubusercontent.com/x-cmd/theme/advise/dist/all.tgz"
+    fi
+
+    if ___x_cmd_curl "$url"; then
+        [ -d "$srcfolder" ] && rm -rf "$srcfolder"
+        mkdir -p "$srcfolder"
+        tar -C "$srcfolder" xvf "$CACHE"
+    fi
+}
+
+___advise_man_ls(){
+    if ___advise_man_update; then
+        ls "$___X_CMD_ROOT/.tmp/advise/src"
+    fi
+}
+
+___advise_man_which(){
+    local name="${1:?Provide name}"
+    if ___advise_man_update; then
+        local p="$___X_CMD_ROOT/.tmp/advise/src/$name/advise.json"
+        [ -f "$p" ] && printf "%s" "$p"
+    fi
+
+    return 1
+}
+
+# ___advise_man_load(){
+#     local cmd="${1:?Provide cmd}"
+#     local p="$(___advise_man_which "$cmd")"
+#     if [ ! -f "$p" ]; then
+#         printf "%s\n" "$cmd.json Not found. You could try 'advise man update' for updates." >&2
+#         return 1
+#     fi
+#     compgen "___advise_man_completer" "$cmd"
+# }
+
+___advise_man_load(){
+    local i
+    for i in $(___advise_man_ls); do
+        if s=$(complete -p "$i" 1>/dev/null 2>&1); then
+            [[ "$s" == *___advise_completer* ]] && continue
+        fi
+        compgen "___advise_man_completer" "$i"
+    done
+}
+
+___advise_man_completer() {
+    # Interesting ... Passing
+    ___ADVISE_RUN_CMD_FOLDER="$___X_CMD_ROOT/.tmp/advise/src/" ___advise_run ""
+}
+
+___advise_man(){
+    local op="${1:?Provide subcommand}"; shift
+    case "$op" in
+        ls)         ___advise_man_ls ;;
+        update)     ___advise_man_update ;;
+        which)      ___advise_man_which "$@" ;;
+        load)       ___advise_man_load "$@" ;;
+        *)          ___advise_man_load "$op" "$@" ;;
+    esac
+}
+
+# EndSection
