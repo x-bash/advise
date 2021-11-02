@@ -251,16 +251,17 @@ $cmd_result"
 
 ___advise_main(){
     local func="${1:?Provide function name}"
-    # printf "func:%s\n" "$func" >> testzqk
     local filepath="${2}"
     local tmp_filepath=${TMPDIR%/}/.x-cmd/advise_auto_json/$func
     mkdir -p "$(dirname "$tmp_filepath")"
-
+    printf "1:%s\n2:%s\n" "$1" "$2">>testzqk
     if [ - = "$filepath" ]; then
         filepath=$tmp_filepath
         advise_log "Pipe standard input to $filepath"
         cat >"$filepath"
+        printf "###1">>testzqk
     elif [ -z "$filepath" ]; then
+        printf "###2">>testzqk
         local filepath=$tmp_filepath
         if [ -n "$___XRC_UDPATE" ] || [ ! -f "$filepath" ]; then
             advise_log debug "Pipe the result of \"$func _x_cmd_advise_json\" to $filepath"
@@ -274,6 +275,7 @@ ___advise_main(){
             fi
         fi
     else
+        printf "###3">>testzqk
         advise_log debug "Copy self-defined file $filepath to $tmp_filepath"
         cp "$filepath" "$tmp_filepath"
         filepath="$tmp_filepath"
@@ -295,9 +297,15 @@ ___advise_run(){
     case "$resname" in
         /*) filepath="$resname" ;;
         -)  filepath=/dev/stdin ;;
-        *)  filepath="$___ADVISE_RUN_CMD_FOLDER/$resname/advise.json" ;;
+        *)
+            if [ -d "$___ADVISE_RUN_CMD_FOLDER/$resname" ]; then
+                filepath="$___ADVISE_RUN_CMD_FOLDER/$resname/advise.json"
+            else
+                filepath="$___ADVISE_RUN_CMD_FOLDER/$resname"
+            fi
+            ;;
     esac
-    # printf "filepath: %s\n" "$filepath">>testzqk
+    printf "filepath: %s\noffset：%s\n" "$filepath" "$offset">>testzqk
 
     shift 2>/dev/null
 
@@ -497,7 +505,7 @@ ___advise_man(){
         update)     ___advise_man_update ;;
         which)      ___advise_man_which "$@" ;;
         load)       ___advise_man_load "$@" ;;
-        rm)       ___advise_man_rm ;;
+        rm)         ___advise_man_rm ;;
         *)          ___advise_man_load "$op" "$@" ;;
     esac
 }
