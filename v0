@@ -102,7 +102,10 @@ ___advise_lsd(){
         printf "%s/\n" "${l%/}"
     done
 }
-
+___advise_ls_grep(){
+    local localopt="${1:-${cur:-""}}"
+    ls | grep -E "${localopt}" 2>/dev/null
+}
 ___advise_ls(){
     local localdir="${1:-${cur:-""}}"
 
