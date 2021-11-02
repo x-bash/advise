@@ -289,7 +289,13 @@ ___advise_run(){
     case "$resname" in
         /*) filepath="$resname" ;;
         -)  filepath=/dev/stdin ;;
-        *)  filepath="$___ADVISE_RUN_CMD_FOLDER/$resname/advise.json" ;;
+        *)
+            if [ -d "$___ADVISE_RUN_CMD_FOLDER/$resname" ]; then
+                filepath="$___ADVISE_RUN_CMD_FOLDER/$resname/advise.json"
+            else
+                filepath="$___ADVISE_RUN_CMD_FOLDER/$resname"
+            fi
+            ;;
     esac
 
     shift 2>/dev/null
