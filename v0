@@ -295,8 +295,9 @@ ___advise_run(){
     case "$resname" in
         /*) filepath="$resname" ;;
         -)  filepath=/dev/stdin ;;
-        *)  filepath="$___ADVISE_RUN_CMD_FOLDER/$resname" ;;
+        *)  filepath="$___ADVISE_RUN_CMD_FOLDER/$resname/advise.json" ;;
     esac
+    # printf "filepath: %s\n" "$filepath">>testzqk
 
     shift 2>/dev/null
 
@@ -425,29 +426,17 @@ ___advise_man_exists(){
 }
 
 ___advise_man_update(){
-    local ___X_CMD_CURL_UPDATE="${___X_CMD_CURL_UPDATE}"
-
     local CACHE="$___X_CMD_ROOT/.tmp/advise/all.tar.gz"
     local srcfolder="$___X_CMD_ROOT/.tmp/advise/src"
 
-    printf "___X_CMD_CURL_UPDATE: %s;\nCACHE: %s;\nsrcfolder: %s;\n"  "___X_CMD_CURL_UPDATE" "$CACHE" "$srcfolder">>testzqk
-
-    # if find "$CACHE" -mmin 6000 2>/dev/null 1>&2; then
-    #     return
-    # else
-    #     [ -d "$srcfolder" ] && return
-    # fi
-
     local url="https://gitee.com/x-cmd/advise/raw/main/dist/all.tgz"
     if [ "$___X_CMD_IN_CHINA_NET" != 1 ]; then
-    #     ___X_CMD_CURL_UPDATE=1
-        url="https://raw.githubusercontent.com/x-cmd/theme/advise/dist/all.tgz"
+        url="https://raw.githubusercontent.com/x-cmd/advise/main/dist/all.tgz"
     fi
-
     if ___x_cmd_curl "$url"; then
         [ -d "$srcfolder" ] && rm -rf "$srcfolder"
         mkdir -p "$srcfolder"
-        tar -C "$srcfolder" xvf "$CACHE"
+        tar xvf "$CACHE" -C "$srcfolder"
     fi
 }
 
@@ -483,13 +472,22 @@ ___advise_man_load(){
         if s=$(complete -p "$i" 1>/dev/null 2>&1); then
             [[ "$s" == *___advise_completer* ]] && continue
         fi
-        compgen "___advise_man_completer" "$i"
+        # compgen "___advise_man_completer" "$i"
+        complete -F "___advise_man_completer" "$i"
     done
+}
+
+___advise_man_rm(){
+    local srcfolder="$___X_CMD_ROOT/.tmp/advise/src"
+    local CACHE="$___X_CMD_ROOT/.tmp/advise/all.tar.gz"
+    if ___advise_man_exists; then
+        rm -rf "$srcfolder"
+    fi
 }
 
 ___advise_man_completer() {
     # Interesting ... Passing
-    ___ADVISE_RUN_CMD_FOLDER="$___X_CMD_ROOT/.tmp/advise/src/" ___advise_run ""
+    ___ADVISE_RUN_CMD_FOLDER="$___X_CMD_ROOT/.tmp/advise/src" ___advise_run ""
 }
 
 ___advise_man(){
@@ -499,6 +497,7 @@ ___advise_man(){
         update)     ___advise_man_update ;;
         which)      ___advise_man_which "$@" ;;
         load)       ___advise_man_load "$@" ;;
+        rm)       ___advise_man_rm ;;
         *)          ___advise_man_load "$op" "$@" ;;
     esac
 }
