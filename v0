@@ -419,16 +419,9 @@ ___advise_man_update(){
     local CACHE="$___X_CMD_ROOT/.tmp/advise/all.tar.gz"
     local srcfolder="$___X_CMD_ROOT/.tmp/advise/src"
 
-    # if find "$CACHE" -mmin 6000 2>/dev/null 1>&2; then
-    #     ___X_CMD_CURL_UPDATE=1
-    #     return
-    # else
-    #     [ -d "$srcfolder" ] && return
-    # fi
-
     local url="https://gitee.com/x-cmd/advise/raw/main/dist/all.tgz"
     if [ "$___X_CMD_IN_CHINA_NET" != 1 ]; then
-        url="https://raw.githubusercontent.com/x-cmd/theme/advise/dist/all.tgz"
+        url="https://raw.githubusercontent.com/x-cmd/advise/dist/all.tgz"
     fi
 
     if ___x_cmd_curl "$url"; then
