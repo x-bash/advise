@@ -125,16 +125,14 @@ ___advise_ls(){
         folder="${localdir%/*}"
         pattern="${localdir##*/}"
     fi
-
-    # ls "${folder:-.}" | awk -v folder="$folder" -v pattern="$pattern" 'match($0, "^" pattern){
-    #     if (folder == "") {
-    #         print $0
-    #     } else {
-    #         print folder "/" $0
-    #     }
-    # }' 2>/dev/null
-
-    ls "${folder:-.}" | grep -E "${pattern:-""}" 2>/dev/null
+    # printf "cur:%s;\nfolder: %s;\npattern: %s\n" "$cur" "$folder" "$pattern">>testzqk
+    ls "${folder:-.}" | awk -v folder="$folder" -v pattern="$pattern" 'match($0, "^" pattern){
+        if (folder == "") {
+            print $0
+        } else {
+            print folder "/" $0
+        }
+    }' 2>/dev/null
 
     # local l
     # ls "${localdir}" | while read -r l; do
@@ -253,7 +251,7 @@ $cmd_result"
 
 ___advise_main(){
     local func="${1:?Provide function name}"
-    printf "func:%s\n" "$func" >> testzqk
+    # printf "func:%s\n" "$func" >> testzqk
     local filepath="${2}"
     local tmp_filepath=${TMPDIR%/}/.x-cmd/advise_auto_json/$func
     mkdir -p "$(dirname "$tmp_filepath")"
@@ -371,7 +369,7 @@ ___advise_run(){
         result="${result%%#> *}"
     fi
 
-    printf "\n%s\n" "$result *** $cmd_result"  >> testzqk
+    # printf "\n%s\n" "$result *** $cmd_result"  >> testzqk
 
     # shellcheck disable=SC2207
     COMPREPLY=(
@@ -380,7 +378,7 @@ ___advise_run(){
 $cmd_result" -- "$cur"
         )
     )
-    printf "cur:%s;\n" "$cur" >> testzqk
+    # printf "cur:%s;\n" "$cur" >> testzqk
 
     __ltrim_completions "$cur" "@"
     __ltrim_completions "$cur" ":"
@@ -391,7 +389,7 @@ __ltrim_completions()
 {
 
     local i=${#COMPREPLY[*]}
-    printf "i:%s\n" "${#COMPREPLY[*]} ${COMPREPLY[*]}" >> testzqk
+    # printf "i:%s\n" "${#COMPREPLY[*]} ${COMPREPLY[*]}" >> testzqk
     ((i == 0)) && return 0
     if [[ $1 == *$2* && $COMP_WORDBREAKS == *$2* ]]; then
         # Remove colon-word prefix from COMPREPLY items
@@ -401,7 +399,7 @@ __ltrim_completions()
             COMPREPLY[i]=${COMPREPLY[i]#"$colon_word"}
         done
     fi
-    printf "%s\n" "${COMPREPLY[*]}" >> testzqk
+    # printf "%s\n" "${COMPREPLY[*]}" >> testzqk
 }
 
 ___advise_completer() {
@@ -432,8 +430,9 @@ ___advise_man_update(){
     local CACHE="$___X_CMD_ROOT/.tmp/advise/all.tar.gz"
     local srcfolder="$___X_CMD_ROOT/.tmp/advise/src"
 
+    printf "___X_CMD_CURL_UPDATE: %s;\nCACHE: %s;\nsrcfolder: %s;\n"  "___X_CMD_CURL_UPDATE" "$CACHE" "$srcfolder">>testzqk
+
     # if find "$CACHE" -mmin 6000 2>/dev/null 1>&2; then
-    #     ___X_CMD_CURL_UPDATE=1
     #     return
     # else
     #     [ -d "$srcfolder" ] && return
@@ -441,6 +440,7 @@ ___advise_man_update(){
 
     local url="https://gitee.com/x-cmd/advise/raw/main/dist/all.tgz"
     if [ "$___X_CMD_IN_CHINA_NET" != 1 ]; then
+    #     ___X_CMD_CURL_UPDATE=1
         url="https://raw.githubusercontent.com/x-cmd/theme/advise/dist/all.tgz"
     fi
 

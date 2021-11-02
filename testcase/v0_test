@@ -5,7 +5,7 @@ xrc assert
 
 # Section: Testcase for advise awk code
 
-test1_at(){
+test_at(){
 
     assert_stdout "test123 option @a" <<A
 @a1
@@ -36,7 +36,7 @@ AddressFamily=
 A
 }
 
-test1_xsxs(){
+test_xsxs(){
     assert_stdout "test123 subcommand create"<<A
 create1
 create2
@@ -94,7 +94,7 @@ test1_char(){
 A
 }
 
-test1_hyphen(){
+test_hyphen(){
     assert_stdout "test123 option -" <<A
 -a
 -c
@@ -117,7 +117,7 @@ A
 
 }
 
-test1_marg(){
+test_marg(){
     assert_stdout "test123 option -a ''" <<A
 m1-a
 m1-b
@@ -131,7 +131,7 @@ m2-c
 A
 }
 
-test1_cmd(){
+test_cmd(){
 
     assert_stdout "test123 option atcmd @" <<A
 #> myself_ls
@@ -148,7 +148,7 @@ A
 A
 }
 
-test1_option(){
+test_option(){
 
     assert_stdout "test123 option atcmd --ls ''" <<A
 #> ___advise_ls
@@ -191,7 +191,7 @@ www:a
 A
 }
 
-test1_rarg(){
+test_rarg(){
     assert_stdout "test123 rarg abc ''" <<A
 #> ___advise_lsd; printf '..\n.\n../\n-'
 A
@@ -204,7 +204,7 @@ abt
 A
 
     assert_stdout "test123 rarg s s ''"<<A
-#> ___advise_ls
+#> ___advise_ls_grep ^t
 A
 
     assert_stdout "test123 rarg s s s ''"<<A
@@ -219,12 +219,7 @@ A
 A
 }
 
-test1_subcmd(){
-    assert_stdout "test123 s"<<A
-subcmd
-subcommand
-#> advise ls
-A
+test_subcmd(){
 
     assert_stdout "test123 subcmd create"<<A
 create1

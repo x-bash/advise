@@ -25,7 +25,7 @@
     "rarg": {
         "#1": [ "abc", "abt", ".c", ":a" ],
         "#2": "___advise_lsd; printf '..\n.\n../\n-'",
-        "#3": "___advise_ls",
+        "#3": "___advise_ls_grep ^t",
         "#4": [ "[A-Z]", "[a-z]", "[0-9]" ],
         "#n": ["#n-1", "#n-2", "#n-3"]
     },
@@ -70,7 +70,7 @@
         "-l": "compgen -u",
         "-m": "ssh -Q mac || echo 'hmac-md5 hmac-sha1 umac-64@openssh.com hmac-ripemd160 hmac-sha1-96 hmac-md5-96'",
         "-O": ["check", "forward", "cancel", "exit stop"],
-        "-o": ["AddKeysToAgent=yes", "AddKeysToAgent=ask", "AddKeysToAgent=confirm", "AddKeysToAgent=no", "AddressFamily=any", "AddressFamily=inet", "AddressFamily=inet6"],
+        "-o": ["AddKeysToAgent=yes", "AddKeysToAgent=ask", "AddKeysToAgent=confirm", "AddKeysToAgent=no", "AddressFamily=any", "AddressFamily=inet", "AddressFamily=inet6", "BatchMode", "BindAddress", "BindInterface", "CanonicalDomains", "CanonicalizeFallbackLocal", "CanonicalizeHostname", "CanonicalizeMaxDots", "CanonicalizePermittedCNAMEs", "CASignatureAlgorithms", "CertificateFile", "ChallengeResponseAuthentication", "CheckHostIP", "Ciphers", "ClearAllForwardings", "Compression", "ConnectionAttempts", "ConnectTimeout", "ControlMaster", "ControlPath", "ControlPersist", "DynamicForward", "EnableSSHKeysign", "EscapeChar", "ExitOnForwardFailure", "FingerprintHash", "ForwardAgent", "ForwardX11", "ForwardX11Timeout", "ForwardX11Trusted", "GatewayPorts", "GlobalKnownHostsFile", "GSSAPIAuthentication", "GSSAPIDelegateCredentials", "HashKnownHosts", "HostbasedAuthentication", "HostbasedKeyTypes", "HostKeyAlgorithms", "HostKeyAlias", "Hostname", "IdentitiesOnly", "IdentityAgent", "IdentityFile", "IgnoreUnknown", "Include", "IPQoS", "KbdInteractiveAuthentication", "KbdInteractiveDevices", "KexAlgorithms", "LocalCommand", "LocalForward", "LogLevel", "MACs", "NoHostAuthenticationForLocalhost", "NumberOfPasswordPrompts", "PasswordAuthentication", "PermitLocalCommand", "PKCS11Provider", "Port", "PreferredAuthentications", "ProxyCommand", "ProxyJump", "ProxyUseFdpass", "PubkeyAcceptedKeyTypes", "PubkeyAuthentication", "RekeyLimit", "RemoteCommand", "RemoteForward", "RequestTTY", "RevokedHostKeys", "SecurityKeyProvider", "SendEnv", "ServerAliveCountMax", "ServerAliveInterval", "SetEnv", "StreamLocalBindMask", "StreamLocalBindUnlink", "StrictHostKeyChecking", "SyslogFacility", "TCPKeepAlive", "Tunnel", "TunnelDevice", "UpdateHostKeys", "User", "UserKnownHostsFile", "VerifyHostKeyDNS", "VisualHostKey", "XAuthLocation", "GSSAPIKeyExchange", "GSSAPIRenewalForcesRekey", "GSSAPIServerIdentity", "GSSAPITrustDns", "SmartcardDevice", "UsePrivilegedPort", "Cipher", "CompressionLevel", "Protocol", "RhostsRSAAuthentication", "RSAAuthentication"],
         "-Q": "ssh -Q help",
         "-w": null
     }
