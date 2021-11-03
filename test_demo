@@ -1,50 +1,26 @@
-#!/bin/bash
-
-_cs(){
-    local cur prev result
-    COMPREPLY=()
-    if [ -n "$BASH_VERSION" ] && [ "${BASH_VERSION#3}" = "${BASH_VERSION}" ]; then
-        local last="${COMP_WORDS[COMP_CWORD]}"
-        case "$last" in
-            \"*|\'*)
-                COMP_LINE="${COMP_LINE%$last}"
-                words=( $COMP_LINE )
-                words+=("$last")
-                ;;
-            *)
-                words=( $COMP_LINE )
-                ;;
-        esac
-
-        # Ends with space
-        if [ "${COMP_LINE% }" != "${COMP_LINE}" ]; then
-            words+=( "" )
-        fi
-
-        COMP_WORDS=("${words[@]}")
-        COMP_CWORD="$(( ${#words[@]}-1 ))"
-    fi
-
-    cur="${COMP_WORDS[COMP_CWORD]}"
-    result="-a=test1 -a=test2 -a=cscs"
-    printf "%s\n" "$result *** $cur" >> testzqk
-    case "${cur}" in
-        -a=*)
-            COMPREPLY=( $(compgen -W "$result" -- ${cur}) )
-            ;;
-    esac
-    printf "i:%s\n" "${#COMPREPLY[*]} ${COMPREPLY[*]}" >> testzqk
-
-    if [ -n "$BASH_VERSION" ]; then
-        printf "======\n" >> testzqk
-        local opts=()
-        for value in "${COMPREPLY[@]}";do
-            opts+=("${value##*=}")
-        done
-        COMPREPLY=("${opts[@]}")
-        printf "%s\n" "${COMPREPLY[*]}" >> testzqk
-    fi
-
-    printf "%s\n" "${COMPREPLY[*]}" >> testzqk
+#! /usr/bin/env sh
+build() {
+    docker build --no-cache -t xcmd/debian:latest -f ./docker/debian.Dockerfile .
+    docker build --no-cache -t xcmd/alpine:latest -f ./docker/alpine.Dockerfile .
+    docker build --no-cache -t xcmd/bash:3 -f ./docker/bash3.Dockerfile .
+    docker build --no-cache -t xcmd/bash:4 -f ./docker/bash4.Dockerfile .
+    docker build --no-cache -t xcmd/bash:5 -f ./docker/bash5.Dockerfile .
 }
-complete -F _cs cs
+
+test_shell(){
+
+    # TODO: to check the docker image is built or not
+    if [ -z "$(docker images -q xcmd/debian:latest)" ]; then
+        build
+    fi
+
+    docker run -it -v "$(pwd)":/pd xcmd/debian bash -c ". ~/.x-cmd/boot && cd pd && $*"
+    docker run -it -v "$(pwd)":/pd xcmd/alpine sh -c ". ~/.x-cmd/boot && cd pd && $*"
+    docker run -it -v "$(pwd)":/pd xcmd/bash:3 bash -c ". ~/.x-cmd/boot && cd pd && $*"
+    docker run -it -v "$(pwd)":/pd xcmd/bash:4 bash -c ". ~/.x-cmd/boot && cd pd && $*"
+    docker run -it -v "$(pwd)":/pd xcmd/bash:5 bash -c ". ~/.x-cmd/boot && cd pd && $*"
+}
+
+test() {
+    test_shell "stat --version"
+}
