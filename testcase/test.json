@@ -42,15 +42,12 @@
         "--ttt|-t": " [ -z \"$(printf \"%s\" \"$cur\" | tr -d [0-9])\" ] && echo s,d,m | tr ',' '\n' | xargs -n 1 printf \"$cur%s\n\"",
         "--nnn|-n": "printf %s 0,1,2,3,4,5,6,7,8,9 | tr ',' '\n' | xargs -n 1 printf \"$cur%s\n\"",
         "--ncc|-c": "___advise_seq 1 10000",
-        "dddx": "printf %s 1,2,3,4,5,6,7,8,9,10 | tr ',' '\n' | xargs -n 1 printf \"$cur%s\n\"",
-        "ddd": [ ",", "|", "-", ":", "/", "@"],
-        "--ddd|-d": [ ",", "|", "-", ":", "/", "@"],
+        "--ddd|-d": [ ",", "|", "-", ":", "/" ],
         "--iii|-i": "___advise_ls ${cur:-$HOME/.ssh/}",
         "--ppp|-p": "___advise_seq 1/65535",
         "--AAA|-A": [ "[-][[hh]mm]SS" ],
         "--mmm|-m": [ "[[CC]YY]MMDDhhmm[.SS]" ],
-        "--qqq|-q": [ "[A-Z]", "[a-z]", "[0-9]" ],
-        "-W": ["@", "!", "r@", "r-@", "r0@", "r!", "r-!", "r0!"]
+        "--qqq|-q": [ "[A-Z]", "[a-z]", "[0-9]" ]
     },
     "cs": {
         "-seq":"___advise_seq 1/65535",
@@ -73,5 +70,7 @@
         "-o": ["AddKeysToAgent=yes", "AddKeysToAgent=ask", "AddKeysToAgent=confirm", "AddKeysToAgent=no", "AddressFamily=any", "AddressFamily=inet", "AddressFamily=inet6", "BatchMode", "BindAddress", "BindInterface", "CanonicalDomains", "CanonicalizeFallbackLocal", "CanonicalizeHostname", "CanonicalizeMaxDots", "CanonicalizePermittedCNAMEs", "CASignatureAlgorithms", "CertificateFile", "ChallengeResponseAuthentication", "CheckHostIP", "Ciphers", "ClearAllForwardings", "Compression", "ConnectionAttempts", "ConnectTimeout", "ControlMaster", "ControlPath", "ControlPersist", "DynamicForward", "EnableSSHKeysign", "EscapeChar", "ExitOnForwardFailure", "FingerprintHash", "ForwardAgent", "ForwardX11", "ForwardX11Timeout", "ForwardX11Trusted", "GatewayPorts", "GlobalKnownHostsFile", "GSSAPIAuthentication", "GSSAPIDelegateCredentials", "HashKnownHosts", "HostbasedAuthentication", "HostbasedKeyTypes", "HostKeyAlgorithms", "HostKeyAlias", "Hostname", "IdentitiesOnly", "IdentityAgent", "IdentityFile", "IgnoreUnknown", "Include", "IPQoS", "KbdInteractiveAuthentication", "KbdInteractiveDevices", "KexAlgorithms", "LocalCommand", "LocalForward", "LogLevel", "MACs", "NoHostAuthenticationForLocalhost", "NumberOfPasswordPrompts", "PasswordAuthentication", "PermitLocalCommand", "PKCS11Provider", "Port", "PreferredAuthentications", "ProxyCommand", "ProxyJump", "ProxyUseFdpass", "PubkeyAcceptedKeyTypes", "PubkeyAuthentication", "RekeyLimit", "RemoteCommand", "RemoteForward", "RequestTTY", "RevokedHostKeys", "SecurityKeyProvider", "SendEnv", "ServerAliveCountMax", "ServerAliveInterval", "SetEnv", "StreamLocalBindMask", "StreamLocalBindUnlink", "StrictHostKeyChecking", "SyslogFacility", "TCPKeepAlive", "Tunnel", "TunnelDevice", "UpdateHostKeys", "User", "UserKnownHostsFile", "VerifyHostKeyDNS", "VisualHostKey", "XAuthLocation", "GSSAPIKeyExchange", "GSSAPIRenewalForcesRekey", "GSSAPIServerIdentity", "GSSAPITrustDns", "SmartcardDevice", "UsePrivilegedPort", "Cipher", "CompressionLevel", "Protocol", "RhostsRSAAuthentication", "RSAAuthentication"],
         "-Q": "ssh -Q help",
         "-w": null
-    }
+    },
+    "#1": "advise ls",
+    "#n": "___advise_get_result '' 1"
 }

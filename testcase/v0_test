@@ -5,7 +5,7 @@ xrc assert
 
 # Section: Testcase for advise awk code
 
-test_at(){
+test1_at(){
 
     assert_stdout "test123 option @a" <<A
 @a1
@@ -36,7 +36,7 @@ AddressFamily=
 A
 }
 
-test_xsxs(){
+test1_xsxs(){
     assert_stdout "test123 subcommand create"<<A
 create1
 create2
@@ -94,7 +94,7 @@ test1_char(){
 A
 }
 
-test_hyphen(){
+test1_hyphen(){
     assert_stdout "test123 option -" <<A
 -a
 -c
@@ -117,7 +117,7 @@ A
 
 }
 
-test_marg(){
+test1_marg(){
     assert_stdout "test123 option -a ''" <<A
 m1-a
 m1-b
@@ -131,7 +131,7 @@ m2-c
 A
 }
 
-test_cmd(){
+test1_cmd(){
 
     assert_stdout "test123 option atcmd @" <<A
 #> myself_ls
@@ -148,7 +148,7 @@ A
 A
 }
 
-test_option(){
+test1_option(){
 
     assert_stdout "test123 option atcmd --ls ''" <<A
 #> ___advise_ls
@@ -191,7 +191,7 @@ www:a
 A
 }
 
-test_rarg(){
+test1_rarg(){
     assert_stdout "test123 rarg abc ''" <<A
 #> ___advise_lsd; printf '..\n.\n../\n-'
 A
@@ -219,7 +219,7 @@ A
 A
 }
 
-test_subcmd(){
+test1_subcmd(){
 
     assert_stdout "test123 subcmd create"<<A
 create1
@@ -300,7 +300,7 @@ test123(){
     {
         cat "$fp"
         printf "\034%s\034" "$s"  # printf "\034${s}\034"
-    } | awk -f "./v0.awk" # 2>/dev/null
+    } | awk -f "./v0_test.awk" # 2>/dev/null
 }
 
 # list all the file in the directory, and add the @ to the behind of the file name
