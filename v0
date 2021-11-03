@@ -32,22 +32,6 @@ advise(){
                 cat "${TMPDIR%/}/.x-cmd/advise_auto_json/$mod"
             done
             ;;
-        _x_cmd_advise_json)
-            cat <<A
-{
-    "ls": null,
-    "rm": null,
-    "which": {
-        "#n": "ls ${TMPDIR%/}/.x-cmd/advise_auto_json/"
-    },
-    "cat": {
-        "#n": "ls ${TMPDIR%/}/.x-cmd/advise_auto_json/"
-    }
-    "init": null
-}
-A
-            return 126
-            ;;
         man)
             ___advise_man "$@" ;;
         init|new)
@@ -78,6 +62,28 @@ A
             fi
             ;;
 
+        _x_cmd_advise_json)
+            cat <<A
+{
+    "ls": null,
+    "rm": null,
+    "which|cat|init|new": "ls ${TMPDIR%/}/.x-cmd/advise_auto_json/",
+    "man": {
+        "ls": null,
+        "update": null,
+        "rm": null,
+        "which": "advise man ls",
+        "load": null
+    },
+    "del":null,
+    "obj-new":null,
+    "del":null,
+    "obj-new": null,
+    "obj-del": null,
+}
+A
+            return 126
+            ;;
         "")
             # TODO: help doc
             ;;
@@ -249,19 +255,31 @@ $cmd_result"
 
 # Section : main
 
+___advise_update__cmd_json(){
+    local func="${1:?Provide function name}"
+    local tmp_filepath=${TMPDIR%/}/.x-cmd/advise_auto_json/$func
+    local v0_time=$(stat -c %Y ./v0)
+    local json_time=$(stat -c %Y "$tmp_filepath")
+    # printf "%s\n" "$v0_time*****$json_time">>testzqk
+    if [ "$v0_time" -gt "$json_time" ]; then
+        rm -rf "$tmp_filepath"
+        ___advise_main $func
+    fi
+}
+
 ___advise_main(){
     local func="${1:?Provide function name}"
     local filepath="${2}"
     local tmp_filepath=${TMPDIR%/}/.x-cmd/advise_auto_json/$func
     mkdir -p "$(dirname "$tmp_filepath")"
-    printf "1:%s\n2:%s\n" "$1" "$2">>testzqk
+    # printf "func:%s\nfilepath:%s\ntmp_filepath:%s\n" "$1" "$2" "${TMPDIR%/}/.x-cmd/advise_auto_json/$func">>testzqk
     if [ - = "$filepath" ]; then
         filepath=$tmp_filepath
         advise_log "Pipe standard input to $filepath"
         cat >"$filepath"
-        printf "###1">>testzqk
+        # printf "###1\n">>testzqk
     elif [ -z "$filepath" ]; then
-        printf "###2">>testzqk
+        # printf "###2\n">>testzqk
         local filepath=$tmp_filepath
         if [ -n "$___XRC_UDPATE" ] || [ ! -f "$filepath" ]; then
             advise_log debug "Pipe the result of \"$func _x_cmd_advise_json\" to $filepath"
@@ -275,7 +293,7 @@ ___advise_main(){
             fi
         fi
     else
-        printf "###3">>testzqk
+        # printf "###3\n">>testzqk
         advise_log debug "Copy self-defined file $filepath to $tmp_filepath"
         cp "$filepath" "$tmp_filepath"
         filepath="$tmp_filepath"
@@ -305,7 +323,7 @@ ___advise_run(){
             fi
             ;;
     esac
-    printf "filepath: %s\noffset：%s\n" "$filepath" "$offset">>testzqk
+    # printf "filepath: %s\noffset：%s\n" "$filepath" "$offset">>testzqk
 
     shift 2>/dev/null
 
@@ -424,7 +442,9 @@ if [ -n "$ZSH_VERSION" ]; then
 fi
 
 advise init advise
-
+if [ -f ${TMPDIR%/}/.x-cmd/advise_auto_json/advise ]; then
+    ___advise_update__cmd_json advise
+fi
 fi
 
 # Section: man
@@ -504,7 +524,7 @@ ___advise_man(){
         ls)         ___advise_man_ls ;;
         update)     ___advise_man_update ;;
         which)      ___advise_man_which "$@" ;;
-        load)       ___advise_man_load "$@" ;;
+        load)       ___advise_man_load ;;
         rm)         ___advise_man_rm ;;
         *)          ___advise_man_load "$op" "$@" ;;
     esac
