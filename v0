@@ -9,6 +9,7 @@ elif ! ___ADVISE_AWK_PATH="$(xrc which advise/v0.awk)"; then
 else
 
 x log init advise
+______X_CMD_ADVISE_V0_FILEPATH="$(xrc which advise/v0)"
 
 # Section : advise entrance
 
@@ -284,9 +285,8 @@ ___advise_main(){
 
 ___advise_update__cmd_json(){
     local func="${1:?Provide function name}"
-    local v0_filepath="./v0"
     local tmp_filepath=${TMPDIR%/}/.x-cmd/advise_auto_json/$func
-    if [ "$v0_filepath" -nt "$tmp_filepath" ]; then
+    if [ "$______X_CMD_ADVISE_V0_FILEPATH" -nt "$tmp_filepath" ]; then
         rm -rf "$tmp_filepath"
         ___advise_main $func
     fi
