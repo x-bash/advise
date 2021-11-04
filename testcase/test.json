@@ -55,7 +55,8 @@
         "-a": ["test1","test2","cscs"],
         "-c": ["adc=sss","scs=bbb","scs=aaa"],
         "-d": "___advise_ls testcases/",
-        "-e": "___advise_lsd"
+        "-e": "___advise_lsd",
+        "-o": null
     },
     "ssh": {
         "-b": null,

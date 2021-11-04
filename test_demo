@@ -1,24 +1,34 @@
 #! /usr/bin/env sh
-build() {
-    docker build --no-cache -t xcmd/debian:latest -f ./docker/debian.Dockerfile .
-    docker build --no-cache -t xcmd/alpine:latest -f ./docker/alpine.Dockerfile .
-    docker build --no-cache -t xcmd/bash:3 -f ./docker/bash3.Dockerfile .
-    docker build --no-cache -t xcmd/bash:4 -f ./docker/bash4.Dockerfile .
-    docker build --no-cache -t xcmd/bash:5 -f ./docker/bash5.Dockerfile .
-}
 
 test_shell(){
-
-    # TODO: to check the docker image is built or not
+     # TODO: to check the docker image is built or not
     if [ -z "$(docker images -q xcmd/debian:latest)" ]; then
-        build
+        echo "docker image xcmd/debian:latest is not built"
+        exit 1
     fi
 
-    docker run -it -v "$(pwd)":/pd xcmd/debian bash -c ". ~/.x-cmd/boot && cd pd && $*"
-    docker run -it -v "$(pwd)":/pd xcmd/alpine sh -c ". ~/.x-cmd/boot && cd pd && $*"
-    docker run -it -v "$(pwd)":/pd xcmd/bash:3 bash -c ". ~/.x-cmd/boot && cd pd && $*"
-    docker run -it -v "$(pwd)":/pd xcmd/bash:4 bash -c ". ~/.x-cmd/boot && cd pd && $*"
-    docker run -it -v "$(pwd)":/pd xcmd/bash:5 bash -c ". ~/.x-cmd/boot && cd pd && $*"
+    echo "Testing cross-shell"
+    echo "=================="
+    echo "Testing debian dash mawk run: $*"
+    docker run -it -v "$(pwd)":/pd xcmd/debian sh -c ". ~/.x-cmd/.boot/boot && cd pd && eval "$(curl https://get.x-cmd.com/all)" && $*"
+
+    echo "Testing alpine ash busybox awk run: $*"
+    docker run -it -v "$(pwd)":/pd xcmd/alpine sh -c ". ~/.x-cmd/.boot/boot && cd pd && eval "$(curl https://get.x-cmd.com/all)" && $*"
+
+    echo "Testing bash 3 busybox awk run: $*"
+    docker run -it -v "$(pwd)":/pd xcmd/bash:3 bash -c ". ~/.x-cmd/.boot/boot && cd pd && eval "$(curl https://get.x-cmd.com/all)" && $*"
+
+    echo "Testing bash 4 busybox awk run: $*"
+    docker run -it -v "$(pwd)":/pd xcmd/bash:4 bash -c ". ~/.x-cmd/.boot/boot && cd pd && eval "$(curl https://get.x-cmd.com/all)" && $*"
+
+    echo "Testing bash 5 busybox awk run: $*"
+    docker run -it -v "$(pwd)":/pd xcmd/bash:5 bash -c ". ~/.x-cmd/.boot/boot && cd pd && eval "$(curl https://get.x-cmd.com/all)" && $*"
+
+    echo "Testing centos bash5 busybox gawk run: $*"
+    docker run -it -v "$(pwd)":/pd xcmd/centos bash -c ". ~/.x-cmd/.boot/boot && cd pd && eval "$(curl https://get.x-cmd.com/all)" && $*"
+
+    # Test it in windows/mac
+    eval "$*"
 }
 
 test() {

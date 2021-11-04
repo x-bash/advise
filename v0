@@ -80,6 +80,7 @@ advise(){
     "del":null,
     "obj-new": null,
     "obj-del": null,
+    "zqkcsss": null
 }
 A
             return 126
@@ -254,14 +255,15 @@ $cmd_result"
 # EndSection
 
 # Section : main
-
 ___advise_update__cmd_json(){
     local func="${1:?Provide function name}"
+    local v0_filepath="./v0"
     local tmp_filepath=${TMPDIR%/}/.x-cmd/advise_auto_json/$func
-    local v0_time=$(stat -c %Y ./v0)
-    local json_time=$(stat -c %Y "$tmp_filepath")
+    # local v0_time=$(stat -c %Y ./v0)
+    # local json_time=$(stat -c %Y "$tmp_filepath")
     # printf "%s\n" "$v0_time*****$json_time">>testzqk
-    if [ "$v0_time" -gt "$json_time" ]; then
+    # if [ "$v0_time" -gt "$json_time" ]; then
+    if [ "$v0_filepath" -nt "$tmp_filepath" ]; then
         rm -rf "$tmp_filepath"
         ___advise_main $func
     fi
