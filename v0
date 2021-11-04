@@ -9,6 +9,7 @@ elif ! ___ADVISE_AWK_PATH="$(xrc which advise/v0.awk)"; then
 else
 
 x log init advise
+______X_CMD_ADVISE_V0_FILEPATH="$(xrc which advise/v0)"
 
 # Section : advise entrance
 
@@ -80,7 +81,7 @@ advise(){
     "del":null,
     "obj-new": null,
     "obj-del": null,
-    "zqkcsss": null
+    "zqk": null
 }
 A
             return 126
@@ -257,15 +258,14 @@ $cmd_result"
 # Section : main
 ___advise_update__cmd_json(){
     local func="${1:?Provide function name}"
-    local v0_filepath="./v0"
     local tmp_filepath=${TMPDIR%/}/.x-cmd/advise_auto_json/$func
-    # local v0_time=$(stat -c %Y ./v0)
-    # local json_time=$(stat -c %Y "$tmp_filepath")
-    # printf "%s\n" "$v0_time*****$json_time">>testzqk
-    # if [ "$v0_time" -gt "$json_time" ]; then
-    if [ "$v0_filepath" -nt "$tmp_filepath" ]; then
+    printf "%s\n" "$______X_CMD_ADVISE_V0_FILEPATH"
+    if [ "$______X_CMD_ADVISE_V0_FILEPATH" -nt "$tmp_filepath" ]; then
+        echo "改变"
         rm -rf "$tmp_filepath"
         ___advise_main $func
+    else
+        echo "不改变"
     fi
 }
 
