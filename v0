@@ -9,7 +9,8 @@ elif ! ___ADVISE_AWK_PATH="$(xrc which advise/v0.awk)"; then
 else
 
 x log init advise
-______X_CMD_ADVISE_V0_FILEPATH="$(xrc which advise/v0)"
+______X_CMD_ADVISE_V0_FILEPATH="./v0"
+# ______X_CMD_ADVISE_V0_FILEPATH="$(xrc which advise/v0)"
 
 # Section : advise entrance
 
@@ -80,8 +81,7 @@ advise(){
     "obj-new":null,
     "del":null,
     "obj-new": null,
-    "obj-del": null,
-    "zqk": null
+    "obj-del": null
 }
 A
             return 126
@@ -260,6 +260,7 @@ ___advise_update__cmd_json(){
     local func="${1:?Provide function name}"
     local tmp_filepath=${TMPDIR%/}/.x-cmd/advise_auto_json/$func
     printf "%s\n" "$______X_CMD_ADVISE_V0_FILEPATH"
+    printf "%s\n" "$tmp_filepath"
     if [ "$______X_CMD_ADVISE_V0_FILEPATH" -nt "$tmp_filepath" ]; then
         echo "改变"
         rm -rf "$tmp_filepath"
@@ -391,6 +392,12 @@ ___advise_run(){
     )"
     IFS="$OLDIFS"
 
+    if [[ "$result" =~ [:=\/]$ ]];then
+        compopt -o nospace
+    else
+        compopt +o nospace
+    fi
+
     local cmd="${result##*#> }"
     local cmd_result=""
     if [ "$cmd" != "$result" ]; then
@@ -416,7 +423,6 @@ $cmd_result" -- "$cur"
 }
 __ltrim_completions()
 {
-
     local i=${#COMPREPLY[*]}
     # printf "i:%s\n" "${#COMPREPLY[*]} ${COMPREPLY[*]}" >> testzqk
     ((i == 0)) && return 0

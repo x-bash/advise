@@ -23,7 +23,7 @@ atcmd
 @
 A
 }
-test_ssh(){
+test1_ssh(){
     assert_stdout "test123 ssh -o AddKeysToAgent=" <<A
 AddKeysToAgent=yes
 AddKeysToAgent=ask
@@ -35,13 +35,24 @@ AddKeysToAgent=
 AddressFamily=
 A
 }
+test_tldr(){
+    assert_stdout "test123 tldr cat common/7z"<<A
+common/7z.md
+common/7za.md
+common/7zr.md
+A
+#     assert_stdout "test123 tldr cat ''" <<A
+# common/
+# linux/
+# A
+}
 
 test1_xsxs(){
     assert_stdout "test123 subcommand create"<<A
 create1
 create2
 create3
-create4
+create4cc
 A
     assert_stdout "test123 cs -a ''"<<A
 test1
@@ -300,7 +311,7 @@ test123(){
     {
         cat "$fp"
         printf "\034%s\034" "$s"  # printf "\034${s}\034"
-    } | awk -f "./v0.awk" # 2>/dev/null
+    } | awk -f "./v0_test.awk" # 2>/dev/null
 }
 
 # list all the file in the directory, and add the @ to the behind of the file name
@@ -322,6 +333,6 @@ start_test ./testcase/v0_test
 
 # Section: for the interactive ui
 rm -rf test.out
-___ADVISE_AWK_PATH="./v0.awk"
 . ./v0
+___ADVISE_AWK_PATH="./v0.awk"
 advise compt "./testcase/test.json"

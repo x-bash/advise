@@ -728,7 +728,10 @@ function print_candidate_with_optionid( option_id, cur,
         can = can_arr[i]
         # debug("--------can:"can)
         if (str_startswith( can, cur ) && can != "--@" && cur !~ /^-.*=$/) {
-            print can
+            if (cur !~ /[:=\/]/ && match(can, /[:=\/]/)){
+                can=substr(can,1,RSTART)
+            }
+            if (!a[can]++) print can
         }
     }
 }
