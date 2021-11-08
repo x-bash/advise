@@ -378,6 +378,12 @@ ___advise_run(){
     )"
     IFS="$OLDIFS"
 
+    if [[ "$result" =~ [:=\/]$ ]];then
+        compopt -o nospace
+    else
+        compopt +o nospace
+    fi
+
     local cmd="${result##*#> }"
     local cmd_result=""
     if [ "$cmd" != "$result" ]; then
