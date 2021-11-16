@@ -5,108 +5,98 @@ xrc assert
 
 # Section: Testcase for advise awk code
 
-test1_at(){
+test_at(){
 
-    assert_stdout "test123 option @a" <<A
+    assert_stdout "test23 option @a" <<A
 @a1
 @a2
 @a3
 A
 
-    assert_stdout "test123 option @" <<A
+    assert_stdout "test23 option @" <<A
 @a
 @b
 A
 
-    assert_stdout "test123 option @a ''" <<A
+    assert_stdout "test23 option @a ''" <<A
 atcmd
 @
 A
 }
-test1_ssh(){
-    assert_stdout "test123 ssh -o AddKeysToAgent=" <<A
+test_ssh(){
+    assert_stdout "test23 ssh -o AddKeysToAgent=" <<A
 AddKeysToAgent=yes
 AddKeysToAgent=ask
 AddKeysToAgent=confirm
 AddKeysToAgent=no
 A
-    assert_stdout "test123 ssh -o A" <<A
+    assert_stdout "test23 ssh -o A" <<A
 AddKeysToAgent=
 AddressFamily=
 A
 }
 test_tldr(){
-    assert_stdout "test123 tldr cat common/7z"<<A
+    assert_stdout "test23 tldr cat common/7z"<<A
 common/7z.md
 common/7za.md
 common/7zr.md
 A
-#     assert_stdout "test123 tldr cat ''" <<A
+#     assert_stdout "test23 tldr cat ''" <<A
 # common/
 # linux/
 # A
 }
 
-test1_xsxs(){
-    assert_stdout "test123 subcommand create"<<A
+test_xsxs(){
+    assert_stdout "test23 subcommand create"<<A
 create1
 create2
 create3
-create4cc
+create4
 A
-    assert_stdout "test123 cs -a ''"<<A
+    assert_stdout "test23 cs -a ''"<<A
 test1
 test2
 cscs
 A
-    assert_stdout "test123 cs -a="<<A
+    assert_stdout "test23 cs -a="<<A
 -a=test1
 -a=test2
 -a=cscs
 A
-    assert_stdout "test123 cs -a=t"<<A
+    assert_stdout "test23 cs -a=t"<<A
 -a=test1
 -a=test2
 -a=cscs
 A
 
-    assert_stdout "test123 cs -b test -"<<A
+    assert_stdout "test23 cs -b test -"<<A
 -seq
 -a
 -c
 -d
 -e
+-o
 A
-    assert_stdout "test123 cs -a=cscs -"<<A
+    assert_stdout "test23 cs -a=cscs -"<<A
 -seq
 -b
 -a
 -c
 -d
 -e
+-o
 A
-    assert_stdout "test123 cs -b test -a cscs -e ''"<<A
+    assert_stdout "test23 cs -b test -a cscs -e ''"<<A
 #> ___advise_lsd
 A
-    assert_stdout "test123 cs -b test -a=cscs -e ''"<<A
+    assert_stdout "test23 cs -b test -a=cscs -e ''"<<A
 #> ___advise_lsd
 A
 }
 
-
-test1_char(){
-    assert_stdout "test123 subcmd ddd ''"<<A
-,
-|
--
-:
-/
-@
-A
-}
-
-test1_hyphen(){
-    assert_stdout "test123 option -" <<A
+test_hyphen(){
+    assert_stdout "test23 option -" <<A
 -a
 -c
 -p
@@ -115,7 +105,7 @@ test1_hyphen(){
 @
 A
 
-assert_stdout "test123 option --" <<A
+assert_stdout "test23 option --" <<A
 --repo2
 --repo3
 --priviledge
@@ -128,169 +118,168 @@ A
 
 }
 
-test1_marg(){
-    assert_stdout "test123 option -a ''" <<A
+test_marg(){
+    assert_stdout "test23 option -a ''" <<A
 m1-a
 m1-b
 m1-c
 A
 
-    assert_stdout "test123 option -a m1-a ''" <<A
+    assert_stdout "test23 option -a m1-a ''" <<A
 m2-a
 m2-b
 m2-c
 A
 }
 
-test1_cmd(){
+test_cmd(){
 
-    assert_stdout "test123 option atcmd @" <<A
+    assert_stdout "test23 option atcmd @" <<A
 #> myself_ls
 A
 
-    assert_stdout "test123 subcmd repo ''"<<A
+    assert_stdout "test23 subcmd repo ''"<<A
 #> ls
 A
-    assert_stdout "test123 option --cmd ''" <<A
+    assert_stdout "test23 option --cmd ''" <<A
 #> ___advise_ls
 A
-    assert_stdout "test123 subcmd cmd ''" <<A
+    assert_stdout "test23 subcmd cmd ''" <<A
 #> ls
 A
 }
 
-test1_option(){
+test_option(){
 
-    assert_stdout "test123 option atcmd --ls ''" <<A
+    assert_stdout "test23 option atcmd --ls ''" <<A
 #> ___advise_ls
 A
 
-    assert_stdout "test123 option -c ''" <<A
+    assert_stdout "test23 option -c ''" <<A
 m3-a
 m3-b
 m3-c
 A
 
-    assert_stdout "test123 option --priviledge ''" <<A
+    assert_stdout "test23 option --priviledge ''" <<A
 private
 public
 A
 
-    assert_stdout "test123 option -d ''" <<A
+    assert_stdout "test23 option -d ''" <<A
 e
 c:
 a
 A
 
-    assert_stdout "test123 option -d e" <<A
+    assert_stdout "test23 option -d e" <<A
 edwinjhlee
 labve
 A
 
-    assert_stdout "test123 option -d c:" <<A
+    assert_stdout "test23 option -d c:" <<A
 c:abc
 c:aaa
 A
-    assert_stdout "test123 option -d c:a" <<A
+    assert_stdout "test23 option -d c:a" <<A
 c:abc
 c:aaa
 A
-    assert_stdout "test123 option --colon ''" <<A
+    assert_stdout "test23 option --colon ''" <<A
 www:a
 :b
 :c
 A
 }
 
-test1_rarg(){
-    assert_stdout "test123 rarg abc ''" <<A
+test_rarg(){
+    assert_stdout "test23 rarg abc ''" <<A
 #> ___advise_lsd; printf '..\n.\n../\n-'
 A
 
-    assert_stdout "test123 rarg ''"<<A
+    assert_stdout "test23 rarg ''"<<A
 abc
 abt
 .c
 :a
 A
 
-    assert_stdout "test123 rarg s s ''"<<A
+    assert_stdout "test23 rarg s s ''"<<A
 #> ___advise_ls_grep ^t
 A
 
-    assert_stdout "test123 rarg s s s ''"<<A
+    assert_stdout "test23 rarg s s s ''"<<A
 [A-Z]
 [a-z]
 [0-9]
 A
-    assert_stdout "test123 rarg s s s s ''"<<A
+    assert_stdout "test23 rarg s s s s ''"<<A
 #n-1
 #n-2
 #n-3
 A
 }
 
-test1_subcmd(){
+test_subcmd(){
 
-    assert_stdout "test123 subcmd create"<<A
+    assert_stdout "test23 subcmd create"<<A
 create1
 create2
 create3
 create4
 A
 
-    assert_stdout "test123 subcmd repo ''"<<A
+    assert_stdout "test23 subcmd repo ''"<<A
 #> ls
 A
 
-    assert_stdout "test123 subcmd --ufuu ''"<<A
+    assert_stdout "test23 subcmd --ufuu ''"<<A
 /dev/stdout
 /dev/stderr
 A
 
 
-    assert_stdout "test123 subcmd -u ''"<<A
+    assert_stdout "test23 subcmd -u ''"<<A
 /dev/stdout
 /dev/stderr
 A
 
-    assert_stdout "test123 subcmd  -t ''"<<A
+    assert_stdout "test23 subcmd  -t ''"<<A
 #>  [ -z "\$(printf "%s" "\$cur" | tr -d [0-9])" ] && echo s,d,m | tr ',' '\n' | xargs -n 1 printf "\$cur%s\n"
 A
 
-    assert_stdout "test123 subcmd -n ''"<<A
+    assert_stdout "test23 subcmd -n ''"<<A
 #> printf %s 0,1,2,3,4,5,6,7,8,9 | tr ',' '\n' | xargs -n 1 printf "\$cur%s\n"
 A
 
-    assert_stdout "test123 subcmd --ncc ''"<<A
+    assert_stdout "test23 subcmd --ncc ''"<<A
 #> ___advise_seq 1 10000
 A
-    assert_stdout "test123 subcmd -d ''"<<A
+    assert_stdout "test23 subcmd -d ''"<<A
 ,
 |
 -
 :
 /
-@
 A
 
-    assert_stdout "test123 subcmd -i ''"<<A
+    assert_stdout "test23 subcmd -i ''"<<A
 #> ___advise_ls \${cur:-\$HOME/.ssh/}
 A
 
-    assert_stdout "test123 subcmd -p ''"<<A
+    assert_stdout "test23 subcmd -p ''"<<A
 #> ___advise_seq 1/65535
 A
 
-    assert_stdout "test123 subcmd -A ''"<<A
+    assert_stdout "test23 subcmd -A ''"<<A
 [-][[hh]mm]SS
 A
 
-    assert_stdout "test123 subcmd -m ''"<<A
+    assert_stdout "test23 subcmd -m ''"<<A
 [[CC]YY]MMDDhhmm[.SS]
 A
 
-    assert_stdout "test123 subcmd -q ''"<<A
+    assert_stdout "test23 subcmd -q ''"<<A
 [A-Z]
 [a-z]
 [0-9]
@@ -301,7 +290,7 @@ A
 
 # Section: utilities
 
-test123(){
+test23(){
     local fp="./testcase/test.json"
     local IFS=$'\002' # IFS="$(printf "\002")"
     # echo "Before awk: $*" > /dev/stderr

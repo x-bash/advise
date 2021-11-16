@@ -20,7 +20,12 @@ advise(){
         ls)
             ls "$@" "${TMPDIR%/}/.x-cmd/advise_auto_json" ;;
         rm)
-            rm -rf "${TMPDIR%/}/.x-cmd/advise_auto_json"/*  ;;
+            if [ "$#" -eq 0 ]; then
+                rm -rf "${TMPDIR%/}/.x-cmd/advise_auto_json"/*
+            else
+                rm -rf "${TMPDIR%/}/.x-cmd/advise_auto_json"/"$1"
+            fi
+            ;;
         which)
             if [ "$#" -eq 0 ]; then
                 printf "%s" "${TMPDIR%/}/.x-cmd/advise_auto_json"
@@ -68,8 +73,8 @@ advise(){
             cat <<A
 {
     "ls": null,
-    "rm": null,
-    "which|cat|init|new": "ls ${TMPDIR%/}/.x-cmd/advise_auto_json/",
+    "rm": "advise ls",
+    "which|cat|init|new": "ls /tmp/.x-cmd/advise_auto_json/",
     "man": {
         "ls": null,
         "update": null,
@@ -77,9 +82,7 @@ advise(){
         "which": "advise man ls",
         "load": null
     },
-    "del":null,
-    "obj-new":null,
-    "del":null,
+    "del": null,
     "obj-new": null,
     "obj-del": null
 }
@@ -133,7 +136,7 @@ ___advise_ls(){
         folder="${localdir%/*}"
         pattern="${localdir##*/}"
     fi
-    # printf "cur:%s;\nfolder: %s;\npattern: %s\n" "$cur" "$folder" "$pattern">>testzqk
+
     ls "${folder:-.}" | awk -v folder="$folder" -v pattern="$pattern" 'match($0, "^" pattern){
         if (folder == "") {
             print $0
@@ -262,11 +265,11 @@ ___advise_update__cmd_json(){
     printf "%s\n" "$______X_CMD_ADVISE_V0_FILEPATH"
     printf "%s\n" "$tmp_filepath"
     if [ "$______X_CMD_ADVISE_V0_FILEPATH" -nt "$tmp_filepath" ]; then
-        echo "改变"
+        # echo "改变"
         rm -rf "$tmp_filepath"
         ___advise_main $func
-    else
-        echo "不改变"
+    # else
+    #     echo "不改变"
     fi
 }
 
@@ -275,14 +278,11 @@ ___advise_main(){
     local filepath="${2}"
     local tmp_filepath=${TMPDIR%/}/.x-cmd/advise_auto_json/$func
     mkdir -p "$(dirname "$tmp_filepath")"
-    # printf "func:%s\nfilepath:%s\ntmp_filepath:%s\n" "$1" "$2" "${TMPDIR%/}/.x-cmd/advise_auto_json/$func">>testzqk
     if [ - = "$filepath" ]; then
         filepath=$tmp_filepath
         advise_log "Pipe standard input to $filepath"
         cat >"$filepath"
-        # printf "###1\n">>testzqk
     elif [ -z "$filepath" ]; then
-        # printf "###2\n">>testzqk
         local filepath=$tmp_filepath
         if [ -n "$___XRC_UDPATE" ] || [ ! -f "$filepath" ]; then
             advise_log debug "Pipe the result of \"$func _x_cmd_advise_json\" to $filepath"
@@ -296,13 +296,17 @@ ___advise_main(){
             fi
         fi
     else
-        # printf "###3\n">>testzqk
         advise_log debug "Copy self-defined file $filepath to $tmp_filepath"
         cp "$filepath" "$tmp_filepath"
         filepath="$tmp_filepath"
     fi
 
     complete -F "___advise_completer" "$func"
+    # if [ -z "$ZSH_VERSION" ];then
+    #     complete -F "___advise_completer" "$func"
+    # else
+    #     compdef "___advise_completer" "$func"
+    # fi
 }
 
 ___advise_run(){
@@ -326,7 +330,6 @@ ___advise_run(){
             fi
             ;;
     esac
-    # printf "filepath: %s\noffset：%s\n" "$filepath" "$offset">>testzqk
 
     shift 2>/dev/null
 
@@ -353,6 +356,11 @@ ___advise_run(){
     fi
 
     local cur="${COMP_WORDS[COMP_CWORD]}"
+
+    # if [ -z "${COMP_WORDS[COMP_CWORD]}" ];then
+    #     COMP_WORDS[COMP_CWORD]=""
+    # fi
+    # cur="${COMP_WORDS[COMP_CWORD]}"
 
     if [ "$cur" == "" ]; then
         # Notice: The following line handle zsh compatibility problem.
@@ -392,13 +400,27 @@ ___advise_run(){
     )"
     IFS="$OLDIFS"
 
+    # if [ -z "$ZSH_VERSION" ];then
+    #     if [[ "$result" =~ [:=\/]$ ]];then
+    #         compopt -o nospace
+    #     else
+    #         compopt +o nospace
+    #     fi
+    # fi
+
     if [ -z "$ZSH_VERSION" ];then
         if [[ "$result" =~ [:=\/]$ ]];then
             compopt -o nospace
         else
             compopt +o nospace
         fi
+    # else
+        # if [[ "$result" =~ [:=\/]$ ]];then
+        #     compadd -S '' -a "$result"
+        # fi
+        # _describe '' result
     fi
+
 
     local cmd="${result##*#> }"
     local cmd_result=""
@@ -407,8 +429,6 @@ ___advise_run(){
         result="${result%%#> *}"
     fi
 
-    # printf "\n%s\n" "$result *** $cmd_result"  >> testzqk
-
     # shellcheck disable=SC2207
     COMPREPLY=(
         $(
@@ -416,7 +436,6 @@ ___advise_run(){
 $cmd_result" -- "$cur"
         )
     )
-    # printf "cur:%s;\n" "$cur" >> testzqk
 
     __ltrim_completions "$cur" "@"
     __ltrim_completions "$cur" ":"
@@ -426,7 +445,6 @@ $cmd_result" -- "$cur"
 __ltrim_completions()
 {
     local i=${#COMPREPLY[*]}
-    # printf "i:%s\n" "${#COMPREPLY[*]} ${COMPREPLY[*]}" >> testzqk
     ((i == 0)) && return 0
     if [[ $1 == *$2* && $COMP_WORDBREAKS == *$2* ]]; then
         # Remove colon-word prefix from COMPREPLY items
@@ -436,7 +454,6 @@ __ltrim_completions()
             COMPREPLY[i]=${COMPREPLY[i]#"$colon_word"}
         done
     fi
-    # printf "%s\n" "${COMPREPLY[*]}" >> testzqk
 }
 
 ___advise_completer() {
@@ -447,7 +464,7 @@ ___advise_completer() {
 
 # EndSection
 
-if [ -n "$ZSH_VERSION" ]; then
+if [ -n "$ZSH_VERSION" ] && [ "$(autoload | grep bashcompinit)" = "" ]; then
     autoload -U +X bashcompinit compinit && bashcompinit && compinit
 fi
 
@@ -518,6 +535,7 @@ ___advise_man_load(){
 ___advise_man_rm(){
     local srcfolder="$___X_CMD_ROOT/.tmp/advise/src"
     local CACHE="$___X_CMD_ROOT/.tmp/advise/all.tar.gz"
+
     if ___advise_man_exists; then
         rm -rf "$srcfolder"
     fi
