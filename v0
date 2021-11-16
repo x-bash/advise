@@ -19,7 +19,12 @@ advise(){
         ls)
             ls "$@" "${TMPDIR%/}/.x-cmd/advise_auto_json" ;;
         rm)
-            rm -rf "${TMPDIR%/}/.x-cmd/advise_auto_json"/*  ;;
+            if [ "$#" -eq 0 ]; then
+                rm -rf "${TMPDIR%/}/.x-cmd/advise_auto_json"/*
+            else
+                rm -rf "${TMPDIR%/}/.x-cmd/advise_auto_json"/"$1"
+            fi
+            ;;
         which)
             if [ "$#" -eq 0 ]; then
                 printf "%s" "${TMPDIR%/}/.x-cmd/advise_auto_json"
@@ -66,7 +71,7 @@ advise(){
             cat <<A
 {
     "ls": null,
-    "rm": null,
+    "rm": "advise ls",
     "which|cat|init|new": "ls ${TMPDIR%/}/.x-cmd/advise_auto_json/",
     "man": {
         "ls": null,
@@ -134,12 +139,6 @@ ___advise_ls(){
             print folder "/" $0
         }
     }' 2>/dev/null
-    # ls "${folder:-.}" | grep -E "${pattern:-""}" 2>/dev/null
-
-    # local l
-    # ls "${localdir}" | while read -r l; do
-    #     printf "%s%s\n" "$localdir" "$l"
-    # done
 }
 
 # 1-10
@@ -378,10 +377,12 @@ ___advise_run(){
     )"
     IFS="$OLDIFS"
 
-    if [[ "$result" =~ [:=\/]$ ]];then
-        compopt -o nospace
-    else
-        compopt +o nospace
+    if [ -z "$ZSH_VERSION" ];then
+        if [[ "$result" =~ [:=\/]$ ]];then
+            compopt -o nospace
+        else
+            compopt +o nospace
+        fi
     fi
 
     local cmd="${result##*#> }"
