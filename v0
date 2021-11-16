@@ -377,10 +377,12 @@ ___advise_run(){
     )"
     IFS="$OLDIFS"
 
-    if [[ "$result" =~ [:=\/]$ ]];then
-        compopt -o nospace
-    else
-        compopt +o nospace
+    if [ -z "$ZSH_VERSION" ];then
+        if [[ "$result" =~ [:=\/]$ ]];then
+            compopt -o nospace
+        else
+            compopt +o nospace
+        fi
     fi
 
     local cmd="${result##*#> }"
