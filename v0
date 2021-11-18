@@ -256,13 +256,13 @@ ___advise_main(){
     local filepath="${2}"
     local tmp_filepath=${TMPDIR%/}/.x-cmd/advise_auto_json/$func
     mkdir -p "$(dirname "$tmp_filepath")"
-    ___advise_update "$func"
 
-    if [ - = "$filepath" ]; then
+    if [ "-" = "$filepath" ]; then
         filepath=$tmp_filepath
         advise_log "Pipe standard input to $filepath"
         cat >"$filepath"
     elif [ -z "$filepath" ]; then
+        ___advise_update "$func"
         local filepath=$tmp_filepath
         if [ -n "$___XRC_UDPATE" ] || [ ! -f "$filepath" ]; then
             advise_log debug "Pipe the result of \"$func _x_cmd_advise_json\" to $filepath"
