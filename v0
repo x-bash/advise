@@ -288,7 +288,7 @@ ___advise_update(){
     local func="${1:?Provide function name}"
     local tmp_filepath=${TMPDIR%/}/.x-cmd/advise_auto_json/$func
 
-    if [ -f "$tmp_filepath" ] && [ -z "$(find "$tmp_filepath" -mtime -24)" ]; then
+    if [ -f "$tmp_filepath" ] && [ -z "$(find "$tmp_filepath" -mtime -1)" ]; then
         advise_log info "update: $tmp_filepath"
         rm -rf "$tmp_filepath"
         ___advise_main $func
