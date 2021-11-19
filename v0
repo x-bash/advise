@@ -9,13 +9,12 @@ elif ! ___ADVISE_AWK_PATH="$(xrc which advise/v0.awk)"; then
 else
 
 x log init advise
-______X_CMD_ADVISE_V0_FILEPATH="./v0"
-# ______X_CMD_ADVISE_V0_FILEPATH="$(xrc which advise/v0)"
+______X_CMD_ADVISE_V0_FILEPATH="$(xrc which advise/v0)"
 
 # Section : advise entrance
 
 advise(){
-    local op="${1:?Provide subcommand}"; shift
+    local op="${1}"; shift 2>/dev/null
     case "$op" in
         ls)
             ls "$@" "${TMPDIR%/}/.x-cmd/advise_auto_json" ;;
@@ -68,13 +67,12 @@ advise(){
                 unset -f "______adviser_of_$op"
             fi
             ;;
-
-        _x_cmd_advise_json)
+         _x_cmd_advise_json)
             cat <<A
 {
     "ls": null,
     "rm": "advise ls",
-    "which|cat|init|new": "ls /tmp/.x-cmd/advise_auto_json/",
+    "which|cat|init|new": "ls ${TMPDIR%/}/.x-cmd/advise_auto_json/",
     "man": {
         "ls": null,
         "update": null,
@@ -82,15 +80,16 @@ advise(){
         "which": "advise man ls",
         "load": null
     },
-    "del": null,
-    "obj-new": null,
+    "del":null,
+    "obj-new":null,
     "obj-del": null
 }
 A
             return 126
             ;;
-        "")
+        ""|help)
             # TODO: help doc
+            printf "%s\n" "Show advise help" >&2; return 1
             ;;
         *)
             ___advise_main "$op" "$@" ;;
@@ -114,12 +113,10 @@ ___advise_lsd(){
         printf "%s/\n" "${l%/}"
     done
 }
-
 ___advise_ls_grep(){
     local localopt="${1:-${cur:-""}}"
     ls | grep -E "${localopt}" 2>/dev/null
 }
-
 ___advise_ls(){
     local localdir="${1:-${cur:-""}}"
 
@@ -144,11 +141,6 @@ ___advise_ls(){
             print folder "/" $0
         }
     }' 2>/dev/null
-
-    # local l
-    # ls "${localdir}" | while read -r l; do
-    #     printf "%s%s\n" "$localdir" "$l"
-    # done
 }
 
 # 1-10
@@ -278,11 +270,13 @@ ___advise_main(){
     local filepath="${2}"
     local tmp_filepath=${TMPDIR%/}/.x-cmd/advise_auto_json/$func
     mkdir -p "$(dirname "$tmp_filepath")"
-    if [ - = "$filepath" ]; then
+
+    if [ "-" = "$filepath" ]; then
         filepath=$tmp_filepath
         advise_log "Pipe standard input to $filepath"
         cat >"$filepath"
     elif [ -z "$filepath" ]; then
+        ___advise_update "$func"
         local filepath=$tmp_filepath
         if [ -n "$___XRC_UDPATE" ] || [ ! -f "$filepath" ]; then
             advise_log debug "Pipe the result of \"$func _x_cmd_advise_json\" to $filepath"
@@ -307,6 +301,17 @@ ___advise_main(){
     # else
     #     compdef "___advise_completer" "$func"
     # fi
+}
+
+___advise_update(){
+    local func="${1:?Provide function name}"
+    local tmp_filepath=${TMPDIR%/}/.x-cmd/advise_auto_json/$func
+
+    if [ -f "$tmp_filepath" ] && [ -z "$(find "$tmp_filepath" -mtime -1)" ]; then
+        advise_log info "update: $tmp_filepath"
+        rm -rf "$tmp_filepath"
+        ___advise_main $func
+    fi
 }
 
 ___advise_run(){
@@ -400,27 +405,13 @@ ___advise_run(){
     )"
     IFS="$OLDIFS"
 
-    # if [ -z "$ZSH_VERSION" ];then
-    #     if [[ "$result" =~ [:=\/]$ ]];then
-    #         compopt -o nospace
-    #     else
-    #         compopt +o nospace
-    #     fi
-    # fi
-
     if [ -z "$ZSH_VERSION" ];then
         if [[ "$result" =~ [:=\/]$ ]];then
             compopt -o nospace
         else
             compopt +o nospace
         fi
-    # else
-        # if [[ "$result" =~ [:=\/]$ ]];then
-        #     compadd -S '' -a "$result"
-        # fi
-        # _describe '' result
     fi
-
 
     local cmd="${result##*#> }"
     local cmd_result=""
@@ -469,9 +460,6 @@ if [ -n "$ZSH_VERSION" ] && [ "$(autoload | grep bashcompinit)" = "" ]; then
 fi
 
 advise init advise
-if [ -f ${TMPDIR%/}/.x-cmd/advise_auto_json/advise ]; then
-    ___advise_update__cmd_json advise
-fi
 fi
 
 # Section: man
@@ -527,7 +515,6 @@ ___advise_man_load(){
         if s=$(complete -p "$i" 1>/dev/null 2>&1); then
             [[ "$s" == *___advise_completer* ]] && continue
         fi
-        # compgen "___advise_man_completer" "$i"
         complete -F "___advise_man_completer" "$i"
     done
 }
@@ -535,7 +522,6 @@ ___advise_man_load(){
 ___advise_man_rm(){
     local srcfolder="$___X_CMD_ROOT/.tmp/advise/src"
     local CACHE="$___X_CMD_ROOT/.tmp/advise/all.tar.gz"
-
     if ___advise_man_exists; then
         rm -rf "$srcfolder"
     fi

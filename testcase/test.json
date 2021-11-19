@@ -55,8 +55,7 @@
         "-a": ["test1","test2","cscs"],
         "-c": ["adc=sss","scs=bbb","scs=aaa"],
         "-d": "___advise_ls testcases/",
-        "-e": "___advise_lsd",
-        "-o": null
+        "-e": "___advise_lsd"
     },
     "ssh": {
         "-b": null,
@@ -76,7 +75,7 @@
         "update": null,
         "ls": "___tldr_lsname",
         "lang": "___tldr_lang",
-        "cat": ["common/2to3.md", "common/git-clone.md", "common/ogr2ogr.md", "common/7z.md","common/7za.md","common/7zr.md"]
+        "cat": ["common/2to3.md", "common/git-clone.md", "common/ogr2ogr.md", "common/7z.md","common/7za.md","common/7zr.md","linux/manpath.md","linux/mcookie.md"]
     },
     "#1": "advise ls",
     "#n": "___advise_get_result '' 1"
