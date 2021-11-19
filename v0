@@ -381,7 +381,7 @@ ___advise_run(){
     )"
     IFS="$OLDIFS"
 
-    if [ -z "$ZSH_VERSION" ] && [[ "$BASH_VERSION" =~ /4.*/ ]];;then
+    if [ -z "$ZSH_VERSION" ] && [[ "$BASH_VERSION" =~ /4.*/ ]];then
         if [[ "$result" =~ [:=\/]$ ]];then
             compopt -o nospace
         else
