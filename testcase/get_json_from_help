@@ -1,0 +1,6 @@
+# shellcheck shell=bash
+_get_advise_json(){
+    mkdir -p ../../x-cmd/advise/src/"$1"
+    echo "$("$1" --help)"| awk -f "./testcase/get_json.awk" > ../../x-cmd/advise/src/"$1"/advise.json
+    # echo "$("$1" --help)"| awk -f "./testcase/get_json.awk" # 2>/dev/null
+}
