@@ -2,6 +2,21 @@
 
 x log advise xrc
 xrc assert
+xrc advise
+
+# Section: Testcase for different awk
+cross_env_test() {
+    for i in debian centos bash ; do
+        advise_log info "Testing : " "$i"
+        docker run -it -v  ~/.x-cmd/:/root/.x-cmd/ -v "$(pwd)":/pd "${i}" bash -c ". ~/.x-cmd/xrc/latest && cd pd && . ./testcase/v0_test"
+    done
+}
+
+dbash() {
+    docker run -it -v  ~/.x-cmd/:/root/.x-cmd/ -v "$(pwd)":/pd "bash:$1" bash
+}
+
+# EndSection
 
 # Section: Testcase for advise awk code
 
@@ -306,8 +321,9 @@ start_test() {
 
 start_test ./testcase/v0_test
 
+# EndSection
+
 # Section: for the interactive ui
-rm -rf test.out
-. ./v0
-___ADVISE_AWK_PATH="./v0.awk"
 advise compt "./testcase/test.json"
+# EndSection
+
