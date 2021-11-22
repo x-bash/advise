@@ -490,10 +490,11 @@ ___advise_man_which(){
 ___advise_man_load(){
     local i
     for i in $(___advise_man_ls); do
-        if s=$(complete -p "$i" 1>/dev/null 2>&1); then
+        if s=$(complete -p "${i%%/}" 1>/dev/null 2>&1); then
             [[ "$s" == *___advise_completer* ]] && continue
         fi
-        complete -F "___advise_man_completer" "$i"
+
+        complete -F "___advise_man_completer" "${i%%/}"
     done
 }
 
