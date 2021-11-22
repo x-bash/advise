@@ -1,12 +1,6 @@
-get_option(){
-    local fp="./testcase/exa_help"
-    local IFS=$'\002' # IFS="$(printf "\002")"
-    # echo "Before awk: $*" > /dev/stderr
-
-    s="$*"
-
-    {
-        cat "$fp"
-        printf "\034%s\034" "$s"  # printf "\034${s}\034"
-    } | awk -f "./testcase/get_json.awk" # 2>/dev/null
+# shellcheck shell=bash
+_get_advise_json(){
+    mkdir -p ../../x-cmd/advise/src/"$1"
+    echo "$("$1" --help)"| awk -f "./testcase/get_json.awk" > ../../x-cmd/advise/src/"$1"/advise.json
+    # echo "$("$1" --help)"| awk -f "./testcase/get_json.awk" # 2>/dev/null
 }
