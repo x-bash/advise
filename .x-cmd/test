@@ -1,2 +1,5 @@
-# shellcheck shell=sh disable=SC2039,SC2142,SC3043
-. ./testcases/v0_test
+cp -r ./v0 ~/.x-cmd/advise/v0
+cp -r ./v0.awk ~/.x-cmd/advise/v0.awk
+. ./testcase/v0_test
+
+printf "You can test cross env use: \n  . ./testcase/v0_test && cross_env_test\n"
