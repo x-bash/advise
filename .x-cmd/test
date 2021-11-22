@@ -9,4 +9,4 @@ printf "You can test cross bash env use: \n"
 for i in 3 4 5 ; do
     printf "  . ./testcase/v0_test && dbash %s\n" "$i"
 done
-printf "and type: '. ~/.x-cmd/xrc/latest && cd pd'\n\n"
+printf "\n"
