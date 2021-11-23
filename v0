@@ -498,17 +498,6 @@ ___advise_man_which(){
 
     return 1
 }
-
-# ___advise_man_load(){
-#     local cmd="${1:?Provide cmd}"
-#     local p="$(___advise_man_which "$cmd")"
-#     if [ ! -f "$p" ]; then
-#         printf "%s\n" "$cmd.json Not found. You could try 'advise man update' for updates." >&2
-#         return 1
-#     fi
-#     compgen "___advise_man_completer" "$cmd"
-# }
-
 ___advise_man_load(){
     local i
     for i in $(___advise_man_ls); do
