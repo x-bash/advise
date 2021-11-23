@@ -346,8 +346,8 @@ ___advise_run(){
             words+=( "" )
         fi
 
-        local COMP_WORDS=("${words[@]}")
-        local COMP_CWORD="$(( ${#words[@]}-1 ))"
+        COMP_WORDS=("${words[@]}")
+        COMP_CWORD="$(( ${#words[@]}-1 ))"
 
     fi
 
