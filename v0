@@ -102,7 +102,6 @@ A
 
 ___advise_lsd(){
     local l
-
     # local localdir="${1:-${cur:-.}}"
     # ls -d "${localdir}"*/ 2>/dev/null | while read -r l; do
     #     printf "%s\n" "${l%/}"
@@ -251,19 +250,6 @@ $cmd_result"
 # EndSection
 
 # Section : main
-___advise_update__cmd_json(){
-    local func="${1:?Provide function name}"
-    local tmp_filepath=${TMPDIR%/}/.x-cmd/advise_auto_json/$func
-    printf "%s\n" "$______X_CMD_ADVISE_V0_FILEPATH"
-    printf "%s\n" "$tmp_filepath"
-    if [ "$______X_CMD_ADVISE_V0_FILEPATH" -nt "$tmp_filepath" ]; then
-        # echo "改变"
-        rm -rf "$tmp_filepath"
-        ___advise_main $func
-    # else
-    #     echo "不改变"
-    fi
-}
 
 ___advise_main(){
     local func="${1:?Provide function name}"
@@ -295,12 +281,11 @@ ___advise_main(){
         filepath="$tmp_filepath"
     fi
 
-    complete -F "___advise_completer" "$func"
-    # if [ -z "$ZSH_VERSION" ];then
-    #     complete -F "___advise_completer" "$func"
-    # else
-    #     compdef "___advise_completer" "$func"
-    # fi
+    if [ -z "$ZSH_VERSION" ];then
+        complete -F "___advise_completer" "$func"
+    else
+        compdef "___advise_completer" "$func"
+    fi
 }
 
 ___advise_update(){
@@ -317,7 +302,12 @@ ___advise_update(){
 ___advise_run(){
 
     local offset="${2:-0}"
-    local resname="${1:-${COMP_WORDS[0]}}"
+    local resname
+    if [ -n "$ZSH_VERSION" ];then
+        resname="${1:-${words[1]}}"
+    else
+        resname="${1:-${COMP_WORDS[0]}}"
+    fi
 
     if [ -z "$___ADVISE_RUN_CMD_FOLDER" ]; then
         ___ADVISE_RUN_CMD_FOLDER="${TMPDIR%/}/.x-cmd/advise_auto_json"
@@ -356,18 +346,19 @@ ___advise_run(){
             words+=( "" )
         fi
 
-        COMP_WORDS=("${words[@]}")
-        COMP_CWORD="$(( ${#words[@]}-1 ))"
+        local COMP_WORDS=("${words[@]}")
+        local COMP_CWORD="$(( ${#words[@]}-1 ))"
+
+    fi
+
+    if [ -n "$ZSH_VERSION" ];then
+        local COMP_WORDS=("${words[@]}")
+        local COMP_CWORD="$(( ${#words[@]}-1 ))"
     fi
 
     local cur="${COMP_WORDS[COMP_CWORD]}"
 
-    # if [ -z "${COMP_WORDS[COMP_CWORD]}" ];then
-    #     COMP_WORDS[COMP_CWORD]=""
-    # fi
-    # cur="${COMP_WORDS[COMP_CWORD]}"
-
-    if [ "$cur" == "" ]; then
+    if [ "$cur" = "" ]; then
         # Notice: The following line handle zsh compatibility problem.
         # In zsh, When input word is empty, COMP_WORDS[COMP_CWORD] does not exist.
         # In bash, When input word is empty, COMP_WORDS[COMP_CWORD] exist, and it is ""
@@ -393,48 +384,56 @@ ___advise_run(){
     esac
 
     IFS=$'\n'   # Bash/Zsh Only
-
     [ -f "$filepath" ] || return
 
     local result
     result="$(
         {
             cat "$filepath"
-            printf "\034%s\034" "$s"  # printf "\034${s}\034"
+            printf "\034%s\034" "$s"
         } | awk -f "$___ADVISE_AWK_PATH" 2>/dev/null
     )"
-    IFS="$OLDIFS"
 
-    if [ -z "$ZSH_VERSION" ] && [[ "$BASH_VERSION" =~ /4.*/ ]];then
-        if [[ "$result" =~ [:=\/]$ ]];then
-            compopt -o nospace
-        else
-            compopt +o nospace
-        fi
-    fi
-
-    local cmd="${result##*#> }"
+    local cmd="${result##*\#> }"
     local cmd_result=""
     if [ "$cmd" != "$result" ]; then
         cmd_result="$(eval "$cmd" 2>/dev/null)"
-        result="${result%%#> *}"
+        result="${result%%\#> *}"
     fi
 
-    # shellcheck disable=SC2207
-    COMPREPLY=(
-        $(
-            compgen -W "$result
+
+    IFS="$OLDIFS"
+    # TODO:
+    if [ -n "$ZSH_VERSION" ];then
+        eval "result=($result)"
+        local commands=($result)
+        compadd -a commands
+    else
+        if [ -z "$ZSH_VERSION" ] && [[ "$BASH_VERSION" =~ /4.*/ ]];then
+            if [[ "$result" =~ [:=\/]$ ]];then
+                compopt -o nospace
+            else
+                compopt +o nospace
+            fi
+        fi
+
+        # shellcheck disable=SC2207
+        COMPREPLY=(
+            $(
+                compgen -W "$result
 $cmd_result" -- "$cur"
+            )
         )
-    )
 
-    __ltrim_completions "$cur" "@"
-    __ltrim_completions "$cur" ":"
-    __ltrim_completions "$cur" "="
-
+        __ltrim_completions "$cur" "@"
+        __ltrim_completions "$cur" ":"
+        __ltrim_completions "$cur" "="
+    fi
 }
+
 __ltrim_completions()
 {
+
     local i=${#COMPREPLY[*]}
     ((i == 0)) && return 0
     if [[ $1 == *$2* && $COMP_WORDBREAKS == *$2* ]]; then
@@ -448,15 +447,15 @@ __ltrim_completions()
 }
 
 ___advise_completer() {
-
     # Interesting ... Passing
     ___ADVISE_RUN_CMD_FOLDER= ___advise_run ""
 }
 
 # EndSection
 
-if [ -n "$ZSH_VERSION" ] && [ "$(autoload | grep bashcompinit)" = "" ]; then
-    autoload -U +X bashcompinit compinit && bashcompinit && compinit
+if [ -n "$ZSH_VERSION" ] && [ "$(autoload | grep compinit)" = "" ]; then
+    # autoload -U +X bashcompinit compinit && bashcompinit && compinit
+    autoload -Uz compinit && compinit
 fi
 
 advise init advise
@@ -476,6 +475,7 @@ ___advise_man_update(){
     if [ "$___X_CMD_IN_CHINA_NET" != 1 ]; then
         url="https://raw.githubusercontent.com/x-cmd/advise/main/dist/all.tgz"
     fi
+
     if ___x_cmd_curl "$url"; then
         [ -d "$srcfolder" ] && rm -rf "$srcfolder"
         mkdir -p "$srcfolder"
@@ -529,7 +529,7 @@ ___advise_man_rm(){
 
 ___advise_man_completer() {
     # Interesting ... Passing
-    ___ADVISE_RUN_CMD_FOLDER="$___X_CMD_ROOT/.tmp/advise/src" ___advise_run ""
+    ___ADVISE_RUN_CMD_FOLDER="$___X_CMD_ROOT/.tmp/advise/src/" ___advise_run ""
 }
 
 ___advise_man(){
