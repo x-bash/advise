@@ -1,12 +1,1 @@
-cp -r ./v0 ~/.x-cmd/advise/v0
-cp -r ./v0.awk ~/.x-cmd/advise/v0.awk
 . ./testcase/v0_test
-
-# TODO: Optimize this testcase, use no '. ./testcase/v0_test', or can use x test <xxx>
-printf "You can test cross awk env use: \n  . ./testcase/v0_test && cross_env_test\n"
-printf "You can test cross bash env use: \n"
-
-for i in 3 4 5 ; do
-    printf "  . ./testcase/v0_test && dbash %s\n" "$i"
-done
-printf "\n"
