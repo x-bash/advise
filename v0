@@ -246,15 +246,14 @@ ___advise_get_result(){
             cat "$filepath"
             printf "\034%s\034" "$s"
         } | awk -f "$___ADVISE_AWK_PATH" 2>/dev/null
+
     )"
 
-    # printf "s3: %s\n" "$s   filepath: $filepath awk:$___ADVISE_AWK_PATH    result: $result" >> aaa
-
-    local cmd="${result##*#> }"
+    local cmd="${result##*\#> }"
     local cmd_result=""
     if [ "$cmd" != "$result" ]; then
         cmd_result="$(eval "$cmd")"
-        result="${result%%#> *}"
+        result="${result%%\#> *}"
     fi
     IFS="$OLDIFS"
     printf "%s" "$result
