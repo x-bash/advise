@@ -184,80 +184,10 @@ A
 }
 
 ___advise_get_result(){
-    local OLDIFS="$IFS"
     local offset="${1:-0}"
-
-    if [ -n "$ZSH_VERSION" ];then
-        resname="${words[offset+1]}"
-        COMP_WORDS=("${words[@]}")
-        COMP_CWORD="$(( ${#words[@]}-1 ))"
-    else
-        resname="${COMP_WORDS[offset]}"
-    fi
-
-    local filepath
-    case "$resname" in
-        /*) filepath="$resname" ;;
-        -)  filepath=/dev/stdin ;;
-        *)  filepath="${TMPDIR%/}/.x-cmd/advise_auto_json/$resname" ;;
-    esac
-
-    local IFS=$'\002' # IFS="$(printf "\002")"
-
-    # Delete $offset numbers from the COMP_WORDS
-    local i
-    local words=()
-    if [ -n "$ZSH_VERSION" ];then
-        for ((i=0; i<=$(($COMP_CWORD-$offset)); ++i)); do
-            words+=( "${COMP_WORDS[i+offset+1]}" )
-        done
-    else
-        for ((i=0; i<=$(($COMP_CWORD-$offset)); ++i)); do
-            words+=( "${COMP_WORDS[i+offset]}" )
-        done
-    fi
-
-    COMP_WORDS=("${words[@]}")
-    COMP_CWORD="$(( ${#words[@]}-1 ))"
-    COMP_LINE="${COMP_WORDS[*]}"
-
-    s="${COMP_WORDS[*]}"
-    s="${s#*$IFS}"
-
-    # TODO: Can be optimized.
-    local cur_1="${COMP_WORDS[COMP_CWORD-1]}"
-    case "$cur_1" in
-        *@|*:)
-            if [ "${COMP_LINE% }" != "${COMP_LINE}" ]; then
-                s="${s%$cur_1$IFS$cur}"
-                s="${s}${cur_1}$cur"
-            fi
-            ;;
-        *)
-    esac
-
-    IFS=$'\n'   # Bash/Zsh Only
-
-    [ -f "$filepath" ] || return
-
     local result=""
-    result="$(
-        {
-            cat "$filepath"
-            printf "\034%s\034" "$s"
-        } | awk -f "$___ADVISE_AWK_PATH" 2>/dev/null
-
-    )"
-
-    local cmd="${result##*\#> }"
-    local cmd_result=""
-    if [ "$cmd" != "$result" ]; then
-        cmd_result="$(eval "$cmd")"
-        result="${result%%\#> *}"
-    fi
-    IFS="$OLDIFS"
-    printf "%s" "$result
-$cmd_result"
+    result="$(eval ___get_commands "$offset" 2>/dev/null)"
+    printf "%s" "$result"
 }
 
 # EndSection
@@ -312,14 +242,18 @@ ___advise_update(){
     fi
 }
 
-___advise_run(){
+___get_commands(){
 
-    local offset="${2:-0}"
-    local resname
-    if [ -n "$ZSH_VERSION" ];then
-        resname="${1:-${words[1]}}"
+    local OLDIFS="$IFS"
+    IFS=$'\002'
+    local offset="${1:-0}"
+
+    if [ -n "$BASH_VERSION" ];then
+        resname="${COMP_WORDS[offset]}"
     else
-        resname="${1:-${COMP_WORDS[0]}}"
+        resname="${words[offset+1]}"
+        COMP_WORDS=("${words[@]}")
+        COMP_CWORD="$(( ${#words[@]}-1 ))"
     fi
 
     if [ -z "$___ADVISE_RUN_CMD_FOLDER" ]; then
@@ -340,51 +274,53 @@ ___advise_run(){
     esac
 
     shift 2>/dev/null
+    # printf "r: %s\n" "$offset--${COMP_WORDS[*]}--$COMP_CWORD">>aaa
+    # if [ -n "$BASH_VERSION" ] && [[ ! "$BASH_VERSION" =~ /3.*/ ]]; then
+    #     IFS=$'\002'
+    #     local last="${COMP_WORDS[COMP_CWORD]}"
+    #     case "$last" in
+    #         \"*|\'*)
+    #             COMP_LINE="${COMP_LINE%$last}"
+    #             eval "words=( $COMP_LINE )"
+    #             words+=("$last")
+    #             ;;
+    #         *)
+    #             eval "words=( $COMP_LINE )"
+    #             ;;
+    #     esac
+    #     # Ends with space
+    #     if [ "${COMP_LINE% }" != "${COMP_LINE}" ]; then
+    #         words+=( "" )
+    #     fi
 
-    if [ -n "$BASH_VERSION" ] && [ "${BASH_VERSION#3}" = "${BASH_VERSION}" ]; then
-        local last="${COMP_WORDS[COMP_CWORD]}"
-        case "$last" in
-            \"*|\'*)
-                COMP_LINE="${COMP_LINE%$last}"
-                words=( $COMP_LINE )
-                words+=("$last")
-                ;;
-            *)
-                words=( $COMP_LINE )
-                ;;
-        esac
+    #     # FIXME: COMP_CWORD error
+    #     COMP_WORDS=("${words[@]}")
+    #     COMP_CWORD="$(( ${#words[@]}-1 ))"
 
-        # Ends with space
-        if [ "${COMP_LINE% }" != "${COMP_LINE}" ]; then
-            words+=( "" )
-        fi
+    # fi
 
-        COMP_WORDS=("${words[@]}")
-        COMP_CWORD="$(( ${#words[@]}-1 ))"
+    # printf "r: %s\n" "${COMP_WORDS[*]}--$COMP_CWORD">>aaa
 
-    fi
-
+    local i
+    local words=()
     if [ -n "$ZSH_VERSION" ];then
-        local COMP_WORDS=("${words[@]}")
-        local COMP_CWORD="$(( ${#words[@]}-1 ))"
+        for ((i=0; i<=$(($COMP_CWORD-$offset)); ++i)); do
+            words+=( "${COMP_WORDS[i+offset+1]}" )
+        done
+    else
+        for ((i=0; i<=$(($COMP_CWORD-$offset)); ++i)); do
+            words+=( "${COMP_WORDS[i+offset]}" )
+        done
     fi
 
-    local cur="${COMP_WORDS[COMP_CWORD]}"
-
-    if [ "$cur" = "" ]; then
-        # Notice: The following line handle zsh compatibility problem.
-        # In zsh, When input word is empty, COMP_WORDS[COMP_CWORD] does not exist.
-        # In bash, When input word is empty, COMP_WORDS[COMP_CWORD] exist, and it is ""
-        # This will result in difference value of "${COMP_WORDS[*]}"
-        COMP_WORDS[COMP_CWORD]=""
-    fi
-
-    local OLDIFS="$IFS"
-    local IFS=$'\002' # IFS="$(printf "\002")"
+    COMP_WORDS=("${words[@]}")
+    COMP_CWORD="$(( ${#words[@]}-1 ))"
+    COMP_LINE="${COMP_WORDS[*]}"
 
     s="${COMP_WORDS[*]}"
     s="${s#*$IFS}"
 
+    # TODO: Can be optimized.
     local cur_1="${COMP_WORDS[COMP_CWORD-1]}"
     case "$cur_1" in
         *@|*:)
@@ -397,44 +333,55 @@ ___advise_run(){
     esac
 
     IFS=$'\n'   # Bash/Zsh Only
+
     [ -f "$filepath" ] || return
 
-    local result
+    local result=""
     result="$(
         {
             cat "$filepath"
             printf "\034%s\034" "$s"
         } | awk -f "$___ADVISE_AWK_PATH" 2>/dev/null
-    )"
 
+    )"
+    # printf "s3: %s\n" "${s}   filepath: $filepath awk:$___ADVISE_AWK_PATH    result: $result" >> aaa
     local cmd="${result##*\#> }"
     local cmd_result=""
     if [ "$cmd" != "$result" ]; then
-        cmd_result="$(eval "$cmd" 2>/dev/null)"
+        cmd_result="$(eval "$cmd")"
         result="${result%%\#> *}"
     fi
-    local cmds="$result
+    IFS="$OLDIFS"
+    printf "%s" "$result
 $cmd_result"
 
-    IFS="$OLDIFS"
-    # TODO:
+}
+
+___advise_run(){
+
+    local result=""
+    result="$(eval ___get_commands 2>/dev/null)"
+
     if [ -n "$ZSH_VERSION" ];then
-        eval "cmds=($cmds)"
-        local commands=($cmds)
+        eval "result=($result)"
+        local commands=($result)
         compadd -a commands
     else
-        if [ -z "$ZSH_VERSION" ] && [[ ! "$BASH_VERSION" =~ /3.*/ ]];then
+        local cur="${COMP_WORDS[COMP_CWORD]}"
+        if [ "$cur" = "" ]; then
+            COMP_WORDS[COMP_CWORD]=""
+        fi
+        if [ -n "$BASH_VERSION" ] && [[ ! "$BASH_VERSION" =~ /3.*/ ]];then
             if [[ "$result" =~ [:=\/]$ ]];then
                 compopt -o nospace
             else
                 compopt +o nospace
             fi
         fi
-
         # shellcheck disable=SC2207
         COMPREPLY=(
             $(
-                compgen -W "$cmds" -- "$cur"
+                compgen -W "$result" -- "$cur"
             )
         )
 
