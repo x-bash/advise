@@ -195,14 +195,9 @@ ___advise_get_result(){
         resname="${COMP_WORDS[offset]}"
     fi
 
-    local filepath
-    case "$resname" in
-        /*) filepath="$resname" ;;
-        -)  filepath=/dev/stdin ;;
-        *)  filepath="${TMPDIR%/}/.x-cmd/advise_auto_json/$resname" ;;
-    esac
+    local filepath="${TMPDIR%/}/.x-cmd/advise_auto_json/$resname"
 
-    local IFS=$'\002' # IFS="$(printf "\002")"
+    local IFS=$'\002'
 
     # Delete $offset numbers from the COMP_WORDS
     local i
@@ -371,14 +366,6 @@ ___advise_run(){
 
     local cur="${COMP_WORDS[COMP_CWORD]}"
 
-    if [ "$cur" = "" ]; then
-        # Notice: The following line handle zsh compatibility problem.
-        # In zsh, When input word is empty, COMP_WORDS[COMP_CWORD] does not exist.
-        # In bash, When input word is empty, COMP_WORDS[COMP_CWORD] exist, and it is ""
-        # This will result in difference value of "${COMP_WORDS[*]}"
-        COMP_WORDS[COMP_CWORD]=""
-    fi
-
     local OLDIFS="$IFS"
     local IFS=$'\002' # IFS="$(printf "\002")"
 
@@ -423,7 +410,8 @@ $cmd_result"
         local commands=($cmds)
         compadd -a commands
     else
-        if [ -z "$ZSH_VERSION" ] && [[ ! "$BASH_VERSION" =~ /3.*/ ]];then
+        if [ -z "$BASH_VERSION" ] && [[ ! "$BASH_VERSION" =~ ^3.* ]];then
+            echo "no bash3!!!!!!"
             if [[ "$result" =~ [:=\/]$ ]];then
                 compopt -o nospace
             else
