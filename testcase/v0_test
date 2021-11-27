@@ -19,12 +19,11 @@ dbash() {
 
 . ./testcase/v0_test_awk
 
-# TODO: Optimize this testcase, use no '. ./testcase/v0_test', or can use x test <xxx>
-printf "You can test cross awk env use: \n  . ./testcase/v0_test && cross_env_test\n"
+printf "You can test cross awk env use: \n  cross_env_test\n"
 printf "You can test cross bash env use: \n"
 
 for i in 3 4 5 ; do
-    printf "  . ./testcase/v0_test && dbash %s\n" "$i"
+    printf "  dbash %s\n" "$i"
 done
 printf "\n"
 
