@@ -367,7 +367,7 @@ ___advise_run(){
     local cur="${COMP_WORDS[COMP_CWORD]}"
 
     local OLDIFS="$IFS"
-    local IFS=$'\002' # IFS="$(printf "\002")"
+    local IFS=$'\002'
 
     s="${COMP_WORDS[*]}"
     s="${s#*$IFS}"
@@ -404,14 +404,12 @@ ___advise_run(){
 $cmd_result"
 
     IFS="$OLDIFS"
-    # TODO:
     if [ -n "$ZSH_VERSION" ];then
         eval "cmds=($cmds)"
         local commands=($cmds)
         compadd -a commands
     else
-        if [ -z "$BASH_VERSION" ] && [[ ! "$BASH_VERSION" =~ ^3.* ]];then
-            echo "no bash3!!!!!!"
+        if [ -n "$BASH_VERSION" ] && [[ ! "$BASH_VERSION" =~ ^3.* ]];then
             if [[ "$result" =~ [:=\/]$ ]];then
                 compopt -o nospace
             else
@@ -455,7 +453,6 @@ ___advise_completer() {
 # EndSection
 
 if [ -n "$ZSH_VERSION" ] && [ "$(autoload | grep compinit)" = "" ]; then
-    # autoload -U +X bashcompinit compinit && bashcompinit && compinit
     autoload -Uz compinit && compinit
 fi
 
@@ -525,11 +522,11 @@ ___advise_man_completer() {
 ___advise_man(){
     local op="${1:?Provide subcommand}"; shift
     case "$op" in
-        ls)         ___advise_man_ls ;;
-        update)     ___advise_man_update ;;
-        which)      ___advise_man_which "$@" ;;
-        load)       ___advise_man_load ;;
-        rm)         ___advise_man_rm ;;
+        ls)         ___advise_man_ls              ;;
+        update)     ___advise_man_update          ;;
+        which)      ___advise_man_which "$@"      ;;
+        load)       ___advise_man_load            ;;
+        rm)         ___advise_man_rm              ;;
         *)          ___advise_man_load "$op" "$@" ;;
     esac
 }
