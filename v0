@@ -186,6 +186,8 @@ A
 ___advise_get_result(){
     local OLDIFS="$IFS"
     local offset="${1:-0}"
+    # If there are two parameters, take the second one.
+    local offset="${2:-${1:-0}}"
 
     if [ -n "$ZSH_VERSION" ];then
         resname="${words[offset+1]}"
