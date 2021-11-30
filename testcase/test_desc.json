@@ -1,0 +1,34 @@
+{
+    "tldr": {
+        "#1": [
+            "update:Update",
+            "ls:list all possible commands",
+            "lang:Set Prefered language or show languange candidates",
+            "cat:cat"
+        ]
+    },
+    "proxy":{
+        "#1":[
+            "set:set proxy in local shell environments: http_proxy, https_proxy",
+            "unset:unset all proxy in the shell environment",
+            "version:provide version",
+            "pip:Setting the pip mirrors",
+            "npm:Setting the npm mirrors",
+            "maven:Setting the maven mirrors",
+            "go:Setting the go mirrorss",
+            "gem:Setting the ruby mirrors",
+            "cargo:Setting the cargo mirrors for rust development",
+            "apt:apt mirrors",
+            "yum:Setting the yum mirrors",
+            "brew:Setting the homebrew mirrors",
+            "apk:alpine mirrors"
+        ],
+        "go":{
+            "#1":[
+                "help:show help",
+                "set:show ls"
+            ]
+        }
+    }
+
+}

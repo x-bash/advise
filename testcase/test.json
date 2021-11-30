@@ -69,14 +69,18 @@
         "-O": ["check", "forward", "cancel", "exit stop"],
         "-o": ["AddKeysToAgent=yes", "AddKeysToAgent=ask", "AddKeysToAgent=confirm", "AddKeysToAgent=no", "AddressFamily=any", "AddressFamily=inet", "AddressFamily=inet6", "BatchMode", "BindAddress", "BindInterface", "CanonicalDomains", "CanonicalizeFallbackLocal", "CanonicalizeHostname", "CanonicalizeMaxDots", "CanonicalizePermittedCNAMEs", "CASignatureAlgorithms", "CertificateFile", "ChallengeResponseAuthentication", "CheckHostIP", "Ciphers", "ClearAllForwardings", "Compression", "ConnectionAttempts", "ConnectTimeout", "ControlMaster", "ControlPath", "ControlPersist", "DynamicForward", "EnableSSHKeysign", "EscapeChar", "ExitOnForwardFailure", "FingerprintHash", "ForwardAgent", "ForwardX11", "ForwardX11Timeout", "ForwardX11Trusted", "GatewayPorts", "GlobalKnownHostsFile", "GSSAPIAuthentication", "GSSAPIDelegateCredentials", "HashKnownHosts", "HostbasedAuthentication", "HostbasedKeyTypes", "HostKeyAlgorithms", "HostKeyAlias", "Hostname", "IdentitiesOnly", "IdentityAgent", "IdentityFile", "IgnoreUnknown", "Include", "IPQoS", "KbdInteractiveAuthentication", "KbdInteractiveDevices", "KexAlgorithms", "LocalCommand", "LocalForward", "LogLevel", "MACs", "NoHostAuthenticationForLocalhost", "NumberOfPasswordPrompts", "PasswordAuthentication", "PermitLocalCommand", "PKCS11Provider", "Port", "PreferredAuthentications", "ProxyCommand", "ProxyJump", "ProxyUseFdpass", "PubkeyAcceptedKeyTypes", "PubkeyAuthentication", "RekeyLimit", "RemoteCommand", "RemoteForward", "RequestTTY", "RevokedHostKeys", "SecurityKeyProvider", "SendEnv", "ServerAliveCountMax", "ServerAliveInterval", "SetEnv", "StreamLocalBindMask", "StreamLocalBindUnlink", "StrictHostKeyChecking", "SyslogFacility", "TCPKeepAlive", "Tunnel", "TunnelDevice", "UpdateHostKeys", "User", "UserKnownHostsFile", "VerifyHostKeyDNS", "VisualHostKey", "XAuthLocation", "GSSAPIKeyExchange", "GSSAPIRenewalForcesRekey", "GSSAPIServerIdentity", "GSSAPITrustDns", "SmartcardDevice", "UsePrivilegedPort", "Cipher", "CompressionLevel", "Protocol", "RhostsRSAAuthentication", "RSAAuthentication"],
         "-Q": "ssh -Q help",
-        "-w": null
+        "#1": "advise ls",
+        "#n": "___advise_get_result 2"
     },
     "tldr": {
         "update": null,
-        "ls": "___tldr_lsname",
+        "ls": null,
         "lang": "___tldr_lang",
-        "cat": ["common/2to3.md", "common/git-clone.md", "common/ogr2ogr.md", "common/7z.md","common/7za.md","common/7zr.md","linux/manpath.md","linux/mcookie.md"]
+        "cat": ["aaa", "bbb", "ccc"],
+        "test": ["ddd", "eee"]
     },
+    "proxy": {},
     "#1": "advise ls",
     "#n": "___advise_get_result '' 1"
+
 }
