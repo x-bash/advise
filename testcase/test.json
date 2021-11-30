@@ -76,7 +76,7 @@
         "update": null,
         "ls": null,
         "lang": "___tldr_lang",
-        "cat": ["aaa", "bbb", "ccc"],
+        "cat": ["common/2to3.md", "common/git-clone.md", "common/ogr2ogr.md", "common/7z.md","common/7za.md","common/7zr.md","linux/manpath.md","linux/mcookie.md"],
         "test": ["ddd", "eee"]
     },
     "proxy": {},
