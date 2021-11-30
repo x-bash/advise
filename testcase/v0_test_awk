@@ -6,7 +6,26 @@ xrc advise
 
 # Section: Testcase for advise awk code
 
-test_at(){
+
+test_desc(){
+
+    assert_stdout "test123 ''" <<A
+option
+rarg
+subcmd
+subcommand
+tldr
+proxy
+desc1
+#> advise ls
+A
+#     assert_stdout "test123 ''" <<A
+# @a1
+# @a2
+# @a3
+# A
+}
+test1_at(){
 
     assert_stdout "test123 option @a" <<A
 @a1
@@ -25,7 +44,7 @@ atcmd
 A
 }
 
-test_tldr(){
+test1_tldr(){
     assert_stdout "test123 tldr cat common/7z"<<A
 common/7z.md
 common/7za.md
@@ -37,7 +56,7 @@ linux/
 A
 }
 
-test_ssh(){
+test1_ssh(){
     assert_stdout "test123 ssh -o AddKeysToAgent=" <<A
 AddKeysToAgent=yes
 AddKeysToAgent=ask
@@ -50,7 +69,7 @@ AddressFamily=
 A
 }
 
-test_xsxs(){
+test1_xsxs(){
     assert_stdout "test123 subcommand create"<<A
 create1
 create2
@@ -96,7 +115,7 @@ A
 A
 }
 
-test_hyphen(){
+test1_hyphen(){
     assert_stdout "test123 option -" <<A
 -a
 -c
@@ -119,7 +138,7 @@ A
 
 }
 
-test_marg(){
+test1_marg(){
     assert_stdout "test123 option -a ''" <<A
 m1-a
 m1-b
@@ -133,7 +152,7 @@ m2-c
 A
 }
 
-test_cmd(){
+test1_cmd(){
 
     assert_stdout "test123 option atcmd @" <<A
 #> myself_ls
@@ -150,7 +169,7 @@ A
 A
 }
 
-test_option(){
+test1_option(){
 
     assert_stdout "test123 option atcmd --ls ''" <<A
 #> ___advise_ls
@@ -184,7 +203,7 @@ c:aaa
 A
 }
 
-test_rarg(){
+test1_rarg(){
     assert_stdout "test123 rarg abc ''" <<A
 #> ___advise_lsd; printf '..\n.\n../\n-'
 A
@@ -207,7 +226,7 @@ A
 A
 }
 
-test_subcmd(){
+test1_subcmd(){
     assert_stdout "test123 subcmd create"<<A
 create1
 create2
@@ -287,7 +306,7 @@ test123(){
     {
         cat "$fp"
         printf "\034%s\034" "$s"  # printf "\034${s}\034"
-    } | awk -f "./v0.awk" # 2>/dev/null
+    } | awk -f "./v0_test.awk" # 2>/dev/null
 }
 
 # list all the file in the directory, and add the @ to the behind of the file name

@@ -86,6 +86,7 @@ function rule_add_key( keypath, key,
 
     KEYPREFIX = keypath KEYPATH_SEP
     keyid = KEYPREFIX key
+    debug(keypath "8"KEYPATH_SEP "8"key)
 
     # It is an option
     # TODO: add code for it is an option :<Object name>
@@ -127,7 +128,7 @@ function rule_add_key( keypath, key,
     }
     # RULE_ID_CANDIDATES[ keypath ] = RULE_ID_CANDIDATES[ keypath ] tmp
     RULE_ID_CANDIDATES[ keypath ] = RULE_ID_CANDIDATES[ keypath ] "\n" keyid
-    # debug("aaa:\t" RULE_ID_CANDIDATES[ keypath ])
+    debug("aaa:\t" keypath";\tval:"RULE_ID_CANDIDATES[ keypath ])
 }
 
 function rule_add_list_val( keypath, val,
@@ -334,6 +335,7 @@ function json_walk(text,   final, b_s, b_s_idx, b_s_len){
 # Section: Main
 NR==1{
     # debug("json_walk")
+    # debug($0)
     json_walk($0)
 }
 
@@ -348,8 +350,8 @@ function get_colon_argument_optionid(keypath,      _id){
 }
 
 NR==2{
-    # for(key in RULE_ID_CANDIDATES){
-    #     debug("key:"key";\t\tRULE_ID_CANDIDATES:"RULE_ID_CANDIDATES[key])
+    # for(key in RULE_ALIAS_TO_ID){
+    #     debug("key:"key";\t\tRULE_ALIAS_TO_ID:"RULE_ALIAS_TO_ID[key])
     # }
     argstr = $0
     debug("=============================")
@@ -653,6 +655,13 @@ function show_candidates(final_keypath, cur,
     can_arr, can_arr_len,
     num, used_option_set){
 
+    debug("=======>")
+    for(key in RULE_ID_CANDIDATES){
+        # if
+        debug("key:"key";\tval:"RULE_ID_CANDIDATES[key])
+    }
+    debug("=======>")
+    # debug("desc:"RULE_ID_CANDIDATES[.,desc,#desc])
     can_arr_len = split( used_option_list, can_arr, "\n" )
     for (i=2; i<=can_arr_len; ++i) {
         if (RULE_ID_M[ can_arr[i] ] != true) {
@@ -679,7 +688,7 @@ function show_candidates(final_keypath, cur,
         used_option_set[ can ] = true
     }
 
-    # debug("￥￥"final_keypath";\tcur:"cur)
+    debug("￥￥"final_keypath";\tcur:"cur)
     show_positional_candidates( final_keypath, cur, 1 )
 
 
