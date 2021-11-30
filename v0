@@ -405,8 +405,21 @@ $cmd_result"
 
     IFS="$OLDIFS"
     if [ -n "$ZSH_VERSION" ];then
+        local desc del
+        desc="$(
+            {
+                cat "./testcase/test_desc.json"
+                printf "\034%s\034" "$s"
+            } | awk -f "$___ADVISE_AWK_PATH" 2>/dev/null | awk '{if ($0 ~ /:/){print "\"" $0 "\""}}' 2>/dev/null
+        )"
         eval "cmds=($cmds)"
+        eval "desc=($desc)"
+        for del in "${desc[@]}"; do
+            cmds=(${cmds[@]/${del%%\:*}})
+        done
+        local describes=($desc)
         local commands=($cmds)
+        _describe 'commands' describes
         compadd -a commands
     else
         if [ -n "$BASH_VERSION" ] && [[ ! "$BASH_VERSION" =~ ^3.* ]];then

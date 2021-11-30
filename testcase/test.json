@@ -74,11 +74,13 @@
     },
     "tldr": {
         "update": null,
-        "ls": "___tldr_lsname",
+        "ls": null,
         "lang": "___tldr_lang",
-        "cat": ["common/2to3.md", "common/git-clone.md", "common/ogr2ogr.md", "common/7z.md","common/7za.md","common/7zr.md","linux/manpath.md","linux/mcookie.md"]
+        "cat": ["common/2to3.md", "common/git-clone.md", "common/ogr2ogr.md", "common/7z.md","common/7za.md","common/7zr.md","linux/manpath.md","linux/mcookie.md"],
+        "test": ["ddd", "eee"]
     },
+    "proxy": {},
     "#1": "advise ls",
-    "#n": "___advise_get_result 1"
+    "#n": "___advise_get_result '' 1"
 
 }
