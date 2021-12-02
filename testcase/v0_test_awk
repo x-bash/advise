@@ -157,9 +157,11 @@ test_option(){
 A
 
     assert_stdout "test123 option -c ''" <<A
-m3-a
-m3-b
-m3-c
+:m3-a
+:m3-b
+:m3-c
+:c
+:b
 A
 
     assert_stdout "test123 option --priviledge ''" <<A
