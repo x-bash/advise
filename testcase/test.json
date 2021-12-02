@@ -2,7 +2,7 @@
     "option": {
         "--repo2|-a|m|1": [ "m1-a", "m1-b", "m1-c" ],
         "--repo2|-a|m|2": [ "m2-a", "m2-b", "m2-c" ],
-        "--repo3|-c|m": [ "m3-a", "m3-b", "m3-c" ],
+        "--repo3|-c|m": [ ":m3-a", ":m3-b", ":m3-c", ":c", ":b" ],
         "--priviledge|-p": [ "private", "public" ],
         "--dict|-d": {
             "e":    [ "edwinjhlee", "labve" ],
