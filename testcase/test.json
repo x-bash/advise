@@ -1,19 +1,31 @@
 {
-    "tldr1|tldr2": {
-        "-c": ["adc=sss","scs=bbb","scs=aaa"],
-        "-d": "___advise_ls testcases/",
-        "-e": "___advise_lsd",
-        "ls": null,
-        "lang": "___tldr_lang",
-        "cat": ["common/2to3.md", "common/git-clone.md", "common/ogr2ogr.md", "common/7z.md","common/7za.md","common/7zr.md","linux/manpath.md","linux/mcookie.md"],
-        "test": ["ddd", "eee"]
-    },
-    "proxy": {},
-    "desc":{
-        "#1": "advise ls",
-        "#n": "___advise_get_result 2",
-        "#desc": "cmd for description"
-    },
-    "#1": "advise ls",
-    "#n": "___advise_get_result '' 1"
+    "option": {
+        "--repo2|-a|m": {
+            "#1": [ "edwinjhlee", "labve" ],
+            "#2": [ "edwhlee", "labve" ],
+            "#3": [ "aawhlee", "labve" ],
+            "#desc":  "descsccccd repo2"
+        },
+        "repo2": {
+            "#1": [ "edwinjhlee", "labve" ],
+            "#2": [ "edwhlee", "labve" ],
+            "#3": [ "aawhlee", "labve" ],
+            "#desc":  "descsccccd repo2"
+        },
+        "--repo3": [ "m1-a", "m1-b", "m1-c" ],
+        "repo3": [ "m1-a", "m1-b", "m1-c" ],
+        "--priviledge|-p": [ "private", "public" ],
+        "--dict|-d": {
+            "#1": [ "edwinjhlee", "labve" ],
+            "#desc":  "descsccccd"
+        },
+        "--cmd": "___advise_ls",
+        "--@": [ "@a1", "@a2", "@a3" ],
+        "--colon": ["www:a", ":b", ":c"],
+        "--flag|-f": null,
+        "atcmd": {
+            "--@": "myself_ls",
+            "--ls": "___advise_ls"
+        }
+    }
 }

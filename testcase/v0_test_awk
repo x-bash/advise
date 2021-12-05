@@ -9,16 +9,62 @@ xrc advise
 
 test_desc(){
 
-    assert_stdout "test123 ''" <<A
-option
-rarg
-subcmd
-subcommand
-tldr
-proxy
-desc1
-#> advise ls
+#     assert_stdout "test123 option --repo2 ''" <<A
+# m1-a
+# m1-b
+# m1-c
+# A
+   assert_stdout "test123 option --repo2 e m ''" <<A
+edwhlee
+labve
 A
+#     assert_stdout "test123 option --repo3 e ''" <<A
+# edwhlee
+# labve
+# A
+#     assert_stdout "test123 option --dict la ''" <<A
+# repo2 --- descsccccd repo2
+# repo3
+# atcmd
+# @
+# A
+#    assert_stdout "test123 option --repo3 m1-a ''" <<A
+# m1-a
+# m1-b
+# m1-c
+# A
+#     assert_stdout "test123 option @ ''" <<A
+# @a
+# @b
+# A
+#     assert_stdout "test123 desc subcmd --option ''" <<A
+# cancel   -- ssh-cancel-forward-agent
+# check    -- ssh-check-host-ip
+# exit     -- ssh-stop-forward-agent
+# forward  -- ssh-forward-agent
+# A
+#     assert_stdout "test123 desc subcmd aaa ''" <<A
+# m1-a
+# m1-b
+# m1-c
+# A
+#     assert_stdout "test123 desc subcmd -a ''" <<A
+# m1-a
+# m1-b
+# m1-c
+# A
+# #     assert_stdout "test123 --flag ''" <<A
+# # --flag --- ssh-stop-forward-agent
+# # A
+
+#     assert_stdout "test123 --" <<A
+# --option
+# --flag --- ssh-stop-forward-agent
+# #> advise ls
+# A
+#     assert_stdout "test123 -" <<A
+# #> advise ls
+# A
 #     assert_stdout "test123 ''" <<A
 # @a1
 # @a2

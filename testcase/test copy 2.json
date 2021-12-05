@@ -76,23 +76,25 @@
         "update": null,
         "ls": null,
         "lang": "___tldr_lang",
-        "cat": ["common/2to3.md", "common/git-clone.md", "common/ogr2ogr.md", "common/7z.md","common/7za.md","common/7zr.md","linux/manpath.md","linux/mcookie.md"],
-        "test": ["ddd", "eee"]
+        "cat": ["common/2to3.md", "common/git-clone.md", "common/ogr2ogr.md", "common/7z.md","common/7za.md","common/7zr.md","linux/manpath.md","linux/mcookie.md"]
     },
-    "proxy": {},
     "desc": {
         "subcmd|subcommand": {
             "--op|-a|m|1": {
                 "#1": [ "m1-a", "m1-b", "m1-c" ],
-                "#desc": "op 1 bababa"
+                "#desc": "cmd for op description"
             },
-            "--option|-O": [
-                "check     --- ssh-check-host-ip",
-                "forward   --- ssh-forward-agent",
-                "cancel    --- ssh-cancel-forward-agent",
-                "exit      --- ssh-stop-forward-agent"
-            ],
-            "#desc": "subcmd description"
+            "--option|-O": {
+                "#1": [
+                    "check     --- ssh-check-host-ip",
+                    "forward   --- ssh-forward-agent",
+                    "cancel    --- ssh-cancel-forward-agent",
+                    "exit      --- ssh-stop-forward-agent"
+                ],
+                "#desc": "cmd for option description"
+            },
+            "--flag|-f": "--- cmd for flag description",
+            "#desc": "cmd for subcmd description"
         },
         "#1": "advise ls",
         "#n": "___advise_get_result 2",
