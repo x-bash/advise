@@ -392,6 +392,7 @@ ___advise_run(){
             printf "\034%s\034" "$s"
         } | awk -f "$___ADVISE_AWK_PATH" 2>/dev/null
     )"
+    # printf "%s\n" "$result" >> aaa
     local cmd="${result##*\#> }"
     local cmd_result=""
     if [ "$cmd" != "$result" ]; then

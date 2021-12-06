@@ -5,7 +5,14 @@ x log advise xrc
 xrc assert
 xrc advise
 
-# TODO: The work that niracler should do that
+test_opt(){
+    assert_stdout "test123 desc opt" <<A
+option --- subcmd description
+opt --- subcmd description
+#> advise ls
+A
+}
+
 test_marg(){
     assert_stdout "test123 desc opt -a ''" <<A
 m1-a
@@ -26,8 +33,9 @@ m3-c
 A
 
     assert_stdout "test123 desc opt -a m1-a m2-a m3-a '-'" <<A
--a --- op 1 bababa
+-a --- cmd for op description
 -O
+-f --- cmd for flag description
 A
 }
 

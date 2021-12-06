@@ -75,7 +75,7 @@
                 "#1": [ "m1-a", "m1-b", "m1-c" ],
                 "#2": [ "m2-a", "m2-b", "m2-c" ],
                 "#3": [ "m3-a", "m3-b", "m3-c" ],
-                "#desc": "op 1 bababa"
+                "#desc": "cmd for op description"
             },
             "--option|-O": [
                 "check     --- ssh-check-host-ip",
@@ -83,6 +83,7 @@
                 "cancel    --- ssh-cancel-forward-agent",
                 "exit      --- ssh-stop-forward-agent"
             ],
+            "--flag|-f": "--- cmd for flag description",
             "#desc": "subcmd description"
         },
         "#1": "advise ls",
