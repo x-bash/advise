@@ -244,7 +244,6 @@ ___advise_get_result(){
         } | awk -f "$___ADVISE_AWK_PATH" 2>/dev/null
 
     )"
-    printf "get_r: %s\n" "${cmds}">>aaa
 
     local cmd="${result##*\#> }"
     local cmd_result=""
@@ -404,14 +403,11 @@ ___advise_run(){
     local cmds="$result
 $cmd_result"
 
-    printf "r: %s\n" "${cmds}">>aaa
-
     local commands=($(echo "${cmds[*]}"))
     desc=()
     cmds=()
     for i in "${commands[@]}"; do
         if [ ! $i = ${i%%---*} ] && [ -n "$ZSH_VERSION" ];then
-            printf "desc: %s\n" "\"${i%% *}:${i#*--- }\"">>aaa
             desc+=("\"${i%% *}:${i#*--- }\"")
             continue
         fi

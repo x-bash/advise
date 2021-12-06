@@ -3,6 +3,7 @@
 x log advise xrc
 xrc assert
 xrc advise
+. ./v0
 
 # Section: Testcase for advise awk code
 test_desc(){
@@ -12,8 +13,8 @@ test_desc(){
 # m1-b
 # m1-c
 # A
-   assert_stdout "test123 option --repo2 e m ''" <<A
-edwhlee
+   assert_stdout "test123 option -a ''" <<A
+edwinjhlee
 labve
 A
 #     assert_stdout "test123 option --repo3 e ''" <<A
