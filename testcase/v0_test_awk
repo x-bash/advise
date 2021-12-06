@@ -150,20 +150,20 @@ A
 
 }
 
-# # TODO: The work that niracler should do that
-# test_marg(){
-#     assert_stdout "test123 option -a ''" <<A
-# m1-a
-# m1-b
-# m1-c
-# A
+# TODO: The work that niracler should do that
+test_marg(){
+    assert_stdout "test123 option -a ''" <<A
+m1-a
+m1-b
+m1-c
+A
 
-#     assert_stdout "test123 option -a m1-a ''" <<A
-# m2-a
-# m2-b
-# m2-c
-# A
-# }
+    assert_stdout "test123 option -a m1-a ''" <<A
+m2-a
+m2-b
+m2-c
+A
+}
 
 test_cmd(){
 

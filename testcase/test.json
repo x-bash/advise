@@ -1,7 +1,9 @@
 {
     "option": {
-        "--repo2|-a|m|1": [ "m1-a", "m1-b", "m1-c" ],
-        "--repo2|-a|m|2": [ "m2-a", "m2-b", "m2-c" ],
+        "--repo2|-a|m": {
+            "#1": [ "m1-a", "m1-b", "m1-c" ],
+            "#2": [ "m2-a", "m2-b", "m2-c" ]
+        },
         "--repo3|-c|m": [ "m3-a", "m3-b", "m3-c" ],
         "--priviledge|-p": [ "private", "public" ],
         "--cmd": "___advise_ls",
@@ -71,7 +73,6 @@
         "cat": ["common/2to3.md", "common/git-clone.md", "common/ogr2ogr.md", "common/7z.md","common/7za.md","common/7zr.md","linux/manpath.md","linux/mcookie.md"],
         "test": ["ddd", "eee"]
     },
-    "proxy": {},
     "desc": {
         "option|opt": {
             "--op|-a|m|1": {
@@ -91,5 +92,5 @@
         "#desc": "cmd for description"
     },
     "#1": "advise ls",
-    "#n": "___advise_get_result '' 1"
+    "#n": "___advise_get_result 1"
 }

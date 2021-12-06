@@ -39,8 +39,6 @@ function pattern_wrap(s){
 }
 
 function debug(msg){
-    # if (dbg == false) return
-	# print "\033[1;31midx[" s_idx "]\tDEBUG:   " msg "\033[0;0m" > "/dev/stderr"
 	print "\033[1;31mDEBUG:   " msg "\033[0;0m" > "/dev/stderr"
 }
 
@@ -76,17 +74,11 @@ BEGIN {
 function rule_add_key( keypath, key,
     num, tmp ) {
 
-    # key = str_unwrap( key )  # Notice: simple unwrap
-
     keyarrlen = split(key, keyarr, "|")
     first = keyarr[1]
 
     KEYPREFIX = keypath KEYPATH_SEP
     keyid = KEYPREFIX key
-    #debug(keypath "8"KEYPATH_SEP "8"key)
-
-    # It is an option
-    # TODO: add code for it is an option :<Object name>
 
     if (first ~ /-/) {
         # options
@@ -114,18 +106,17 @@ function rule_add_key( keypath, key,
             }
         }
     } else {
-        RULE_ID_ARGNUM[ keyid ] = -1    # Means it is subcmd
+        # Means it is subcmd
+        RULE_ID_ARGNUM[ keyid ] = -1
     }
 
-    # tmp = ""
     for (i=1; i<=keyarrlen; ++i) {
-        e = keyarr[i]
-        RULE_ALIAS_TO_ID[ KEYPREFIX e ] = keyid
-        # tmp = tmp " " e
+        RULE_ALIAS_TO_ID[ KEYPREFIX keyarr[i] ] = keyid
     }
-    # RULE_ID_CANDIDATES[ keypath ] = RULE_ID_CANDIDATES[ keypath ] tmp
     RULE_ID_CANDIDATES[ keypath ] = RULE_ID_CANDIDATES[ keypath ] "\n" keyid
-    #debug("aaa:\t" keypath";\tval:"RULE_ID_CANDIDATES[ keypath ])
+    # for (key in RULE_ID_CANDIDATES) {
+    #     debug("key=" key " RULE_ID_CANDIDATES[key]=" RULE_ID_CANDIDATES[key])
+    # }
 }
 
 function rule_add_list_val( keypath, val,
@@ -142,7 +133,6 @@ function rule_add_list_val( keypath, val,
 
 function rule_add_dict_val( keypath, val,
     num, tmp, keypath_arr, arr_i) {
-    #debug("\033[1;33mkeypath:\033[1;31m"keypath";val:"val";str_unwrap( val ):"str_unwrap( val ))
 
     if (val == "null") {
         RULE_ID_ARGNUM[ keypath ] = 0
@@ -685,7 +675,6 @@ function show_positional_candidates(final_keypath, cur, rest_argv_len,
     }
 
     candidates = RULE_ID_CANDIDATES[ final_keypath KEYPATH_SEP "#n" ]
-    debug("CANDIDATES:" candidates)
     if (candidates != "") {
         print_list_candidate( candidates, cur )
         return
@@ -715,8 +704,6 @@ function show_candidates(final_keypath, cur,
     candidates = RULE_ID_CANDIDATES[ final_keypath ]
 
     can_arr_len = split( candidates, can_arr, "\n")
-    debug( "show_candidates:\t"candidates";\tfinal_keypath:"final_keypath";\tcan_arr[1]:"can_arr[1]";\tcan_arr_len:"can_arr_len)
-
     print_list_candidate(can_arr[1])
 
     for (i=2; i<=can_arr_len; ++i) {
@@ -725,12 +712,10 @@ function show_candidates(final_keypath, cur,
         if (used_option_set[ can ] == true) continue
         # if ( (can == "#n") || (can ~ /^#[0-9]+$/) )  continue
         if ( can ~ "#(n|[0-9]|desc+)$" )  continue
-        debug( "show_candidates\t" can "\t" i)
         print_candidate_with_optionid( can, cur )
         used_option_set[ can ] = true
     }
 
-    #debug("￥￥"final_keypath";\tcur:"cur)
     show_positional_candidates( final_keypath, cur, 1 )
 
     if ( "" != get_colon_argument_optionid( final_keypath ) ) {
