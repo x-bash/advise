@@ -2,18 +2,17 @@
 # Section: utilities
 
 BEGIN{
-    false = 0;      true = 1
+    false = 0
+    true  = 1
+    RS    = "\034"
 
-    RS = "\034"
     # KEYPATH_SEP = "\034"  # Not works with regex pattern [^\034]
-    # KEYPATH_SEP = "\003"
-    KEYPATH_SEP = ","
+    KEYPATH_SEP      = ","
     KEYPATH_DESC_SEP = ";desc"
-    # KEYPATH_SEP = "-"
-    VAL_SEP = "\n"
-    KV_SEP = RS
-    FUNC_SEP = "\004"
-    FUNC_SEP_LEN = FUNC_SEP "len"
+    VAL_SEP          = "\n"
+    KV_SEP           = RS
+    FUNC_SEP         = "\004"
+    FUNC_SEP_LEN     = FUNC_SEP "len"
 }
 
 function str_wrap(s){
@@ -21,7 +20,6 @@ function str_wrap(s){
 }
 
 function str_unwrap(s){
-    # return "\"" s "\""
     s = substr(s, 2, length(s)-2)
     gsub(/\\"/, "\"", s)
     return s
@@ -38,8 +36,6 @@ function str_startswith(src, prefix,    len){
 
 function pattern_wrap(s){
     return "\"[^\003]*:" s ":[^\003]*\""
-    # return "\"[^-\034\035]*:" s ":[^-\034\035]*\""
-    # return "\"[^-]*:" s ":[^-]*\""
 }
 
 function debug(msg){
@@ -689,7 +685,7 @@ function show_positional_candidates(final_keypath, cur, rest_argv_len,
     }
 
     candidates = RULE_ID_CANDIDATES[ final_keypath KEYPATH_SEP "#n" ]
-    #debug("CANDIDATES:" candidates)
+    debug("CANDIDATES:" candidates)
     if (candidates != "") {
         print_list_candidate( candidates, cur )
         return
@@ -719,7 +715,7 @@ function show_candidates(final_keypath, cur,
     candidates = RULE_ID_CANDIDATES[ final_keypath ]
 
     can_arr_len = split( candidates, can_arr, "\n")
-    #debug( "show_candidates:\t"candidates";\tfinal_keypath:"final_keypath";\tcan_arr[1]:"can_arr[1]";\tcan_arr_len:"can_arr_len)
+    debug( "show_candidates:\t"candidates";\tfinal_keypath:"final_keypath";\tcan_arr[1]:"can_arr[1]";\tcan_arr_len:"can_arr_len)
 
     print_list_candidate(can_arr[1])
 
@@ -729,14 +725,13 @@ function show_candidates(final_keypath, cur,
         if (used_option_set[ can ] == true) continue
         # if ( (can == "#n") || (can ~ /^#[0-9]+$/) )  continue
         if ( can ~ "#(n|[0-9]|desc+)$" )  continue
-        # debug( "show_candidates\t" can "\t" i)
+        debug( "show_candidates\t" can "\t" i)
         print_candidate_with_optionid( can, cur )
         used_option_set[ can ] = true
     }
 
     #debug("￥￥"final_keypath";\tcur:"cur)
     show_positional_candidates( final_keypath, cur, 1 )
-
 
     if ( "" != get_colon_argument_optionid( final_keypath ) ) {
         print "@"
@@ -778,7 +773,11 @@ function print_candidate_with_optionid( option_id, cur,
                 can = can_arr[i]
                 if (can ~ /^-[^-]/) {
                     if (can ~ /^-[^-]/)
-                    print can " " desc_info
+                    if (desc_info != "") {
+                        print can " " desc_info
+                    } else {
+                        print can
+                    }
                 }
             }
             return
@@ -796,7 +795,11 @@ function print_candidate_with_optionid( option_id, cur,
             # if (!a[can]++) {
             #     print can " " desc_info
             # }
-            print can " " desc_info
+            if (desc_info != "") {
+                print can " " desc_info
+            } else {
+                print can
+            }
         }
     }
 }

@@ -7,6 +7,8 @@
         "--cmd": "___advise_ls",
         "--colon": ["www:a", ":b", ":c"],
         "--flag|-f": null,
+        "--dict|-d": [ "edwinjhlee", "labve", "c:abc", "c:aaa"],
+        "--@": [ "@a1", "@a2", "@a3", "@b", "@c" ],
         "atcmd": {
             "--@": "myself_ls",
             "--ls": "___advise_ls"
@@ -71,7 +73,7 @@
     },
     "proxy": {},
     "desc": {
-        "subcmd|subcommand": {
+        "option|opt": {
             "--op|-a|m|1": {
                 "#1": [ "m1-a", "m1-b", "m1-c" ],
                 "#desc": "op 1 bababa"
