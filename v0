@@ -244,6 +244,7 @@ ___advise_get_result(){
         } | awk -f "$___ADVISE_AWK_PATH" 2>/dev/null
 
     )"
+    printf "get_r: %s\n" "${cmds}">>aaa
 
     local cmd="${result##*\#> }"
     local cmd_result=""
@@ -386,7 +387,7 @@ ___advise_run(){
     IFS=$'\n'   # Bash/Zsh Only
     [ -f "$filepath" ] || return
 
-    local result
+    local result desc i
     result="$(
         {
             cat "$filepath"
@@ -403,20 +404,23 @@ ___advise_run(){
     local cmds="$result
 $cmd_result"
 
+    printf "r: %s\n" "${cmds}">>aaa
+
+    local commands=($(echo "${cmds[*]}"))
+    desc=()
+    cmds=()
+    for i in "${commands[@]}"; do
+        if [ ! $i = ${i%%---*} ] && [ -n "$ZSH_VERSION" ];then
+            printf "desc: %s\n" "\"${i%% *}:${i#*--- }\"">>aaa
+            desc+=("\"${i%% *}:${i#*--- }\"")
+            continue
+        fi
+        cmds+=(${i%% *})
+    done
+
     IFS="$OLDIFS"
     if [ -n "$ZSH_VERSION" ];then
-        local desc del
-        desc="$(
-            {
-                cat "./testcase/test_desc.json"
-                printf "\034%s\034" "$s"
-            } | awk -f "$___ADVISE_AWK_PATH" 2>/dev/null | awk '{if ($0 ~ /:/){print "\"" $0 "\""}}' 2>/dev/null
-        )"
-        eval "cmds=($cmds)"
         eval "desc=($desc)"
-        for del in "${desc[@]}"; do
-            cmds=(${cmds[@]/${del%%\:*}})
-        done
         local describes=($desc)
         local commands=($cmds)
         _describe 'commands' describes
@@ -433,7 +437,7 @@ $cmd_result"
         # shellcheck disable=SC2207
         COMPREPLY=(
             $(
-                compgen -W "$cmds" -- "$cur"
+                compgen -W "${cmds[*]}" -- "$cur"
             )
         )
 
