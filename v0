@@ -244,7 +244,6 @@ ___advise_get_result(){
         } | awk -f "$___ADVISE_AWK_PATH" 2>/dev/null
 
     )"
-
     local cmd="${result##*\#> }"
     local cmd_result=""
     if [ "$cmd" != "$result" ]; then
@@ -383,7 +382,7 @@ ___advise_run(){
         *)
     esac
 
-    IFS=$'\n'   # Bash/Zsh Only
+    IFS=$'\n'
     [ -f "$filepath" ] || return
 
     local result desc i
@@ -393,7 +392,6 @@ ___advise_run(){
             printf "\034%s\034" "$s"
         } | awk -f "$___ADVISE_AWK_PATH" 2>/dev/null
     )"
-
     local cmd="${result##*\#> }"
     local cmd_result=""
     if [ "$cmd" != "$result" ]; then
@@ -413,12 +411,11 @@ $cmd_result"
         fi
         cmds+=(${i%% *})
     done
-
     IFS="$OLDIFS"
     if [ -n "$ZSH_VERSION" ];then
         eval "desc=($desc)"
-        local describes=($desc)
         local commands=($cmds)
+        local describes=($desc)
         _describe 'commands' describes
         compadd -a commands
     else
