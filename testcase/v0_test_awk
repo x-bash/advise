@@ -7,16 +7,27 @@ xrc advise
 
 # TODO: The work that niracler should do that
 test_marg(){
-    assert_stdout "test123 option -a ''" <<A
+    assert_stdout "test123 desc opt -a ''" <<A
 m1-a
 m1-b
 m1-c
 A
 
-    assert_stdout "test123 option -a m1-a ''" <<A
+    assert_stdout "test123 desc opt -a m1-a ''" <<A
 m2-a
 m2-b
 m2-c
+A
+
+    assert_stdout "test123 desc opt -a m1-a m2-a ''" <<A
+m3-a
+m3-b
+m3-c
+A
+
+    assert_stdout "test123 desc opt -a m1-a m2-a m3-a '-'" <<A
+-a --- op 1 bababa
+-O
 A
 }
 
@@ -72,7 +83,7 @@ A
 }
 
 test_segment_complement(){
-    assert_stdout "test123 tldr cat common/7z"<<A
+    assert_stdout "test123 seg cat common/7z"<<A
 common/7z.md
 common/7za.md
 common/7zr.md
@@ -144,7 +155,6 @@ A
 
 test_hyphen(){
     assert_stdout "test123 option -" <<A
--a
 -c
 -p
 -f
@@ -153,7 +163,6 @@ test_hyphen(){
 A
 
 assert_stdout "test123 option --" <<A
---repo2
 --repo3
 --priviledge
 --cmd

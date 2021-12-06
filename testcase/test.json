@@ -1,9 +1,5 @@
 {
     "option": {
-        "--repo2|-a|m": {
-            "#1": [ "m1-a", "m1-b", "m1-c" ],
-            "#2": [ "m2-a", "m2-b", "m2-c" ]
-        },
         "--repo3|-c|m": [ "m3-a", "m3-b", "m3-c" ],
         "--priviledge|-p": [ "private", "public" ],
         "--cmd": "___advise_ls",
@@ -66,7 +62,7 @@
         "#1": "advise ls",
         "#n": "___advise_get_result 2"
     },
-    "tldr": {
+    "segment|seg": {
         "update": null,
         "ls": null,
         "lang": "___tldr_lang",
@@ -78,6 +74,7 @@
             "--op|-a|m": {
                 "#1": [ "m1-a", "m1-b", "m1-c" ],
                 "#2": [ "m2-a", "m2-b", "m2-c" ],
+                "#3": [ "m3-a", "m3-b", "m3-c" ],
                 "#desc": "op 1 bababa"
             },
             "--option|-O": [
