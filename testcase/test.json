@@ -75,8 +75,9 @@
     },
     "desc": {
         "option|opt": {
-            "--op|-a|m|1": {
+            "--op|-a|m": {
                 "#1": [ "m1-a", "m1-b", "m1-c" ],
+                "#2": [ "m2-a", "m2-b", "m2-c" ],
                 "#desc": "op 1 bababa"
             },
             "--option|-O": [
