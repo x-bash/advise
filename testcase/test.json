@@ -49,11 +49,13 @@
     },
     "ssh": {
         "-b": null,
+        "-I": [ ],
+        "-J": "",
+        "-K": "   ",
+        "-L": [],
         "-c": "ssh -Q cipher",
         "-E|-F|-S": "___advise_ls",
-        "-I": null,
         "-i": "___advise_ls ${cur:-$HOME/.ssh/}",
-        "-J": null,
         "-l": "compgen -u",
         "-m": "ssh -Q mac || echo 'hmac-md5 hmac-sha1 umac-64@openssh.com hmac-ripemd160 hmac-sha1-96 hmac-md5-96'",
         "-O": ["check", "forward", "cancel", "exit stop"],
@@ -64,10 +66,9 @@
     },
     "segment|seg": {
         "update": null,
-        "ls": null,
-        "lang": "___tldr_lang",
+        "ls": "x advise ls",
+        "lang": "x tldr lang",
         "cat": ["common/2to3.md", "common/git-clone.md", "common/ogr2ogr.md", "common/7z.md","common/7za.md","common/7zr.md","linux/manpath.md","linux/mcookie.md"],
-        "test": ["ddd", "eee"]
     },
     "desc": {
         "option|opt": {
@@ -76,6 +77,17 @@
                 "#2": [ "m2-a", "m2-b", "m2-c" ],
                 "#3": [ "m3-a", "m3-b", "m3-c" ],
                 "#desc": "cmd for op description"
+            },
+            "--repo2|-b|m": {
+                "#1": [ "abc", "cde", "def" ],
+                "#2": null,
+                "#desc": "Provide two repo name"
+            },
+            "-c": {
+                "#1": [ "m1-a", "m1-b", "m1-c" ],
+                "#2": [ "m2-a", "m2-b", "m2-c" ],
+                "#n": [ "m3-a", "m3-b", "m3-c" ],
+                "#desc": "cmd for ccc description"
             },
             "--option|-O": [
                 "check     --- ssh-check-host-ip",

@@ -603,7 +603,9 @@ function show_candidates(final_keypath, cur,
         can = can_arr[i]
         if (used_option_set[ can ] == true) continue
         # if ( (can == "#n") || (can ~ /^#[0-9]+$/) )  continue
-        if ( can ~ "#(n|[0-9]|desc+)$" )  continue
+        if ( can ~ "#(desc|n|[0-9]+)") {
+            gsub("#(desc|n|[0-9]+)", "",can)
+        }
         print_candidate_with_optionid( can, cur )
         used_option_set[ can ] = true
     }

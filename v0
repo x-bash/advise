@@ -392,7 +392,6 @@ ___advise_run(){
             printf "\034%s\034" "$s"
         } | awk -f "$___ADVISE_AWK_PATH" 2>/dev/null
     )"
-    # printf "%s\n" "$result" >> aaa
     local cmd="${result##*\#> }"
     local cmd_result=""
     if [ "$cmd" != "$result" ]; then
@@ -401,6 +400,7 @@ ___advise_run(){
     fi
     local cmds="$result
 $cmd_result"
+    # printf "%s\n" "$cmds" >> aaa
 
     local commands=($(echo "${cmds[*]}"))
     desc=()
@@ -410,7 +410,7 @@ $cmd_result"
             desc+=("\"${i%% *}:${i#*--- }\"")
             continue
         fi
-        cmds+=(${i%% *})
+        cmds+=(${i%%---*})
     done
     IFS="$OLDIFS"
     if [ -n "$ZSH_VERSION" ];then
