@@ -80,10 +80,10 @@
             },
             "--repo2|-b|m": {
                 "#1": [ "abc", "cde", "def" ],
-                "#2": null,
+                "#2": [ ],
                 "#desc": "Provide two repo name"
             },
-            "sub": {
+            "sub|subcmmd": {
                 "#1": [ "abc", "cde", "def" ],
                 "#2": null,
                 "#desc": "cmd for sub description"
@@ -102,6 +102,16 @@
             ],
             "--flag|-f": "--- cmd for flag description",
             "#desc": "subcmd description"
+        },
+        "seg": {
+            "-a": ["aaa", "bbb", "ccc"],
+            "-b|--adc": ["aaa", "bbb", "ccc"],
+            "-c":{
+                "#1": ["aaa", "bbb", "ccc" ],
+                "#desc": "cmd for ccc description"
+            },
+
+            "#desc": "cmd for oseg description"
         },
         "#1": "advise ls",
         "#n": "___advise_get_result 2",

@@ -468,7 +468,9 @@ NR==2{
         show_candidates( option_id, cur )
     } else if(match(cur,/^-.*=/)){
         current_keypath = current_keypath KEYPATH_SEP substr(cur,1,RLENGTH-1)
+        current_keypath = RULE_ALIAS_TO_ID[current_keypath]
         candidates = RULE_ID_CANDIDATES[ current_keypath ]
+        # debug("current_keypath:"current_keypath";\tcandidates:"candidates)
         print_list_candidate(candidates, substr(cur,1,RLENGTH))
     } else {
         show_candidates( current_keypath, cur )

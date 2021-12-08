@@ -400,7 +400,7 @@ ___advise_run(){
     fi
     local cmds="$result
 $cmd_result"
-    # printf "%s\n" "$cmds" >> aaa
+    # printf "cmds: %s\n" "$cmds" >> aaa
 
     local commands=($(echo "${cmds[*]}"))
     desc=()
@@ -412,7 +412,6 @@ $cmd_result"
         fi
         cmds+=(${i%%---*})
     done
-    IFS="$OLDIFS"
     if [ -n "$ZSH_VERSION" ];then
         eval "desc=($desc)"
         local commands=($cmds)
@@ -439,6 +438,7 @@ $cmd_result"
         __ltrim_completions "$cur" ":"
         __ltrim_completions "$cur" "="
     fi
+    IFS="$OLDIFS"
 }
 
 __ltrim_completions()
