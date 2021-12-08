@@ -88,8 +88,17 @@ A
             return 126
             ;;
         ""|help)
-            # TODO: help doc
-            printf "%s\n" "Show advise help" >&2; return 1
+            printf "advise    x-bash complete function.
+    Uasge:  advise <subcmd> [<obj>...]
+    Please visit our homepage for more information: https://x-cmd.com
+SUBCOMMAND:
+    ls             Show all available advise json obj.
+    rm [<obj>]     Remove one obj, if no obj is given, remove all obj.
+    which <obj>    Show the path of the obj.
+    cat <obj>      Show the content of the obj.
+    init <obj>     Create a new obj.
+    man            Manager for x-cmd/advise.
+" >&2; return 1
             ;;
         *)
             ___advise_main "$op" "$@" ;;
@@ -102,20 +111,17 @@ A
 
 ___advise_lsd(){
     local l
-    # local localdir="${1:-${cur:-.}}"
-    # ls -d "${localdir}"*/ 2>/dev/null | while read -r l; do
-    #     printf "%s\n" "${l%/}"
-    # done
-
     local localdir="${1:-${cur:-""}}"
     compgen -d "${localdir}" 2>dev/null | while read -r l; do
         printf "%s/\n" "${l%/}"
     done
 }
+
 ___advise_ls_grep(){
     local localopt="${1:-${cur:-""}}"
     ls | grep -E "${localopt}" 2>/dev/null
 }
+
 ___advise_ls(){
     local localdir="${1:-${cur:-""}}"
 
@@ -220,7 +226,6 @@ ___advise_get_result(){
     s="${COMP_WORDS[*]}"
     s="${s#*$IFS}"
 
-    # TODO: Can be optimized.
     local cur_1="${COMP_WORDS[COMP_CWORD-1]}"
     case "$cur_1" in
         *@|*:)
