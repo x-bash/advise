@@ -80,13 +80,13 @@
             },
             "--repo2|-b|m": {
                 "#1": [ "abc", "cde", "def" ],
-                "#2": [  ],
+                "#2": null,
                 "#desc": "Provide two repo name"
             },
-            "ccccc": {
+            "sub": {
                 "#1": [ "abc", "cde", "def" ],
                 "#2": null,
-                "#desc": "cmd for ccccc description"
+                "#desc": "cmd for sub description"
             },
             "-c": {
                 "#1": [ "m1-a", "m1-b", "m1-c" ],
