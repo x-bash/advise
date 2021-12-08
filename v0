@@ -241,10 +241,9 @@ ___advise_get_result(){
         {
             cat "$filepath"
             printf "\034%s\034" "$s"
-        } | awk -f "./v0_test.awk" 2>/dev/null
+        } | awk -f "$___ADVISE_AWK_PATH" 2>/dev/null
 
     )"
-    printf "get_r: %s\n" "${cmds}">>aaa
     local cmd="${result##*\#> }"
     local cmd_result=""
     if [ "$cmd" != "$result" ]; then
@@ -391,7 +390,7 @@ ___advise_run(){
         {
             cat "$filepath"
             printf "\034%s\034" "$s"
-        } | awk -f "./v0_test.awk" 2>/dev/null
+        } | awk -f "$___ADVISE_AWK_PATH" 2>/dev/null
     )"
     local cmd="${result##*\#> }"
     local cmd_result=""
@@ -401,18 +400,16 @@ ___advise_run(){
     fi
     local cmds="$result
 $cmd_result"
-    printf "r: %s\n" "${cmds}">>aaa
 
     local commands=($(echo "${cmds[*]}"))
     desc=()
     cmds=()
     for i in "${commands[@]}"; do
         if [ ! $i = ${i%%---*} ] && [ -n "$ZSH_VERSION" ];then
-            printf "desc: %s\n" "\"${i%% *}:${i#*--- }\"">>aaa
             desc+=("\"${i%% *}:${i#*--- }\"")
             continue
         fi
-        cmds+=(${i%% *})
+        cmds+=(${i%%---*})
     done
     IFS="$OLDIFS"
     if [ -n "$ZSH_VERSION" ];then
@@ -510,6 +507,9 @@ ___advise_man_which(){
     return 1
 }
 ___advise_man_load(){
+    if [[ ! "${1:-}" == "" ]]; then
+        complete -F "___advise_man_completer" "$1" && return 1
+    fi
     local i
     for i in $(___advise_man_ls); do
         if s=$(complete -p "$i" 1>/dev/null 2>&1); then
@@ -520,12 +520,13 @@ ___advise_man_load(){
 }
 
 ___advise_man_rm(){
-    local srcfolder="$___X_CMD_ROOT/.tmp/advise/src"
-    local CACHE="$___X_CMD_ROOT/.tmp/advise/all.tar.gz"
+    local name="${1:-}"
+    local srcfolder="$___X_CMD_ROOT/.tmp/advise/src/$name"
     if ___advise_man_exists; then
         rm -rf "$srcfolder"
     fi
 }
+
 
 ___advise_man_completer() {
     # Interesting ... Passing
@@ -535,12 +536,12 @@ ___advise_man_completer() {
 ___advise_man(){
     local op="${1:?Provide subcommand}"; shift
     case "$op" in
-        ls)         ___advise_man_ls ;;
-        update)     ___advise_man_update ;;
-        which)      ___advise_man_which "$@" ;;
-        load)       ___advise_man_load ;;
-        rm)         ___advise_man_rm ;;
-        *)          ___advise_man_load "$op" "$@" ;;
+        ls)         ___advise_man_ls              ;;
+        update)     ___advise_man_update          ;;
+        which)      ___advise_man_which "$@"      ;;
+        load)       ___advise_man_load "$@"      ;;
+        rm)         ___advise_man_rm "$@"         ;;
+        *)          ___advise_man_load "$@"       ;;
     esac
 }
 
