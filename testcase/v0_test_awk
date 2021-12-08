@@ -4,6 +4,7 @@ ___X_CMD_XRC_MODULE_IMPORTED=
 x log advise xrc
 xrc assert
 xrc advise
+
 test_omz(){
     assert_stdout "test123 desc opt " <<A
 option --- subcmd description
@@ -11,6 +12,7 @@ opt --- subcmd description
 #> advise ls
 A
 }
+
 test_seg(){
     assert_stdout "test123 desc seg -a=" <<A
 -a=aaa
@@ -22,14 +24,14 @@ A
 -b=bbb
 -b=ccc
 A
-#     assert_stdout "test123 desc seg -c=" <<A
-# -c=aaa
-# -c=bbb
-# -c=ccc
-# A
+    assert_stdout "test123 desc seg -c=" <<A
+-c=aaa
+-c=bbb
+-c=ccc
+A
 }
 
-test1_null(){
+test_null(){
     assert_stdout "test123 ssh -b ''" <<A
 #> advise ls
 A
@@ -48,13 +50,13 @@ A
 # A
 }
 
-test1_get_result(){
+test_get_result(){
     assert_stdout "test123 ssh compt ssh compt ssh compt compt desc opt -O''" <<A
 #> ___advise_get_result 2
 A
 }
 
-test1_opt(){
+test_opt(){
 
     assert_stdout "test123 desc opt" <<A
 option --- subcmd description
@@ -69,7 +71,7 @@ A
 A
 }
 
-test1_marg(){
+test_marg(){
     assert_stdout "test123 desc opt -a ''" <<A
 m1-a
 m1-b
@@ -147,7 +149,7 @@ A
 }
 
 # Section: Testcase for advise awk code
-test1_desc(){
+test_desc(){
     assert_stdout "test123 " <<A
 option
 rarg
@@ -168,7 +170,7 @@ exit      --- ssh-stop-forward-agent
 A
 }
 
-test1_at(){
+test_at(){
 
     assert_stdout "test123 option @a" <<A
 @a1
@@ -193,7 +195,7 @@ A
 A
 }
 
-test1_segment_complement(){
+test_segment_complement(){
     assert_stdout "test123 seg cat common/7z"<<A
 common/7z.md
 common/7za.md
@@ -218,7 +220,7 @@ A
 # A
 }
 
-test1_xsxs(){
+test_xsxs(){
     assert_stdout "test123 subcommand create"<<A
 create1
 create2
@@ -284,7 +286,7 @@ A
 A
 }
 
-test1_hyphen(){
+test_hyphen(){
     assert_stdout "test123 option ''" <<A
 atcmd
 @
@@ -309,7 +311,7 @@ A
 
 }
 
-test1_cmd(){
+test_cmd(){
 
     assert_stdout "test123 option atcmd @" <<A
 #> myself_ls
@@ -326,7 +328,7 @@ A
 A
 }
 
-test1_option(){
+test_option(){
 
     assert_stdout "test123 option --" <<A
 --repo3
@@ -376,7 +378,7 @@ c:aaa
 A
 }
 
-test1_rarg(){
+test_rarg(){
     assert_stdout "test123 rarg abc ''" <<A
 #> ___advise_lsd; printf '..\n.\n../\n-'
 A
@@ -404,7 +406,7 @@ A
 A
 }
 
-test1_subcmd(){
+test_subcmd(){
     assert_stdout "test123 subcmd create"<<A
 create1
 create2

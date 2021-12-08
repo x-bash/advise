@@ -110,6 +110,10 @@
                 "#1": ["aaa", "bbb", "ccc" ],
                 "#desc": "cmd for ccc description"
             },
+            "-d":{
+                "#1": ["aaa", "bbb", "ccc" ],
+                "#2": ["ddd", "bbb", "ccc" ]
+            },
 
             "#desc": "cmd for oseg description"
         },
