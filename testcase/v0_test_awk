@@ -46,52 +46,52 @@ A
 }
 
 test_marg(){
-    assert_stdout "test123 desc opt -a ''" <<A
-m1-a
-m1-b
-m1-c
-A
+#     assert_stdout "test123 desc opt -a ''" <<A
+# m1-a
+# m1-b
+# m1-c
+# A
 
-    assert_stdout "test123 desc opt -a m1-a ''" <<A
-m2-a
-m2-b
-m2-c
-A
+#     assert_stdout "test123 desc opt -a m1-a ''" <<A
+# m2-a
+# m2-b
+# m2-c
+# A
 
-    assert_stdout "test123 desc opt -a m1-a m2-a ''" <<A
-m3-a
-m3-b
-m3-c
-A
+#     assert_stdout "test123 desc opt -a m1-a m2-a ''" <<A
+# m3-a
+# m3-b
+# m3-c
+# A
 
-    assert_stdout "test123 desc opt -a m1-a m2-a m3-a '-'" <<A
--a --- cmd for op description
--b --- Provide two repo name
--c --- cmd for ccc description
--O
--f --- cmd for flag description
-A
+#     assert_stdout "test123 desc opt -a m1-a m2-a m3-a '-'" <<A
+# -a --- cmd for op description
+# -b --- Provide two repo name
+# -c --- cmd for ccc description
+# -O
+# -f --- cmd for flag description
+# A
 
-    assert_stdout "test123 desc opt -O cancel '-'" <<A
--a --- cmd for op description
--b --- Provide two repo name
--c --- cmd for ccc description
--f --- cmd for flag description
-A
+#     assert_stdout "test123 desc opt -O cancel '-'" <<A
+# -a --- cmd for op description
+# -b --- Provide two repo name
+# -c --- cmd for ccc description
+# -f --- cmd for flag description
+# A
 
-    assert_stdout "test123 desc opt -f a '-'" <<A
--a --- cmd for op description
--b --- Provide two repo name
--c --- cmd for ccc description
--O
-A
-    assert_stdout "test123 desc opt -b a a -" <<A
--a --- cmd for op description
--b --- Provide two repo name
--c --- cmd for ccc description
--O
--f --- cmd for flag description
-A
+#     assert_stdout "test123 desc opt -f a '-'" <<A
+# -a --- cmd for op description
+# -b --- Provide two repo name
+# -c --- cmd for ccc description
+# -O
+# A
+#     assert_stdout "test123 desc opt -b a a -" <<A
+# -a --- cmd for op description
+# -b --- Provide two repo name
+# -c --- cmd for ccc description
+# -O
+# -f --- cmd for flag description
+# A
 #     assert_stdout "test123 desc opt -f -" <<A
 # -a  -- cmd for op description
 # -b  -- Provide two repo name
@@ -99,18 +99,33 @@ A
 # -O
 # A
     # FIXME: "#2":[]
-#     assert_stdout "test123 desc opt -b a ''" <<A
-# null
-# A
+    a="$(test123 seg update '')"
+    if [ ! "$a" = "" ];then
+        echo "\033[1;31mERROR\033[0m: $a not equal to \"\""
+    fi
+
+    assert_stdout "test123 desc opt --repo" <<A
+--repo2 --- Provide two repo name
+A
+    assert_stdout "test123 desc opt -b  ''" <<A
+abc
+cde
+def
+A
+    a="$(test123 desc opt -b a '')"
+    if [ ! "$a" = "" ];then
+        echo "\033[1;31mERROR\033[0m: $a not equal to \"\""
+    fi
     # FIXME: "#n": "m3-a", "m3-b", "m3-c"
 #     assert_stdout "test123 desc opt -c a a a a a ''" <<A
 # m3-a
 # m3-b
 # m3-c
 # A
-    assert_stdout "test123 desc optttt a a a a a a ''" <<A
-#> ___advise_get_result 2
-A
+
+#     assert_stdout "test123 desc optttt a a a a a a ''" <<A
+# #> ___advise_get_result 2
+# A
 }
 
 # Section: Testcase for advise awk code

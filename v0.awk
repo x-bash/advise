@@ -462,7 +462,7 @@ NR==2{
         show_positional_candidates( current_keypath, cur, rest_argv_len)
     } else if (cur_option_alias != "") {
         option_id = RULE_ALIAS_TO_ID[ current_keypath KEYPATH_SEP cur_option_alias ]
-        if (option_id !~ "#" cur_optarg_index "+$" && option_id KEYPATH_SEP "#" cur_optarg_index in RULE_ID_CANDIDATES){
+        if (option_id !~ "#" cur_optarg_index "+$" && cur_optarg_index !~ "1"){
             option_id=option_id KEYPATH_SEP "#" cur_optarg_index
         }
         show_candidates( option_id, cur )
