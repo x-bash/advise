@@ -189,40 +189,8 @@ A
 
 }
 
-___advise_get_result(){
-    local OLDIFS="$IFS"
-    # If there are two parameters, take the second one.
-    local offset="${2:-${1:-0}}"
-
-    if [ -n "$ZSH_VERSION" ];then
-        resname="${COMP_WORDS[offset+1]}"
-    else
-        resname="${COMP_WORDS[offset]}"
-    fi
-
-    local filepath="${TMPDIR%/}/.x-cmd/advise_auto_json/$resname"
-    [ -f "$filepath" ] || return
-
-    local IFS=$'\002'
-
-    # Delete $offset numbers from the COMP_WORDS
-    local i
-    local tmp=()
-    if [ -n "$ZSH_VERSION" ];then
-        for ((i=0; i<=$((COMP_CWORD-offset)); ++i)); do
-            tmp+=( "${COMP_WORDS[i+offset+1]}" )
-        done
-    else
-        for ((i=0; i<=$((COMP_CWORD-offset)); ++i)); do
-            tmp+=( "${COMP_WORDS[i+offset]}" )
-        done
-    fi
-
-    COMP_WORDS=("${tmp[@]}")
-    COMP_CWORD="$(( ${#tmp[@]}-1 ))"
-    COMP_LINE="${COMP_WORDS[*]}"
-
-    s="${COMP_WORDS[*]}"
+___advise_get_result_from_awk(){
+    local s="${COMP_WORDS[*]}"
     s="${s#*"$IFS"}"
 
     local cur_1="${COMP_WORDS[COMP_CWORD-1]}"
@@ -236,9 +204,7 @@ ___advise_get_result(){
         *)
     esac
 
-    IFS=$'\n'   # Bash/Zsh Only
-
-    local result
+    IFS=$'\n'
     result="$(
         {
             cat "$filepath"
@@ -246,11 +212,44 @@ ___advise_get_result(){
         } | awk -f "$___ADVISE_AWK_PATH" 2>/dev/null
     )"
     local cmd="${result##*\#> }"
-    local cmd_result=""
+    cmd_result=""
     if [ "$cmd" != "$result" ]; then
         cmd_result="$(eval "$cmd")"
         result="${result%%\#> *}"
     fi
+
+    if [ "$cmd" != "$result" ]; then
+        cmd_result="$(eval "$cmd" 2>/dev/null)"
+        result="${result%%\#> *}"
+    fi
+}
+
+___advise_get_result(){
+
+
+    # If there are two parameters, take the second one.
+    local offset="${2:-${1:-0}}"
+    local remain_len=$((COMP_CWORD-offset))
+
+    [ -n "$ZSH_VERSION" ] && offset=$((offset+1))
+    local filepath="${TMPDIR%/}/.x-cmd/advise_auto_json/${COMP_WORDS[offset]}"
+    [ -f "$filepath" ] || return
+
+    # Delete $offset numbers from the COMP_WORDS
+    local i tmp=()
+    for ((i=0; i<=remain_len; ++i)); do
+        tmp+=( "${COMP_WORDS[i+offset]}" )
+    done
+    COMP_WORDS=("${tmp[@]}")
+    COMP_CWORD="$(( ${#tmp[@]}-1 ))"
+
+    local result cmd_result
+    local OLDIFS="$IFS"
+    local IFS=$'\002'
+    COMP_LINE="${COMP_WORDS[*]}"
+
+    ___advise_get_result_from_awk
+
     IFS="$OLDIFS"
     printf "%s" "$result
 $cmd_result"
@@ -309,19 +308,19 @@ ___advise_update(){
 
 ___advise_run(){
 
-    local offset="${2:-0}"
-    local resname
+    local resname cur
     if [ -n "$ZSH_VERSION" ];then
-        resname="${1:-${words[1]}}"
+        local COMP_WORDS=("${words[@]}")
+        local COMP_CWORD="$(( ${#words[@]}-1 ))"
+        cur="${COMP_WORDS[COMP_CWORD+1]}"
+        resname="${1:-${COMP_WORDS[1]}}"
     else
+        cur="${COMP_WORDS[COMP_CWORD]}"
         resname="${1:-${COMP_WORDS[0]}}"
     fi
 
-    if [ -z "$___ADVISE_RUN_CMD_FOLDER" ]; then
-        ___ADVISE_RUN_CMD_FOLDER="${TMPDIR%/}/.x-cmd/advise_auto_json"
-    fi
-
     local filepath
+    [ -z "$___ADVISE_RUN_CMD_FOLDER" ] && ___ADVISE_RUN_CMD_FOLDER="${TMPDIR%/}/.x-cmd/advise_auto_json"
     case "$resname" in
         /*) filepath="$resname" ;;
         -)  filepath=/dev/stdin ;;
@@ -333,8 +332,7 @@ ___advise_run(){
             fi
             ;;
     esac
-
-    shift 2>/dev/null
+    [ -f "$filepath" ] || return
 
     if [ -n "$BASH_VERSION" ] && [ "${BASH_VERSION#3}" = "${BASH_VERSION}" ]; then
         local last="${COMP_WORDS[COMP_CWORD]}"
@@ -358,49 +356,14 @@ ___advise_run(){
         COMP_CWORD="$(( ${#tmp[@]}-1 ))"
     fi
 
-    local cur="${COMP_WORDS[COMP_CWORD]}"
-    if [ -n "$ZSH_VERSION" ];then
-        local COMP_WORDS=("${words[@]}")
-        local COMP_CWORD="$(( ${#words[@]}-1 ))"
-        cur="${COMP_WORDS[COMP_CWORD+1]}"
-    fi
-
     local OLDIFS="$IFS"
     local IFS=$'\002'
+    local result cmd_result
 
-    s="${COMP_WORDS[*]}"
-    s="${s#*"$IFS"}"
+    ___advise_get_result_from_awk
 
-    local cur_1="${COMP_WORDS[COMP_CWORD-1]}"
-    case "$cur_1" in
-        *@|*:)
-            if [ "${COMP_LINE% }" != "${COMP_LINE}" ]; then
-                s="${s%$cur_1$IFS$cur}"
-                s="${s}${cur_1}$cur"
-            fi
-            ;;
-        *)
-    esac
-
-    IFS=$'\n'
-    [ -f "$filepath" ] || return
-
-    local result desc i
-    result="$(
-        {
-            cat "$filepath"
-            printf "\034%s\034" "$s"
-        } | awk -f "$___ADVISE_AWK_PATH" 2>/dev/null
-    )"
-    local cmd="${result##*\#> }"
-    local cmd_result=""
-    if [ "$cmd" != "$result" ]; then
-        cmd_result="$(eval "$cmd" 2>/dev/null)"
-        result="${result%%\#> *}"
-    fi
     local cmds="$result
 $cmd_result"
-
     local commands=($(printf "%s" "${cmds[*]}"))
     desc=()
     cmds=()
@@ -440,7 +403,6 @@ $cmd_result"
 
 __ltrim_completions()
 {
-
     local i=${#COMPREPLY[*]}
     ((i == 0)) && return 0
     if [[ $1 == *$2* && $COMP_WORDBREAKS == *$2* ]]; then
