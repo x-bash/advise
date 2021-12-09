@@ -512,3 +512,8 @@ start_test() {
 start_test ./testcase/v0_test_awk
 
 # EndSection
+
+# Section: for the interactive ui
+advise rm compt
+advise compt "./testcase/test.json"
+# EndSection
