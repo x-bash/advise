@@ -150,7 +150,7 @@ ___advise_ls(){
 
 # 1-10
 ___advise_seq(){
-    local curnum="${cur:-""}"
+    local cur="${cur:-""}"
     awk -v range="$1" -v cur="$cur" '
 function inside(num, start, end, step){
     if ( (num < start) || (num > end) ) return 0
