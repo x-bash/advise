@@ -119,7 +119,7 @@
         },
         "#1": "advise ls",
         "#n": "___advise_get_result 2",
-        "#desc": "cmd for description"
+        "#desc": "cmd for 中文 测试 description"
     },
     "#1": "advise ls",
     "#n": "___advise_get_result 1"
