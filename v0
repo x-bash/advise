@@ -195,32 +195,31 @@ ___advise_get_result(){
     local offset="${2:-${1:-0}}"
 
     if [ -n "$ZSH_VERSION" ];then
-        resname="${words[offset+1]}"
-        COMP_WORDS=("${words[@]}")
-        COMP_CWORD="$(( ${#words[@]}-1 ))"
+        resname="${COMP_WORDS[offset+1]}"
     else
         resname="${COMP_WORDS[offset]}"
     fi
 
     local filepath="${TMPDIR%/}/.x-cmd/advise_auto_json/$resname"
+    [ -f "$filepath" ] || return
 
     local IFS=$'\002'
 
     # Delete $offset numbers from the COMP_WORDS
     local i
-    local words=()
+    local tmp=()
     if [ -n "$ZSH_VERSION" ];then
         for ((i=0; i<=$((COMP_CWORD-offset)); ++i)); do
-            words+=( "${COMP_WORDS[i+offset+1]}" )
+            tmp+=( "${COMP_WORDS[i+offset+1]}" )
         done
     else
         for ((i=0; i<=$((COMP_CWORD-offset)); ++i)); do
-            words+=( "${COMP_WORDS[i+offset]}" )
+            tmp+=( "${COMP_WORDS[i+offset]}" )
         done
     fi
 
-    COMP_WORDS=("${words[@]}")
-    COMP_CWORD="$(( ${#words[@]}-1 ))"
+    COMP_WORDS=("${tmp[@]}")
+    COMP_CWORD="$(( ${#tmp[@]}-1 ))"
     COMP_LINE="${COMP_WORDS[*]}"
 
     s="${COMP_WORDS[*]}"
@@ -238,8 +237,6 @@ ___advise_get_result(){
     esac
 
     IFS=$'\n'   # Bash/Zsh Only
-
-    [ -f "$filepath" ] || return
 
     local result
     result="$(
@@ -344,22 +341,21 @@ ___advise_run(){
         case "$last" in
             \"*|\'*)
                 COMP_LINE="${COMP_LINE%"$last"}"
-                words=( $COMP_LINE )
-                words+=("$last")
+                tmp=( $COMP_LINE )
+                tmp+=("$last")
                 ;;
             *)
-                words=( $COMP_LINE )
+                tmp=( $COMP_LINE )
                 ;;
         esac
 
         # Ends with space
         if [ "${COMP_LINE% }" != "${COMP_LINE}" ]; then
-            words+=( "" )
+            tmp+=( "" )
         fi
 
-        COMP_WORDS=("${words[@]}")
-        COMP_CWORD="$(( ${#words[@]}-1 ))"
-
+        COMP_WORDS=("${tmp[@]}")
+        COMP_CWORD="$(( ${#tmp[@]}-1 ))"
     fi
 
     local cur="${COMP_WORDS[COMP_CWORD]}"
