@@ -363,7 +363,7 @@ ___advise_run(){
             desc+=("\"${i%% *}:${i#*--- }\"")
             continue
         fi
-        cmds+=("${i%%---*}")
+        cmds+=("${i%% *}")
     done
 
     if [ -n "$ZSH_VERSION" ];then
