@@ -195,7 +195,7 @@ ___advise_get_result_from_awk(){
     local s="${COMP_WORDS[*]}"
     s="${s#*"$IFS"}"
 
-    # Handle the case that the last word is "@" or ":" in bash.
+    # Handle the case that the last word has "@" or ":" in bash.
     COMP_LINE="${COMP_WORDS[*]}"
     local cur_1="${COMP_WORDS[COMP_CWORD-1]}"
     case "$cur_1" in
