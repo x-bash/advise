@@ -190,9 +190,13 @@ A
 }
 
 ___advise_get_result_from_awk(){
+    local result cmd_result
+    local IFS=$'\002'
     local s="${COMP_WORDS[*]}"
     s="${s#*"$IFS"}"
 
+    # Handle the case that the last word has "@" or ":" in bash.
+    COMP_LINE="${COMP_WORDS[*]}"
     local cur_1="${COMP_WORDS[COMP_CWORD-1]}"
     case "$cur_1" in
         *@|*:)
@@ -222,10 +226,12 @@ ___advise_get_result_from_awk(){
         cmd_result="$(eval "$cmd" 2>/dev/null)"
         result="${result%%\#> *}"
     fi
+
+    printf "%s" "$result
+$cmd_result"
 }
 
 ___advise_get_result(){
-
 
     # If there are two parameters, take the second one.
     local offset="${2:-${1:-0}}"
@@ -242,17 +248,7 @@ ___advise_get_result(){
     done
     COMP_WORDS=("${tmp[@]}")
     COMP_CWORD="$(( ${#tmp[@]}-1 ))"
-
-    local result cmd_result
-    local OLDIFS="$IFS"
-    local IFS=$'\002'
-    COMP_LINE="${COMP_WORDS[*]}"
-
     ___advise_get_result_from_awk
-
-    IFS="$OLDIFS"
-    printf "%s" "$result
-$cmd_result"
 }
 
 # EndSection
@@ -307,7 +303,6 @@ ___advise_update(){
 }
 
 ___advise_run(){
-
     local resname cur
     if [ -n "$ZSH_VERSION" ];then
         local COMP_WORDS=("${words[@]}")
@@ -357,14 +352,10 @@ ___advise_run(){
     fi
 
     local OLDIFS="$IFS"
-    local IFS=$'\002'
-    local result cmd_result
-
-    ___advise_get_result_from_awk
-
-    local cmds="$result
-$cmd_result"
-    local commands=($(printf "%s" "${cmds[*]}"))
+    local IFS=$'\n'
+    local cmds
+    cmds="$(___advise_get_result_from_awk)"
+    local commands=($(printf "%s" "$cmds"))
     desc=()
     cmds=()
     for i in "${commands[@]}"; do
@@ -374,6 +365,7 @@ $cmd_result"
         fi
         cmds+=("${i%%---*}")
     done
+
     if [ -n "$ZSH_VERSION" ];then
         eval "desc=(${desc[*]})"
         _describe 'commands' desc
@@ -427,7 +419,6 @@ if [ -n "$ZSH_VERSION" ] && [ "$(autoload | grep compinit)" = "" ]; then
 fi
 
 advise init advise
-fi
 
 # Section: man
 
@@ -505,3 +496,4 @@ ___advise_man(){
 }
 
 # EndSection
+fi
