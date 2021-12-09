@@ -119,6 +119,7 @@ function rule_add_list_val( keypath, val,
 
     val = str_unwrap( val )     # Notice: simple unwrap
 
+
     if (match(keypath, KEYPATH_SEP "[0-9]+$") ) {
         keypath = substr( keypath, 1, RSTART-1 )
     }
@@ -151,7 +152,7 @@ function rule_add_dict_val( keypath, val,
 # Section: JSON: utilities
 
 function json_walk_dict_as_candidates(keypath,
-    _tmp, _res){
+    _tmp, _res, s){
 
     nth = -1
     s = JSON_TOKENS[ ++s_idx ]
@@ -215,7 +216,6 @@ function json_walk_dict(keypath, indent,
         rule_add_key(keypath, key)
         cur_keypath = keypath KEYPATH_SEP key
 
-
         data = data VAL_SEP key
 
         s = JSON_TOKENS[++s_idx]
@@ -223,18 +223,13 @@ function json_walk_dict(keypath, indent,
 
         s = JSON_TOKENS[++s_idx]            # Value
 
-        if ( (s == "{") && (key ~ /^[-#]/) )
+        # It means it is bas description.
+        if ( (s == "{") && (key ~ /^[-#desc]/) )
         {
-            # It means it is an struct candidate
-            # json_walk_dict_as_candidates(cur_keypath)
             RULE_ID_CANDIDATES[cur_keypath KEYPATH_DESC_SEP]=cur_keypath KEYPATH_SEP "#desc"
-            json_walk_value(cur_keypath, cur_indent, "dict")
-
-        } else {
-            json_walk_value(cur_keypath, cur_indent, "dict")
         }
-        # json_walk_value(cur_keypath, cur_indent, "dict")
 
+        json_walk_value(cur_keypath, cur_indent, "dict")
         if (s == ",") s = JSON_TOKENS[++s_idx]
     }
 
