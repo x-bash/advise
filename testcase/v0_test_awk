@@ -36,18 +36,18 @@ test_null(){
 #> advise ls
 A
     # FIXME: "" and [] are not equal to null
-#     assert_stdout "test123 ssh -I a ''" <<A
-# #> advise ls
-# A
-#     assert_stdout "test123 ssh -J a ''" <<A
-# #> advise ls
-# A
-#     assert_stdout "test123 ssh -K a ''" <<A
-# #> advise ls
-# A
-#     assert_stdout "test123 ssh -L a ''" <<A
-# #> advise ls
-# A
+    assert_stdout "test123 ssh -I a ''" <<A
+#> advise ls
+A
+    assert_stdout "test123 ssh -J a ''" <<A
+#> advise ls
+A
+    assert_stdout "test123 ssh -K a ''" <<A
+#> advise ls
+A
+    assert_stdout "test123 ssh -L a ''" <<A
+#> advise ls
+A
 }
 
 test_get_result(){
@@ -249,20 +249,20 @@ m3-b
 m3-c
 A
     # FIXME: if "--repo3|-c","--priviledge|-p" will error.
-#     assert_stdout "test123 option -c="<<A
-# -c=m3-a
-# -c=m3-b
-# -c=m3-c
-# A
-#     assert_stdout "test123 option -p="<<A
-# -p=private
-# -p=public
-# A
-#     assert_stdout "test123 option --colon="<<A
-# --colon=www:a
-# --colon=:b
-# --colon=:c
-# A
+    assert_stdout "test123 option -c="<<A
+-c=m3-a
+-c=m3-b
+-c=m3-c
+A
+    assert_stdout "test123 option -p="<<A
+-p=private
+-p=public
+A
+    assert_stdout "test123 option --colon="<<A
+--colon=www:a
+--colon=:b
+--colon=:c
+A
     assert_stdout "test123 cs -b test -"<<A
 -seq
 -a

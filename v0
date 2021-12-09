@@ -363,12 +363,12 @@ ___advise_run(){
 
     fi
 
+    local cur="${COMP_WORDS[COMP_CWORD]}"
     if [ -n "$ZSH_VERSION" ];then
         local COMP_WORDS=("${words[@]}")
         local COMP_CWORD="$(( ${#words[@]}-1 ))"
+        cur="${COMP_WORDS[COMP_CWORD+1]}"
     fi
-
-    local cur="${COMP_WORDS[COMP_CWORD]}"
 
     local OLDIFS="$IFS"
     local IFS=$'\002'
@@ -405,7 +405,6 @@ ___advise_run(){
     fi
     local cmds="$result
 $cmd_result"
-    # printf "cmds: %s\n" "$cmds" >> aaa
 
     local commands=($(echo "${cmds[*]}"))
     desc=()
