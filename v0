@@ -4,9 +4,10 @@
 
 if [ -z "${ZSH_VERSION}${BASH_VERSION}" ]; then
     x log info "advise is only available in 'bash' or 'zsh'."
-elif ! ___ADVISE_AWK_PATH="${___X_CMD_ROOT}/advise/v0.awk"; then
-    x log error "Cannot introduce advise"
 else
+
+# It is a nice idea to avoid using the 'xrc which' command multiple times.
+___ADVISE_AWK_PATH=${___ADVISE_AWK_PATH:-$(xrc which advise/v0.awk)}
 
 # Section : advise entrance
 advise(){
@@ -37,7 +38,7 @@ advise(){
         man)
             ___advise_man "$@" ;;
         init|new)
-            ___advise_main "$@" ;;
+            time ___advise_main "$@" ;;
         del)
             complete -r "${1:?Provide function name}"
             ;;
@@ -97,7 +98,7 @@ SUBCOMMAND:
 " >&2; return 1
             ;;
         *)
-            ___advise_main "$op" "$@" ;;
+            time ___advise_main "$op" "$@" ;;
     esac
 }
 
