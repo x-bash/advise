@@ -408,7 +408,8 @@ ___advise_completer() {
 
 # EndSection
 
-if [ -n "$ZSH_VERSION" ] && [ "$(autoload | grep compinit)" = "" ]; then
+if [ -n "$ZSH_VERSION" ] && [ -z "$___X_CMD_ADVISE_ZSH_COMPLETE_LOADED" ]; then
+    ___X_CMD_ADVISE_ZSH_COMPLETE_LOADED=1
     autoload -Uz compinit && compinit
 fi
 
