@@ -290,9 +290,9 @@ ___advise_main(){
 ___advise_load(){
     for i in "${TMPDIR%/}"/.x-cmd/advise_auto_json/* ; do
         if [ -z "$ZSH_VERSION" ];then
-            complete -F "___advise_completer" "$func"
+            complete -F "___advise_completer" "${i##*/}"
         else
-            compdef "___advise_completer" "$func"
+            compdef "___advise_completer" "${i##*/}"
         fi
     done
 }
