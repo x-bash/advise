@@ -474,7 +474,6 @@ ___advise_man_load(){
     fi
     local i
     for i in $(___advise_man_ls); do
-
         if [ -z "$ZSH_VERSION" ];then
             if s=$(complete -p "$i" 1>/dev/null 2>&1); then
                 [[ "$s" == *___advise_completer* ]] && continue
