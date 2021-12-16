@@ -35,6 +35,7 @@ advise(){
                 cat "${TMPDIR%/}/.x-cmd/advise_auto_json/$mod"
             done
             ;;
+        load) ___advise_load;;
         man)
             ___advise_man "$@" ;;
         init|new)
@@ -286,6 +287,16 @@ ___advise_main(){
     fi
 }
 
+___advise_load(){
+    for i in "${TMPDIR%/}"/.x-cmd/advise_auto_json/* ; do
+        if [ -z "$ZSH_VERSION" ];then
+            complete -F "___advise_completer" "$func"
+        else
+            compdef "___advise_completer" "$func"
+        fi
+    done
+}
+
 ___advise_update(){
     local func="${1:?Provide function name}"
     local tmp_filepath=${TMPDIR%/}/.x-cmd/advise_auto_json/$func
@@ -452,6 +463,7 @@ ___advise_man_which(){
 
     return 1
 }
+
 ___advise_man_load(){
     if [[ ! "${1:-}" == "" ]]; then
         complete -F "___advise_man_completer" "$1" && return 1
