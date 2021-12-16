@@ -2,3 +2,8 @@
 . ~/.x-cmd/xrc/latest
 xrc advise/v0
 time advise init advise
+
+# gen 10000 number and print it
+for i in $(seq 1 10000); do
+    printf "{ \"hello\": null }" > "${TMPDIR%/}/.x-cmd/advise_auto_json/test1$i"
+done
