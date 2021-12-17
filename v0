@@ -433,6 +433,7 @@ ___advise_completer() {
 
 if [ -n "$ZSH_VERSION" ] && [ -z "$___X_CMD_ADVISE_ZSH_COMPLETE_LOADED" ] ; then
     ___X_CMD_ADVISE_ZSH_COMPLETE_LOADED=1
+    zstyle ':completion:*:*:*:*:*' menu select
     [ "$(autoload | grep compinit)" = "" ] && autoload -Uz compinit && compinit
 fi
 
