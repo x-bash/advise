@@ -248,7 +248,7 @@ m3-a
 m3-b
 m3-c
 A
-    # FIXME: if "--repo3|-c","--priviledge|-p" will error.
+
     assert_stdout "test123 option -c="<<A
 -c=m3-a
 -c=m3-b

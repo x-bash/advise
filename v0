@@ -4,15 +4,12 @@
 
 if [ -z "${ZSH_VERSION}${BASH_VERSION}" ]; then
     x log info "advise is only available in 'bash' or 'zsh'."
-elif ! ___ADVISE_AWK_PATH="$(xrc which advise/v0.awk)"; then
-    x log error "Cannot introduce advise"
 else
 
-x log init advise
-______X_CMD_ADVISE_V0_FILEPATH="$(xrc which advise/v0)"
+# It is a nice idea to avoid using the 'xrc which' command multiple times.
+___ADVISE_AWK_PATH=${___ADVISE_AWK_PATH:-$(xrc which advise/v0.awk)}
 
 # Section : advise entrance
-
 advise(){
     local op="${1}"; shift 2>/dev/null
     case "$op" in
@@ -38,6 +35,7 @@ advise(){
                 cat "${TMPDIR%/}/.x-cmd/advise_auto_json/$mod"
             done
             ;;
+        load) ___advise_load;;
         man)
             ___advise_man "$@" ;;
         init|new)
@@ -70,19 +68,31 @@ advise(){
          _x_cmd_advise_json)
             cat <<A
 {
-    "ls": null,
-    "rm": "advise ls",
-    "which|cat|init|new": "ls ${TMPDIR%/}/.x-cmd/advise_auto_json/",
-    "man": {
-        "ls": null,
-        "update": null,
-        "rm": null,
-        "which": "advise man ls",
-        "load": null
-    },
-    "del":null,
-    "obj-new":null,
-    "obj-del": null
+      "ls": "--- Show all available advise json obj",
+      "rm": {
+          "#1": "ls \${TMPDIR%/}/.x-cmd/advise_auto_json",
+          "#desc": "Remove one obj, if no obj is given, remove all obj"
+      },
+      "which": {
+          "#1": "ls \${TMPDIR%/}/.x-cmd/advise_auto_json",
+          "#desc": "Show the path of the obj"
+      },
+      "cat": {
+          "#n": "ls \${TMPDIR%/}/.x-cmd/advise_auto_json",
+          "#desc": "Show the content of the obj"
+      },
+      "init|new": "--- Create a new obj",
+      "man": {
+          "ls": null,
+          "update": null,
+          "rm": "___advise_man_ls",
+          "which": "___advise_man_ls",
+          "load": "___advise_man_ls",
+          "#desc": "Manager for x-cmd/advise"
+      },
+      "del": null,
+      "obj-new": null,
+      "obj-del": null
 }
 A
             return 126
@@ -258,29 +268,26 @@ ___advise_get_result(){
 ___advise_main(){
     local func="${1:?Provide function name}"
     local filepath="${2}"
-    local tmp_filepath=${TMPDIR%/}/.x-cmd/advise_auto_json/$func
-    mkdir -p "$(dirname "$tmp_filepath")"
+    local advise_json_dir="${TMPDIR%/}/.x-cmd/advise_auto_json"
+    local tmp_filepath=${advise_json_dir}/$func
+    [ ! -d "$advise_json_dir" ] && mkdir -p "$advise_json_dir"
 
     if [ "-" = "$filepath" ]; then
         filepath=$tmp_filepath
-        advise_log "Pipe standard input to $filepath"
         cat >"$filepath"
     elif [ -z "$filepath" ]; then
         ___advise_update "$func"
         local filepath=$tmp_filepath
         if [ -n "$___XRC_UDPATE" ] || [ ! -f "$filepath" ]; then
-            advise_log debug "Pipe the result of \"$func _x_cmd_advise_json\" to $filepath"
             local content
             content="$(X_CMD_ADVISE_FUNC_NAME=$func eval "$func" _x_cmd_advise_json)"
             if [ $? = 126 ]; then
                 printf "%s" "$content" >"$filepath"
             else
-                advise_log warn "Fail to write file because the return code of \"$func _x_cmd_advise_json\" is not 126."
                 return 0
             fi
         fi
     else
-        advise_log debug "Copy self-defined file $filepath to $tmp_filepath"
         cp "$filepath" "$tmp_filepath"
         filepath="$tmp_filepath"
     fi
@@ -290,6 +297,16 @@ ___advise_main(){
     else
         compdef "___advise_completer" "$func"
     fi
+}
+
+___advise_load(){
+    for i in "${TMPDIR%/}"/.x-cmd/advise_auto_json/* ; do
+        if [ -z "$ZSH_VERSION" ];then
+            complete -F "___advise_completer" "${i##*/}"
+        else
+            compdef "___advise_completer" "${i##*/}"
+        fi
+    done
 }
 
 ___advise_update(){
@@ -414,8 +431,11 @@ ___advise_completer() {
 
 # EndSection
 
-if [ -n "$ZSH_VERSION" ] && [ "$(autoload | grep compinit)" = "" ]; then
-    autoload -Uz compinit && compinit
+if [ -n "$ZSH_VERSION" ] && [ -z "$___X_CMD_ADVISE_ZSH_COMPLETE_LOADED" ] ; then
+    ___X_CMD_ADVISE_ZSH_COMPLETE_LOADED=1
+    zstyle ':completion:*:*:*:*:*' menu select
+    zstyle ':completion:*' matcher-list 'm:{a-zA-Z-_}={A-Za-z_-}' 'r:|=*' 'l:|=* r:|=*'
+    [ "$(autoload | grep compinit)" = "" ] && autoload -Uz compinit && compinit
 fi
 
 advise init advise
@@ -457,16 +477,25 @@ ___advise_man_which(){
 
     return 1
 }
+
 ___advise_man_load(){
-    if [[ ! "${1:-}" == "" ]]; then
-        complete -F "___advise_man_completer" "$1" && return 1
+    if [[ ! "${1:-""}" == "" ]]; then
+        if [ -z "$ZSH_VERSION" ];then
+            complete -F "___advise_man_completer" "$1" && return 1
+        else
+            compdef "___advise_man_completer" "$1" && return 1
+        fi
     fi
     local i
     for i in $(___advise_man_ls); do
-        if s=$(complete -p "$i" 1>/dev/null 2>&1); then
-            [[ "$s" == *___advise_completer* ]] && continue
+        if [ -z "$ZSH_VERSION" ];then
+            if s=$(complete -p "$i" 1>/dev/null 2>&1); then
+                [[ "$s" == *___advise_completer* ]] && continue
+            fi
+            complete -F "___advise_man_completer" "$i"
+        else
+            compdef "___advise_man_completer" "$i"
         fi
-        complete -F "___advise_man_completer" "$i"
     done
 }
 
