@@ -7,7 +7,7 @@ if [ -z "${ZSH_VERSION}${BASH_VERSION}" ]; then
 else
 
 # It is a nice idea to avoid using the 'xrc which' command multiple times.
-___ADVISE_AWK_PATH=${___ADVISE_AWK_PATH:-$(xrc which advise/v0.awk)}
+___ADVISE_AWK_PATH=${___ADVISE_AWK_PATH:-$(xrc which advise/advise.awk)}
 
 # Section : advise entrance
 advise(){
