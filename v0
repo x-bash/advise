@@ -1,4 +1,4 @@
-# shellcheck shell=bash disable=SC2039,3043
+# shellcheck shell=bash disable=SC2039,3043 # xrc
 
 # author:       Li Junhao           l@x-cmd.com    edwinjhlee.github.io
 
@@ -522,3 +522,5 @@ ___advise_man(){
 
 # EndSection
 fi
+
+xrc setmain advise
