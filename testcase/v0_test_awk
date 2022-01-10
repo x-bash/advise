@@ -487,7 +487,7 @@ test123(){
     {
         cat "$fp"
         printf "\034%s\034" "$s"  # printf "\034${s}\034"
-    } | awk -f "./v0.awk" # 2>/dev/null
+    } | awk -f "./lib/advise.awk" # 2>/dev/null
 }
 
 # list all the file in the directory, and add the @ to the behind of the file name
