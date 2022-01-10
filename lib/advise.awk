@@ -60,15 +60,14 @@ function json_walk_log(msg,       start){
 # Section: RULE
 
 BEGIN {
-    # RULE_ID_TO_NAME
-    # RULE_ID_ARGNUM
-
     # RULE_ID_M     false:1   true:0   REQUIRED_PROVIDED:100
     REQUIRED_PROVIDED = 100
 
-    # RULE_ID_R
-    # RULE_ID_R_LIST
-    # RULE_ID_CANDIDATES
+    # Critical data structures
+    #   RULE_ID_ARGNUM      : rule_id -> argnum
+    #   RULE_ID_R           : rule_id -> rule_regex
+    #   RULE_ID_R_LIST      : rule_id -> rule_regex_list
+    #   RULE_ID_CANDIDATES  : rule_id -> candidates
 }
 
 function rule_add_key( keypath, key,
@@ -119,6 +118,7 @@ function rule_add_list_val( keypath, val,
 
     val = str_unwrap( val )     # Notice: simple unwrap
 
+
     if (match(keypath, KEYPATH_SEP "[0-9]+$") ) {
         keypath = substr( keypath, 1, RSTART-1 )
     }
@@ -151,7 +151,7 @@ function rule_add_dict_val( keypath, val,
 # Section: JSON: utilities
 
 function json_walk_dict_as_candidates(keypath,
-    _tmp, _res){
+    _tmp, _res, s){
 
     nth = -1
     s = JSON_TOKENS[ ++s_idx ]
@@ -215,7 +215,6 @@ function json_walk_dict(keypath, indent,
         rule_add_key(keypath, key)
         cur_keypath = keypath KEYPATH_SEP key
 
-
         data = data VAL_SEP key
 
         s = JSON_TOKENS[++s_idx]
@@ -223,18 +222,13 @@ function json_walk_dict(keypath, indent,
 
         s = JSON_TOKENS[++s_idx]            # Value
 
-        if ( (s == "{") && (key ~ /^[-#]/) )
+        # It means it is bas description.
+        if ( (s == "{") && (key ~ /^[-#desc]/) )
         {
-            # It means it is an struct candidate
-            # json_walk_dict_as_candidates(cur_keypath)
             RULE_ID_CANDIDATES[cur_keypath KEYPATH_DESC_SEP]=cur_keypath KEYPATH_SEP "#desc"
-            json_walk_value(cur_keypath, cur_indent, "dict")
-
-        } else {
-            json_walk_value(cur_keypath, cur_indent, "dict")
         }
-        # json_walk_value(cur_keypath, cur_indent, "dict")
 
+        json_walk_value(cur_keypath, cur_indent, "dict")
         if (s == ",") s = JSON_TOKENS[++s_idx]
     }
 
@@ -298,7 +292,7 @@ function json_walk(text,   final, b_s, b_s_idx, b_s_len){
 
     result = "";
     gsub(/"[^"\\\001-\037]*((\\[^u\001-\037]|\\u[0-9a-fA-F][0-9a-fA-F][0-9a-fA-F][0-9a-fA-F])[^"\\\001-\037]*)*"|-?(0|[1-9][0-9]*)([.][0-9]+)?([eE][+-]?[0-9]+)?|null|false|true|[ \t\n\r]+|./, "\n&", text)
-    # gsub(/^\357\273\277|^\377\376|^\376\377|"[^"\\\000-\037]*((\\[^u\000-\037]|\\u[0-9a-fA-F][0-9a-fA-F][0-9a-fA-F][0-9a-fA-F])[^"\\\000-\037]*)*"|-?(0|[1-9][0-9]*)([.][0-9]+)?([eE][+-]?[0-9]+)?|null|false|true|[ \t\n\r]+|./, "\n&", text)
+    # gsub(/^\\357\\273\\277|^\\377\\376|^\\376\\377|"[^"\\\000-\037]*((\\[^u\000-\037]|\\u[0-9a-fA-F][0-9a-fA-F][0-9a-fA-F][0-9a-fA-F])[^"\\\000-\037]*)*"|-?(0|[1-9][0-9]*)([.][0-9]+)?([eE][+-]?[0-9]+)?|null|false|true|[ \t\n\r]+|./, "\n&", text)
 	gsub("\n" "[ \t\n\r]+", "\n", text)
 
     s_len = split(text, JSON_TOKENS, /\n/)
@@ -327,6 +321,12 @@ function get_colon_argument_optionid(keypath,      _id){
 }
 
 NR==2{
+
+    # Critical data structures show for RULE_ID_CANDIDATES
+    # for( key in RULE_ID_CANDIDATES ){
+    #     debug("RULE_ID_CANDIDATES[" key "] = " RULE_ID_CANDIDATES[key])
+    # }
+
     argstr = $0
     if ( argstr == "" ) argstr = "" # "." "\002"
 
@@ -462,13 +462,17 @@ NR==2{
         show_positional_candidates( current_keypath, cur, rest_argv_len)
     } else if (cur_option_alias != "") {
         option_id = RULE_ALIAS_TO_ID[ current_keypath KEYPATH_SEP cur_option_alias ]
-        if (option_id !~ "#" cur_optarg_index "+$" && option_id KEYPATH_SEP "#" cur_optarg_index in RULE_ID_CANDIDATES){
+        if (option_id !~ "#" cur_optarg_index "+$" && cur_optarg_index !~ "1"){
             option_id=option_id KEYPATH_SEP "#" cur_optarg_index
         }
         show_candidates( option_id, cur )
     } else if(match(cur,/^-.*=/)){
         current_keypath = current_keypath KEYPATH_SEP substr(cur,1,RLENGTH-1)
+        current_keypath = RULE_ALIAS_TO_ID[current_keypath]
         candidates = RULE_ID_CANDIDATES[ current_keypath ]
+        if ( candidates ~ /#[0-9]+/){
+            candidates = RULE_ID_CANDIDATES[ RULE_ALIAS_TO_ID[ current_keypath KEYPATH_SEP "#1"] ]
+        }
         print_list_candidate(candidates, substr(cur,1,RLENGTH))
     } else {
         show_candidates( current_keypath, cur )

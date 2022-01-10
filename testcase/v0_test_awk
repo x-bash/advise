@@ -5,23 +5,49 @@ x log advise xrc
 xrc assert
 xrc advise
 
+test_omz(){
+    assert_stdout "test123 desc opt " <<A
+option --- subcmd description
+opt --- subcmd description
+#> advise ls
+A
+}
+
+test_seg(){
+    assert_stdout "test123 desc seg -a=" <<A
+-a=aaa
+-a=bbb
+-a=ccc
+A
+    assert_stdout "test123 desc seg -b=" <<A
+-b=aaa
+-b=bbb
+-b=ccc
+A
+    assert_stdout "test123 desc seg -c=" <<A
+-c=aaa
+-c=bbb
+-c=ccc
+A
+}
+
 test_null(){
     assert_stdout "test123 ssh -b ''" <<A
 #> advise ls
 A
     # FIXME: "" and [] are not equal to null
-#     assert_stdout "test123 ssh -I ''" <<A
-# #> advise ls
-# A
-#     assert_stdout "test123 ssh -J ''" <<A
-# #> advise ls
-# A
-#     assert_stdout "test123 ssh -K ''" <<A
-# #> advise ls
-# A
-#     assert_stdout "test123 ssh -L ''" <<A
-# #> advise ls
-# A
+    assert_stdout "test123 ssh -I a ''" <<A
+#> advise ls
+A
+    assert_stdout "test123 ssh -J a ''" <<A
+#> advise ls
+A
+    assert_stdout "test123 ssh -K a ''" <<A
+#> advise ls
+A
+    assert_stdout "test123 ssh -L a ''" <<A
+#> advise ls
+A
 }
 
 test_get_result(){
@@ -79,7 +105,7 @@ A
 -f --- cmd for flag description
 A
 
-    assert_stdout "test123 desc opt -f a '-'" <<A
+    assert_stdout "test123 desc opt -f a -" <<A
 -a --- cmd for op description
 -b --- Provide two repo name
 -c --- cmd for ccc description
@@ -92,22 +118,31 @@ A
 -O
 -f --- cmd for flag description
 A
-#     assert_stdout "test123 desc opt -f -" <<A
-# -a  -- cmd for op description
-# -b  -- Provide two repo name
-# -c  -- cmd for ccc description
-# -O
-# A
-    # FIXME: "#2":[]
-#     assert_stdout "test123 desc opt -b a ''" <<A
-# null
-# A
+
+    a="$(test123 seg update '')"
+    if [ ! "$a" = "" ];then
+        echo "\033[1;31mERROR\033[0m: $a not equal to \"\""
+    fi
+
+    assert_stdout "test123 desc opt --repo" <<A
+--repo2 --- Provide two repo name
+A
+    assert_stdout "test123 desc opt -b  ''" <<A
+abc
+cde
+def
+A
+    a="$(test123 desc opt -b a '')"
+    if [ ! "$a" = "" ];then
+        echo "\033[1;31mERROR\033[0m: $a not equal to \"\""
+    fi
     # FIXME: "#n": "m3-a", "m3-b", "m3-c"
 #     assert_stdout "test123 desc opt -c a a a a a ''" <<A
 # m3-a
 # m3-b
 # m3-c
 # A
+
     assert_stdout "test123 desc optttt a a a a a a ''" <<A
 #> ___advise_get_result 2
 A
@@ -124,7 +159,7 @@ cs
 ssh
 segment
 seg
-desc --- cmd for description
+desc --- cmd for 中文 测试 description
 #> advise ls
 A
     assert_stdout "test123 desc option --option ''" <<A
@@ -213,21 +248,21 @@ m3-a
 m3-b
 m3-c
 A
-    # FIXME: if "--repo3|-c","--priviledge|-p" will error.
-#     assert_stdout "test123 option -c="<<A
-# -c=m3-a
-# -c=m3-b
-# -c=m3-c
-# A
-#     assert_stdout "test123 option -p="<<A
-# -p=private
-# -p=public
-# A
-#     assert_stdout "test123 option --colon="<<A
-# --colon=www:a
-# --colon=:b
-# --colon=:c
-# A
+
+    assert_stdout "test123 option -c="<<A
+-c=m3-a
+-c=m3-b
+-c=m3-c
+A
+    assert_stdout "test123 option -p="<<A
+-p=private
+-p=public
+A
+    assert_stdout "test123 option --colon="<<A
+--colon=www:a
+--colon=:b
+--colon=:c
+A
     assert_stdout "test123 cs -b test -"<<A
 -seq
 -a
@@ -476,4 +511,9 @@ start_test() {
 
 start_test ./testcase/v0_test_awk
 
+# EndSection
+
+# Section: for the interactive ui
+advise rm compt
+advise compt "./testcase/test.json"
 # EndSection

@@ -66,9 +66,9 @@
     },
     "segment|seg": {
         "update": null,
-        "ls": "x advise ls",
+        "ls": "___advise_ls",
         "lang": "x tldr lang",
-        "cat": ["common/2to3.md", "common/git-clone.md", "common/ogr2ogr.md", "common/7z.md","common/7za.md","common/7zr.md","linux/manpath.md","linux/mcookie.md"],
+        "cat": ["common/2to3.md", "common/git-clone.md", "common/ogr2ogr.md", "common/7z.md","common/7za.md","common/7zr.md","linux/manpath.md","linux/mcookie.md"]
     },
     "desc": {
         "option|opt": {
@@ -80,8 +80,13 @@
             },
             "--repo2|-b|m": {
                 "#1": [ "abc", "cde", "def" ],
-                "#2": null,
+                "#2": [ ],
                 "#desc": "Provide two repo name"
+            },
+            "sub|subcmmd": {
+                "#1": [ "abc", "cde", "def" ],
+                "#2": null,
+                "#desc": "cmd for sub description"
             },
             "-c": {
                 "#1": [ "m1-a", "m1-b", "m1-c" ],
@@ -98,9 +103,23 @@
             "--flag|-f": "--- cmd for flag description",
             "#desc": "subcmd description"
         },
+        "seg": {
+            "-a": ["aaa", "bbb", "ccc"],
+            "-b|--adc": ["aaa", "bbb", "ccc"],
+            "-c":{
+                "#1": ["aaa", "bbb", "ccc" ],
+                "#desc": "cmd for ccc description"
+            },
+            "-d":{
+                "#1": ["aaa", "bbb", "ccc" ],
+                "#2": ["ddd", "bbb", "ccc" ]
+            },
+
+            "#desc": "cmd for oseg description"
+        },
         "#1": "advise ls",
         "#n": "___advise_get_result 2",
-        "#desc": "cmd for description"
+        "#desc": "cmd for 中文 测试 description"
     },
     "#1": "advise ls",
     "#n": "___advise_get_result 1"
