@@ -1,13 +1,15 @@
 # shellcheck shell=bash
-cp -r ./v0 ~/.x-cmd/advise/v0
-cp -r ./v0.awk ~/.x-cmd/advise/v0.awk
+x log init advise
+x ws install
 
 # Section: Testcase for different awk
 cross_env_test() {
-    for i in debian centos bash ; do
+    for i in debian-1-curl debian-2-dev centos-1-curl centos-2-dev ; do
         advise_log info "Testing : " "$i"
-        docker run -it -v  ~/.x-cmd/:/root/.x-cmd/ -v "$(pwd)":/pd "${i}" bash -c ". ~/.x-cmd/xrc/latest && cd pd && . ./testcase/v0_test_awk"
+        docker run -it -v  ~/.x-cmd/:/root/.x-cmd/ -v "$(pwd)":/pd "xcmd/base-${i}" bash -c ". ~/.x-cmd/xrc/latest && cd pd && . ./testcase/v0_test_awk"
     done
+    advise_log info "Testing : " "bash"
+    docker run -it -v  ~/.x-cmd/:/root/.x-cmd/ -v "$(pwd)":/pd "bash" bash -c ". ~/.x-cmd/xrc/latest && cd pd && . ./testcase/v0_test_awk"
 }
 
 dbash() {
