@@ -1,0 +1,12 @@
+# shellcheck shell=bash # xrc
+
+___x_cmd_advise_get_complete(){
+    local fp="${1:?"need advise json path"}"; [ $# -gt 0 ] && shift
+    local awk_fp="$(xrc which advise/lib/advise.awk)"
+    local s="$*"
+    local IFS=$'\002'
+    {
+        cat "$fp"
+        printf "\034%s\034" "$s"
+    } | awk -f "$awk_fp"
+}
