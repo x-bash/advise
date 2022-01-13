@@ -10,10 +10,17 @@ cross_env_test() {
     done
     advise_log info "Testing : " "bash"
     docker run -it -v  ~/.x-cmd/:/root/.x-cmd/ -v "$(pwd)":/pd "bash" bash -c ". ~/.x-cmd/xrc/latest && cd pd && . ./testcase/v0_test_awk"
+
+    for i in 3 4 5 ; do
+        for j in 1-curl 2-dev ; do
+            advise_log info "Testing : " "base-bash${i}-${j}"
+            docker run -it -v  ~/.x-cmd/:/root/.x-cmd/ -v "$(pwd)":/pd "xcmd/base-bash${i}-${j}" bash -c ". ~/.x-cmd/xrc/latest && cd pd && . ./testcase/v0_test_awk"
+        done
+    done
 }
 
 dbash() {
-    docker run -it -v  ~/.x-cmd/:/root/.x-cmd/ -v "$(pwd)":/pd "bash:$1" \
+    docker run -it -v  ~/.x-cmd/:/root/.x-cmd/ -v "$(pwd)":/pd "xcmd/base-bash$1" \
         bash -c "printf \". ~/.x-cmd/xrc/latest && . ./testcase/v0_test_awk\" >/root/.bashrc && cd pd && bash"
 }
 
@@ -25,7 +32,9 @@ printf "You can test cross awk env use: \n  cross_env_test\n"
 printf "You can test cross bash env use: \n"
 
 for i in 3 4 5 ; do
-    printf "  dbash %s\n" "$i"
+    for j in 1-curl 2-dev ; do
+        printf "  dbash %s\n" "$i-$j"
+    done
 done
 printf "\n"
 
