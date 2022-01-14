@@ -1,18 +1,22 @@
 # shellcheck shell=bash # xrc
 
 ___x_cmd_advise_get_complete(){
-    local fp="${1:?"Provide advise json path"}"; [ $# -gt 0 ] && shift
-    local IFS=$'\002'
+    local fp="${1:?"Provide advise json path"}"; [ "$#" -gt 0 ] && shift
+    local af
+    af="$(xrc which advise/lib/advise.awk)"
+    local IFS
+    IFS="$(printf "\002")"
     local s="$*"
     {
         cat "$fp"
         printf "\034%s\034" "$s"
-    } | awk -f "$(xrc which advise/lib/advise.awk)"
+    } | awk -f "$af"
 }
 
 ___x_cmd_advise_get_help(){
-    local filePath="${1:?"Provide advise json path"}"; [ $# -gt 0 ] && shift
-    local IFS=$'\002'
+    local filePath="${1:?"Provide advise json path"}"; [ "$#" -gt 0 ] && shift
+    local IFS
+    IFS="$(printf "\002")"
     local s="$*"
     ___x_cmd_advise_get_complete "$filePath" "$s" | awk 'BEGIN{max=0}{
         if(match($0, " --- ")){
@@ -23,7 +27,9 @@ ___x_cmd_advise_get_help(){
             if(max < len) max = len
         }
     }END{
-        print "SUBCOMMAND:"
+        if (max > 0){
+            print "SUBCOMMAND:"
+        }
         for(i in arr){print "    " substr(arr[i], 2) sprintf("%" max - arr_len[i "#len"] "s", "") "   " i}
     }'
 }
