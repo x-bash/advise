@@ -238,14 +238,46 @@ ___advise_get_result_from_awk(){
 $cmd_result"
 }
 
+#TODO: to be deprecated
 ___advise_get_result(){
-
     # If there are two parameters, take the second one.
     local offset="${2:-${1:-0}}"
     local remain_len=$((COMP_CWORD-offset))
 
     [ -n "$ZSH_VERSION" ] && offset=$((offset+1))
     local filepath="${TMPDIR%/}/.x-cmd/advise_auto_json/${COMP_WORDS[offset]}"
+    [ -f "$filepath" ] || return
+
+    # Delete $offset numbers from the COMP_WORDS
+    local i tmp=()
+    for ((i=0; i<=remain_len; ++i)); do
+        tmp+=( "${COMP_WORDS[i+offset]}" )
+    done
+    COMP_WORDS=("${tmp[@]}")
+    COMP_CWORD="$(( ${#tmp[@]}-1 ))"
+    ___advise_get_result_from_awk
+}
+
+___x_cmd_advise_get_result(){
+    local offset="${1:-1}"
+    local remain_len=$((COMP_CWORD-offset))
+    [ -n "$ZSH_VERSION" ] && offset=$((offset+1)) && setopt aliases
+
+    local module="${COMP_WORDS[offset]}"
+    local which_one_result
+    which_one_result="$(xrc which "$module")"
+
+    local main_func
+    main_func="$(___x_cmd_ldict_get ___X_CMD_XRC_SET_MAIN_DICT "$which_one_result")"
+
+    # Generate the advise json file.
+    if [ -z "$main_func" ]; then
+        ___x_cmd_xrc_source_file_main "$which_one_result"
+        main_func="$(___x_cmd_ldict_get ___X_CMD_XRC_SET_MAIN_DICT "$which_one_result")"
+    fi
+
+    ___advise_main "$main_func" "" "$module"
+    local filepath="${TMPDIR%/}/.x-cmd/advise_auto_json/$main_func"
     [ -f "$filepath" ] || return
 
     # Delete $offset numbers from the COMP_WORDS
@@ -265,14 +297,10 @@ ___advise_get_result(){
 ___advise_main(){
     local func="${1:?Provide function name}"
     local filepath="${2}"
-    local dist_filename="${3}"
+    local alias_name="${3}"
     local advise_json_dir="${TMPDIR%/}/.x-cmd/advise_auto_json"
     local tmp_filepath
-    if [ -n "$dist_filename" ]; then
-        tmp_filepath=${advise_json_dir}/$dist_filename
-    else
-        tmp_filepath=${advise_json_dir}/$func
-    fi
+    tmp_filepath=${advise_json_dir}/$func
 
     [ ! -d "$advise_json_dir" ] && mkdir -p "$advise_json_dir"
 
@@ -296,10 +324,22 @@ ___advise_main(){
         filepath="$tmp_filepath"
     fi
 
-    if [ -z "$ZSH_VERSION" ];then
-        complete -F "___advise_completer" "$func"
+    local comp_word
+    if [ -z "$alias_name" ]; then
+        comp_word="$func"
     else
-        compdef "___advise_completer" "$func"
+        eval "
+            ___advise_completer_$alias_name(){
+                ___ADVISE_RUN_CMD_FOLDER= ___advise_run $func
+            }"
+        comp_word="$alias_name"
+        alias_name="_$alias_name"
+    fi
+
+    if [ -z "$ZSH_VERSION" ];then
+        complete -F "___advise_completer$alias_name" "$comp_word"
+    else
+        compdef "___advise_completer$alias_name" "$comp_word"
     fi
 }
 
