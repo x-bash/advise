@@ -282,7 +282,7 @@ ___advise_main(){
     elif [ -z "$filepath" ]; then
         ___advise_update "$func"
         local filepath=$tmp_filepath
-        if [ -n "$___XRC_UDPATE" ] || [ ! -f "$filepath" ]; then
+        if [ ! -f "$filepath" ]; then
             local content
             content="$(X_CMD_ADVISE_FUNC_NAME=$func eval "$func" _x_cmd_advise_json)"
             if [ $? = 126 ]; then
