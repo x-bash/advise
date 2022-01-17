@@ -266,6 +266,7 @@ ___x_cmd_advise_get_result(){
     local module="${COMP_WORDS[offset]}"
     local which_one_result
     which_one_result="$(xrc which "$module")"
+    [ -n "$which_one_result" ] || return
 
     local main_func
     main_func="$(___x_cmd_ldict_get ___X_CMD_XRC_SET_MAIN_DICT "$which_one_result")"
