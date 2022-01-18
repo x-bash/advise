@@ -4,24 +4,21 @@ x ws install
 
 # Section: Testcase for different awk
 cross_env_test() {
-    for i in base-debian-1-curl base-debian-2-dev base-centos-1-curl base-centos-2-dev ; do
+    for i in debian centos ; do
         advise_log info "Testing : " "$i"
-        docker run -it -v  ~/.x-cmd/:/root/.x-cmd/ -v "$(pwd)":/pd "xcmd/${i}" bash -c ". ~/.x-cmd/xrc/latest && cd pd && . ./testcase/v0_test_awk"
+        # docker run -it -v  ~/.x-cmd/:/root/.x-cmd/ -v "$(pwd)":/pd "xcmd/${i}" bash -c ". ~/.x-cmd/xrc/latest && cd pd && . ./testcase/v0_test_awk"
+        docker run -it -v "$(pwd)":/pd "xcmd/${i}-dev" bash -i -c "cd pd && . ./testcase/v0_test_awk"
     done
-    advise_log info "Testing : " "bash"
-    docker run -it -v  ~/.x-cmd/:/root/.x-cmd/ -v "$(pwd)":/pd "bash" bash -c ". ~/.x-cmd/xrc/latest && cd pd && . ./testcase/v0_test_awk"
 
     for i in 3 4 5 ; do
-        for j in 1-curl 2-dev ; do
-            advise_log info "Testing : " "base-bash${i}-${j}"
-            docker run -it -v  ~/.x-cmd/:/root/.x-cmd/ -v "$(pwd)":/pd "xcmd/base-bash${i}-${j}" bash -c ". ~/.x-cmd/xrc/latest && cd pd && . ./testcase/v0_test_awk"
-        done
+        advise_log info "Testing : " "bash${i}"
+        docker run -it -v "$(pwd)":/pd "xcmd/bash${i}-dev" bash -i -c "cd pd && . ./testcase/v0_test_awk"
     done
 }
 
 dbash() {
-    docker run -it -v  ~/.x-cmd/:/root/.x-cmd/ -v "$(pwd)":/pd "xcmd/base-bash$1" \
-        bash -c "printf \". ~/.x-cmd/xrc/latest && . ./testcase/v0_test_awk\" >/root/.bashrc && cd pd && bash"
+    docker run -it -v "$(pwd)":/pd "xcmd/bash${1}-dev" \
+        bash -i -c "cd pd && bash"
 }
 
 # EndSection
@@ -32,9 +29,7 @@ printf "You can test cross awk env use: \n  cross_env_test\n"
 printf "You can test cross bash env use: \n"
 
 for i in 3 4 5 ; do
-    for j in 1-curl 2-dev ; do
-        printf "  dbash %s\n" "$i-$j"
-    done
+    printf "  dbash %s\n" "$i"
 done
 printf "\n"
 
