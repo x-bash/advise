@@ -238,26 +238,6 @@ ___advise_get_result_from_awk(){
 $cmd_result"
 }
 
-#TODO: to be deprecated
-___advise_get_result(){
-    # If there are two parameters, take the second one.
-    local offset="${2:-${1:-0}}"
-    local remain_len=$((COMP_CWORD-offset))
-
-    [ -n "$ZSH_VERSION" ] && offset=$((offset+1))
-    local filepath="${TMPDIR%/}/.x-cmd/advise_auto_json/${COMP_WORDS[offset]}"
-    [ -f "$filepath" ] || return
-
-    # Delete $offset numbers from the COMP_WORDS
-    local i tmp=()
-    for ((i=0; i<=remain_len; ++i)); do
-        tmp+=( "${COMP_WORDS[i+offset]}" )
-    done
-    COMP_WORDS=("${tmp[@]}")
-    COMP_CWORD="$(( ${#tmp[@]}-1 ))"
-    ___advise_get_result_from_awk
-}
-
 ___x_cmd_advise_get_result(){
     local offset="${1:-1}"
     local remain_len=$((COMP_CWORD-offset))
