@@ -56,7 +56,7 @@ advise(){
                 ___advise_completer \"$filepath\"
             }
             "
-            complete -F "______adviser_of_$op" "$aliasname"
+            complete -o nosort -F "______adviser_of_$op" "$aliasname"
             ;;
         obj-del)
             local aliasname="${2:?Provide alias name}"
@@ -338,7 +338,7 @@ ___advise_main(){
     fi
 
     if [ -z "$ZSH_VERSION" ];then
-        complete -F "___advise_completer$alias_name" "$comp_word"
+        complete -o nosort -F "___advise_completer$alias_name" "$comp_word"
     else
         compdef "___advise_completer$alias_name" "$comp_word"
     fi
@@ -470,6 +470,7 @@ if [ -n "$ZSH_VERSION" ] && [ -z "$___X_CMD_ADVISE_ZSH_COMPLETE_LOADED" ] ; then
     ___X_CMD_ADVISE_ZSH_COMPLETE_LOADED=1
     zstyle ':completion:*:*:*:*:*' menu select
     zstyle ':completion:*' matcher-list 'm:{a-zA-Z-_}={A-Za-z_-}' 'r:|=*' 'l:|=* r:|=*'
+    zstyle ':completion:*' sort false
     [ "$(autoload | grep compinit)" = "" ] && autoload -Uz compinit && compinit
 fi
 
@@ -510,7 +511,7 @@ ___advise_man_which(){
 ___advise_man_load(){
     if [[ ! "${1:-""}" == "" ]]; then
         if [ -z "$ZSH_VERSION" ];then
-            complete -F "___advise_man_completer" "$1" && return 1
+            complete -o nosort -F "___advise_man_completer" "$1" && return 1
         else
             compdef "___advise_man_completer" "$1" && return 1
         fi
@@ -521,7 +522,7 @@ ___advise_man_load(){
             if s=$(complete -p "$i" 1>/dev/null 2>&1); then
                 [[ "$s" == *___advise_completer* ]] && continue
             fi
-            complete -F "___advise_man_completer" "$i"
+            complete -o nosort -F "___advise_man_completer" "$i"
         else
             compdef "___advise_man_completer" "$i"
         fi
