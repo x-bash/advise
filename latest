@@ -230,10 +230,11 @@ ___advise_get_result_from_awk(){
     cmd_result=""
 
     if [ "$cmd" != "$result" ]; then
-        if [ -n "$ZSH_VERSION" ] && [ "${cmd#*___advise_zsh_complete_funtion}" != "$cmd"  ];then
-            ${cmd#*___advise_zsh_complete_funtion}
+        if [ -n "$ZSH_VERSION" ] && [ "${cmd#*___advise_current_shell_environment}" != "$cmd"  ];then
+            ${cmd#*___advise_current_shell_environment}
+        else
+            cmd_result="$(eval "$cmd" 2>/dev/null)"
         fi
-        cmd_result="$(eval "$cmd" 2>/dev/null)"
         result="${result%%\#> *}"
     fi
 
