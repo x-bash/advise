@@ -121,6 +121,7 @@
         "#n": "___advise_get_result 2",
         "#desc": "cmd for 中文 测试 description"
     },
+    "ddd": "___advise_zsh_complete_funtion_files",
     "#1": "advise ls",
     "#n": "___advise_get_result 1"
 }

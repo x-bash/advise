@@ -230,11 +230,14 @@ ___advise_get_result_from_awk(){
     cmd_result=""
 
     if [ "$cmd" != "$result" ]; then
+        if [ -n "$ZSH_VERSION" ] && [ "${cmd#*___advise_zsh_complete_funtion}" != "$cmd"  ];then
+            ${cmd#*___advise_zsh_complete_funtion}
+        fi
         cmd_result="$(eval "$cmd" 2>/dev/null)"
         result="${result%%\#> *}"
     fi
 
-    printf "%s" "$result
+    cmds="$result
 $cmd_result"
 }
 
@@ -268,7 +271,9 @@ ___x_cmd_advise_get_result(){
     done
     COMP_WORDS=("${tmp[@]}")
     COMP_CWORD="$(( ${#tmp[@]}-1 ))"
+    local cmds=
     ___advise_get_result_from_awk
+    printf "%s\n" "$cmds"
 }
 
 # EndSection
@@ -385,8 +390,8 @@ ___advise_run(){
 
     local OLDIFS="$IFS"
     local IFS=$'\n'
-    local cmds
-    cmds="$(___advise_get_result_from_awk)"
+    local cmds=
+    ___advise_get_result_from_awk
     local commands=($(printf "%s" "$cmds"))
     desc=()
     cmds=()
