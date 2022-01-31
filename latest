@@ -56,7 +56,7 @@ advise(){
                 ___advise_completer \"$filepath\"
             }
             "
-            if [[ ! "$BASH_VERSION" =~ ^3.* ]]; then
+            if [[ ! "$BASH_VERSION" =~ (^3.*|^4.[0-3]) ]]; then
                 complete -o nosort -F "______adviser_of_$op" "$aliasname"
             else
                 complete -F "___advise_man_completer" "$aliasname"
@@ -322,7 +322,7 @@ ___advise_main(){
     fi
 
     if [ -z "$ZSH_VERSION" ];then
-        if [[ ! "$BASH_VERSION" =~ ^3.* ]]; then
+        if [[ ! "$BASH_VERSION" =~ (^3.*|^4.[0-3]) ]]; then
             complete -o nosort -F "___advise_completer$alias_name" "$comp_word"
         else
             complete -F "___advise_completer$alias_name" "$comp_word"
@@ -499,7 +499,7 @@ ___advise_man_which(){
 ___advise_man_load(){
     if [[ ! "${1:-""}" == "" ]]; then
         if [ -z "$ZSH_VERSION" ];then
-            if [[ ! "$BASH_VERSION" =~ ^3.* ]]; then
+            if [[ ! "$BASH_VERSION" =~ (^3.*|^4.[0-3]) ]]; then
                 complete -o nosort -F "___advise_man_completer" "$1" && return 1
             else
                 complete -F "___advise_man_completer" "$1" && return 1
@@ -515,7 +515,7 @@ ___advise_man_load(){
                 [[ "$s" == *___advise_completer* ]] && continue
             fi
 
-            if [[ ! "$BASH_VERSION" =~ ^3.* ]]; then
+            if [[ ! "$BASH_VERSION" =~ (^3.*|^4.[0-3]) ]]; then
                 complete -o nosort -F "___advise_man_completer" "$i"
             else
                 complete -F "___advise_man_completer" "$i"
