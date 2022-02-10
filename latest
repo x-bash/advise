@@ -56,7 +56,11 @@ advise(){
                 ___advise_completer \"$filepath\"
             }
             "
-            complete -o nosort -F "______adviser_of_$op" "$aliasname"
+            if [[ ! "$BASH_VERSION" =~ (^3.*|^4.[0-3]) ]]; then
+                complete -o nosort -F "______adviser_of_$op" "$aliasname"
+            else
+                complete -F "___advise_man_completer" "$aliasname"
+            fi
             ;;
         obj-del)
             local aliasname="${2:?Provide alias name}"
@@ -324,7 +328,11 @@ ___advise_main(){
     fi
 
     if [ -z "$ZSH_VERSION" ];then
-        complete -o nosort -F "___advise_completer$alias_name" "$comp_word"
+        if [[ ! "$BASH_VERSION" =~ (^3.*|^4.[0-3]) ]]; then
+            complete -o nosort -F "___advise_completer$alias_name" "$comp_word"
+        else
+            complete -F "___advise_completer$alias_name" "$comp_word"
+        fi
     else
         compdef "___advise_completer$alias_name" "$comp_word"
     fi
@@ -497,7 +505,11 @@ ___advise_man_which(){
 ___advise_man_load(){
     if [[ ! "${1:-""}" == "" ]]; then
         if [ -z "$ZSH_VERSION" ];then
-            complete -o nosort -F "___advise_man_completer" "$1" && return 1
+            if [[ ! "$BASH_VERSION" =~ (^3.*|^4.[0-3]) ]]; then
+                complete -o nosort -F "___advise_man_completer" "$1" && return 1
+            else
+                complete -F "___advise_man_completer" "$1" && return 1
+            fi
         else
             compdef "___advise_man_completer" "$1" && return 1
         fi
@@ -508,7 +520,13 @@ ___advise_man_load(){
             if s=$(complete -p "$i" 1>/dev/null 2>&1); then
                 [[ "$s" == *___advise_completer* ]] && continue
             fi
-            complete -o nosort -F "___advise_man_completer" "$i"
+
+            if [[ ! "$BASH_VERSION" =~ (^3.*|^4.[0-3]) ]]; then
+                complete -o nosort -F "___advise_man_completer" "$i"
+            else
+                complete -F "___advise_man_completer" "$i"
+            fi
+
         else
             compdef "___advise_man_completer" "$i"
         fi
