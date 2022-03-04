@@ -351,9 +351,6 @@ NR==2{
         arg = parsed_argarr[i]
         argval = ""
         if (arg ~ /^-/) {
-            # if(match(arg,/=/)){
-            #     continue
-            # }
             if (match(arg, /^--?[A-Za-z0-9_+-]+=/)){
                 argval = substr(arg, RLENGTH+1)
                 arg = substr(arg, 1, RLENGTH)
