@@ -356,7 +356,7 @@ NR==2{
             # }
             if (match(arg, /^--?[A-Za-z0-9_+-]+=/)){
                 argval = substr(arg, RLENGTH+1)
-                arg = substr(arg, 1, RLENGTH)
+                arg = substr(arg, 1, RLENGTH-1)
             }
             cur_option_alias = arg
             option_id = RULE_ALIAS_TO_ID[ current_keypath KEYPATH_SEP cur_option_alias ]
@@ -369,7 +369,7 @@ NR==2{
                     _arg_tmp_arrlen = split(arg, _arg_tmp_arr, "")
                     for (j=2; j<=_arg_tmp_arrlen; ++j) {
                         cur_option_alias = "-" _arg_tmp_arr[j]
-                        option_id = RULE_ALIAS_TO_ID[ keypath KEYPATH_SEP cur_option_alias ]
+                        option_id = RULE_ALIAS_TO_ID[ current_keypath KEYPATH_SEP cur_option_alias ]
                         if (option_id == "") {
                             is_compact_argument = -1
                             break
@@ -380,7 +380,7 @@ NR==2{
                         for (j=2; j<=_arg_tmp_arrlen; ++j) {
                             cur_option_alias = "-" _arg_tmp_arr[j]
                             argarr[++arglen] = cur_option_alias
-                            option_id = RULE_ALIAS_TO_ID[ keypath KEYPATH_SEP cur_option_alias ]
+                            option_id = RULE_ALIAS_TO_ID[ current_keypath KEYPATH_SEP cur_option_alias ]
                             mark_option_provided_and_used( option_id )
                         }
                         arg = argarr[arglen]

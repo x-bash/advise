@@ -273,7 +273,6 @@ A
     assert_stdout "test123 cs -a=cscs -"<<A
 -seq
 -b
--a
 -c
 -d
 -e
@@ -473,6 +472,14 @@ A
 A
 
 }
+
+test_xvf(){
+    assert_stdout "test123 cs -ab ''"<<A
+test1
+test2
+A
+}
+
 # EndSection
 
 # Section: utilities
