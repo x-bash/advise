@@ -59,7 +59,7 @@ advise(){
             if [[ ! "$BASH_VERSION" =~ (^3.*|^4.[0-3]) ]]; then
                 complete -o nosort -F "______adviser_of_$op" "$aliasname"
             else
-                complete -F "___advise_man_completer" "$aliasname"
+                complete -F "______adviser_of_$op" "$aliasname"
             fi
             ;;
         obj-del)
