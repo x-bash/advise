@@ -52,7 +52,7 @@ A
 
 test_get_result(){
     assert_stdout "test123 ssh compt ssh compt ssh compt compt desc opt -O''" <<A
-#> ___advise_get_result 2
+#> ___x_cmd_advise_get_result 2
 A
 }
 
@@ -144,7 +144,7 @@ A
 # A
 
     assert_stdout "test123 desc optttt a a a a a a ''" <<A
-#> ___advise_get_result 2
+#> ___x_cmd_advise_get_result 2
 A
 }
 
