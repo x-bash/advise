@@ -480,6 +480,14 @@ test2
 A
 }
 
+test_namelist(){
+    assert_stdout "test456 ''"<<A
+python
+java
+node
+A
+}
+
 # EndSection
 
 # Section: utilities
@@ -495,6 +503,16 @@ test123(){
         cat "$fp"
         printf "\034%s\034" "$s"  # printf "\034${s}\034"
     } | awk -f "./lib/advise.awk" # 2>/dev/null
+}
+
+test456(){
+    local fp="./.x-cmd/testcase/c.json"
+    local IFS=$'\002' # IFS="$(printf "\002")"
+    s="$*"
+    {
+        cat "$fp"
+        printf "\034%s\034" "$s"
+    } | awk -f "./lib/advise.awk"
 }
 
 # list all the file in the directory, and add the @ to the behind of the file name
