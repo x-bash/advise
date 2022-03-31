@@ -481,7 +481,7 @@ A
 }
 
 test_namelist(){
-    assert_stdout "test456 ''"<<A
+    ___x_cmd_assert_stdout test456 ''<<A
 python
 java
 node
@@ -506,7 +506,7 @@ test123(){
 }
 
 test456(){
-    local fp="./.x-cmd/testcase/c.json"
+    local fp="$(x wsroot)/.x-cmd/dev/testcase/c.json"
     local IFS=$'\002' # IFS="$(printf "\002")"
     s="$*"
     {
