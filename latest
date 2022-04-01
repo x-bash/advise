@@ -461,7 +461,7 @@ if [ -n "$ZSH_VERSION" ] && [ -z "$___X_CMD_ADVISE_ZSH_COMPLETE_LOADED" ] ; then
     [ "$(autoload | grep compinit)" = "" ] && autoload -Uz compinit && compinit
 fi
 
-advise init advise
+___x_cmd_advise init advise
 
 # Section: man
 
