@@ -10,7 +10,7 @@ else
 ___ADVISE_AWK_PATH="$(xrc which advise/lib/advise.awk)"
 
 # Section : advise entrance
-advise(){
+___x_cmd_advise(){
     local op="${1}"; [ $# -gt 0 ] && shift
     case "$op" in
         ls)
@@ -554,4 +554,4 @@ ___advise_man(){
 # EndSection
 fi
 
-xrc setmain advise
+xrc setmain ___x_cmd_advise
