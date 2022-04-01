@@ -70,49 +70,11 @@ ___x_cmd_advise(){
             fi
             ;;
          _x_cmd_advise_json)
-            cat <<A
-{
-      "ls": "--- Show all available advise json obj",
-      "rm": {
-          "#1": "ls \${TMPDIR%/}/.x-cmd/advise_auto_json",
-          "#desc": "Remove one obj, if no obj is given, remove all obj"
-      },
-      "which": {
-          "#1": "ls \${TMPDIR%/}/.x-cmd/advise_auto_json",
-          "#desc": "Show the path of the obj"
-      },
-      "cat": {
-          "#n": "ls \${TMPDIR%/}/.x-cmd/advise_auto_json",
-          "#desc": "Show the content of the obj"
-      },
-      "init|new": "--- Create a new obj",
-      "man": {
-          "ls": null,
-          "update": null,
-          "rm": "___advise_man_ls",
-          "which": "___advise_man_ls",
-          "load": "___advise_man_ls",
-          "#desc": "Manager for x-cmd/advise"
-      },
-      "del": null,
-      "obj-new": null,
-      "obj-del": null
-}
-A
+            cat "$___X_CMD_ROOT_MOD/advise/lib/advise.advise.json"
             return 126
             ;;
         ""|help)
-            printf "advise    x-bash complete function.
-    Uasge:  advise <subcmd> [<obj>...]
-    Please visit our homepage for more information: https://x-cmd.com
-SUBCOMMAND:
-    ls             Show all available advise json obj.
-    rm [<obj>]     Remove one obj, if no obj is given, remove all obj.
-    which <obj>    Show the path of the obj.
-    cat <obj>      Show the content of the obj.
-    init <obj>     Create a new obj.
-    man            Manager for x-cmd/advise.
-" >&2; return 1
+            cat "$___X_CMD_ROOT_MOD/advise/lib/help.txt" >&2; return 1
             ;;
         *)
             ___advise_main "$op" "$@" ;;
