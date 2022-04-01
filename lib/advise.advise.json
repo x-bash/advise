@@ -1,15 +1,15 @@
 {
     "ls": "--- Show all available advise json obj",
     "rm": {
-        "#1": "ls ${TMPDIR%/}/.x-cmd/advise_auto_json",
+        "#1": "ls \"$___X_CMD_ADVISE_TMPDIR\"",
         "#desc": "Remove one obj, if no obj is given, remove all obj"
     },
     "which": {
-        "#1": "ls ${TMPDIR%/}/.x-cmd/advise_auto_json",
+        "#1": "ls \"$___X_CMD_ADVISE_TMPDIR\"",
         "#desc": "Show the path of the obj"
     },
     "cat": {
-        "#n": "ls ${TMPDIR%/}/.x-cmd/advise_auto_json",
+        "#n": "ls \"$___X_CMD_ADVISE_TMPDIR\"",
         "#desc": "Show the content of the obj"
     },
     "init|new": "--- Create a new obj",

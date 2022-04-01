@@ -9,30 +9,32 @@ else
 
 ___ADVISE_AWK_PATH="$___X_CMD_ROOT_MOD/advise/lib/advise.awk"
 
+___X_CMD_ADVISE_TMPDIR="${TMPDIR%/}/.x-cmd/advise_auto_json"
+
 # Section : advise entrance
 ___x_cmd_advise(){
     local op="${1}"; [ $# -gt 0 ] && shift
     case "$op" in
         ls)
-            ls "$@" "${TMPDIR%/}/.x-cmd/advise_auto_json" ;;
+            ls "$@" "$___X_CMD_ADVISE_TMPDIR" ;;
         rm)
             if [ "$#" -eq 0 ]; then
-                rm -rf "${TMPDIR%/}/.x-cmd/advise_auto_json"/*
+                x rmrf "$___X_CMD_ADVISE_TMPDIR"/*
             else
-                rm -rf "${TMPDIR%/}/.x-cmd/advise_auto_json"/"$1"
+                x rmrf "$___X_CMD_ADVISE_TMPDIR/$1"
             fi
             ;;
         which)
             if [ "$#" -eq 0 ]; then
-                printf "%s" "${TMPDIR%/}/.x-cmd/advise_auto_json"
+                printf "%s" "$___X_CMD_ADVISE_TMPDIR"
             else
-                printf "%s/%s" "${TMPDIR%/}/.x-cmd/advise_auto_json" "$1"
+                printf "%s/%s" "$___X_CMD_ADVISE_TMPDIR" "$1"
             fi
             ;;
         cat)
             local mod
             for mod in "$@"; do
-                cat "${TMPDIR%/}/.x-cmd/advise_auto_json/$mod"
+                cat "$___X_CMD_ADVISE_TMPDIR/$mod"
             done
             ;;
         load) ___advise_load;;
@@ -45,7 +47,7 @@ ___x_cmd_advise(){
             ;;
         obj-new)
             local aliasname="${2:?Provide alias name}"
-            local filepath="${TMPDIR%/}/.x-cmd/advise_auto_json/$op"
+            local filepath="$___X_CMD_ADVISE_TMPDIR/$op"
 
             # TODO: There is one more solution. But it is not not worked in ZSH. Please figure it out.
             # complete -C "___advise_completer \"$filepath\"" "$aliasname"
@@ -206,7 +208,7 @@ ___advise_main(){
     local func="${1:?Provide function name}"
     local filepath="${2}"
     local alias_name="${3}"
-    local advise_json_dir="${TMPDIR%/}/.x-cmd/advise_auto_json"
+    local advise_json_dir="$___X_CMD_ADVISE_TMPDIR"
     local tmp_filepath
     tmp_filepath=${advise_json_dir}/$func
 
@@ -316,7 +318,7 @@ ___advise_run(){
     fi
 
     local filepath
-    [ -z "$___ADVISE_RUN_CMD_FOLDER" ] && ___ADVISE_RUN_CMD_FOLDER="${TMPDIR%/}/.x-cmd/advise_auto_json"
+    [ -z "$___ADVISE_RUN_CMD_FOLDER" ] && ___ADVISE_RUN_CMD_FOLDER="$___X_CMD_ADVISE_TMPDIR"
     case "$resname" in
         /*) filepath="$resname" ;;
         -)  filepath=/dev/stdin ;;
