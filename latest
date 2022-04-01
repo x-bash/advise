@@ -429,8 +429,8 @@ ___x_cmd_advise init advise
 
 # xrc:mod advise/lib/man
 
-___advise_man(){
-    xrc:mod advise/lib/man && ___advise_man "$@"
+___x_cmd_advise_man(){
+    xrc:mod advise/lib/man && ___x_cmd_advise_man "$@"
 }
 
 # EndSection

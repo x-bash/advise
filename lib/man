@@ -1,21 +1,21 @@
 
-___advise_man(){
+___x_cmd_advise_man(){
     local op="${1:?Provide subcommand}"; shift
     case "$op" in
-        ls)         ___advise_man_ls              ;;
-        update)     ___advise_man_update          ;;
-        which)      ___advise_man_which "$@"      ;;
-        load)       ___advise_man_load "$@"      ;;
-        rm)         ___advise_man_rm "$@"         ;;
-        *)          ___advise_man_load "$@"       ;;
+        ls)         ___x_cmd_advise_man_ls              ;;
+        update)     ___x_cmd_advise_man_update          ;;
+        which)      ___x_cmd_advise_man_which "$@"      ;;
+        load)       ___x_cmd_advise_man_load "$@"      ;;
+        rm)         ___x_cmd_advise_man_rm "$@"         ;;
+        *)          ___x_cmd_advise_man_load "$@"       ;;
     esac
 }
 
-___advise_man_exists(){
+___x_cmd_advise_man_exists(){
     [ -d "$___X_CMD_ROOT/.tmp/advise/src" ]
 }
 
-___advise_man_update(){
+___x_cmd_advise_man_update(){
     local CACHE="$___X_CMD_ROOT/.tmp/advise/all.tgz"
     if ___x_cmd_curl_gitx x-cmd advise main "dist/all.tgz" "$CACHE" -; then
         local srcfolder="$___X_CMD_ROOT/.tmp/advise/src"
@@ -25,15 +25,15 @@ ___advise_man_update(){
     fi
 }
 
-___advise_man_ls(){
-    if ___advise_man_exists || ___advise_man_update; then
+___x_cmd_advise_man_ls(){
+    if ___x_cmd_advise_man_exists || ___x_cmd_advise_man_update; then
         ls "$___X_CMD_ROOT/.tmp/advise/src"
     fi
 }
 
-___advise_man_which(){
+___x_cmd_advise_man_which(){
     local name="${1:?Provide name}"
-    if ___advise_man_exists || ___advise_man_update; then
+    if ___x_cmd_advise_man_exists || ___x_cmd_advise_man_update; then
         local p="$___X_CMD_ROOT/.tmp/advise/src/$name/advise.json"
         [ -f "$p" ] && printf "%s" "$p"
     fi
@@ -41,46 +41,46 @@ ___advise_man_which(){
     return 1
 }
 
-___advise_man_load(){
+___x_cmd_advise_man_load(){
     if [[ ! "${1:-""}" == "" ]]; then
         if [ -z "$ZSH_VERSION" ];then
             if [[ ! "$BASH_VERSION" =~ (^3.*|^4.[0-3]) ]]; then
-                complete -o nosort -F "___advise_man_completer" "$1" && return 1
+                complete -o nosort -F "___x_cmd_advise_man_completer" "$1" && return 1
             else
-                complete -F "___advise_man_completer" "$1" && return 1
+                complete -F "___x_cmd_advise_man_completer" "$1" && return 1
             fi
         else
-            compdef "___advise_man_completer" "$1" && return 1
+            compdef "___x_cmd_advise_man_completer" "$1" && return 1
         fi
     fi
     local i
-    for i in $(___advise_man_ls); do
+    for i in $(___x_cmd_advise_man_ls); do
         if [ -z "$ZSH_VERSION" ];then
             if s=$(complete -p "$i" 1>/dev/null 2>&1); then
                 [[ "$s" == *___advise_completer* ]] && continue
             fi
 
             if [[ ! "$BASH_VERSION" =~ (^3.*|^4.[0-3]) ]]; then
-                complete -o nosort -F "___advise_man_completer" "$i"
+                complete -o nosort -F "___x_cmd_advise_man_completer" "$i"
             else
-                complete -F "___advise_man_completer" "$i"
+                complete -F "___x_cmd_advise_man_completer" "$i"
             fi
 
         else
-            compdef "___advise_man_completer" "$i"
+            compdef "___x_cmd_advise_man_completer" "$i"
         fi
     done
 }
 
-___advise_man_rm(){
+___x_cmd_advise_man_rm(){
     local name="${1:-}"
     local srcfolder="$___X_CMD_ROOT/.tmp/advise/src/$name"
-    if ___advise_man_exists; then
+    if ___x_cmd_advise_man_exists; then
         rm -rf "$srcfolder"
     fi
 }
 
-___advise_man_completer() {
+___x_cmd_advise_man_completer() {
     # Interesting ... Passing
     ___ADVISE_RUN_CMD_FOLDER="$___X_CMD_ROOT/.tmp/advise/src/" ___advise_run ""
 }
