@@ -22,7 +22,7 @@ A
 A
     @assert stdout test123 desc seg -c= <<A
 -c=aaa
--c=bb
+-c=bbb
 -c=ccc
 A
 }

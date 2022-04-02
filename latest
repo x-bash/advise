@@ -36,7 +36,7 @@ ___x_cmd_advise(){
             ;;
         load) ___advise_load;;
         man)
-            ___advise_man "$@" ;;
+            ___x_cmd_advise_man "$@" ;;
         init|new)
             ___advise_main "$@" ;;
         del)

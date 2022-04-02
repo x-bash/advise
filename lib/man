@@ -5,7 +5,7 @@ ___x_cmd_advise_man(){
         ls)         ___x_cmd_advise_man_ls              ;;
         update)     ___x_cmd_advise_man_update          ;;
         which)      ___x_cmd_advise_man_which "$@"      ;;
-        load)       ___x_cmd_advise_man_load "$@"      ;;
+        load)       ___x_cmd_advise_man_load "$@"       ;;
         rm)         ___x_cmd_advise_man_rm "$@"         ;;
         *)          ___x_cmd_advise_man_load "$@"       ;;
     esac
