@@ -215,7 +215,7 @@ ___advise_main(){
         filepath=$tmp_filepath
         cat >"$filepath"
     elif [ -z "$filepath" ]; then
-        ___advise_update "$func"
+        # ___advise_update "$func"
         local filepath=$tmp_filepath
         if [ ! -f "$filepath" ]; then
             local content
