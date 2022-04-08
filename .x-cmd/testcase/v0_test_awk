@@ -156,6 +156,7 @@ ssh
 segment
 seg
 desc --- cmd for 中文 测试 description
+ddd
 #> advise ls
 A
     @assert stdout test123 desc option --option '' <<A
