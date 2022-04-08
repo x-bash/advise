@@ -168,6 +168,48 @@ A
 
 }
 
+___advise_get_result_from_awk(){
+    local result cmd_result
+    local IFS=$'\002'
+    local s="${COMP_WORDS[*]}"
+    s="${s#*"$IFS"}"
+
+    # Handle the case that the last word has "@" or ":" in bash.
+    COMP_LINE="${COMP_WORDS[*]}"
+    local cur_1="${COMP_WORDS[COMP_CWORD-1]}"
+    case "$cur_1" in
+        *@|*:)
+            if [ "${COMP_LINE% }" != "${COMP_LINE}" ]; then
+                s="${s%$cur_1$IFS$cur}"
+                s="${s}${cur_1}$cur"
+            fi
+            ;;
+        *)
+    esac
+
+    IFS=$'\n'
+    result="$(
+        {
+            cat "$filepath"
+            printf "\034%s\034" "$s"
+        } | awk -f "$___ADVISE_AWK_PATH" 2>/dev/null
+    )"
+    local cmd="${result##*\#> }"
+    cmd_result=""
+
+    if [ "$cmd" != "$result" ]; then
+        if [ -n "$ZSH_VERSION" ] && [ "${cmd#*___advise_current_shell_environment}" != "$cmd"  ];then
+            ${cmd#*___advise_current_shell_environment}
+        else
+            cmd_result="$(eval "$cmd" 2>/dev/null)"
+        fi
+        result="${result%%\#> *}"
+    fi
+
+    cmds="$result
+$cmd_result"
+}
+
 ___x_cmd_advise_get_result(){
     local offset="${1:-1}"
     local remain_len=$((COMP_CWORD-offset))
