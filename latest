@@ -11,6 +11,7 @@ ___X_CMD_ADVISE_TMPDIR="${TMPDIR%/}/.x-cmd/advise_auto_json"
 # TODO: 测试
 # mkdir "$___X_CMD_ROOT_MOD/.test"
 # touch "$___X_CMD_ROOT_MOD/.test/advise_time"
+# chmod 777 "$___X_CMD_ROOT_MOD/.test/advise_time"
 
 # Section : advise entrance
 ___x_cmd_advise(){
@@ -198,8 +199,7 @@ ___x_cmd_advise_get_result(){
     done
     COMP_WORDS=("${tmp[@]}")
     COMP_CWORD="$(( ${#tmp[@]}-1 ))"
-    printf "%s\n" "___x_cmd_advise_get_result:" >>"$___X_CMD_ROOT_MOD/.test/advise_time"
-    ( time ___advise_get_result_from_awk ) 2>>"$___X_CMD_ROOT_MOD/.test/advise_time"
+    ___advise_get_result_from_awk
 }
 
 # EndSection
@@ -242,6 +242,7 @@ ___advise_main(){
     else
         eval "
             ___advise_completer_$alias_name(){
+                ( time (___ADVISE_RUN_CMD_FOLDER= ___advise_run $func >/dev/null) ) 2>>"$___X_CMD_ROOT_MOD/.test/advise_time"
                 ___ADVISE_RUN_CMD_FOLDER= ___advise_run $func
             }"
         comp_word="$alias_name"
@@ -250,16 +251,12 @@ ___advise_main(){
 
     if [ -z "$ZSH_VERSION" ];then
         if [[ ! "$BASH_VERSION" =~ (^3.*|^4.[0-3]) ]]; then
-            # printf "%s\n" "bash 5:" >>"$___X_CMD_ROOT_MOD/.test/advise_time"
-            # ( time complete -o nosort -F "___advise_completer$alias_name" "$comp_word" ) 2>>"$___X_CMD_ROOT_MOD/.test/advise_time"
             complete -o nosort -F "___advise_completer$alias_name" "$comp_word"
         else
-            printf "%s\n" "bash3、bash4.[0-3]:" >>"$___X_CMD_ROOT_MOD/.test/advise_time"
-            ( time complete -F "___advise_completer$alias_name" "$comp_word" ) 2>>"$___X_CMD_ROOT_MOD/.test/advise_time"
+            complete -F "___advise_completer$alias_name" "$comp_word"
         fi
     else
-        printf "%s\n" "zsh:" >>"$___X_CMD_ROOT_MOD/.test/advise_time"
-        ( time compdef "___advise_completer$alias_name" "$comp_word" ) 2>>"$___X_CMD_ROOT_MOD/.test/advise_time"
+        compdef "___advise_completer$alias_name" "$comp_word"
     fi
 }
 
@@ -363,8 +360,7 @@ ___advise_run(){
     local OLDIFS="$IFS"
     local IFS=$'\n'
     local cmds
-    printf "%s\n" "___advise_run:" >>"$___X_CMD_ROOT_MOD/.test/advise_time"
-    ( time cmds="$(___advise_get_result_from_awk)" ) 2>>"$___X_CMD_ROOT_MOD/.test/advise_time"
+    cmds="$(___advise_get_result_from_awk)"
     local commands=($(printf "%s" "$cmds"))
     desc=()
     cmds=()
@@ -419,6 +415,8 @@ __ltrim_completions()
 
 ___advise_completer() {
     # Interesting ... Passing
+    printf "%s\n" "___advise_run:" >>"$___X_CMD_ROOT_MOD/.test/advise_time"
+    ( time (___ADVISE_RUN_CMD_FOLDER= ___advise_run "" >/dev/null) ) 2>>"$___X_CMD_ROOT_MOD/.test/advise_time"
     ___ADVISE_RUN_CMD_FOLDER= ___advise_run ""
 }
 
