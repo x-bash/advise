@@ -193,9 +193,7 @@ function json_walk_dict_as_candidates(keypath,              _tmp, _res, s){
 function json_walk_dict(keypath, indent,
     data, nth, cur_keypath, cur_indent, key, value){
 
-    if (s != "{") {
-        return false
-    }
+    if (s != "{")   return false
 
     nth = -1
     s = JSON_TOKENS[++s_idx]
