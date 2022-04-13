@@ -149,47 +149,6 @@ function rule_add_dict_val( keypath, val,
 # EndSection
 
 # Section: JSON: utilities
-
-function json_walk_dict_as_candidates(keypath,              _tmp, _res, s){
-    nth = -1
-    s = JSON_TOKENS[ ++s_idx ]
-    _res = ""
-
-    while (1) {
-        if (s == "}") {
-            s = JSON_TOKENS[++s_idx];
-            break
-        }
-
-        key = str_unwrap( s )
-        s = JSON_TOKENS[ ++s_idx ]
-        if (s != ":") json_walk_panic("json_walk_dict_as_candidates() Expect : but get " s)
-        s = JSON_TOKENS[ ++s_idx ]
-
-        if (s == "[") {
-            _tmp = ""
-            # TODO: prevent infinite loop
-            while (1) {
-                s = JSON_TOKENS[ ++s_idx ]
-                if (s == ",") {
-                    s = JSON_TOKENS[ ++s_idx ]
-                }
-                if (s == "]") {
-                    s = JSON_TOKENS[ ++s_idx ]
-                    break
-                }
-                _tmp = _tmp "\n" str_unwrap( s )
-            }
-        } else {
-            _tmp = "#> " str_unwrap( s )
-        }
-
-        _res = _res KV_SEP key KV_SEP _tmp
-        if (s == ",") s = JSON_TOKENS[++s_idx]
-    }
-    RULE_ID_CANDIDATES[ keypath ] = _res
-}
-
 function json_walk_dict(keypath, indent,
     data, nth, cur_keypath, cur_indent, key, value){
 
@@ -306,13 +265,7 @@ function get_colon_argument_optionid(keypath,      _id){
     return RULE_ALIAS_TO_ID[ keypath KEYPATH_SEP "--@" ]
 }
 
-NR==2{
-
-    # Critical data structures show for RULE_ID_CANDIDATES
-    # for( key in RULE_ID_CANDIDATES ){
-    #     debug("RULE_ID_CANDIDATES[" key "] = " RULE_ID_CANDIDATES[key])
-    # }
-
+function prepare_argarr(){
     argstr = $0
     if ( argstr == "" ) argstr = "" # "." "\002"
 
@@ -332,6 +285,15 @@ NR==2{
         gsub("\001", "\n", arg)
         parsed_argarr[i] = arg
     }
+}
+
+NR==2{
+    # Critical data structures show for RULE_ID_CANDIDATES
+    # for( key in RULE_ID_CANDIDATES ){
+    #     debug("RULE_ID_CANDIDATES[" key "] = " RULE_ID_CANDIDATES[key])
+    # }
+
+    prepare_argarr()
 
     for (i=1; i<parsed_arglen; ++i) {
         arg = parsed_argarr[i]
