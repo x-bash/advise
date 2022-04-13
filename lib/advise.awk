@@ -150,9 +150,7 @@ function rule_add_dict_val( keypath, val,
 
 # Section: JSON: utilities
 
-function json_walk_dict_as_candidates(keypath,
-    _tmp, _res, s){
-
+function json_walk_dict_as_candidates(keypath,              _tmp, _res, s){
     nth = -1
     s = JSON_TOKENS[ ++s_idx ]
     _res = ""
@@ -271,11 +269,8 @@ function json_walk_value(keypath, indent, struct_type){
 
     result = s
 
-    if (struct_type == "dict") {
-        rule_add_dict_val(keypath, s)
-    } else if (struct_type == "list") {
-        rule_add_list_val(keypath, s)
-    }
+    if (struct_type == "dict")              rule_add_dict_val(keypath, s)
+    else if (struct_type == "list")         rule_add_list_val(keypath, s)
 
     s = JSON_TOKENS[++s_idx]
     return true
@@ -306,9 +301,7 @@ function json_walk(text,   final, b_s, b_s_idx, b_s_len){
 # EndSection
 
 # Section: Main
-NR==1{
-    json_walk($0)
-}
+NR==1{      json_walk($0)       }
 
 # Use object
 
