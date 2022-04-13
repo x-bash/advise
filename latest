@@ -1,16 +1,13 @@
 # Author:       Li Junhao           l@x-cmd.com             # xrc
 # shellcheck    shell=bash          disable=SC2039,3043
 
-
 if [ -z "${ZSH_VERSION}${BASH_VERSION}" ]; then
     x log info "advise is only available in 'bash' or 'zsh'."
 else
 
 ___X_CMD_ADVISE_TMPDIR="${TMPDIR%/}/.x-cmd/advise_auto_json"
 
-xrc:mod advise/lib/helper advise/lib/main
-
-# xrc:mod advise/lib/man
+xrc:mod advise/lib/helper advise/lib/main   # advise/lib/man
 ___x_cmd_advise_man(){
     xrc:mod advise/lib/man && ___x_cmd_advise_man "$@"
 }
