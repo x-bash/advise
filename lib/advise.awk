@@ -257,13 +257,8 @@ function json_walk_array(keypath, indent,
 }
 
 function json_walk_value(keypath, indent, struct_type){
-    if (json_walk_dict(keypath, indent) == true) {
-        return true
-    }
-
-    if (json_walk_array(keypath, indent) == true) {
-        return true
-    }
+    if (json_walk_dict(keypath, indent) == true)    return true
+    if (json_walk_array(keypath, indent) == true)   return true
 
     result = s
 
