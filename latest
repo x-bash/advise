@@ -95,8 +95,6 @@ if [ -n "$ZSH_VERSION" ] && [ -z "$___X_CMD_ADVISE_ZSH_COMPLETE_LOADED" ] ; then
     fi
 fi
 
-# ___x_cmd_advise init advise
-
 # xrc:mod advise/lib/man
 
 ___x_cmd_advise_man(){
