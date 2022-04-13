@@ -80,7 +80,7 @@ ___x_cmd_advise(){
     esac
 }
 
-# EndSection
+## EndSection
 
 xrc:mod advise/lib/helper advise/lib/main
 
@@ -104,7 +104,6 @@ ___x_cmd_advise_man(){
     xrc:mod advise/lib/man && ___x_cmd_advise_man "$@"
 }
 
-# EndSection
 fi
 
 xrc setmain ___x_cmd_advise
