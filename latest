@@ -16,71 +16,48 @@ ___x_cmd_advise_man(){
 ___x_cmd_advise(){
     local op="${1}"; [ $# -gt 0 ] && shift
     case "$op" in
-        ls)
-            ls "$@" "$___X_CMD_ADVISE_TMPDIR" ;;
+        ls)                         ls "$@" "$___X_CMD_ADVISE_TMPDIR" ;;
         rm)
-            if [ "$#" -eq 0 ]; then
-                x rmrf "$___X_CMD_ADVISE_TMPDIR"/*
-            else
-                x rmrf "$___X_CMD_ADVISE_TMPDIR/$1"
-            fi
-            ;;
+                                    if [ "$#" -eq 0 ]; then     x rmrf "$___X_CMD_ADVISE_TMPDIR"/*
+                                    else                        x rmrf "$___X_CMD_ADVISE_TMPDIR/$1"
+                                    fi ;;
         which)
-            if [ "$#" -eq 0 ]; then
-                printf "%s" "$___X_CMD_ADVISE_TMPDIR"
-            else
-                printf "%s/%s" "$___X_CMD_ADVISE_TMPDIR" "$1"
-            fi
-            ;;
-        cat)
-            local mod
-            for mod in "$@"; do
-                cat "$___X_CMD_ADVISE_TMPDIR/$mod"
-            done
-            ;;
-        load) ___advise_load;;
-        man)
-            ___x_cmd_advise_man "$@" ;;
-        init|new)
-            ___advise_main "$@" ;;
-        del)
-            complete -r "${1:?Provide function name}"
-            ;;
+                                    if [ "$#" -eq 0 ]; then     printf "%s" "$___X_CMD_ADVISE_TMPDIR"
+                                    else                        printf "%s/%s" "$___X_CMD_ADVISE_TMPDIR" "$1"
+                                    fi ;;
+        cat)                        (cd "$___X_CMD_ADVISE_TMPDIR" && cat "$@")  ;;
+        load)                       ___advise_load;;
+        man)                        ___x_cmd_advise_man "$@" ;;
+        init|new)                   ___advise_main "$@" ;;
+        del)                        complete -r "${1:?Provide function name}" ;;
         obj-new)
-            local aliasname="${2:?Provide alias name}"
-            local filepath="$___X_CMD_ADVISE_TMPDIR/$op"
+                                    local aliasname="${2:?Provide alias name}"
+                                    local filepath="$___X_CMD_ADVISE_TMPDIR/$op"
 
-            # TODO: There is one more solution. But it is not not worked in ZSH. Please figure it out.
-            # complete -C "___advise_completer \"$filepath\"" "$aliasname"
+                                    # TODO: There is one more solution. But it is not not worked in ZSH. Please figure it out.
+                                    # complete -C "___advise_completer \"$filepath\"" "$aliasname"
 
-            eval "
-            function ______adviser_of_$op(){
-                ___advise_completer \"$filepath\"
-            }
-            "
-            if [[ ! "$BASH_VERSION" =~ (^3.*|^4.[0-3]) ]]; then
-                complete -o nosort -F "______adviser_of_$op" "$aliasname"
-            else
-                complete -F "______adviser_of_$op" "$aliasname"
-            fi
-            ;;
+                                    eval "
+                                    function ______adviser_of_$op(){
+                                        ___advise_completer \"$filepath\"
+                                    }
+                                    "
+                                    if [[ ! "$BASH_VERSION" =~ (^3.*|^4.[0-3]) ]]; then
+                                        complete -o nosort -F "______adviser_of_$op" "$aliasname"
+                                    else
+                                        complete -F "______adviser_of_$op" "$aliasname"
+                                    fi
+                                    ;;
         obj-del)
-            local aliasname="${2:?Provide alias name}"
-
-            complete -r "$aliasname"
-            if ! complete | grep "______adviser_of_$op" 1>/dev/null 2>&1; then
-                unset -f "______adviser_of_$op"
-            fi
-            ;;
-         _x_cmd_advise_json)
-            cat "$___X_CMD_ROOT_MOD/advise/lib/advise.advise.json"
-            return 126
-            ;;
-        ""|help)
-            cat "$___X_CMD_ROOT_MOD/advise/lib/help.txt" >&2; return 1
-            ;;
-        *)
-            ___advise_main "$op" "$@" ;;
+                                    local aliasname="${2:?Provide alias name}"
+                                    complete -r "$aliasname"
+                                    if ! complete | grep "______adviser_of_$op" 1>/dev/null 2>&1; then
+                                        unset -f "______adviser_of_$op"
+                                    fi
+                                    ;;
+         _x_cmd_advise_json)        cat "$___X_CMD_ROOT_MOD/advise/lib/advise.advise.json"; return 126 ;;
+        ""|help)                    cat "$___X_CMD_ROOT_MOD/advise/lib/help.txt" >&2; return 1;;
+        *)                          ___advise_main "$op" "$@" ;;
     esac
 }
 
