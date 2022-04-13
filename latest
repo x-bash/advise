@@ -8,6 +8,13 @@ else
 
 ___X_CMD_ADVISE_TMPDIR="${TMPDIR%/}/.x-cmd/advise_auto_json"
 
+xrc:mod advise/lib/helper advise/lib/main
+
+# xrc:mod advise/lib/man
+___x_cmd_advise_man(){
+    xrc:mod advise/lib/man && ___x_cmd_advise_man "$@"
+}
+
 # Section : advise entrance
 ___x_cmd_advise(){
     local op="${1}"; [ $# -gt 0 ] && shift
@@ -82,9 +89,6 @@ ___x_cmd_advise(){
 
 ## EndSection
 
-xrc:mod advise/lib/helper advise/lib/main
-
-
 if [ -n "$ZSH_VERSION" ] && [ -z "$___X_CMD_ADVISE_ZSH_COMPLETE_LOADED" ] ; then
     ___X_CMD_ADVISE_ZSH_COMPLETE_LOADED=1
     zstyle ':completion:*:*:*:*:*' menu select
@@ -94,12 +98,6 @@ if [ -n "$ZSH_VERSION" ] && [ -z "$___X_CMD_ADVISE_ZSH_COMPLETE_LOADED" ] ; then
         autoload -Uz compinit && compinit
     fi
 fi
-
-# xrc:mod advise/lib/man
-
-___x_cmd_advise_man(){
-    xrc:mod advise/lib/man && ___x_cmd_advise_man "$@"
-}
 
 fi
 
