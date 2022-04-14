@@ -1,0 +1,47 @@
+{
+    "desc": {
+        "update": null,
+        "option|opt": {
+            "--op|-a|m": {
+                "#1": [ "m1-a", "m1-b", "m1-c" ],
+                "#2": [ "m2-a", "m2-b", "m2-c" ],
+                "#3": [ "m3-a", "m3-b", "m3-c" ],
+                "#desc": "cmd for op description"
+            },
+            "--repo2|-b|m": {
+                "#1": [ "abc", "cde", "def" ],
+                "#2": [ ],
+                "#3": [ "abc", "cde", "def" ],
+                "#desc": "Provide two repo name"
+            },
+            "--option|-O": [
+                "check     --- ssh-check-host-ip",
+                "forward   --- ssh-forward-agent",
+                "cancel    --- ssh-cancel-forward-agent",
+                "exit      --- ssh-stop-forward-agent"
+            ],
+            "--flag|-f": "--- cmd for flag description",
+            "#desc": "subcmd description"
+        },
+        "sub|subcmmd": {
+            "#1": [ "abc", "ade", "def" ],
+            "#2": null,
+            "#desc": "cmd for sub description"
+        },
+        "seg": {
+            "cd": "___advise_current_shell_environment_files",
+            "-a|--aaa": ["aaa", "bbb", "ccc"],
+            "-f": ["adc=sss","scs=bbb","scs=aaa"],
+            "-I": [ ],
+            "-J": "",
+            "-K": "   ",
+            "-L": [],
+            "#desc": "cmd for oseg description"
+        },
+        "#1": "advise ls",
+        "#n": "___x_cmd_advise_get_result 2",
+        "#desc": "cmd for 中文 测试 description"
+    },
+    "#1": "advise ls",
+    "#n": "___x_cmd_advise_get_result 1"
+}
