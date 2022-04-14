@@ -518,8 +518,4 @@ myself_ls(){
 
 # EndSection
 
-# Section: for the interactive ui
-advise rm compt
-advise compt "$(x wsroot)/.x-cmd/dev/testcase/test.json"
-# EndSection
 @assert:file:func

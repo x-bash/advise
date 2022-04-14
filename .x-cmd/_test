@@ -1,1 +1,7 @@
-. ./.x-cmd/dev/testcase/v0_test
+xrc advise
+
+advise rm min
+advise min "$(x wsroot)/.x-cmd/dev/testcase/min_test.json"
+
+advise rm compt
+advise compt "$(x wsroot)/.x-cmd/dev/testcase/test.json"

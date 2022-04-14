@@ -119,7 +119,4 @@ min(){
     } | awk -f "$(x wsroot)/lib/advise.awk" # 2>/dev/null
 }
 
-advise rm min
-advise min "$(x wsroot)/.x-cmd/dev/testcase/min_test.json"
-
 @assert:file:func
