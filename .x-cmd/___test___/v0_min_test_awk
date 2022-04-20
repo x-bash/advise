@@ -1,10 +1,5 @@
 # shellcheck shell=bash
 
-___X_CMD_XRC_MODULE_IMPORTED=
-# x log advise xrc
-xrc assert
-xrc advise
-
 test_first(){
     @assert stdout min ''<<A
 desc --- cmd for 中文 测试 description
