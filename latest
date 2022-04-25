@@ -220,7 +220,7 @@ ___advise_main(){
         if [ ! -f "$filepath" ]; then
             local content
             x:debug "Start complete generation for $___X_CMD_WHICH_ONE_NAMING"
-            content="$(X_CMD_ADVISE_FUNC_NAME=$func eval "$func" _x_cmd_advise_json 2>/dev/null)"
+            content="$(X_CMD_ADVISE_FUNC_NAME=$func eval "$func" _x_cmd_advise_json)"
             x:debug "Finished complete generation for $___X_CMD_WHICH_ONE_NAMING"
             if [ $? = 126 ]; then
                 printf "%s" "$content" >"$filepath"
