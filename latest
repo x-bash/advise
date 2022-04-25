@@ -219,9 +219,9 @@ ___advise_main(){
         local filepath=$tmp_filepath
         if [ ! -f "$filepath" ]; then
             local content
-            x:debug "Start complete generation for $func"
+            x:debug "Start gen advise for $func"
             content="$(X_CMD_ADVISE_FUNC_NAME=$func "$func" _x_cmd_advise_json)"
-            x:debug "Finished complete generation for $func"
+            x:debug "Finished gen advise for $func"
             if [ $? = 126 ]; then
                 printf "%s" "$content" >"$filepath"
             else
