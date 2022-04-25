@@ -3,7 +3,7 @@
 
 
 if [ -z "${ZSH_VERSION}${BASH_VERSION}" ]; then
-    x log info "advise is only available in 'bash' or 'zsh'."
+    x:info "advise is only available in 'bash' or 'zsh'."
 else
 
 ___X_CMD_ADVISE_TMPDIR="${TMPDIR%/}/.x-cmd/advise_auto_json"
@@ -219,7 +219,9 @@ ___advise_main(){
         local filepath=$tmp_filepath
         if [ ! -f "$filepath" ]; then
             local content
+            x:debug "Start complete generation for $___X_CMD_WHICH_ONE_NAMING"
             content="$(X_CMD_ADVISE_FUNC_NAME=$func eval "$func" _x_cmd_advise_json 2>/dev/null)"
+            x:debug "Finished complete generation for $___X_CMD_WHICH_ONE_NAMING"
             if [ $? = 126 ]; then
                 printf "%s" "$content" >"$filepath"
             else
