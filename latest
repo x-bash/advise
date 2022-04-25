@@ -219,12 +219,13 @@ ___advise_main(){
         local filepath=$tmp_filepath
         if [ ! -f "$filepath" ]; then
             local content
-            x:debug "Start complete generation for $___X_CMD_WHICH_ONE_NAMING"
-            content="$(X_CMD_ADVISE_FUNC_NAME=$func eval "$func" _x_cmd_advise_json)"
-            x:debug "Finished complete generation for $___X_CMD_WHICH_ONE_NAMING"
+            x:debug "Start complete generation for $func"
+            content="$(X_CMD_ADVISE_FUNC_NAME=$func "$func" _x_cmd_advise_json)"
+            x:debug "Finished complete generation for $func"
             if [ $? = 126 ]; then
                 printf "%s" "$content" >"$filepath"
             else
+                x:error "Failed gen advise $func : you should define _x_cmd_advise_json correctly in your function."
                 return 0
             fi
         fi
