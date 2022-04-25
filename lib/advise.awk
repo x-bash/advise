@@ -82,7 +82,8 @@ function rule_add_key( keypath, key,
     if (first ~ /-/) {
         # options
         last = keyarr[keyarrlen]
-        RULE_ID_ARGNUM[ keyid ] = 1
+        if( RULE_ID_DESC[ keypath ] ~ /---/)    RULE_ID_ARGNUM[ keyid ] = 0
+        else                                    RULE_ID_ARGNUM[ keyid ] = 1
 
         last = keyarr[keyarrlen]
         if (last ~ /^[rm|mr|r|m]$/) {

@@ -472,10 +472,18 @@ A
 }
 
 test_namelist(){
-    @assert stdout test456 ''<<A
+    @assert stdout test456 ls -r ''<<A
 python
-java
 node
+java
+go
+scala
+sbt
+maven
+perl
+springboot
+kotlin
+gradle
 A
 }
 
