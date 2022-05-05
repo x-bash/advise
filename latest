@@ -70,7 +70,6 @@ ___x_cmd_advise(){
             ;;
          _x_cmd_advise_json)
             cat "$___X_CMD_ROOT_MOD/advise/lib/advise.advise.json"
-            return 126
             ;;
         ""|help)
             cat "$___X_CMD_ROOT_MOD/advise/lib/help.txt" >&2; return 1
@@ -221,12 +220,11 @@ ___advise_main(){
             local content
             x:debug "Start gen advise for $func"
             content="$(X_CMD_ADVISE_FUNC_NAME=$func "$func" _x_cmd_advise_json)"
-            if [ $? -eq 126 ]; then
+            if [ $? -eq 0 ]; then
                 printf "%s" "$content" >"$filepath"
                 x:debug "Finished gen advise for $func"
             else
-                x:error "Failed gen advise $func : you should define _x_cmd_advise_json correctly in your function."
-                return 0
+                x:error "Failed gen advise $func : you should define _x_cmd_advise_json correctly and return 0 in your function."
             fi
         fi
     else
