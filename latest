@@ -224,7 +224,7 @@ ___advise_main(){
                 printf "%s" "$content" >"$filepath"
                 x:debug "Finished gen advise for $func"
             else
-                x:error "Failed gen advise $func : you should define _x_cmd_advise_json correctly and return 0 in your function."
+                x:error "Failed gen advise $func : First, you need to ensure that there are corresponding functions in the subcmd you define. Second, there are _x_cmd_advise_json the case does not need to be defined if param is used. If not, it needs to be manually defined or param: void is used."
             fi
         fi
     else
