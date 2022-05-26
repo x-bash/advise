@@ -39,6 +39,10 @@ ___x_cmd_advise(){
             ___x_cmd_advise_man "$@" ;;
         init|new)
             ___advise_main "$@" ;;
+        clear)
+            x rmrf "$___X_CMD_ADVISE_TMPDIR"
+            x:info "Directory Removed: $___X_CMD_ADVISE_TMPDIR"
+            ;;
         del)
             complete -r "${1:?Provide function name}"
             ;;
