@@ -1,0 +1,5 @@
+{
+    "ssh": {
+        "-o": ["AddKeysToAgent=yes", "AddKeysToAgent=ask", "AddKeysToAgent=confirm", "AddKeysToAgent=no", "AddressFamily=any", "AddressFamily=inet", "AddressFamily=inet6"]
+    }
+}

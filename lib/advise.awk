@@ -119,12 +119,17 @@ function rule_add_list_val( keypath, val,
 
     val = str_unwrap( val )     # Notice: simple unwrap
 
-
     if (match(keypath, KEYPATH_SEP "[0-9]+$") ) {
         keypath = substr( keypath, 1, RSTART-1 )
     }
 
-    RULE_ID_CANDIDATES[ keypath ] = RULE_ID_CANDIDATES[ keypath ] "\n" val   # unwrap val
+    if( match(val, /=/) ){
+        val_symbol = substr( val, RSTART, 1 )
+        split( val, val_tmp_arr, /=/ )
+        RULE_ID_CANDIDATES[ keypath ] = RULE_ID_CANDIDATES[ keypath ] "\n" val_tmp_arr[1] val_symbol
+        keypath = keypath KEYPATH_SEP val_tmp_arr[1] val_symbol
+        RULE_ID_CANDIDATES[ keypath ] = RULE_ID_CANDIDATES[ keypath ] "\n" val_tmp_arr[2]
+    }else RULE_ID_CANDIDATES[ keypath ] = RULE_ID_CANDIDATES[ keypath ] "\n" val   # unwrap val
 }
 
 function rule_add_dict_val( keypath, val,
@@ -451,6 +456,7 @@ NR==2{
         if (option_id !~ "#" cur_optarg_index "+$" && cur_optarg_index !~ "1"){
             option_id=option_id KEYPATH_SEP "#" cur_optarg_index
         }
+        if( cur ~ /=/)    option_id = option_id KEYPATH_SEP cur
         show_candidates( option_id, cur )
     } else if(match(cur,/^-.*=/)){
         current_keypath = current_keypath KEYPATH_SEP substr(cur,1,RLENGTH-1)
@@ -629,7 +635,7 @@ function print_candidate_with_optionid( option_id, cur,
 
     for (i=1; i<=can_arr_len; ++i) {
         can = can_arr[i]
-        if (str_startswith( can, cur ) && can != "--@" && cur !~ /^-.*=$/) {
+        if (str_startswith( can, cur ) && can != "--@" && cur !~ /^-.*=$/ || cur ~ /=/) {
             print can desc_info
         }
     }

@@ -204,12 +204,12 @@ A
 # linux/
 # A
 
-    @assert stdout test123 ssh -o AddKeysToAgent= <<A
-AddKeysToAgent=yes
-AddKeysToAgent=ask
-AddKeysToAgent=confirm
-AddKeysToAgent=no
-A
+#     @assert stdout test123 ssh -o AddKeysToAgent= <<A
+# AddKeysToAgent=yes
+# AddKeysToAgent=ask
+# AddKeysToAgent=confirm
+# AddKeysToAgent=no
+# A
 #     @assert stdout test123 ssh -o A <<A
 # AddKeysToAgent=
 # AddressFamily=
@@ -484,6 +484,26 @@ node
 A
 }
 
+test_ssh(){
+    @assert stdout test789 ssh -o Add''<<A
+AddKeysToAgent=
+AddressFamily=
+A
+
+    @assert stdout test789 ssh -o AddKeysToAgent=''<<A
+yes
+ask
+confirm
+no
+A
+
+    @assert stdout test789 ssh -o AddressFamily=''<<A
+any
+inet
+inet6
+A
+}
+
 # EndSection
 
 # Section: utilities
@@ -503,6 +523,16 @@ test123(){
 
 test456(){
     local fp="$(x wsroot)/.x-cmd/dev/testcase/c.json"
+    local IFS=$'\002' # IFS="$(printf "\002")"
+    s="$*"
+    {
+        cat "$fp"
+        printf "\034%s\034" "$s"
+    } | awk -f "$(x wsroot)/lib/advise.awk"
+}
+
+test789(){
+    local fp="$(x wsroot)/.x-cmd/dev/testcase/d.json"
     local IFS=$'\002' # IFS="$(printf "\002")"
     s="$*"
     {
