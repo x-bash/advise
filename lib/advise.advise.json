@@ -23,5 +23,8 @@
     },
     "del": null,
     "obj-new": null,
-    "obj-del": null
+    "obj-del": null,
+    "clear": {
+        "desc": "Clear all of the advise cache."
+    }
 }
