@@ -14,7 +14,8 @@
                 "abc": 1,
                 "cde": 2,
                 "#candidate": [ "a", "b", "c" ],
-                "#rmatch": []
+                "#rmatch": [],
+                "#exec": "ls"
             }
         },
         "-V|f": {
