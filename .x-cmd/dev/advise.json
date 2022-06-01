@@ -8,17 +8,22 @@
             "#desc": ""
         },
         "-v": {
-            "abc": 1,
-            "cde": 2,
-            "#candidate": [ "a", "b", "c" ],
-            "#rmatch": []
+            "#desc": "argument",
+            "#1": {
+                "#desc": "first argument",
+                "abc": 1,
+                "cde": 2,
+                "#candidate": [ "a", "b", "c" ],
+                "#rmatch": []
+            }
         },
         "-V|f": {
             "#desc": "Verbose mode"
         },
         "--tuple|m": {
+            "#desc": "desc",
             "#1": {
-
+                "#desc": "first argument"
             },
             "#2": {
 
