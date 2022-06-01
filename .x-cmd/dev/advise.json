@@ -18,6 +18,10 @@
                 "#exec": "ls"
             }
         },
+        "cmd|command":{
+            "cd": "___advise_current_shell_exec",
+            "ls": "___advise_sub_shell_exec"
+        },
         "-V": {
             "#desc": "Verbose mode"
         },
