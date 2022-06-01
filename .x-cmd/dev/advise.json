@@ -19,8 +19,12 @@
             }
         },
         "cmd|command":{
-            "cd": "___advise_current_shell_exec",
-            "ls": "___advise_sub_shell_exec"
+            "cmd1": {
+                "#curexec": "___advise_current_shell_exec"
+            },
+            "cmd2": {
+                "#exec": "___advise_sub_shell_exec"
+            }
         },
         "-V": {
             "#desc": "Verbose mode"
