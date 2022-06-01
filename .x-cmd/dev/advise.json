@@ -5,7 +5,11 @@
             "#desc": ""
         },
         "logout": {
-            "#desc": ""
+            "#desc": "test logout",
+            "-I": [],
+            "-J": "",
+            "-K": "   ",
+            "-L": [ ]
         },
         "-v": {
             "#desc": "argument",
