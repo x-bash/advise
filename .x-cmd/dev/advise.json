@@ -20,7 +20,7 @@
         },
         "cmd|command":{
             "cmd1": {
-                "#curexec": "___advise_current_shell_exec"
+                "#source": "___advise_current_shell_exec"
             },
             "cmd2": {
                 "#exec": "___advise_sub_shell_exec"
