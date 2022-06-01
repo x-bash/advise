@@ -13,10 +13,10 @@
             "#candidate": [ "a", "b", "c" ],
             "#rmatch": []
         },
-        "-V|m": {
+        "-V|f": {
             "#desc": "Verbose mode"
         },
-        "--tuple": {
+        "--tuple|m": {
             "#1": {
 
             },
