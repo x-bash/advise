@@ -27,7 +27,7 @@
             }
         },
         "--@": ["@a1", "@a2", "@a3", "@b", "@c"],
-        "--priviledge|r": {
+        "--required|r": {
             "#1": ["adc=sss", "scs=bbb", "scs=aaa"],
             "#2": ["www:a", ":b", ":c"]
         },
