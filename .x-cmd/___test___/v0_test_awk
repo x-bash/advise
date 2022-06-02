@@ -1,10 +1,5 @@
 # shellcheck shell=bash
 
-___X_CMD_XRC_MODULE_IMPORTED=
-# x log advise xrc
-xrc assert
-xrc advise
-
 test_omz(){
     @assert  int 1
 }
@@ -477,10 +472,18 @@ A
 }
 
 test_namelist(){
-    @assert stdout test456 ''<<A
+    @assert stdout test456 ls -r ''<<A
 python
-java
 node
+java
+go
+scala
+sbt
+maven
+perl
+springboot
+kotlin
+gradle
 A
 }
 
@@ -518,8 +521,4 @@ myself_ls(){
 
 # EndSection
 
-# Section: for the interactive ui
-advise rm compt
-advise compt "$(x wsroot)/.x-cmd/dev/testcase/test.json"
-# EndSection
 @assert:file:func

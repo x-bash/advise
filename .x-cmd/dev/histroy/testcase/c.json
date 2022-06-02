@@ -1,6 +1,8 @@
 {
-    "#desc": "list all installed environments",
-    "--cache|-c": "--- Use cache ",
-    "--remote|-r": "--- List version including remote ",
-    "#1|--candidate": ["python", "java", "node"]
+    "ls": {
+        "#desc": "list all installed environments",
+        "--cache|-c": "--- Use cache",
+        "--remote|-r": "--- List version including remote",
+        "#1": ["python", "node", "java", "go", "scala", "sbt", "maven", "perl", "springboot", "kotlin", "gradle"]
+    }
 }

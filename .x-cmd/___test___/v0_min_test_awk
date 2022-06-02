@@ -1,0 +1,117 @@
+# shellcheck shell=bash
+
+test_first(){
+    @assert stdout min ''<<A
+desc --- cmd for 中文 测试 description
+#> advise ls
+A
+    @assert stdout min desc ''<<A
+update
+option --- subcmd description
+opt --- subcmd description
+sub --- cmd for sub description
+subcmmd --- cmd for sub description
+seg --- cmd for oseg description
+#> advise ls
+A
+}
+
+test_desc_opt(){
+    @assert stdout min desc op<<A
+option --- subcmd description
+opt --- subcmd description
+#> advise ls
+A
+    @assert stdout min desc opt -<<A
+-a --- cmd for op description
+-b --- Provide two repo name
+-O
+-f --- cmd for flag description
+A
+    @assert stdout min desc opt --<<A
+--op --- cmd for op description
+--repo2 --- Provide two repo name
+--option
+--flag --- cmd for flag description
+A
+    @assert stdout min desc opt --op ''<<A
+m1-a
+m1-b
+m1-c
+A
+    @assert stdout min desc opt -a aaa bbb ''<<A
+m3-a
+m3-b
+m3-c
+A
+    @assert stdout min desc opt -a aaa aaa aaa -a ''<<A
+m1-a
+m1-b
+m1-c
+A
+    @assert stdout min desc opt -b aaa aaa ''<<A
+abc
+cde
+def
+A
+    @assert stdout min desc opt -b aaa aaa ''<<A
+abc
+cde
+def
+A
+    @assert stdout min desc opt -O ''<<A
+check     --- ssh-check-host-ip
+forward   --- ssh-forward-agent
+cancel    --- ssh-cancel-forward-agent
+exit      --- ssh-stop-forward-agent
+A
+}
+test_desc_sub(){
+    @assert stdout min desc s<<A
+sub --- cmd for sub description
+subcmmd --- cmd for sub description
+seg --- cmd for oseg description
+#> advise ls
+A
+    @assert stdout min desc sub a<<A
+abc
+ade
+A
+    @assert stdout min desc seg -<<A
+-a
+-f
+-I
+-J
+-K
+-L
+A
+    @assert stdout min desc seg -f ''<<A
+adc=sss
+scs=bbb
+scs=aaa
+A
+}
+test_get_result(){
+    @assert stdout min x tldr ''<<A
+#> ___x_cmd_advise_get_result 1
+A
+    @assert stdout min desc x ''<<A
+#> ___x_cmd_advise_get_result 2
+A
+}
+
+## EndSection
+
+# Section: utilities
+
+min(){
+    local fp="$(x wsroot)/.x-cmd/dev/testcase/min_test.json"
+    local IFS=$'\002'
+    s="$*"
+    {
+        cat "$fp"
+        printf "\034%s\034" "$s"  # printf "\034${s}\034"
+    } | awk -f "$(x wsroot)/lib/advise.awk" # 2>/dev/null
+}
+
+@assert:file:func
