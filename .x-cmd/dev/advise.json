@@ -9,9 +9,11 @@
             "-I": [],
             "-J": "",
             "-K": "   ",
-            "-L": [ ]
+            "-L": [ ],
+            ":+debug|:+d": {},
+            ":-reset|:-r": {}
         },
-        "-v": {
+        "-v|m": {
             "#desc": "argument",
             "#1": {
                 "#desc": "first argument",
@@ -39,7 +41,8 @@
         "-V": {
             "#desc": "Verbose mode"
         },
-        "--tuple|m": {
+        "--tuple": {
+            "#multiple": true,
             "#desc": "desc",
             "#1": {
                 "#desc": "first argument"
