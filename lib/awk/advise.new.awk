@@ -36,7 +36,7 @@ function prepare_argarr( argstr ){
 # EndSection
 
 # Complete Rest Argument
-# Complete Option
+# Complete Option Name Or RestArgument
 # Complete Option Argument
 
 function parse_args_to_obj( args, obj, obj_prefix, genv_table, lenv_table,    i, j, _subcmdid ){
@@ -57,8 +57,12 @@ function parse_args_to_obj( args, obj, obj_prefix, genv_table, lenv_table,    i,
         if (arg ~ /^--/) {
             _arg_id = aobj_get_id_by_name( obj, obj_prefix, arg )
             if (_arg_id != "") {
-                _optargc = aobj_get_optargc( _arg_id )
-                for (k=1; k<=_optargc; ++j)  {
+                _optargc = aobj_get_optargc( obj_prefix SUBSEP _arg_id )
+                for (k=1; k<=_optargc; ++k)  {
+                    if ( i>argl ) {
+                        advise_option_value( obj_prefix SUBSEP _arg_id, k )
+                        return
+                    }
                     genv_table[ obj_prefix, _arg_id, k ] = args[ i++ ]
                     lenv_table[ _arg_id, k ] = args[ i++ ]
                 }
@@ -68,7 +72,11 @@ function parse_args_to_obj( args, obj, obj_prefix, genv_table, lenv_table,    i,
             _arg_id = aobj_get_id_by_name( obj, obj_prefix, arg )
             if (_arg_id != "") {
                 _optargc = aobj_get_optargc( obj, obj_prefix, _arg_id )
-                for (k=1; k<=_optargc; ++j) {
+                for (k=1; k<=_optargc; ++k)  {
+                    if ( i>argl ) {
+                        advise_option_value( obj_prefix SUBSEP _arg_id, k )
+                        return
+                    }
                     genv_table[ obj_prefix, _arg_id, k ] = args[ i++ ]
                     lenv_table[ _arg_id, k ] = args[ i++ ]
                 }
@@ -82,7 +90,13 @@ function parse_args_to_obj( args, obj, obj_prefix, genv_table, lenv_table,    i,
                 _optargc = aobj_get_optargc( obj, obj_prefix, _arg_id )
                 if (_optargc > 0) {
                     assert( j==_arg1_arrl, "Fail at parsing: " arg ". Accept at least one argument: -" _arg1_arrl[j] )
-                    for (k=1; k<=_optargc; ++j) {
+
+                    for (k=1; k<=_optargc; ++k)  {
+                        if ( i>argl ) {
+                            advise_option_value( obj_prefix SUBSEP _arg_id, k )
+                            return
+                        }
+
                         genv_table[ obj_prefix, _arg_id, k ] = args[ i++ ]
                         lenv_table[ _arg_id, k ] = args[ i++ ]
                     }
