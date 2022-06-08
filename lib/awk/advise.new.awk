@@ -123,7 +123,11 @@ function parse_args_to_obj( args, obj, obj_prefix, genv_table, lenv_table,    i,
     if (rest_argc == 0) {
         # If not require ready...
         advise_complete_option_name( obj, obj_prefix )
-        advise_complete_argument_value( obj, obj_prefix, 1 )
+        # TODO: Check upper level options provided
+        if ( aobj_options_all_ready( obj, obj_prefix, lenv ) ) {
+            advise_complete_argument_value( obj, obj_prefix, 1 )
+            return
+        }
         return
     }
 
