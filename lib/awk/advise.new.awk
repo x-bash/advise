@@ -35,38 +35,70 @@ function prepare_argarr( argstr ){
 
 # EndSection
 
-function parse_arguments( args, obj, env_table,     i, j ){
+BEGIN{
+    EXIT_CODE = 0
+}
+
+function panic(msg){
+    print "[PANIC]: " msg >"/dev/stderr"
+    EXIT_CODE = 1
+    exit(1)
+}
+
+function parse_args_to_obj( args, obj, env_table,     i, j ){
     argl = args[ L ]
 
     while ( i<=argl ) {
         arg = args[ i ]
 
         if (arg ~ /^--/) {
-
-            continue
+            _arg_id = aobj_get_id_by_name( arg )
+            if (_arg_id != "") {
+                _optargc = aobj_get_optargc( _arg_id )
+                for (k=1; k<=_optargc; ++j)         obj[ _arg_id, k ] = args[ ++i ]
+                continue
+            }
         } else if (arg ~ /^-/) {
+            _arg_id = aobj_get_id_by_name( arg )
+            if (_arg_id != "") {
+                _optargc = aobj_get_optargc( _arg_id )
+                for (k=1; k<=_optargc; ++j)         obj[ _arg_id, k ] = args[ ++i ]
+                continue
+            }
 
-            continue
-        } else if (arg ~ /^:[-+]/) {
-
+            _arg1_arrl = split(arg, _arg1_arr)
+            for (j=2; j<=_arg1_arrl; ++j) {
+                _arg_id = aobj_get_id_by_name( "-" _arg1_arrl[j] )
+                if (_arg_id == "")      panic("Fail at parsing: " arg ". Not Found: -" _arg1_arrl[j] )
+                _optargc = aobj_get_optargc( _arg_id )
+                if (_optargc > 0) {
+                    if (j!=_arg1_arrl)  panic("Fail at parsing: " arg ". Accept at least one argument: -" _arg1_arrl[j] )
+                    for (k=1; k<=_optargc; ++j)     obj[ _arg_id, k ] = args[ ++i ]
+                }
+            }
             continue
         }
 
-        # handle it into argument
-
-        for (j=1; i+j-1 > argl; ++j) {
-            rest_arg[ j ] = args[ i+j-1]
-        }
+        # gt create repo :+wiki :-issue
+        # gt create repo --NoWiki --NoIssue --
+        # How to implement
+        # else if (arg ~ /^:[-+]/) {
+        #     continue
+        # }
+        break
     }
 
+    # handle it into argument
+    for (j=1; i+j-1 > argl; ++j) {
+        rest_arg[ j ] = args[ i+j-1]
+    }
 }
 
 END{
-    enhance_argument_parser( obj )
-
-    parse_arguments( obj, env_table )
-
-    # showing candidate code
-
+    if (EXIT_CODE == 0) {
+        enhance_argument_parser( obj )
+        parse_args_to_obj( obj, env_table )
+        # showing candidate code
+    }
 }
 
