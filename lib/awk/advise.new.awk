@@ -45,6 +45,12 @@ function panic(msg){
     exit(1)
 }
 
+function assert(condition, msg){
+    if (condition == 0) {
+        panic(msg)
+    }
+}
+
 function parse_args_to_obj( args, obj, env_table,     i, j ){
     argl = args[ L ]
 
@@ -69,10 +75,10 @@ function parse_args_to_obj( args, obj, env_table,     i, j ){
             _arg1_arrl = split(arg, _arg1_arr)
             for (j=2; j<=_arg1_arrl; ++j) {
                 _arg_id = aobj_get_id_by_name( "-" _arg1_arrl[j] )
-                if (_arg_id == "")      panic("Fail at parsing: " arg ". Not Found: -" _arg1_arrl[j] )
+                assert( _arg_id != "", "Fail at parsing: " arg ". Not Found: -" _arg1_arrl[j] )
                 _optargc = aobj_get_optargc( _arg_id )
                 if (_optargc > 0) {
-                    if (j!=_arg1_arrl)  panic("Fail at parsing: " arg ". Accept at least one argument: -" _arg1_arrl[j] )
+                    assert( j==_arg1_arrl, "Fail at parsing: " arg ". Accept at least one argument: -" _arg1_arrl[j] )
                     for (k=1; k<=_optargc; ++j)     obj[ _arg_id, k ] = args[ i++ ]
                 }
             }
@@ -81,7 +87,6 @@ function parse_args_to_obj( args, obj, env_table,     i, j ){
 
         # gt create repo :+wiki :-issue
         # gt create repo --NoWiki --NoIssue --
-        # How to implement
         # else if (arg ~ /^:[-+]/) {
         #     continue
         # }
