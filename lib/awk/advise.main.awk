@@ -58,6 +58,12 @@ function parse_args_to_env( args, obj, obj_prefix, genv_table, lenv_table,    i,
             _arg_id = aobj_get_id_by_name( obj, obj_prefix, arg )
             if (_arg_id != "") {
                 _optargc = aobj_get_optargc( obj_prefix SUBSEP _arg_id )
+                if (_optargc == 0) {
+                    genv_table[ obj_prefix, _arg_id, k ] = 1
+                    lenv_table[ _arg_id, k ] = 1
+                    continue
+                }
+
                 for (k=1; k<=_optargc; ++k)  {
                     if ( i>argl ) {
                         advise_complete_option_value( genv_table, lenv_table, obj, obj_prefix SUBSEP _arg_id, k )
@@ -72,6 +78,12 @@ function parse_args_to_env( args, obj, obj_prefix, genv_table, lenv_table,    i,
             _arg_id = aobj_get_id_by_name( obj, obj_prefix, arg )
             if (_arg_id != "") {
                 _optargc = aobj_get_optargc( obj, obj_prefix, _arg_id )
+                if (_optargc == 0) {
+                    genv_table[ obj_prefix, _arg_id, k ] = 1
+                    lenv_table[ _arg_id, k ] = 1
+                    continue
+                }
+
                 for (k=1; k<=_optargc; ++k)  {
                     if ( i>argl ) {
                         advise_complete_option_value( genv_table, lenv_table, obj, obj_prefix SUBSEP _arg_id, k )
@@ -88,18 +100,22 @@ function parse_args_to_env( args, obj, obj_prefix, genv_table, lenv_table,    i,
                 _arg_id = aobj_get_id_by_name( obj, obj_prefix, "-" _arg1_arrl[j] )
                 assert( _arg_id != "", "Fail at parsing: " arg ". Not Found: -" _arg1_arrl[j] )
                 _optargc = aobj_get_optargc( obj, obj_prefix, _arg_id )
-                if (_optargc > 0) {
-                    assert( j==_arg1_arrl, "Fail at parsing: " arg ". Accept at least one argument: -" _arg1_arrl[j] )
+                if (_optargc == 0) {
+                    genv_table[ obj_prefix, _arg_id, k ] = 1
+                    lenv_table[ _arg_id, k ] = 1
+                    continue
+                }
 
-                    for (k=1; k<=_optargc; ++k)  {
-                        if ( i>argl ) {
-                            advise_complete_option_value( genv_table, lenv_table, obj, obj_prefix SUBSEP _arg_id, k )
-                            return
-                        }
+                assert( j==_arg1_arrl, "Fail at parsing: " arg ". Accept at least one argument: -" _arg1_arrl[j] )
 
-                        genv_table[ obj_prefix, _arg_id, k ] = args[ i++ ]
-                        lenv_table[ _arg_id, k ] = args[ i++ ]
+                for (k=1; k<=_optargc; ++k)  {
+                    if ( i>argl ) {
+                        advise_complete_option_value( genv_table, lenv_table, obj, obj_prefix SUBSEP _arg_id, k )
+                        return
                     }
+
+                    genv_table[ obj_prefix, _arg_id, k ] = args[ i++ ]
+                    lenv_table[ _arg_id, k ] = args[ i++ ]
                 }
             }
             continue
