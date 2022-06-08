@@ -1,8 +1,14 @@
 
-NR>1{
-    if ($0 != "") json_parse( $0, obj )
-    next
+{
+    if (NR>1) {
+        if ($0 != "") json_parse( $0, obj )
+    } else {
+        # Read the argument
+        prepare_argarr( $0 )
+    }
 }
+
+
 
 # Section: prepare argument
 
@@ -27,19 +33,13 @@ function prepare_argarr( argstr ){
     }
 }
 
-# NR==1
-{
-    # Read the argument
-    prepare_argarr( $0 )
-}
-
 # EndSection
 
 # Complete Rest Argument
 # Complete Option Name Or RestArgument
 # Complete Option Argument
 
-function parse_args_to_obj( args, obj, obj_prefix, genv_table, lenv_table,    i, j, _subcmdid ){
+function parse_args_to_env( args, obj, obj_prefix, genv_table, lenv_table,    i, j, _subcmdid ){
     argl = args[ L ]
 
     obj_prefix = ""
@@ -60,7 +60,7 @@ function parse_args_to_obj( args, obj, obj_prefix, genv_table, lenv_table,    i,
                 _optargc = aobj_get_optargc( obj_prefix SUBSEP _arg_id )
                 for (k=1; k<=_optargc; ++k)  {
                     if ( i>argl ) {
-                        advise_complete_option_value( obj, obj_prefix SUBSEP _arg_id, k )
+                        advise_complete_option_value( genv_table, lenv_table, obj, obj_prefix SUBSEP _arg_id, k )
                         return
                     }
                     genv_table[ obj_prefix, _arg_id, k ] = args[ i++ ]
@@ -74,7 +74,7 @@ function parse_args_to_obj( args, obj, obj_prefix, genv_table, lenv_table,    i,
                 _optargc = aobj_get_optargc( obj, obj_prefix, _arg_id )
                 for (k=1; k<=_optargc; ++k)  {
                     if ( i>argl ) {
-                        advise_complete_option_value( obj, obj_prefix SUBSEP _arg_id, k )
+                        advise_complete_option_value( genv_table, lenv_table, obj, obj_prefix SUBSEP _arg_id, k )
                         return
                     }
                     genv_table[ obj_prefix, _arg_id, k ] = args[ i++ ]
@@ -93,7 +93,7 @@ function parse_args_to_obj( args, obj, obj_prefix, genv_table, lenv_table,    i,
 
                     for (k=1; k<=_optargc; ++k)  {
                         if ( i>argl ) {
-                            advise_complete_option_value( obj, obj_prefix SUBSEP _arg_id, k )
+                            advise_complete_option_value( genv_table, lenv_table, obj, obj_prefix SUBSEP _arg_id, k )
                             return
                         }
 
@@ -122,10 +122,10 @@ function parse_args_to_obj( args, obj, obj_prefix, genv_table, lenv_table,    i,
 
     if (rest_argc == 0) {
         # If not require ready...
-        advise_complete_option_name( obj, obj_prefix )
+        advise_complete_option_name( genv_table, lenv_table, obj, obj_prefix )
         # TODO: Check upper level options provided
         if ( aobj_options_all_ready( obj, obj_prefix, lenv ) ) {
-            advise_complete_argument_value( obj, obj_prefix, 1 )
+            advise_complete_argument_value( genv_table, lenv_table, obj, obj_prefix, 1 )
             return
         }
         return
@@ -139,7 +139,7 @@ function parse_args_to_obj( args, obj, obj_prefix, genv_table, lenv_table,    i,
     } else if (rest_argc > rest_argc_max) {
         # No Advise. Show it is wrong.
     } else {
-        advise_complete_argument_value( obj, obj_prefix, rest_argc + 1 )
+        advise_complete_argument_value( genv_table, lenv_table, obj, obj_prefix, rest_argc + 1 )
     }
 
 }
@@ -147,7 +147,7 @@ function parse_args_to_obj( args, obj, obj_prefix, genv_table, lenv_table,    i,
 END{
     if (EXIT_CODE == 0) {
         enhance_argument_parser( obj )
-        parse_args_to_obj( obj, obj_prefix, genv_table )
+        parse_args_to_env( obj, obj_prefix, genv_table )
         # showing candidate code
     }
 }
