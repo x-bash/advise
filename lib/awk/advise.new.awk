@@ -35,35 +35,47 @@ function prepare_argarr( argstr ){
 
 # EndSection
 
-function parse_args_to_obj( args, obj, env_table,     i, j ){
+# Complete Rest Argument
+# Complete Option
+# Complete Option Argument
+
+function parse_args_to_obj( args, obj, obj_prefix, env_table,     i, j, _subcmdid ){
     argl = args[ L ]
+
+    obj_prefix = ""
 
     while ( i<=argl ) {
         arg = args[ i ];    i++
 
+        _subcmdid = aobj_get_subcmdid_by_name( obj, obj_prefix, obj_prefix, arg )
+        if (_subcmdid != "") {
+            obj_prefix = obj_prefix SUBSEP _subcmdid
+            continue
+        }
+
         if (arg ~ /^--/) {
-            _arg_id = aobj_get_id_by_name( arg )
+            _arg_id = aobj_get_id_by_name( obj, obj_prefix, arg )
             if (_arg_id != "") {
                 _optargc = aobj_get_optargc( _arg_id )
-                for (k=1; k<=_optargc; ++j)         obj[ _arg_id, k ] = args[ i++ ]
+                for (k=1; k<=_optargc; ++j)         env_table[ _arg_id, k ] = args[ i++ ]
                 continue
             }
         } else if (arg ~ /^-/) {
-            _arg_id = aobj_get_id_by_name( arg )
+            _arg_id = aobj_get_id_by_name( obj, obj_prefix, arg )
             if (_arg_id != "") {
-                _optargc = aobj_get_optargc( _arg_id )
-                for (k=1; k<=_optargc; ++j)         obj[ _arg_id, k ] = args[ i++ ]
+                _optargc = aobj_get_optargc( obj, obj_prefix, _arg_id )
+                for (k=1; k<=_optargc; ++j)         env_table[ _arg_id, k ] = args[ i++ ]
                 continue
             }
 
             _arg1_arrl = split(arg, _arg1_arr)
             for (j=2; j<=_arg1_arrl; ++j) {
-                _arg_id = aobj_get_id_by_name( "-" _arg1_arrl[j] )
+                _arg_id = aobj_get_id_by_name( obj, obj_prefix, "-" _arg1_arrl[j] )
                 assert( _arg_id != "", "Fail at parsing: " arg ". Not Found: -" _arg1_arrl[j] )
-                _optargc = aobj_get_optargc( _arg_id )
+                _optargc = aobj_get_optargc( obj, obj_prefix, _arg_id )
                 if (_optargc > 0) {
                     assert( j==_arg1_arrl, "Fail at parsing: " arg ". Accept at least one argument: -" _arg1_arrl[j] )
-                    for (k=1; k<=_optargc; ++j)     obj[ _arg_id, k ] = args[ i++ ]
+                    for (k=1; k<=_optargc; ++j)     env_table[ _arg_id, k ] = args[ i++ ]
                 }
             }
             continue
@@ -86,7 +98,7 @@ function parse_args_to_obj( args, obj, env_table,     i, j ){
 END{
     if (EXIT_CODE == 0) {
         enhance_argument_parser( obj )
-        parse_args_to_obj( obj, env_table )
+        parse_args_to_obj( obj, obj_prefix, env_table )
         # showing candidate code
     }
 }
