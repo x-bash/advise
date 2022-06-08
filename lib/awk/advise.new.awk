@@ -49,20 +49,20 @@ function parse_args_to_obj( args, obj, env_table,     i, j ){
     argl = args[ L ]
 
     while ( i<=argl ) {
-        arg = args[ i ]
+        arg = args[ i ];    i++
 
         if (arg ~ /^--/) {
             _arg_id = aobj_get_id_by_name( arg )
             if (_arg_id != "") {
                 _optargc = aobj_get_optargc( _arg_id )
-                for (k=1; k<=_optargc; ++j)         obj[ _arg_id, k ] = args[ ++i ]
+                for (k=1; k<=_optargc; ++j)         obj[ _arg_id, k ] = args[ i++ ]
                 continue
             }
         } else if (arg ~ /^-/) {
             _arg_id = aobj_get_id_by_name( arg )
             if (_arg_id != "") {
                 _optargc = aobj_get_optargc( _arg_id )
-                for (k=1; k<=_optargc; ++j)         obj[ _arg_id, k ] = args[ ++i ]
+                for (k=1; k<=_optargc; ++j)         obj[ _arg_id, k ] = args[ i++ ]
                 continue
             }
 
@@ -73,7 +73,7 @@ function parse_args_to_obj( args, obj, env_table,     i, j ){
                 _optargc = aobj_get_optargc( _arg_id )
                 if (_optargc > 0) {
                     if (j!=_arg1_arrl)  panic("Fail at parsing: " arg ". Accept at least one argument: -" _arg1_arrl[j] )
-                    for (k=1; k<=_optargc; ++j)     obj[ _arg_id, k ] = args[ ++i ]
+                    for (k=1; k<=_optargc; ++j)     obj[ _arg_id, k ] = args[ i++ ]
                 }
             }
             continue
