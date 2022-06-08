@@ -60,7 +60,7 @@ function parse_args_to_obj( args, obj, obj_prefix, genv_table, lenv_table,    i,
                 _optargc = aobj_get_optargc( obj_prefix SUBSEP _arg_id )
                 for (k=1; k<=_optargc; ++k)  {
                     if ( i>argl ) {
-                        advise_option_value( obj_prefix SUBSEP _arg_id, k )
+                        advise_complete_option_value( obj, obj_prefix SUBSEP _arg_id, k )
                         return
                     }
                     genv_table[ obj_prefix, _arg_id, k ] = args[ i++ ]
@@ -74,7 +74,7 @@ function parse_args_to_obj( args, obj, obj_prefix, genv_table, lenv_table,    i,
                 _optargc = aobj_get_optargc( obj, obj_prefix, _arg_id )
                 for (k=1; k<=_optargc; ++k)  {
                     if ( i>argl ) {
-                        advise_option_value( obj_prefix SUBSEP _arg_id, k )
+                        advise_complete_option_value( obj, obj_prefix SUBSEP _arg_id, k )
                         return
                     }
                     genv_table[ obj_prefix, _arg_id, k ] = args[ i++ ]
@@ -93,7 +93,7 @@ function parse_args_to_obj( args, obj, obj_prefix, genv_table, lenv_table,    i,
 
                     for (k=1; k<=_optargc; ++k)  {
                         if ( i>argl ) {
-                            advise_option_value( obj_prefix SUBSEP _arg_id, k )
+                            advise_complete_option_value( obj, obj_prefix SUBSEP _arg_id, k )
                             return
                         }
 
@@ -115,8 +115,29 @@ function parse_args_to_obj( args, obj, obj_prefix, genv_table, lenv_table,    i,
 
     # handle it into argument
     for (j=1; i+j-1 > argl; ++j) {
-        rest_arg[ j ] = args[ i+j-1]
+        rest_arg[ j ] = args[ i+j-1 ]
     }
+
+    rest_argc = j-1
+
+    if (rest_argc == 0) {
+        # If not require ready...
+        advise_complete_option_name( obj, obj_prefix )
+        advise_complete_argument_value( obj, obj_prefix, 1 )
+        return
+    }
+
+    rest_argc_min = aobj_get_minimum_rest_argc( obj, obj_prefix )
+    rest_argc_max = aobj_get_maximum_rest_argc( obj, obj_prefix )
+
+    if (rest_argc == rest_argc_max) {
+        # No Advise
+    } else if (rest_argc > rest_argc_max) {
+        # No Advise. Show it is wrong.
+    } else {
+        advise_complete_argument_value( obj, obj_prefix, rest_argc + 1 )
+    }
+
 }
 
 END{
