@@ -8,10 +8,15 @@
     }
 }
 
-
+END{
+    if (EXIT_CODE == 0) {
+        enhance_argument_parser( obj )
+        parse_args_to_env( obj, obj_prefix, genv_table )
+        # showing candidate code
+    }
+}
 
 # Section: prepare argument
-
 function prepare_argarr( argstr ){
     if ( argstr == "" ) argstr = "" # "." "\002"
 
@@ -34,6 +39,9 @@ function prepare_argarr( argstr ){
 }
 
 # EndSection
+
+
+# Section: parse argument into env table
 
 # Complete Rest Argument
 # Complete Option Name Or RestArgument
@@ -155,12 +163,4 @@ function parse_args_to_env( args, argl, obj, obj_prefix, genv_table, lenv_table,
     }
 
 }
-
-END{
-    if (EXIT_CODE == 0) {
-        enhance_argument_parser( obj )
-        parse_args_to_env( obj, obj_prefix, genv_table )
-        # showing candidate code
-    }
-}
-
+# EndSection
