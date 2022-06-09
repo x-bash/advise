@@ -40,23 +40,23 @@ function aobj_cal_rest_argc_maxmin( obj, obj_prefix, rest_arg_id,       i, l, k,
         _max = 10000    # Big Number
     }
 
-    obj[ obj_prefix, L "restarg__min" ] = _min
-    obj[ obj_prefix, L "restarg__max" ] = _max
+    obj[ obj_prefix, L "restargc__min" ] = _min
+    obj[ obj_prefix, L "restargc__max" ] = _max
 
 }
 
 function aobj_get__minimum_rest_argc( obj, obj_prefix, rest_arg_id,  _res ){
-    if ( ( _res = obj[ obj_prefix, L "restarg__min" ] ) != "" ) return _res
+    if ( ( _res = obj[ obj_prefix, L "restargc__min" ] ) != "" ) return _res
 
     aobj_cal_rest_argc_maxmin( obj, obj_prefix, rest_arg_id )
-    return obj[ obj_prefix, L "restarg__min" ]
+    return obj[ obj_prefix, L "restargc__min" ]
 }
 
 function aobj_get__maximum_rest_argc( obj, obj_prefix, rest_arg_id, _res ){
-    if ( ( _res = obj[ obj_prefix, L "restarg__max" ] ) != "" ) return _res
+    if ( ( _res = obj[ obj_prefix, L "restargc__max" ] ) != "" ) return _res
 
     aobj_cal_rest_argc_maxmin( obj, obj_prefix, rest_arg_id )
-    return obj[ obj_prefix, L "restarg__max" ]
+    return obj[ obj_prefix, L "restargc__max" ]
 }
 
 
