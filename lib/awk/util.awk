@@ -1,5 +1,8 @@
 # Section: utils
 BEGIN{
+    false = 0
+    true = 1
+
     EXIT_CODE = 0
 }
 
