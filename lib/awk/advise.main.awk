@@ -71,7 +71,7 @@ function parse_args_to_env___option( obj, obj_prefix, args, argl, arg, arg_idx, 
 
     for (k=1; k<=_optargc; ++k)  {
         if ( arg_idx > argl ) {
-            advise_complete_option_value( genv_table, lenv_table, obj, obj_prefix SUBSEP _arg_id, k )
+            advise_complete_option_value( genv_table, lenv_table, obj, obj_prefix, _arg_id, k )
             return arg_idx # Not Running at all .. # TODO
         }
         env_table_set( _arg_id, obj_prefix SUBSEP _arg_id SUBSEP k, args[ arg_idx++ ] )
@@ -146,13 +146,7 @@ function parse_args_to_env( args, argl, obj, obj_prefix, genv_table, lenv_table,
     rest_argc = j-1
 
     if (rest_argc == 0) {
-        # If not require ready...
-        advise_complete_option_name( genv_table, lenv_table, obj, obj_prefix )
-        # TODO: Check upper level options provided
-        if ( aobj_options_all_ready( obj, obj_prefix, lenv ) ) {
-            advise_complete_argument_value( genv_table, lenv_table, obj, obj_prefix, 1 )
-            return
-        }
+        advise_complete_option_name_or_argument_value( genv_table, lenv_table, obj, obj_prefix )
         return
     }
 
