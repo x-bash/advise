@@ -1,6 +1,6 @@
 
 # Except getting option argument count
-function aobj_cal_rest_argc_maxmin( obj, obj_prefix,       i, j, k, l, _l, _id, _min, _max, _id ){
+function aobj_cal_rest_argc_maxmin( obj, obj_prefix,       i, j, k, l, _min, _max, _arr, _arrl ){
     _min = 0
     _max = 0
     l = obj[ obj_prefix L ]
@@ -14,13 +14,8 @@ function aobj_cal_rest_argc_maxmin( obj, obj_prefix,       i, j, k, l, _l, _id, 
 
         if (k ~ "^#[a-z]") continue
 
-        arrl = split(k, arr, "|")
-        j = 0
-        _l = 0
-        _id = obj_prefix SUBSEP k
-        for (j=1; j<=arrl; ++j) {
-            NAME_ID[ obj_prefix, arr[j] ] = _id
-        }
+        _arrl = split(k, _arr, "|")
+        for (j=1; j<=_arrl; ++j) NAME_ID[ obj_prefix, _arr[j] ] = k
 
         if (k ~ "^#[0-9]+") {
             k = int( substr(k, 2) )
@@ -41,9 +36,9 @@ function aobj_option_all_set( lenv_table, obj, obj_prefix,  i, l, k ){
     for (i=1; i<=l; ++i) {
         k = obj[ obj_prefix, i ]
         if (k ~ "^[^-]") continue
-        if ( obj[obj_prefix, i, "#subcmd"] == "true" ) continue
+        if ( aobj_istrue(obj, obj_prefix SUBSEP k SUBSEP "#subcmd" ) ) continue
 
-        if ( obj[ obj_prefix, i, "#r" ] == "true" ) {
+        if ( aobj_required(obj, obj_prefix SUBSEP k) ) {
             if ( lenv_table[ k ] == "" )  return false
         }
     }
@@ -53,7 +48,7 @@ function aobj_option_all_set( lenv_table, obj, obj_prefix,  i, l, k ){
 function aobj_get_subcmdid_by_name( obj, obj_prefix, name, _res ){
     _res = aobj_get_id_by_name( obj, obj_prefix, name )
     if ( _res ~ /^[^-]/) return _res
-    if ( obj[ obj_prefix, _res, "#subcmd" ] == "true" ) return _res
+    if ( aobj_istrue(obj, obj_prefix SUBSEP _res SUBSEP "#subcmd" ) ) return _res
     return
 }
 
@@ -64,11 +59,11 @@ function aobj_get_id_by_name( obj, obj_prefix, name, _res ){
 }
 
 function aobj_required( obj, kp ){
-    if (obj[ kp, "#require" ] == "true" ) {
-        return 1
-    } else {
-        return 0
-    }
+    return (obj[ kp, "#r" ] == "true" )
+}
+
+function aobj_istrue( obj, kp ){
+    return (obj[ kp ] == "true" )
 }
 
 function aobj_get_optargc( obj, obj_prefix, option_id,  _res, i ){
