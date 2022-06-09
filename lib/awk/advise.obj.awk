@@ -72,7 +72,7 @@ function aobj_required( obj, kp ){
 }
 
 function aobj_get_optargc( obj, obj_prefix, option_id,  _res, i ){
-    if ( "" == (_res = obj[ obj_prefix, option_id L "argc" ]) ) return _res
+    if ( "" != (_res = obj[ obj_prefix, option_id L "argc" ]) ) return _res
     for (i=1; i<100; ++i) {     # 100 means MAXINT
         if (obj[ obj_prefix, option_id, "#" i ] == "") break
     }
