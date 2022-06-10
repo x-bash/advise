@@ -87,7 +87,7 @@ function parse_args_to_env___option( obj, obj_prefix, args, argl, arg, arg_idx, 
 
 function parse_args_to_env( args, argl, obj, obj_prefix, genv_table, lenv_table,    i, j, _subcmdid ){
 
-    obj_prefix = SUBSEP 1   # Json Parser
+    obj_prefix = SUBSEP jqu(1)   # Json Parser
 
     i = 1;
     while ( i<=argl ) {

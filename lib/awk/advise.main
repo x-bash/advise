@@ -1,4 +1,4 @@
-# shellcheck shell=sh
+# shellcheck shell=sh disable=SC3043,SC3003
 xws install
 advise_test(){
     local IFS=$'\002'
