@@ -15,6 +15,6 @@ advise_test(){
         -f "$___X_CMD_ROOT_MOD/advise/lib/awk/util.awk"
 }
 
-advise_test user logout -I
+# advise_test user logout -JKI a
 # printf "gh\002user\002logout\002-I\n"
 # printf "$*\n"

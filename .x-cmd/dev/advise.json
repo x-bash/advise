@@ -4,14 +4,14 @@
         "#candidate": ["a", "b", "c"],
         "#rmatch": [],
         "#exec": "ls",
-        "#require": true
+        "#r": true
     },
     "#9": {
         "#desc": "",
         "#candidate": ["a", "b", "c"],
         "#rmatch": [],
         "#exec": "ls",
-        "#require": true
+        "#r": true
     },
     "#n": {
         "#desc": "",
@@ -26,10 +26,10 @@
         },
         "logout": {
             "#desc": "test logout",
-            "-I": [],
+            "-I|--install": ["a", "b"],
             "-J": "",
             "-K": "   ",
-            "-L": [ ],
+            "-L": [],
             ":+debug|:+d": {},
             ":-reset|:-r": {}
         },
