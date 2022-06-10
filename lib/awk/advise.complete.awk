@@ -25,17 +25,9 @@ function advise_complete_option_name_or_argument_value( curval, genv, lenv, obj,
         return
     }
 
-    # Show the argument
-    # 1. If all ready, then just show the argument
-    # 2. If not ready, show the option necessary
-
-
-    # # If not require ready...
-    # advise_complete_option_name( genv_table, lenv_table, obj, obj_prefix )
-    # # TODO: Check upper level options provided
-    # if ( aobj_options_all_ready( obj, obj_prefix, lenv ) ) {
-    #     advise_complete_argument_value( genv_table, lenv_table, obj, obj_prefix, 1 )
-    #     return
-    # }
-
+    if ( aobj_options_all_ready( obj, obj_prefix, lenv ) ) {
+        # arguments
+    } else {
+        # show require options
+    }
 }
