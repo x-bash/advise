@@ -1,21 +1,21 @@
 
 {
-    # if ($0 != "") jiparse_after_tokenize( obj, $0)
-    if (NR>1) {
-        if ($0 != "") jiparse_after_tokenize( obj, $0)
-    } else {
-        # Read the argument
-        prepare_argarr( $0 )
-    }
+    if ($0 != "") jiparse_after_tokenize( obj, $0)
+    # if (NR>1) {
+    #     if ($0 != "") jiparse_after_tokenize( obj, $0)
+    # } else {
+    #     # Read the argument
+    #     prepare_argarr( $0 )
+    # }
 }
 
 END{
-    # for (i in obj) print i "\t\t\t\t" obj[i]
-    if (EXIT_CODE == 0) {
-        enhance_argument_parser( obj )
-        parse_args_to_env( obj, obj_prefix, genv_table )
-        # showing candidate code
-    }
+    print jstr(obj)
+    # if (EXIT_CODE == 0) {
+    #     enhance_argument_parser( obj )
+    #     parse_args_to_env( obj, obj_prefix, genv_table )
+    #     # showing candidate code
+    # }
 }
 
 # Section: prepare argument
