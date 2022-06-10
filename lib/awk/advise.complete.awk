@@ -12,13 +12,13 @@ function advise_complete_argument_value( curval, genv, lenv, obj, obj_prefix, nt
 
 # Most complicated
 function advise_complete_option_name_or_argument_value( curval, genv, lenv, obj, obj_prefix, nth ){
-    if ( curval ~ /^--/) {
+    if ( curval ~ /^--/ ) {
         # Just show the --
         # If No Option ... No Option should be provided
         return
     }
 
-    if ( curval ~ /^-/) {
+    if ( curval ~ /^-/ ) {
         # Just show the -
         # If No Option ... No Option should be provided
         # TODO: Not found, then compressed argument
