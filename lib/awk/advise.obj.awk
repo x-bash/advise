@@ -3,9 +3,10 @@
 function aobj_cal_rest_argc_maxmin( obj, obj_prefix,       i, j, k, l, _min, _max, _arr, _arrl ){
     _min = 0
     _max = 0
-    l = obj[ obj_prefix L ]
+    l = obj[ obj_prefix T_LEN ]
+    print "l: " l
     for (i=1; i<=l; ++i) {
-        k = obj[ obj_prefix, i ]
+        k = obj[ obj_prefix, jqu(i) ]
 
         if (k ~ "^#n") {
             _max = 10000 # Big Number
@@ -27,12 +28,12 @@ function aobj_cal_rest_argc_maxmin( obj, obj_prefix,       i, j, k, l, _min, _ma
 
     }
 
-    obj[ obj_prefix, L "restargc__min" ] = _min
-    obj[ obj_prefix, L "restargc__max" ] = _max
+    obj[ obj_prefix, T_LEN "restargc__min" ] = _min
+    obj[ obj_prefix, T_LEN "restargc__max" ] = _max
 }
 
 function aobj_option_all_set( lenv_table, obj, obj_prefix,  i, l, k ){
-    l = obj[ obj_prefix L ]
+    l = obj[ obj_prefix T_LEN ]
     for (i=1; i<=l; ++i) {
         k = obj[ obj_prefix, i ]
         if (k ~ "^[^-]") continue
@@ -67,26 +68,26 @@ function aobj_istrue( obj, kp ){
 }
 
 function aobj_get_optargc( obj, obj_prefix, option_id,  _res, i ){
-    if ( "" != (_res = obj[ obj_prefix, option_id L "argc" ]) ) return _res
+    if ( "" != (_res = obj[ obj_prefix, option_id T_LEN "argc" ]) ) return _res
     for (i=1; i<100; ++i) {     # 100 means MAXINT
         if (obj[ obj_prefix, option_id, "#" i ] == "") break
     }
-    obj[ obj_prefix, option_id L "argc" ] = i - 1
+    obj[ obj_prefix, option_id T_LEN "argc" ] = i - 1
     return i - 1
 }
 
-function aobj_get__minimum_rest_argc( obj, obj_prefix, rest_arg_id,  _res ){
-    if ( ( _res = obj[ obj_prefix, L "restargc__min" ] ) != "" ) return _res
+function aobj_get_minimum_rest_argc( obj, obj_prefix, rest_arg_id,  _res ){
+    if ( ( _res = obj[ obj_prefix, T_LEN "restargc__min" ] ) != "" ) return _res
 
     aobj_cal_rest_argc_maxmin( obj, obj_prefix, rest_arg_id )
-    return obj[ obj_prefix, L "restargc__min" ]
+    return obj[ obj_prefix, T_LEN "restargc__min" ]
 }
 
-function aobj_get__maximum_rest_argc( obj, obj_prefix, rest_arg_id, _res ){
-    if ( ( _res = obj[ obj_prefix, L "restargc__max" ] ) != "" ) return _res
+function aobj_get_maximum_rest_argc( obj, obj_prefix, rest_arg_id, _res ){
+    if ( ( _res = obj[ obj_prefix, T_LEN "restargc__max" ] ) != "" ) return _res
 
     aobj_cal_rest_argc_maxmin( obj, obj_prefix, rest_arg_id )
-    return obj[ obj_prefix, L "restargc__max" ]
+    return obj[ obj_prefix, T_LEN "restargc__max" ]
 }
 
 
