@@ -1,0 +1,30 @@
+#shellcheck shell=sh disable=SC3030,SC3043,SC3010
+# test1(){
+#     local -a result1
+#     result1=(
+#         "cat:Show the content of the obj"
+#         "new:Create a new obj"
+#         "ls:Show all available advise json obj"
+#         "man:Manager for x-cmd/advise"
+#         "rm:Remove one obj, if no obj is given, remove all obj"
+#         "which:Show the path of the obj"
+#     )
+#     _describe 'commands' result1
+#     _message -r "advise    x-bash complete function.
+#     Uasge:  advise <subcmd> [<obj>...]
+#     Please visit our homepage for more information: https://x-cmd.com
+# "
+# }
+# compdef test1 test
+
+autoload -Uz add-zle-hook-widget
+add-zle-hook-widget zle-line-pre-redraw test
+test(){
+    [[ "${BUFFER}" =~ a$ ]] || return 0
+    printf "sss"
+}
+    # if [ "${BUFFER}" =~ a$ ]; then
+    #     printf "aaa"
+    # fi
+    # region_highlight[1]="P0 10 fg=green"
+    # region_highlight[2]="P0 20 bold memo=foobar"
