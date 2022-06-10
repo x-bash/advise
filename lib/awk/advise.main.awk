@@ -1,12 +1,12 @@
 
 {
-    if ($0 != "") json2tokenarr( $0, token_arr)
-    # if (NR>1) {
-    #     if ($0 != "") jiparse_after_tokenize( obj, $0)
-    # } else {
-    #     # Read the argument
-    #     prepare_argarr( $0 )
-    # }
+    # if ($0 != "") json2tokenarr( $0, token_arr)
+    if (NR>1) {
+        if ($0 != "") json2tokenarr( $0, token_arr)
+    } else {
+        # Read the argument
+        prepare_argarr( $0 )
+    }
 }
 
 END{
@@ -15,11 +15,11 @@ END{
     jqparse( obj, "", token_arrl, token_arr)
     # for (i in obj) print i "\t\t\t" obj[i]
     # print obj[ SUBSEP "" ]
-    # if (EXIT_CODE == 0) {
-    #     enhance_argument_parser( obj )
-    #     parse_args_to_env( obj, obj_prefix, genv_table )
-    #     # showing candidate code
-    # }
+    if (EXIT_CODE == 0) {
+        # enhance_argument_parser( obj )
+        parse_args_to_env( parsed_argarr, parsed_arglen, obj, "", genv_table, lenv_table )
+        # showing candidate code
+    }
 
 }
 
@@ -93,7 +93,7 @@ function parse_args_to_env( args, argl, obj, obj_prefix, genv_table, lenv_table,
     while ( i<=argl ) {
         arg = args[ i ];    i++
 
-        print "obj_prefix: " obj_prefix " arg: "arg
+        # print "obj_prefix: " obj_prefix " arg: "arg
         _subcmdid = aobj_get_subcmdid_by_name( obj, obj_prefix, arg )
         if (_subcmdid != "") {
             # TODO: Check all required options set
