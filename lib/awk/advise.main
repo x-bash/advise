@@ -4,8 +4,8 @@
 advise_test(){
     < "$(x wsroot)"/.x-cmd/dev/advise.json awk \
         -f "$___X_CMD_ROOT_MOD/awk/lib/default.awk" \
-        -f "$___X_CMD_ROOT_MOD/awk/lib/jiter.awk" \
         -f "$___X_CMD_ROOT_MOD/awk/lib/json.awk" \
+        -f "$___X_CMD_ROOT_MOD/awk/lib/jqparse.awk" \
         -f "$___X_CMD_ROOT_MOD/advise/lib/awk/advise.complete.awk" \
         -f "$___X_CMD_ROOT_MOD/advise/lib/awk/advise.main.awk" \
         -f "$___X_CMD_ROOT_MOD/advise/lib/awk/advise.obj.awk" \

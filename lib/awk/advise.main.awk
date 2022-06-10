@@ -1,6 +1,6 @@
 
 {
-    if ($0 != "") jiparse_after_tokenize( obj, $0)
+    if ($0 != "") json2tokenarr( $0, token_arr)
     # if (NR>1) {
     #     if ($0 != "") jiparse_after_tokenize( obj, $0)
     # } else {
@@ -10,7 +10,11 @@
 }
 
 END{
-    print jstr(obj)
+
+    token_arrl = token_arr[L]
+    jqparse( obj, "", token_arrl, token_arr)
+    # for (i in obj) print i "\t\t\t" obj[i]
+    # print obj[ SUBSEP "" ]
     # if (EXIT_CODE == 0) {
     #     enhance_argument_parser( obj )
     #     parse_args_to_env( obj, obj_prefix, genv_table )
