@@ -1,8 +1,11 @@
-# shellcheck    shell=sh            disable=SC3043      # xrc
-
-
+# shellcheck shell=sh
+xws install
 advise_test(){
-    < "$(x wsroot)"/.x-cmd/dev/advise.json awk \
+    local IFS=$'\002'
+    {
+        printf "%s\n" "$*"
+        cat "$(x wsroot)"/.x-cmd/dev/advise.json
+    } | awk \
         -f "$___X_CMD_ROOT_MOD/awk/lib/default.awk" \
         -f "$___X_CMD_ROOT_MOD/awk/lib/json.awk" \
         -f "$___X_CMD_ROOT_MOD/awk/lib/jqparse.awk" \
@@ -12,4 +15,6 @@ advise_test(){
         -f "$___X_CMD_ROOT_MOD/advise/lib/awk/util.awk"
 }
 
-# advise_test
+advise_test user logout -I
+# printf "gh\002user\002logout\002-I\n"
+# printf "$*\n"

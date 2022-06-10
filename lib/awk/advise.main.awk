@@ -20,6 +20,7 @@ END{
     #     parse_args_to_env( obj, obj_prefix, genv_table )
     #     # showing candidate code
     # }
+
 }
 
 # Section: prepare argument
@@ -30,12 +31,11 @@ function prepare_argarr( argstr ){
     parsed_arglen = split(argstr, parsed_argarr, "\002")
 
     ruleregex = ""
-
-    arglen=0
+    arglen = 0
     rest_argv_len = 0
 
     current_keypath = "."
-    opt_len = parsed_arglen
+    # opt_len = parsed_arglen
 
     for (i=1; i<=parsed_arglen; ++i) {
         arg = parsed_argarr[i]
@@ -89,9 +89,11 @@ function parse_args_to_env( args, argl, obj, obj_prefix, genv_table, lenv_table,
 
     obj_prefix = SUBSEP 1   # Json Parser
 
+    i = 1;
     while ( i<=argl ) {
         arg = args[ i ];    i++
 
+        print "obj_prefix: " obj_prefix " arg: "arg
         _subcmdid = aobj_get_subcmdid_by_name( obj, obj_prefix, arg )
         if (_subcmdid != "") {
             # TODO: Check all required options set

@@ -4,8 +4,9 @@ function aobj_cal_rest_argc_maxmin( obj, obj_prefix,       i, j, k, l, _min, _ma
     _min = 0
     _max = 0
     l = obj[ obj_prefix L ]
+    print "l: " l
     for (i=1; i<=l; ++i) {
-        k = obj[ obj_prefix, i ]
+        k = obj[ obj_prefix, jqu(i) ]
 
         if (k ~ "^#n") {
             _max = 10000 # Big Number
@@ -75,14 +76,14 @@ function aobj_get_optargc( obj, obj_prefix, option_id,  _res, i ){
     return i - 1
 }
 
-function aobj_get__minimum_rest_argc( obj, obj_prefix, rest_arg_id,  _res ){
+function aobj_get_minimum_rest_argc( obj, obj_prefix, rest_arg_id,  _res ){
     if ( ( _res = obj[ obj_prefix, L "restargc__min" ] ) != "" ) return _res
 
     aobj_cal_rest_argc_maxmin( obj, obj_prefix, rest_arg_id )
     return obj[ obj_prefix, L "restargc__min" ]
 }
 
-function aobj_get__maximum_rest_argc( obj, obj_prefix, rest_arg_id, _res ){
+function aobj_get_maximum_rest_argc( obj, obj_prefix, rest_arg_id, _res ){
     if ( ( _res = obj[ obj_prefix, L "restargc__max" ] ) != "" ) return _res
 
     aobj_cal_rest_argc_maxmin( obj, obj_prefix, rest_arg_id )
