@@ -18,7 +18,8 @@ advise_test(){
         -f "$___X_CMD_ROOT_MOD/advise/lib/awk/util.awk"
 }
 
-time (advise_test user logout -I a )
+time (advise_test user -v a )
+# time (advise_test user logout -I a )
 # time (advise_test user cmd '' )
 # time (advise_test add -n '')
 

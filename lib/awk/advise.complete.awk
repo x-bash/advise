@@ -3,14 +3,14 @@
 
 function advise_complete___generic_value( curval, genv, lenv, obj, kp ){
 
-    _cand_key_key = obj[ kp ] SUBSEP "\"#cand\""
-    print "_cand_key_key: " _cand_key_key "  obj:" obj[kp] " curval:" curval
+    _cand_key_key = kp SUBSEP "\"#cand\""
     _cand_key_arrl = obj[ _cand_key_key L ]
+    print "_cand_key_key: " _cand_key_key "  obj:" obj[ _cand_key_key ] " curval:" curval " _cand_key_arrl:" _cand_key_arrl
 
     if ( _cand_key_arrl != "" ) {
         CODE = CODE "\n" "candidate_arr=(" "\n"
         for (i=1; i<=_cand_key_arrl; ++i) {
-            CODE = CODE  obj[ _cand_key_key, i] "\n"
+            CODE = CODE  obj[ _cand_key_key, jqu(i)] "\n"
         }
         CODE = CODE ")"
     }
@@ -26,7 +26,7 @@ function advise_complete___generic_value( curval, genv, lenv, obj, kp ){
 
 # Just show the value
 function advise_complete_option_value( curval, genv, lenv, obj, obj_prefix, option_id, arg_nth ){
-    return advise_complete___generic_value( curval, genv, lenv, obj, obj_prefix SUBSEP option_id SUBSEP arg_nth )
+    return advise_complete___generic_value( curval, genv, lenv, obj, obj_prefix SUBSEP option_id SUBSEP "\"#" arg_nth "\"" )
 }
 
 # Just tell me the arguments

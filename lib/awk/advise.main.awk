@@ -75,8 +75,8 @@ function parse_args_to_env___option( obj, obj_prefix, args, argl, arg, arg_idx, 
     for (k=1; k<=_optargc; ++k)  {
         if ( arg_idx >= argl ) {
             print "args:" args[ arg_idx ] " arg_idx:" arg_idx " _arg_id:" _arg_id " argl:" argl
-            print "cc:" obj[ obj_prefix SUBSEP _arg_id SUBSEP jqu(k) ]
-            advise_complete_option_value( args[ arg_idx ], genv_table, lenv_table, obj, obj_prefix, _arg_id, jqu(k) )
+            # print "cc:" obj[ obj_prefix SUBSEP _arg_id SUBSEP jqu(k) ]
+            print advise_complete_option_value( args[ arg_idx-1 ], genv_table, lenv_table, obj, obj_prefix, _arg_id, k )
             return arg_idx # Not Running at all .. # TODO
         }
         env_table_set( _arg_id, obj_prefix SUBSEP _arg_id SUBSEP k, args[ arg_idx++ ] )

@@ -27,7 +27,9 @@
         "logout": {
             "#desc": "test logout",
             "-I|--install": {
-                "#cand": ["aaa", "bbb"]
+                "#1": {
+                    "#cand": ["aaa", "bbb"]
+                }
             },
             "-J": "",
             "-K": "   ",
@@ -41,7 +43,7 @@
                 "#desc": "first argument",
                 "abc": 1,
                 "cde": 2,
-                "#cand": ["a", "b", "c"],
+                "#cand": [ "a", "b",  "c" ],
                 "#rmatch": [],
                 "#exec": "ls"
             }
