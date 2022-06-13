@@ -19,7 +19,6 @@ function aobj_cal_rest_argc_maxmin( obj, obj_prefix,       i, j, k, l, _min, _ma
         for (j=1; j<=_arrl; ++j){
             NAME_ID[ obj_prefix, _arr[j] ] = jqu(k)
         }
-
         if (k ~ "^#[0-9]+") {
             k = int( substr(k, 2) )
             if (aobj_required( obj, obj_prefix SUBSEP obj[ obj_prefix, jqu(i) ] ) ) {
