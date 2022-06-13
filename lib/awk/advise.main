@@ -2,27 +2,34 @@
 xws install
 
 advise_test(){
+    local ___X_CMD_ADVISE_SEP
+    ___X_CMD_ADVISE_SEP="$(printf "\003\02\005")"
     local IFS=$'\002'
     {
-        printf "%s\n" "$*"
+        printf "%s%s" "$*" "$___X_CMD_ADVISE_SEP"
+        # printf "%s\n" "$*"
         cat .x-cmd/dev/advise.json
         # cat .x-cmd/dev/git.json
         # cat .x-cmd/dev/git_tokenize.json
-    } | nawk \
+    } | nawk -v RS="$___X_CMD_ADVISE_SEP" \
         -f "$___X_CMD_ROOT_MOD/awk/lib/default.awk" \
         -f "$___X_CMD_ROOT_MOD/awk/lib/json.awk" \
-        -f "$___X_CMD_ROOT_MOD/awk/lib/jsparse.awk" \
+        -f "$___X_CMD_ROOT_MOD/awk/lib/jqparse.awk" \
         -f "$___X_CMD_ROOT_MOD/advise/lib/awk/advise.complete.awk" \
         -f "$___X_CMD_ROOT_MOD/advise/lib/awk/advise.main.awk" \
         -f "$___X_CMD_ROOT_MOD/advise/lib/awk/advise.obj.awk" \
         -f "$___X_CMD_ROOT_MOD/advise/lib/awk/util.awk"
 }
 
-# time (advise_test user cmd '')
-time (advise_test user logout -I aa a '' )
-# time (advise_test user logout -I aa  )
-# time (advise_test user -v )
+# time (advise_test user cmd '')              # 0
+# time (advise_test user cmd )                # 1=1
 # time (advise_test user -v '')
-# time (advise_test user cmd  )
+# time (advise_test user -v )
+# time (advise_test user logout -I '')
+# time (advise_test user logout -I aaa '' )   # 1=1
+# time (advise_test user logout -K aaa '' )   # 1<2
+# time (advise_test user logout -I aa )       # 0<1
+# time (advise_test user logout -I aa a '' )  # 2>1
+
 # time (advise_test add -n '')
 

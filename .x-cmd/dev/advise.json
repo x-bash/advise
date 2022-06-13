@@ -31,8 +31,16 @@
                     "#cand": ["aaa", "bbb"]
                 }
             },
+            "-K|--kill": {
+                "#1": {
+                    "#cand": ["aaa", "bbb"]
+                },
+                "#2": {
+                    "#cand": ["ccc", "ddd"]
+                }
+
+            },
             "-J": "",
-            "-K": "   ",
             "-L": [],
             ":+debug|:+d": {},
             ":-reset|:-r": {}
@@ -43,7 +51,7 @@
                 "#desc": "first argument",
                 "abc": 1,
                 "cde": 2,
-                "#cand": [ "a", "b",  "c" ],
+                "#cand": ["a", "b", "c"],
                 "#rmatch": [],
                 "#exec": "ls"
             }

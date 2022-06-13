@@ -28,8 +28,7 @@ function advise_complete___generic_value( curval, genv, lenv, obj, kp ){
 
 # Just show the value
 function advise_complete_option_value( curval, genv, lenv, obj, obj_prefix, option_id, arg_nth ){
-    # return advise_complete___generic_value( curval, genv, lenv, obj, obj_prefix SUBSEP option_id SUBSEP "\"#" arg_nth "\"" )
-    return advise_complete___generic_value( curval, genv, lenv, obj, obj_prefix SUBSEP option_id)
+    return advise_complete___generic_value( curval, genv, lenv, obj, obj_prefix SUBSEP option_id SUBSEP "\"#" arg_nth "\"")
 }
 
 # Just tell me the arguments
@@ -79,7 +78,6 @@ function advise_complete_option_name_or_argument_value( curval, genv, lenv, obj,
 
     # if ( aobj_options_all_ready( obj, obj_prefix, lenv ) ) {
     if ( aobj_option_all_set( lenv, obj, obj_prefix ) ) {
-        # return advise_complete_argument_value( curval, genv, lenv, obj, obj_prefix, 1 )
         return advise_complete_argument_value( curval, genv, lenv, obj, obj_prefix, 1 )
     } else {
         l = obj[ obj_prefix L ]
