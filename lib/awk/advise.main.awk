@@ -58,7 +58,7 @@ function env_table_set( key, keypath, value ){
 }
 
 
-function parse_args_to_env___option( obj, obj_prefix, args, argl, arg, arg_idx, genv_table, lenv_table ){
+function parse_args_to_env___option( obj, obj_prefix, args, argl, arg, arg_idx, genv_table, lenv_table,     _arg_id ){
     _arg_id = aobj_get_id_by_name( obj, obj_prefix, arg )
     if (_arg_id == "") {
         return 0
@@ -71,8 +71,9 @@ function parse_args_to_env___option( obj, obj_prefix, args, argl, arg, arg_idx, 
     }
 
     for (k=1; k<=_optargc; ++k)  {
-        if ( arg_idx >= argl ) {
-            print advise_complete_option_value( args[ arg_idx-1 ], genv_table, lenv_table, obj, obj_prefix, _arg_id, k )
+        if ( arg_idx > argl ) {
+            print advise_complete_option_value( args[ arg_idx ], genv_table, lenv_table, obj, obj_prefix , _arg_id)
+            # print advise_complete_option_value( args[ arg_idx-1 ], genv_table, lenv_table, obj, obj_prefix, _arg_id, k )
             return arg_idx # Not Running at all .. # TODO
         }
         env_table_set( _arg_id, obj_prefix SUBSEP _arg_id SUBSEP k, args[ arg_idx++ ] )
@@ -85,7 +86,7 @@ function parse_args_to_env( args, argl, obj, obj_prefix, genv_table, lenv_table,
     obj_prefix = SUBSEP jqu(1)   # Json Parser
 
     i = 1;
-    while ( i<=argl ) {
+    while ( i<argl ) {
         arg = args[ i ];    i++
 
         _subcmdid = aobj_get_subcmdid_by_name( obj, obj_prefix, arg )
@@ -106,6 +107,8 @@ function parse_args_to_env( args, argl, obj, obj_prefix, genv_table, lenv_table,
             j = parse_args_to_env___option( obj, obj_prefix, args, argl, arg, i, genv_table, lenv_table )
             if (j != 0) {
                 i = j
+                _arg_id = aobj_get_id_by_name( obj, obj_prefix, arg )
+                obj_prefix = obj_prefix SUBSEP _arg_id
                 continue
             }
 
@@ -140,32 +143,30 @@ function parse_args_to_env( args, argl, obj, obj_prefix, genv_table, lenv_table,
         break
     }
     # handle it into argument
-    i = i-2
-    for (j=1; i+j-1 > argl; ++j) {
+    # i = i-1
+
+    for (j=1; i+j-1 <= argl; ++j) {
         rest_arg[ j ] = args[ i+j-1 ]
     }
 
-    rest_argc = j-1
+    rest_argc = j - 1
 
+
+    # obj_prefix = obj_prefix SUBSEP aobj_get_subcmdid_by_name( obj, obj_prefix, args[i])
 
     if (rest_argc == 0) {
-        advise_complete_option_name_or_argument_value( args[i], genv_table, lenv_table, obj, obj_prefix )
+        print advise_complete_option_name_or_argument_value( args[i], genv_table, lenv_table, obj, obj_prefix )
         return
     }
 
     rest_argc_min = aobj_get_minimum_rest_argc( obj, obj_prefix )
     rest_argc_max = aobj_get_maximum_rest_argc( obj, obj_prefix )
-
-    # if (rest_argc == rest_argc_max) {
-    #     # No Advise
-    # } else if (rest_argc > rest_argc_max) {
-    #     # No Advise. Show it is wrong.
-    # } else {
-    #     print "obj_prefix:" obj_prefix
-    #     advise_complete_argument_value( genv_table, lenv_table, obj, obj_prefix, rest_argc + 1 )
-    # }
-    if (rest_argc > rest_argc_max) {
+    if (rest_argc == rest_argc_max) {
+        print  "rest_argc: " rest_argc "==" rest_argc_max
+        # No Advise
+    } else if (rest_argc > rest_argc_max) {
         # No Advise. Show it is wrong.
+        print  "rest_argc: " rest_argc ">" rest_argc_max
     } else {
         print advise_complete_argument_value( args[i], genv_table, lenv_table, obj, obj_prefix, rest_argc + 1 )
     }

@@ -4,6 +4,7 @@
 function advise_complete___generic_value( curval, genv, lenv, obj, kp ){
 
     _cand_key_key = kp SUBSEP "\"#cand\""
+
     if ( obj [ _cand_key_key ] == "" ) _cand_key_key = kp
 
     _cand_key_arrl = obj[ _cand_key_key L ]
@@ -27,7 +28,8 @@ function advise_complete___generic_value( curval, genv, lenv, obj, kp ){
 
 # Just show the value
 function advise_complete_option_value( curval, genv, lenv, obj, obj_prefix, option_id, arg_nth ){
-    return advise_complete___generic_value( curval, genv, lenv, obj, obj_prefix SUBSEP option_id SUBSEP "\"#" arg_nth "\"" )
+    # return advise_complete___generic_value( curval, genv, lenv, obj, obj_prefix SUBSEP option_id SUBSEP "\"#" arg_nth "\"" )
+    return advise_complete___generic_value( curval, genv, lenv, obj, obj_prefix SUBSEP option_id)
 }
 
 # Just tell me the arguments
@@ -51,30 +53,33 @@ function advise_complete_option_name_or_argument_value( curval, genv, lenv, obj,
         _arrl = obj[ obj_prefix L ]
         CODE = CODE "\n" "candidate_arr=(" "\n"
         for (i=1; i<=_arrl; ++i) {
-            v = obj[ obj_prefix, i ]
+            v = obj[ obj_prefix, jqu(i) ]
             if (v ~ "^\"" curval) {
                 CODE = CODE v "\n"
             }
         }
-
+        CODE = CODE ")"
         return CODE
     }
 
     if ( curval ~ /^-/ ) {
         _arrl = obj[ obj_prefix L ]
         CODE = CODE "\n" "candidate_arr=(" "\n"
+
         for (i=1; i<=_arrl; ++i) {
-            v = obj[ obj_prefix, i ]
+            v = obj[ obj_prefix, jqu(i) ]
             if (v ~ "^\"" curval) {
                 if (v ~ "^\"--") continue
                 CODE = CODE v "\n"
             }
         }
+        CODE = CODE ")"
         return CODE
     }
 
     # if ( aobj_options_all_ready( obj, obj_prefix, lenv ) ) {
     if ( aobj_option_all_set( lenv, obj, obj_prefix ) ) {
+        # return advise_complete_argument_value( curval, genv, lenv, obj, obj_prefix, 1 )
         return advise_complete_argument_value( curval, genv, lenv, obj, obj_prefix, 1 )
     } else {
         l = obj[ obj_prefix L ]
