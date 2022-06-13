@@ -34,8 +34,10 @@ function aobj_cal_rest_argc_maxmin( obj, obj_prefix,       i, j, k, l, _min, _ma
 
 function aobj_option_all_set( lenv_table, obj, obj_prefix,  i, l, k ){
     l = obj[ obj_prefix L ]
+    print "obj_prefix:" obj_prefix " l:" l
     for (i=1; i<=l; ++i) {
         k = obj[ obj_prefix, jqu(i) ]
+        print "k: " k
         if (juq(k) ~ "^[^-]") continue
         if ( aobj_istrue(obj, obj_prefix SUBSEP k SUBSEP "#subcmd" ) ) continue
 

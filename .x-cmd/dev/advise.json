@@ -1,21 +1,21 @@
 {
     "#1": {
         "#desc": "",
-        "#candidate": ["a", "b", "c"],
+        "#cand": ["a", "b", "c"],
         "#rmatch": [],
         "#exec": "ls",
         "#r": true
     },
     "#9": {
         "#desc": "",
-        "#candidate": ["a", "b", "c"],
+        "#cand": ["a", "b", "c"],
         "#rmatch": [],
         "#exec": "ls",
         "#r": true
     },
     "#n": {
         "#desc": "",
-        "#candidate": ["a", "b", "c"],
+        "#cand": ["a", "b", "c"],
         "#rmatch": [],
         "#exec": "ls"
     },
@@ -26,7 +26,9 @@
         },
         "logout": {
             "#desc": "test logout",
-            "-I|--install": ["a", "b"],
+            "-I|--install": {
+                "#cand": ["aaa", "bbb"]
+            },
             "-J": "",
             "-K": "   ",
             "-L": [],
@@ -39,7 +41,7 @@
                 "#desc": "first argument",
                 "abc": 1,
                 "cde": 2,
-                "#candidate": ["a", "b", "c"],
+                "#cand": ["a", "b", "c"],
                 "#rmatch": [],
                 "#exec": "ls"
             }

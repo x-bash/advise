@@ -5,7 +5,8 @@ advise_test(){
     local IFS=$'\002'
     {
         printf "%s\n" "$*"
-        cat .x-cmd/dev/git.json
+        cat .x-cmd/dev/advise.json
+        # cat .x-cmd/dev/git.json
         # cat .x-cmd/dev/git_tokenize.json
     } | nawk \
         -f "$___X_CMD_ROOT_MOD/awk/lib/default.awk" \
@@ -17,6 +18,7 @@ advise_test(){
         -f "$___X_CMD_ROOT_MOD/advise/lib/awk/util.awk"
 }
 
-# time (advise_test user logout -I a)
-time (advise_test add -n '')
+time (advise_test user logout -I a )
+# time (advise_test user cmd '' )
+# time (advise_test add -n '')
 

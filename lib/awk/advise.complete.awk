@@ -3,8 +3,9 @@
 
 function advise_complete___generic_value( curval, genv, lenv, obj, kp ){
 
-    _cand_key_key = kp SUBSEP "\"#cand\""
-    _cand_key_arrl = obj[ _cand_key L ]
+    _cand_key_key = obj[ kp ] SUBSEP "\"#cand\""
+    print "_cand_key_key: " _cand_key_key "  obj:" obj[kp] " curval:" curval
+    _cand_key_arrl = obj[ _cand_key_key L ]
 
     if ( _cand_key_arrl != "" ) {
         CODE = CODE "\n" "candidate_arr=(" "\n"
