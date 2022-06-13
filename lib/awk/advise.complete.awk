@@ -4,8 +4,9 @@
 function advise_complete___generic_value( curval, genv, lenv, obj, kp ){
 
     _cand_key_key = kp SUBSEP "\"#cand\""
+    if ( obj [ _cand_key_key ] == "" ) _cand_key_key = kp
+
     _cand_key_arrl = obj[ _cand_key_key L ]
-    print "_cand_key_key: " _cand_key_key "  obj:" obj[ _cand_key_key ] " curval:" curval " _cand_key_arrl:" _cand_key_arrl
 
     if ( _cand_key_arrl != "" ) {
         CODE = CODE "\n" "candidate_arr=(" "\n"
@@ -40,6 +41,8 @@ function advise_complete_argument_value( curval, genv, lenv, obj, obj_prefix, nt
     if (obj[ _kp ] != "") {
         return advise_complete___generic_value( curval, genv, lenv, obj, _kp )
     }
+
+    return advise_complete___generic_value( curval, genv, lenv, obj, obj_prefix )
 }
 
 # Most complicated
@@ -70,7 +73,8 @@ function advise_complete_option_name_or_argument_value( curval, genv, lenv, obj,
         return CODE
     }
 
-    if ( aobj_options_all_ready( obj, obj_prefix, lenv ) ) {
+    # if ( aobj_options_all_ready( obj, obj_prefix, lenv ) ) {
+    if ( aobj_option_all_set( lenv, obj, obj_prefix ) ) {
         return advise_complete_argument_value( curval, genv, lenv, obj, obj_prefix, 1 )
     } else {
         l = obj[ obj_prefix L ]
