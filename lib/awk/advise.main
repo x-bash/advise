@@ -5,8 +5,8 @@ advise_test(){
     local IFS=$'\002'
     {
         printf "%s\n" "$*"
-        # cat "$HOME"/xbash/advise/.x-cmd/dev/advise.json
-        cat "$HOME"/xcmd/advise/src/git/advise.json 
+        cat .x-cmd/dev/git.json
+        # cat .x-cmd/dev/git_tokenize.json
     } | nawk \
         -f "$___X_CMD_ROOT_MOD/awk/lib/default.awk" \
         -f "$___X_CMD_ROOT_MOD/awk/lib/json.awk" \
@@ -17,26 +17,6 @@ advise_test(){
         -f "$___X_CMD_ROOT_MOD/advise/lib/awk/util.awk"
 }
 
-# advise_test user logout -I a
 # time (advise_test user logout -I a)
-# time (advise_test add -n)
+time (advise_test add -n '')
 
-# printf "gh\002user\002logout\002-I\n"
-# printf "$*\n"
-# time (advise_test user logout -JKI a)
-time (advise_test add -n)
-
-
-# test123(){
-#     local fp="/home/qiakai/xcmd/advise/src/git/advise.json"
-
-#     local IFS=$'\002' # IFS="$(printf "\002")"
-#     s="$*"
-
-#     {
-#         cat "$fp"
-#         printf "\034%s\034" "$s"  # printf "\034${s}\034"
-#     } | nawk -f "$(x wsroot)/lib/advise.awk" # 2>/dev/null
-# }
-
-# time (test123 add -n)
