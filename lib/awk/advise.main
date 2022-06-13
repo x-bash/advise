@@ -5,8 +5,8 @@ advise_test(){
     local IFS=$'\002'
     {
         printf "%s\n" "$*"
-        # cat "$HOME"/xbash/advise/.x-cmd/dev/advise.json
-        cat "$HOME"/xcmd/advise/src/git/advise.json 
+        cat /home/zjq/project/x-bash/advise/.x-cmd/dev/advise.json
+        # cat /home/zjq/project/x-cmd/advise/src/git/advise.json
     } | nawk \
         -f "$___X_CMD_ROOT_MOD/awk/lib/default.awk" \
         -f "$___X_CMD_ROOT_MOD/awk/lib/json.awk" \
@@ -17,14 +17,14 @@ advise_test(){
         -f "$___X_CMD_ROOT_MOD/advise/lib/awk/util.awk"
 }
 
-# advise_test user logout -I a
+advise_test user logout -I a
 # time (advise_test user logout -I a)
-# time (advise_test add -n)
+# time (advise_test add am)
 
 # printf "gh\002user\002logout\002-I\n"
 # printf "$*\n"
 # time (advise_test user logout -JKI a)
-time (advise_test add -n)
+# time (advise_test add -n)
 
 
 # test123(){

@@ -4,7 +4,7 @@ function aobj_cal_rest_argc_maxmin( obj, obj_prefix,       i, j, k, l, _min, _ma
     _min = 0
     _max = 0
     l = obj[ obj_prefix L ]
-    print "obj_prefix:" obj_prefix " l:" l
+    # print "obj_prefix:" obj_prefix " l:" l
     for (i=1; i<=l; ++i) {
         k = juq(obj[ obj_prefix, jqu(i) ])
 
@@ -19,7 +19,7 @@ function aobj_cal_rest_argc_maxmin( obj, obj_prefix,       i, j, k, l, _min, _ma
         for (j=1; j<=_arrl; ++j){
             NAME_ID[ obj_prefix, _arr[j] ] = jqu(k)
         }
-1
+
         if (k ~ "^#[0-9]+") {
             k = int( substr(k, 2) )
             if (aobj_required( obj, obj_prefix SUBSEP obj[ obj_prefix, jqu(i) ] ) ) {
