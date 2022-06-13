@@ -10,7 +10,7 @@
 }
 
 END{
-    for (i in obj) print i "\t\t\t" obj[i] > "bbb"
+    # for (i in obj) print i "\t\t\t" obj[i] > "bbb"
     if (EXIT_CODE == 0) {
         # enhance_argument_parser( obj )
         parse_args_to_env( parsed_argarr, parsed_arglen, obj, "", genv_table, lenv_table )
@@ -66,7 +66,7 @@ function parse_args_to_env___option( obj, obj_prefix, args, argl, arg, arg_idx, 
     }
 
     _optargc = aobj_get_optargc( obj, obj_prefix, _arg_id )
-    print "_optargc:" _optargc "xx" obj[ obj_prefix, _arg_id  ]
+    # print "_optargc:" _optargc "xx" obj[ obj_prefix, _arg_id  ]
     if (_optargc == 0) {
         env_table_set_true( _arg_id, obj_prefix SUBSEP _arg_id SUBSEP k )
         return arg_idx
@@ -100,7 +100,7 @@ function parse_args_to_env( args, argl, obj, obj_prefix, genv_table, lenv_table,
                 print "all required options should be set"
             }
             obj_prefix = obj_prefix SUBSEP _subcmdid
-            print "_subcmdid:" _subcmdid "obj_prefix:" obj_prefix
+            # print "_subcmdid:" _subcmdid "obj_prefix:" obj_prefix
             delete lenv_table
             continue
         }
@@ -145,11 +145,12 @@ function parse_args_to_env( args, argl, obj, obj_prefix, genv_table, lenv_table,
         break
     }
     # handle it into argument
-    print "i:" i
-    i = i-1
-    for (j=1; i+j-1 <= argl; ++j) {
-        print "i+j-1:" i+j-1 " argl:" argl
+    i = i-2
+    # print "i: " i " argl: " argl
+    for (j=1; i+j-1 > argl; ++j) {
+        # print "i+j-1:" i+j-1 " argl:" argl
         rest_arg[ j ] = args[ i+j-1 ]
+        print "rest_arg[ j ]: " rest_arg[ j ]
     }
 
     rest_argc = j-1
@@ -164,7 +165,7 @@ function parse_args_to_env( args, argl, obj, obj_prefix, genv_table, lenv_table,
     rest_argc_min = aobj_get_minimum_rest_argc( obj, obj_prefix )
     rest_argc_max = aobj_get_maximum_rest_argc( obj, obj_prefix )
 
-    print "rest_argc_min:" rest_argc_min " rest_argc_max:" rest_argc_max
+    # print "rest_argc_min:" rest_argc_min " rest_argc_max:" rest_argc_max
     # if (rest_argc == rest_argc_max) {
     #     # No Advise
     # } else if (rest_argc > rest_argc_max) {
@@ -176,7 +177,7 @@ function parse_args_to_env( args, argl, obj, obj_prefix, genv_table, lenv_table,
     if (rest_argc > rest_argc_max) {
         # No Advise. Show it is wrong.
     } else {
-        print "obj_prefix:" obj_prefix
+        # print "obj_prefix:" obj_prefix
         advise_complete_argument_value( args[i], genv_table, lenv_table, obj, obj_prefix, rest_argc + 1 )
     }
 
