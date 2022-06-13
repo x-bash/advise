@@ -6,7 +6,7 @@ advise_test(){
     {
         printf "%s\n" "$*"
         # cat "$HOME"/xbash/advise/.x-cmd/dev/advise.json
-        cat "$HOME"/xcmd/advise/src/git/advise.json
+        cat "$HOME"/xcmd/advise/src/git/advise.json 
     } | nawk \
         -f "$___X_CMD_ROOT_MOD/awk/lib/default.awk" \
         -f "$___X_CMD_ROOT_MOD/awk/lib/json.awk" \
