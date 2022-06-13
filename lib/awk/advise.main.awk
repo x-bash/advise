@@ -1,7 +1,8 @@
 
 {
     if (NR>1) {
-        if ($0 != "") json2tokenarr( $0, token_arr)
+        if ($0 != "") json_parse(obj, $0)
+        # if ($0 != "") json_parse_after_tokenize(obj, $0)
     } else {
         # Read the argument
         prepare_argarr( $0 )
@@ -9,9 +10,6 @@
 }
 
 END{
-
-    token_arrl = token_arr[L]
-    jqparse( obj, "", token_arrl, token_arr)
     if (EXIT_CODE == 0) {
         # enhance_argument_parser( obj )
         parse_args_to_env( parsed_argarr, parsed_arglen, obj, "", genv_table, lenv_table )
