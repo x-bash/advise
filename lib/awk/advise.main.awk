@@ -1,7 +1,7 @@
 
 {
     if (NR>1) {
-        # if ($0 != "") json_parse(obj, $0)
+        # if ($0 != "") json_parse(obj, $0)git 
         if ($0 != "") json_parse_after_tokenize(obj, $0)
     } else {
         # Read the argument
