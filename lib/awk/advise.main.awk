@@ -147,6 +147,7 @@ function parse_args_to_env( args, argl, obj, obj_prefix, genv_table, lenv_table,
 
     for (j=1; i+j-1 <= argl; ++j) {
         rest_arg[ j ] = args[ i+j-1 ]
+        print "rest_arg[ j ]: " rest_arg[ j ]
     }
 
     rest_argc = j - 1
