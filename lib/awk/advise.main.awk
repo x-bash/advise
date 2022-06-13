@@ -1,6 +1,5 @@
 
 {
-    # if ($0 != "") json2tokenarr( $0, token_arr)
     if (NR>1) {
         if ($0 != "") json2tokenarr( $0, token_arr)
     } else {
@@ -22,7 +21,7 @@ END{
 }
 
 # Section: prepare argument
-function prepare_argarr( argstr ){
+function prepare_argarr( argstr,        i,arg ){
     if ( argstr == "" ) argstr = "" # "." "\002"
 
     gsub("\n", "\001", argstr)
@@ -51,7 +50,7 @@ function prepare_argarr( argstr ){
 # Complete Option Name Or RestArgument
 # Complete Option Argument
 
-function env_table_set_true( key, keypath, value ){
+function env_table_set_true( key, keypath ){
     env_table_set( key, keypath, 1 )
 }
 
