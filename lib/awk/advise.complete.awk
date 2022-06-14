@@ -1,7 +1,7 @@
 
 # shellcheck shell=bash
 
-function advise_complete___generic_value( curval, genv, lenv, obj, kp ){
+function advise_complete___generic_value( curval, genv, lenv, obj, kp,      i, v, _cand_key_key, _cand_key_arrl, _exec_val ){
 
     _cand_key_key = kp SUBSEP "\"#cand\""
 
@@ -12,7 +12,10 @@ function advise_complete___generic_value( curval, genv, lenv, obj, kp ){
     if ( _cand_key_arrl != "" ) {
         CODE = CODE "\n" "candidate_arr=(" "\n"
         for (i=1; i<=_cand_key_arrl; ++i) {
-            CODE = CODE  obj[ _cand_key_key, jqu(i)] "\n"
+            v = obj[ _cand_key_key, jqu(i)]
+            if( v ~ "^\"" curval ){
+                CODE = CODE v "\n"
+            }
         }
         CODE = CODE ")"
     }
@@ -32,7 +35,7 @@ function advise_complete_option_value( curval, genv, lenv, obj, obj_prefix, opti
 }
 
 # Just tell me the arguments
-function advise_complete_argument_value( curval, genv, lenv, obj, obj_prefix, nth ){
+function advise_complete_argument_value( curval, genv, lenv, obj, obj_prefix, nth,      _kp ){
     _kp = obj_prefix SUBSEP "\"#" nth "\""
     if (obj[ _kp ] != "") {
         return advise_complete___generic_value( curval, genv, lenv, obj, _kp )
@@ -47,7 +50,7 @@ function advise_complete_argument_value( curval, genv, lenv, obj, obj_prefix, nt
 }
 
 # Most complicated
-function advise_complete_option_name_or_argument_value( curval, genv, lenv, obj, obj_prefix ){
+function advise_complete_option_name_or_argument_value( curval, genv, lenv, obj, obj_prefix,        i, k, v, l,  _arrl ){
     if ( curval ~ /^--/ ) {
         _arrl = obj[ obj_prefix L ]
         CODE = CODE "\n" "candidate_arr=(" "\n"
@@ -64,7 +67,6 @@ function advise_complete_option_name_or_argument_value( curval, genv, lenv, obj,
     if ( curval ~ /^-/ ) {
         _arrl = obj[ obj_prefix L ]
         CODE = CODE "\n" "candidate_arr=(" "\n"
-
         for (i=1; i<=_arrl; ++i) {
             v = obj[ obj_prefix, jqu(i) ]
             if (v ~ "^\"" curval) {
