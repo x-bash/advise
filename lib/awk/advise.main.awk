@@ -110,7 +110,7 @@ function parse_args_to_env( args, argl, obj, obj_prefix, genv_table, lenv_table,
                 _arg_id = aobj_get_id_by_name( obj, obj_prefix, arg )
                 obj_prefix = obj_prefix SUBSEP _arg_id
                 break
-            }else return
+            }
 
             _arg_arrl = split(arg, _arg_arr, "")
             for (j=2; j<=_arg_arrl; ++j) {
