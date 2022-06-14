@@ -147,8 +147,6 @@ function parse_args_to_env( args, argl, obj, obj_prefix, genv_table, lenv_table,
 
     rest_argc = j - 1
 
-    # obj_prefix = obj_prefix SUBSEP aobj_get_subcmdid_by_name( obj, obj_prefix, args[i])
-
     if (rest_argc == 0) {
         advise_complete_option_name_or_argument_value( args[i], genv_table, lenv_table, obj, obj_prefix )
         return
