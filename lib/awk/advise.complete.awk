@@ -13,9 +13,10 @@ function advise_complete___generic_value( curval, genv, lenv, obj, kp,      i, v
         for (i=1; i<=_cand_key_arrl; ++i) {
             v = obj[ _cand_key_key, jqu(i)]
             _cand_key_desc = _cand_key_key SUBSEP v SUBSEP "\"#desc\""
+            DESC = obj[ _cand_key_desc ]
             if( v ~ "^\"" curval ){
                 if (v ~ "^\"#[a-z]") continue
-                if( obj[ _cand_key_desc ] != "" )   CODE = CODE v ":" obj[ _cand_key_desc ] "\n"
+                if( DESC != "" )   CODE = CODE v ":" DESC "\n"
                 else CODE = CODE v "\n"
             }
         }
@@ -59,8 +60,9 @@ function advise_complete_option_name_or_argument_value( curval, genv, lenv, obj,
         for (i=1; i<=_arrl; ++i) {
             v = obj[ obj_prefix, jqu(i) ]
             _cand_key_desc = obj_prefix SUBSEP v SUBSEP "\"#desc\""
+            DESC = obj[ _cand_key_desc ]
             if (v ~ curval) {
-                if( obj[ _cand_key_desc ] != "" )   CODE = CODE v ":" obj[ _cand_key_desc ] "\n"
+                if( DESC != "" )   CODE = CODE v ":" DESC "\n"
                 else CODE = CODE v "\n"
             }
         }
@@ -74,9 +76,10 @@ function advise_complete_option_name_or_argument_value( curval, genv, lenv, obj,
         for (i=1; i<=_arrl; ++i) {
             v = obj[ obj_prefix, jqu(i) ]
             _cand_key_desc = obj_prefix SUBSEP v SUBSEP "\"#desc\""
+            DESC = obj[ _cand_key_desc ]
             if (v ~ curval) {
                 if (v ~ "^--") continue
-                if( obj[ _cand_key_desc ] != "" )   CODE = CODE v ":" obj[ _cand_key_desc ] "\n"
+                if( DESC != "" )   CODE = CODE v ":" DESC "\n"
                 else CODE = CODE v "\n"
             }
         }
@@ -97,8 +100,9 @@ function advise_complete_option_name_or_argument_value( curval, genv, lenv, obj,
 
             if ( aobj_required(obj, obj_prefix SUBSEP k) ) {
                 _cand_key_desc = obj_prefix SUBSEP k SUBSEP "\"#desc\""
+                DESC = obj[ _cand_key_desc ]
                 if ( lenv_table[ k ] == "" ) {
-                    if( obj[ _cand_key_desc ] != "" )   CODE = CODE k ":" obj[ _cand_key_desc ] "\n"
+                    if( DESC != "" )   CODE = CODE k ":" DESC "\n"
                     else CODE = CODE k "\n"
                 }
             }
