@@ -99,7 +99,10 @@ function parse_args_to_env( args, argl, obj, obj_prefix, genv_table, lenv_table,
         }
 
         if (arg ~ /^--/) {
-            if ( 0 == parse_args_to_env___option( obj, obj_prefix, args, argl, arg, i, genv_table, lenv_table ) ) break
+            if ( 0 != parse_args_to_env___option( obj, obj_prefix, args, argl, arg, i, genv_table, lenv_table ) ){
+                i--
+                break
+            }
         } else if (arg ~ /^-/) {
             j = parse_args_to_env___option( obj, obj_prefix, args, argl, arg, i, genv_table, lenv_table )
             if (j != 0) {

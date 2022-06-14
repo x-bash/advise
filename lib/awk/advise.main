@@ -26,6 +26,7 @@ advise_test(){
 # time (advise_test user -v '')
 # time (advise_test user -v )
 # time (advise_test user --version )
+# time (advise_test user --version '')
 # time (advise_test user logout -I '')
 # time (advise_test user logout -I aaa '' )   # 1=1
 # time (advise_test user logout -K aaa '' )   # 1<2
