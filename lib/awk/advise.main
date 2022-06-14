@@ -1,4 +1,4 @@
-# shellcheck shell=sh disable=SC3043,SC3003
+# shellcheck shell=sh disable=SC3043,SC3003,SC2177
 xws install
 
 advise_test(){
@@ -22,7 +22,7 @@ advise_test(){
 }
 
 # time (advise_test user cmd '')              # 0
-# time (advise_test user cmd )                # 1=1
+time (advise_test user cmd )                # 1=1
 # time (advise_test user -v '')
 # time (advise_test user -v )
 # time (advise_test user logout -I '')

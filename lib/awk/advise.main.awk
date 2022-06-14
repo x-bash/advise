@@ -2,8 +2,6 @@
 {
     if (NR>1) {
         if ($0 != "") jqparse_str(obj, "", $0)
-        # if ($0 != "") json_parse(obj, $0)
-        # if ($0 != "") json_parse_after_tokenize(obj, $0)
     } else {
         # Read the argument
         prepare_argarr( $0 )
@@ -26,11 +24,10 @@ function prepare_argarr( argstr,        i,arg ){
     gsub("\n", "\001", argstr)
     parsed_arglen = split(argstr, parsed_argarr, "\002")
 
-    ruleregex = ""
-    arglen = 0
-    rest_argv_len = 0
-
-    current_keypath = "."
+    # ruleregex = ""
+    # arglen = 0
+    # rest_argv_len = 0
+    # current_keypath = "."
     # opt_len = parsed_arglen
 
     for (i=1; i<=parsed_arglen; ++i) {
@@ -73,7 +70,7 @@ function parse_args_to_env___option( obj, obj_prefix, args, argl, arg, arg_idx, 
 
     for (k=1; k<=_optargc; ++k)  {
         if ( arg_idx >= argl ) {
-            print advise_complete_option_value( args[ arg_idx ], genv_table, lenv_table, obj, obj_prefix, _arg_id, k)
+            advise_complete_option_value( args[ arg_idx ], genv_table, lenv_table, obj, obj_prefix, _arg_id, k)
             return arg_idx # Not Running at all .. # TODO
         }
         env_table_set( _arg_id, obj_prefix SUBSEP _arg_id SUBSEP jqu(k), args[ arg_idx++ ] )
@@ -109,7 +106,6 @@ function parse_args_to_env( args, argl, obj, obj_prefix, genv_table, lenv_table,
                 i = j - 1
                 _arg_id = aobj_get_id_by_name( obj, obj_prefix, arg )
                 obj_prefix = obj_prefix SUBSEP _arg_id
-                # continue
                 break
             }
 
@@ -144,7 +140,6 @@ function parse_args_to_env( args, argl, obj, obj_prefix, genv_table, lenv_table,
         break
     }
     # handle it into argument
-    # i = i-1
 
     for (j=1; i+j-1 < argl; ++j) {
         rest_arg[ j ] = ags[ i+j-1 ]
@@ -155,18 +150,18 @@ function parse_args_to_env( args, argl, obj, obj_prefix, genv_table, lenv_table,
     # obj_prefix = obj_prefix SUBSEP aobj_get_subcmdid_by_name( obj, obj_prefix, args[i])
 
     if (rest_argc == 0) {
-        print advise_complete_option_name_or_argument_value( args[i], genv_table, lenv_table, obj, obj_prefix )
+        advise_complete_option_name_or_argument_value( args[i], genv_table, lenv_table, obj, obj_prefix )
         return
     }
 
     rest_argc_min = aobj_get_minimum_rest_argc( obj, obj_prefix )
     rest_argc_max = aobj_get_maximum_rest_argc( obj, obj_prefix )
     if (rest_argc == rest_argc_max) {
-        print  "rest_argc: " rest_argc "==" rest_argc_max
+        # print  "rest_argc: " rest_argc "==" rest_argc_max
         # No Advise
     } else if (rest_argc > rest_argc_max) {
         # No Advise. Show it is wrong.
-        print  "rest_argc: " rest_argc ">" rest_argc_max
+        # print  "rest_argc: " rest_argc ">" rest_argc_max
     }
 
 }

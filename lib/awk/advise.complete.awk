@@ -76,7 +76,6 @@ function advise_complete_option_name_or_argument_value( curval, genv, lenv, obj,
         return CODE
     }
 
-    # if ( aobj_options_all_ready( obj, obj_prefix, lenv ) ) {
     if ( aobj_option_all_set( lenv, obj, obj_prefix ) ) {
         return advise_complete_argument_value( curval, genv, lenv, obj, obj_prefix, 1 )
     } else {
