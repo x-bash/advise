@@ -53,7 +53,7 @@
             ":+debug|:+d": {},
             ":-reset|:-r": {}
         },
-        "-v|--version": {
+        "--version|-v": {
             "#desc": "test version",
             "#1": {
                 "#desc": "first argument",
