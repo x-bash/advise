@@ -56,7 +56,7 @@ function env_table_set( key, keypath, value ){
 }
 
 
-function parse_args_to_env___option( obj, obj_prefix, args, argl, arg, arg_idx, genv_table, lenv_table,     _arg_id, _optargc ){
+function parse_args_to_env___option( obj, obj_prefix, args, argl, arg, arg_idx, genv_table, lenv_table,     _arg_id, _optargc, k ){
     _arg_id = aobj_get_id_by_name( obj, obj_prefix, arg )
     if (_arg_id == "") {
         return 0
@@ -64,7 +64,7 @@ function parse_args_to_env___option( obj, obj_prefix, args, argl, arg, arg_idx, 
 
     _optargc = aobj_get_optargc( obj, obj_prefix, _arg_id )
     if (_optargc == 0) {
-        env_table_set_true( _arg_id, obj_prefix SUBSEP _arg_id SUBSEP k )
+        env_table_set_true( _arg_id, obj_prefix SUBSEP _arg_id SUBSEP arg_idx )
         return arg_idx
     }
 
@@ -78,7 +78,7 @@ function parse_args_to_env___option( obj, obj_prefix, args, argl, arg, arg_idx, 
     return arg_idx
 }
 
-function parse_args_to_env( args, argl, obj, obj_prefix, genv_table, lenv_table,    i, j, _subcmdid ){
+function parse_args_to_env( args, argl, obj, obj_prefix, genv_table, lenv_table,    i, j, _subcmdid, _arg_id, _arg_arrl, _optargc, _rest_argc ){
 
     obj_prefix = SUBSEP jqu(1)   # Json Parser
 
@@ -89,7 +89,7 @@ function parse_args_to_env( args, argl, obj, obj_prefix, genv_table, lenv_table,
         _subcmdid = aobj_get_subcmdid_by_name( obj, obj_prefix, arg )
         if (_subcmdid != "") {
             # TODO: Check all required options set
-            if ( ! aobj_option_all_set( lenv_table, obj, obj_prefix  ) ) {
+            if ( ! aobj_option_all_set( lenv_table, obj, obj_prefix ) ) {
                 # TODO: show message that it is wrong ...
                 print "all required options should be set"
             }
@@ -145,21 +145,22 @@ function parse_args_to_env( args, argl, obj, obj_prefix, genv_table, lenv_table,
         rest_arg[ j ] = ags[ i+j-1 ]
     }
 
-    rest_argc = j - 1
+    _rest_argc = j - 1
 
-    if (rest_argc == 0) {
+    if (_rest_argc == 0) {
         advise_complete_option_name_or_argument_value( args[i], genv_table, lenv_table, obj, obj_prefix )
         return
     }
 
     rest_argc_min = aobj_get_minimum_rest_argc( obj, obj_prefix )
     rest_argc_max = aobj_get_maximum_rest_argc( obj, obj_prefix )
-    if (rest_argc == rest_argc_max) {
-        # print  "rest_argc: " rest_argc "==" rest_argc_max
+
+    if (_rest_argc == rest_argc_max) {
+        # print  "_rest_argc: " _rest_argc "==" rest_argc_max
         # No Advise
-    } else if (rest_argc > rest_argc_max) {
+    } else if (_rest_argc > rest_argc_max) {
         # No Advise. Show it is wrong.
-        # print  "rest_argc: " rest_argc ">" rest_argc_max
+        # print  "_rest_argc: " _rest_argc ">" rest_argc_max
     }
 
 }
