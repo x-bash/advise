@@ -119,14 +119,14 @@ function parse_args_to_env( args, argl, obj, obj_prefix, genv_table, lenv_table,
                     continue
                 }
 
-                assert( j==_arg_arrl, "Fail at parsing: " arg ". Accept at least one argument: -" _arg_arr[j] )
+                # assert( j==_arg_arrl, "Fail at parsing: " arg ". Accept at least one argument: -" _arg_arr[j] )
 
                 for (k=1; k<=_optargc; ++k)  {
-                    if ( i>argl ) {
-                        advise_complete_option_value( args[i], genv_table, lenv_table, obj, obj_prefix SUBSEP _arg_id, k )
+                    if ( i>=argl ) {
+                        advise_complete_option_value( args[i], genv_table, lenv_table, obj, obj_prefix, _arg_id, k )
                         return  # Not Running at all .. # TODO
                     }
-                    env_table_set( _arg_id, obj_prefix SUBSEP _arg_id SUBSEP k, args[ i++ ] )
+                    env_table_set( _arg_id, obj_prefix SUBSEP _arg_id SUBSEP jqu(k), args[ i++ ] )
                 }
             }
             continue

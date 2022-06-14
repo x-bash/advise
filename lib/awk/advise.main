@@ -22,7 +22,7 @@ advise_test(){
 }
 
 # time (advise_test user cmd '')              # 0
-time (advise_test user cmd )                # 1=1
+# time (advise_test user cmd )                # 1=1
 # time (advise_test user -v '')
 # time (advise_test user -v )
 # time (advise_test user logout -I '')
@@ -30,6 +30,7 @@ time (advise_test user cmd )                # 1=1
 # time (advise_test user logout -K aaa '' )   # 1<2
 # time (advise_test user logout -I aa )       # 0<1
 # time (advise_test user logout -I aa a '' )  # 2>1
+# time (advise_test user logout -ABI '')
 
 # time (advise_test add -n '')
 

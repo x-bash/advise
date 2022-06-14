@@ -69,7 +69,7 @@ function aobj_get_optargc( obj, obj_prefix, option_id,  _res, i ){
     for (i=1; i<100; ++i) {     # 100 means MAXINT
         if (obj[ obj_prefix, option_id, jqu("#" i) ] == "") break
     }
-    if (( i==1 ) && (obj[ obj_prefix, option_id ] != "")) obj[ obj_prefix, option_id L "argc" ] = 1
+    if (( i==1 ) && (obj[ obj_prefix, option_id ] == "[")) obj[ obj_prefix, option_id L "argc" ] = 1
     else obj[ obj_prefix, option_id L "argc" ] = --i
     return i
 }
