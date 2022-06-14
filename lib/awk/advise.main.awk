@@ -2,10 +2,7 @@
 {
     if (NR>1) {
         if ($0 != "") jqparse_str(obj, "", $0)
-    } else {
-        # Read the argument
-        prepare_argarr( $0 )
-    }
+    } else  prepare_argarr( $0 )
 }
 
 END{
@@ -18,7 +15,7 @@ END{
 }
 
 # Section: prepare argument
-function prepare_argarr( argstr,        i,arg ){
+function prepare_argarr( argstr,        i, _arg ){
     if ( argstr == "" ) argstr = "" # "." "\002"
 
     gsub("\n", "\001", argstr)
@@ -31,9 +28,9 @@ function prepare_argarr( argstr,        i,arg ){
     # opt_len = parsed_arglen
 
     for (i=1; i<=parsed_arglen; ++i) {
-        arg = parsed_argarr[i]
-        gsub("\001", "\n", arg)
-        parsed_argarr[i] = arg
+        _arg = parsed_argarr[i]
+        gsub("\001", "\n", _arg)
+        parsed_argarr[i] = _arg
     }
 }
 
@@ -70,7 +67,7 @@ function parse_args_to_env___option( obj, obj_prefix, args, argl, arg, arg_idx, 
 
     for (k=1; k<=_optargc; ++k)  {
         if ( arg_idx >= argl ) {
-            advise_complete_option_value( args[ arg_idx ], genv_table, lenv_table, obj, obj_prefix, _arg_id, k)
+            advise_complete_option_value( args[ arg_idx ], genv_table, lenv_table, obj, obj_prefix, _arg_id, k )
             return arg_idx # Not Running at all .. # TODO
         }
         env_table_set( _arg_id, obj_prefix SUBSEP _arg_id SUBSEP jqu(k), args[ arg_idx++ ] )
