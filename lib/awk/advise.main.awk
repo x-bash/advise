@@ -155,13 +155,13 @@ function parse_args_to_env( args, argl, obj, obj_prefix, genv_table, lenv_table,
     rest_argc_min = aobj_get_minimum_rest_argc( obj, obj_prefix )
     rest_argc_max = aobj_get_maximum_rest_argc( obj, obj_prefix )
 
-    if (_rest_argc == rest_argc_max) {
-        # print  "_rest_argc: " _rest_argc "==" rest_argc_max
-        # No Advise
-    } else if (_rest_argc > rest_argc_max) {
-        # No Advise. Show it is wrong.
-        # print  "_rest_argc: " _rest_argc ">" rest_argc_max
-    }
+    # if (_rest_argc == rest_argc_max) {
+    #     # print  "_rest_argc: " _rest_argc "==" rest_argc_max
+    #     # No Advise
+    # } else if (_rest_argc > rest_argc_max) {
+    #     # No Advise. Show it is wrong.
+    #     # print  "_rest_argc: " _rest_argc ">" rest_argc_max
+    # }
 
 }
 # EndSection
