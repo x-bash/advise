@@ -5,7 +5,7 @@ function aobj_cal_rest_argc_maxmin( obj, obj_prefix,       i, j, k, l, _min, _ma
     _max = 0
     l = obj[ obj_prefix L ]
     for (i=1; i<=l; ++i) {
-        k = juq(obj[ obj_prefix, jqu(i) ])
+        k = juq(obj[ obj_prefix, i ])
 
         if (k ~ "^#n") {
             _max = 10000 # Big Number
@@ -19,7 +19,7 @@ function aobj_cal_rest_argc_maxmin( obj, obj_prefix,       i, j, k, l, _min, _ma
 
         if (k ~ "^#[0-9]+") {
             k = int( substr(k, 2) )
-            if (aobj_required( obj, obj_prefix SUBSEP obj[ obj_prefix, jqu(i) ] ) ) {
+            if (aobj_required( obj, obj_prefix SUBSEP obj[ obj_prefix, i ] ) ) {
                 if (_min < k) _min = k
             }
             if (_max < k) _max = k
@@ -32,7 +32,7 @@ function aobj_cal_rest_argc_maxmin( obj, obj_prefix,       i, j, k, l, _min, _ma
 function aobj_option_all_set( lenv_table, obj, obj_prefix,  i, l, k ){
     l = obj[ obj_prefix L ]
     for (i=1; i<=l; ++i) {
-        k = obj[ obj_prefix, jqu(i) ]
+        k = obj[ obj_prefix, i ]
         if (juq(k) ~ "^[^-]") continue
         if ( aobj_istrue(obj, obj_prefix SUBSEP k SUBSEP "#subcmd" ) ) continue
 

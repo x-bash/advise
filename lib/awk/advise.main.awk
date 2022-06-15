@@ -1,7 +1,7 @@
 
 {
     if (NR>1) {
-        if ($0 != "") jqparse_str(obj, "", $0)
+        if ($0 != "") jiparse_after_tokenize(obj, $0)
     } else  prepare_argarr( $0 )
 }
 
@@ -11,7 +11,7 @@ END{
         parse_args_to_env( parsed_argarr, parsed_arglen, obj, "", genv_table, lenv_table )
         # showing candidate code
     }
-
+    # print "CODE:" CODE
 }
 
 # Section: prepare argument
@@ -70,7 +70,7 @@ function parse_args_to_env___option( obj, obj_prefix, args, argl, arg, arg_idx, 
             advise_complete_option_value( args[ arg_idx ], genv_table, lenv_table, obj, obj_prefix, _arg_id, k )
             return arg_idx # Not Running at all .. # TODO
         }
-        env_table_set( _arg_id, obj_prefix SUBSEP _arg_id SUBSEP jqu(k), args[ arg_idx++ ] )
+        env_table_set( _arg_id, obj_prefix SUBSEP _arg_id SUBSEP k, args[ arg_idx++ ] )
     }
     return arg_idx
 }
@@ -126,7 +126,7 @@ function parse_args_to_env( args, argl, obj, obj_prefix, genv_table, lenv_table,
                         advise_complete_option_value( args[i], genv_table, lenv_table, obj, obj_prefix, _arg_id, k )
                         return  # Not Running at all .. # TODO
                     }
-                    env_table_set( _arg_id, obj_prefix SUBSEP _arg_id SUBSEP jqu(k), args[ i++ ] )
+                    env_table_set( _arg_id, obj_prefix SUBSEP _arg_id SUBSEP k, args[ i++ ] )
                 }
             }
             continue

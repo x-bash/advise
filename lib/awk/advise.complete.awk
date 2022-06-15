@@ -11,7 +11,7 @@ function advise_complete___generic_value( curval, genv, lenv, obj, kp,      i, v
     if ( _cand_key_arrl != "" ) {
         CODE = CODE "\n" "candidate_arr=(" "\n"
         for (i=1; i<=_cand_key_arrl; ++i) {
-            v = obj[ _cand_key_key, jqu(i)]
+            v = obj[ _cand_key_key, i]
             _cand_key_desc = _cand_key_key SUBSEP v SUBSEP "\"#desc\""
             DESC = obj[ _cand_key_desc ]
             if( v ~ "^\"" curval ){
@@ -58,7 +58,7 @@ function advise_complete_option_name_or_argument_value( curval, genv, lenv, obj,
         _arrl = obj[ obj_prefix L ]
         CODE = CODE "\n" "candidate_arr=(" "\n"
         for (i=1; i<=_arrl; ++i) {
-            v = obj[ obj_prefix, jqu(i) ]
+            v = obj[ obj_prefix, i ]
             _cand_key_desc = obj_prefix SUBSEP v SUBSEP "\"#desc\""
             DESC = obj[ _cand_key_desc ]
             if (v ~ curval) {
@@ -74,7 +74,7 @@ function advise_complete_option_name_or_argument_value( curval, genv, lenv, obj,
         _arrl = obj[ obj_prefix L ]
         CODE = CODE "\n" "candidate_arr=(" "\n"
         for (i=1; i<=_arrl; ++i) {
-            v = obj[ obj_prefix, jqu(i) ]
+            v = obj[ obj_prefix, i ]
             _cand_key_desc = obj_prefix SUBSEP v SUBSEP "\"#desc\""
             DESC = obj[ _cand_key_desc ]
             if (v ~ curval) {
@@ -94,7 +94,7 @@ function advise_complete_option_name_or_argument_value( curval, genv, lenv, obj,
 
         CODE = CODE "\n" "candidate_arr=(" "\n"
         for (i=1; i<=l; ++i) {
-            k = obj[ obj_prefix, jqu(i) ]
+            k = obj[ obj_prefix, i ]
             if (k ~ "^[^-]") continue
             if ( aobj_istrue(obj, obj_prefix SUBSEP k SUBSEP "\"#subcmd\"" ) ) continue
 

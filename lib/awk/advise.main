@@ -14,7 +14,7 @@ advise_test(){
     } | nawk -v RS="$___X_CMD_ADVISE_SEP" \
         -f "$___X_CMD_ROOT_MOD/awk/lib/default.awk" \
         -f "$___X_CMD_ROOT_MOD/awk/lib/json.awk" \
-        -f "$___X_CMD_ROOT_MOD/awk/lib/jqparse.awk" \
+        -f "$___X_CMD_ROOT_MOD/awk/lib/jiter.awk" \
         -f "$___X_CMD_ROOT_MOD/advise/lib/awk/advise.complete.awk" \
         -f "$___X_CMD_ROOT_MOD/advise/lib/awk/advise.main.awk" \
         -f "$___X_CMD_ROOT_MOD/advise/lib/awk/advise.obj.awk" \
@@ -22,7 +22,7 @@ advise_test(){
 }
 
 # time (advise_test user cmd '')              # 0
-# time (advise_test user cmd )                # 1=1
+time (advise_test user cmd )                # 1=1
 # time (advise_test user -v '')
 # time (advise_test user -v )
 # time (advise_test user --version )
