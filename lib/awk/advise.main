@@ -22,7 +22,7 @@ advise_test(){
 }
 
 # time (advise_test user cmd '')              # 0
-time (advise_test user cmd )                # 1=1
+# time (advise_test user cmd )                # 1=1
 # time (advise_test user -v '')
 # time (advise_test user -v )
 # time (advise_test user --version )

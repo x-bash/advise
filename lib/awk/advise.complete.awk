@@ -11,7 +11,8 @@ function advise_complete___generic_value( curval, genv, lenv, obj, kp,      i, v
     if ( _cand_key_arrl != "" ) {
         CODE = CODE "\n" "candidate_arr=(" "\n"
         for (i=1; i<=_cand_key_arrl; ++i) {
-            v = obj[ _cand_key_key, i]
+            if   (obj[ _cand_key_key ] == "{") v = obj[ _cand_key_key, i]
+            else v = obj[ _cand_key_key, jqu(i)]
             _cand_key_desc = _cand_key_key SUBSEP v SUBSEP "\"#desc\""
             DESC = obj[ _cand_key_desc ]
             if( v ~ "^\"" curval ){
