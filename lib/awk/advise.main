@@ -1,4 +1,36 @@
+# shellcheck shell=sh disable=SC3043,SC3003,SC2177
+xws install
+
 advise_test(){
-    :
-    awk -f ""
+    local IFS=$'\002'
+    {
+        printf "%s\n" "$*"
+        cat .x-cmd/dev/data/advise.json
+        # cat .x-cmd/dev/data/git.json
+        # cat .x-cmd/dev/data/git_tokenize.json
+    } | mawk \
+        -f "$___X_CMD_ROOT_MOD/awk/lib/default.awk" \
+        -f "$___X_CMD_ROOT_MOD/awk/lib/json.awk" \
+        -f "$___X_CMD_ROOT_MOD/awk/lib/jiter.awk" \
+        -f "$___X_CMD_ROOT_MOD/advise/lib/awk/advise.complete.awk" \
+        -f "$___X_CMD_ROOT_MOD/advise/lib/awk/advise.main.awk" \
+        -f "$___X_CMD_ROOT_MOD/advise/lib/awk/advise.obj.awk" \
+        -f "$___X_CMD_ROOT_MOD/advise/lib/awk/util.awk"
 }
+
+time (advise_test '')
+# time (advise_test user cmd '')              # 0
+# time (advise_test user cmd )                # 1=1
+# time (advise_test user -v '')
+# time (advise_test user -v )
+# time (advise_test user --version )
+# time (advise_test user --version '')
+# time (advise_test user logout -I '')
+# time (advise_test user logout -I aaa '' )   # 1=1
+# time (advise_test user logout -K aaa '' )   # 1<2
+# time (advise_test user logout -I aa )       # 0<1
+# time (advise_test user logout -I aa a '' )  # 2>1
+# time (advise_test user logout -ABI '')
+
+# time (advise_test add -n '')
+
