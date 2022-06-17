@@ -52,9 +52,7 @@ function parse_args_to_env___option( obj, obj_prefix, args, argl, arg, arg_idx, 
     _optarg_id, _optargc, k ){
 
     _optarg_id = aobj_get_id_by_name( obj, obj_prefix, arg )
-    if (_optarg_id == "") {
-        return 0
-    }
+    if (_optarg_id == "") return false
 
     _optargc = aobj_get_optargc( obj, obj_prefix, _optarg_id )
     if (_optargc == 0) {    # This is a flag
@@ -74,7 +72,7 @@ function parse_args_to_env___option( obj, obj_prefix, args, argl, arg, arg_idx, 
 
 function parse_args_to_env( args, argl, obj, obj_prefix, genv_table, lenv_table,    i, j, _subcmdid, _optarg_id, _arg_arrl, _optargc, _rest_argc ){
 
-    obj_prefix = SUBSEP jqu(1)   # Json Parser
+    obj_prefix = SUBSEP "\"1\""   # Json Parser
 
     i = 1;
     while ( i<argl ) {
@@ -93,10 +91,10 @@ function parse_args_to_env( args, argl, obj, obj_prefix, genv_table, lenv_table,
         }
 
         if (arg ~ /^--/) {
-            if ( 0 != parse_args_to_env___option( obj, obj_prefix, args, argl, arg, i, genv_table, lenv_table ) ){
+            if ( false == parse_args_to_env___option( obj, obj_prefix, args, argl, arg, i, genv_table, lenv_table ) ){
                 i--
                 break
-            }else return
+            }
         } else if (arg ~ /^-/) {
             j = parse_args_to_env___option( obj, obj_prefix, args, argl, arg, i, genv_table, lenv_table )
             if (j != 0) {
@@ -116,7 +114,7 @@ function parse_args_to_env( args, argl, obj, obj_prefix, genv_table, lenv_table,
                     continue
                 }
 
-                # assert( j==_arg_arrl, "Fail at parsing: " arg ". Accept at least one argument: -" _arg_arr[j] )
+                assert( j==_arg_arrl, "Fail at parsing: " arg ". Accept at least one argument: -" _arg_arr[j] )
 
                 for (k=1; k<=_optargc; ++k)  {
                     if ( i>=argl ) {
