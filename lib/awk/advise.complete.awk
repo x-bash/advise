@@ -88,27 +88,28 @@ function advise_complete_option_name_or_argument_value( curval, genv, lenv, obj,
         return CODE
     }
 
-    if ( aobj_option_all_set( lenv, obj, obj_prefix ) ) {
+    # if ( aobj_option_all_set( lenv, obj, obj_prefix ) ) {
         return advise_complete_argument_value( curval, genv, lenv, obj, obj_prefix, 1 )
-    } else {
-        l = obj[ obj_prefix L ]
+    # }
 
-        CODE = CODE "\n" "candidate_arr=(" "\n"
-        for (i=1; i<=l; ++i) {
-            k = obj[ obj_prefix, i ]
-            if (k ~ "^[^-]") continue
-            if ( aobj_istrue(obj, obj_prefix SUBSEP k SUBSEP "\"#subcmd\"" ) ) continue
+    # l = obj[ obj_prefix L ]
 
-            if ( aobj_required(obj, obj_prefix SUBSEP k) ) {
-                _cand_key_desc = obj_prefix SUBSEP k SUBSEP "\"#desc\""
-                DESC = obj[ _cand_key_desc ]
-                if ( lenv_table[ k ] == "" ) {
-                    if( DESC != "" )   CODE = CODE k ":" DESC "\n"
-                    else CODE = CODE k "\n"
-                }
-            }
-        }
-        CODE = CODE ")"
-        return CODE
-    }
+    # CODE = CODE "\n" "candidate_arr=(" "\n"
+    # for (i=1; i<=l; ++i) {
+    #     k = obj[ obj_prefix, i ]
+    #     if (k ~ "^[^-]") continue
+    #     if ( aobj_istrue(obj, obj_prefix SUBSEP k SUBSEP "\"#subcmd\"" ) ) continue
+
+    #     if ( aobj_required(obj, obj_prefix SUBSEP k) ) {
+    #         _cand_key_desc = obj_prefix SUBSEP k SUBSEP "\"#desc\""
+    #         DESC = obj[ _cand_key_desc ]
+    #         if ( lenv_table[ k ] == "" ) {
+    #             if( DESC != "" )   CODE = CODE k ":" DESC "\n"
+    #             else CODE = CODE k "\n"
+    #         }
+    #     }
+    # }
+
+    # CODE = CODE ")"
+    # return CODE
 }
