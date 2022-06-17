@@ -1,59 +1,83 @@
 {
     "#1": {
         "#desc": "",
-        "#candidate": ["a", "b", "c"],
+        "#cand": ["a", "b", "c"],
         "#rmatch": [],
         "#exec": "ls",
-        "#require": true
+        "#r": true
     },
     "#9": {
         "#desc": "",
-        "#candidate": ["a", "b", "c"],
+        "#cand": ["a", "b", "c"],
         "#rmatch": [],
         "#exec": "ls",
-        "#require": true
+        "#r": true
     },
     "#n": {
         "#desc": "",
-        "#candidate": ["a", "b", "c"],
+        "#cand": ["a", "b", "c"],
         "#rmatch": [],
         "#exec": "ls"
     },
     "user": {
         "#desc": "",
         "login": {
-            "#desc": ""
+            "#desc": "test login"
         },
         "logout": {
             "#desc": "test logout",
-            "-I": [],
+            "-I|--install": {
+                "#desc": "test install",
+                "#1": {
+                    "#cand": ["aaa", "bbb"]
+                }
+            },
+            "-K|--kill": {
+                "#desc": "test kill",
+                "#1": {
+                    "#cand": ["aaa", "bbb"]
+                },
+                "#2": {
+                    "#cand": ["ccc", "ddd"]
+                }
+
+            },
+            "-A": {
+                "#desc": "AAA"
+            },
+            "-B": {
+                "#desc": "BBB"
+            },
             "-J": "",
-            "-K": "   ",
-            "-L": [ ],
+            "-L": [],
             ":+debug|:+d": {},
             ":-reset|:-r": {}
         },
-        "-v|m": {
-            "#desc": "argument",
+        "--version|-v": {
+            "#desc": "test version",
             "#1": {
                 "#desc": "first argument",
                 "abc": 1,
                 "cde": 2,
-                "#candidate": ["a", "b", "c"],
+                "#cand": ["a", "b", "c"],
                 "#rmatch": [],
                 "#exec": "ls"
             }
         },
         "cmd|command": {
+            "#desc": "test command",
             "cmd1": {
-                "#source": "___advise_current_shell_exec"
+                "#desc": "test cmd1",
+                "#exec": "___advise_current_shell_exec"
             },
             "cmd2": {
+                "#desc": "test cmd2",
                 "#exec": "___advise_sub_shell_exec"
             }
         },
         "--@": ["@a1", "@a2", "@a3", "@b", "@c"],
         "--required": {
+            "#desc": "test required",
             "#1": ["adc=sss", "scs=bbb", "scs=aaa"],
             "#2": ["www:a", ":b", ":c"],
             "#3": ["10", "11", "12", "/[1-9][0-9]?|100/"]
@@ -64,7 +88,7 @@
         },
         "--tuple": {
             "#multiple": true,
-            "#desc": "desc",
+            "#desc": "test tuple",
             "#1": {
                 "#desc": "first argument"
             },

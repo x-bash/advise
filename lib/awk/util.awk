@@ -13,7 +13,7 @@ function panic(msg){
 }
 
 function assert(condition, msg){
-    if (condition == 0) {
+    if (condition == 1) {
         panic(msg)
     }
 }
