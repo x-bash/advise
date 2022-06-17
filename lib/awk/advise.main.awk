@@ -3,7 +3,9 @@
     if (NR>1) {
         # if ($0 != "") jiparse(obj, $0)
         if ($0 != "") jiparse_after_tokenize(obj, $0)
-    } else  prepare_argarr( $0 )
+    } else {
+        prepare_argarr( $0 )
+    }
 }
 
 END{
@@ -22,12 +24,6 @@ function prepare_argarr( argstr,        i, _arg ){
     gsub("\n", "\001", argstr)
     parsed_arglen = split(argstr, parsed_argarr, "\002")
 
-    # ruleregex = ""
-    # arglen = 0
-    # rest_argv_len = 0
-    # current_keypath = "."
-    # opt_len = parsed_arglen
-
     for (i=1; i<=parsed_arglen; ++i) {
         _arg = parsed_argarr[i]
         gsub("\001", "\n", _arg)
@@ -36,7 +32,6 @@ function prepare_argarr( argstr,        i, _arg ){
 }
 
 # EndSection
-
 
 # Section: parse argument into env table
 
@@ -53,30 +48,31 @@ function env_table_set( key, keypath, value ){
     lenv_table[ key ] = value
 }
 
+function parse_args_to_env___option( obj, obj_prefix, args, argl, arg, arg_idx, genv_table, lenv_table,
+    _optarg_id, _optargc, k ){
 
-function parse_args_to_env___option( obj, obj_prefix, args, argl, arg, arg_idx, genv_table, lenv_table,     _arg_id, _optargc, k ){
-    _arg_id = aobj_get_id_by_name( obj, obj_prefix, arg )
-    if (_arg_id == "") {
+    _optarg_id = aobj_get_id_by_name( obj, obj_prefix, arg )
+    if (_optarg_id == "") {
         return 0
     }
 
-    _optargc = aobj_get_optargc( obj, obj_prefix, _arg_id )
-    if (_optargc == 0) {
-        env_table_set_true( _arg_id, obj_prefix SUBSEP _arg_id SUBSEP arg_idx )
+    _optargc = aobj_get_optargc( obj, obj_prefix, _optarg_id )
+    if (_optargc == 0) {    # This is a flag
+        env_table_set_true( _optarg_id, obj_prefix SUBSEP _optarg_id )
         return arg_idx
     }
 
     for (k=1; k<=_optargc; ++k)  {
         if ( arg_idx >= argl ) {
-            advise_complete_option_value( args[ arg_idx ], genv_table, lenv_table, obj, obj_prefix, _arg_id, k )
+            advise_complete_option_value( args[ arg_idx ], genv_table, lenv_table, obj, obj_prefix, _optarg_id, k )
             return arg_idx # Not Running at all .. # TODO
         }
-        env_table_set( _arg_id, obj_prefix SUBSEP _arg_id SUBSEP k, args[ arg_idx++ ] )
+        env_table_set( _optarg_id, obj_prefix SUBSEP _optarg_id SUBSEP k, args[ arg_idx++ ] )
     }
     return arg_idx
 }
 
-function parse_args_to_env( args, argl, obj, obj_prefix, genv_table, lenv_table,    i, j, _subcmdid, _arg_id, _arg_arrl, _optargc, _rest_argc ){
+function parse_args_to_env( args, argl, obj, obj_prefix, genv_table, lenv_table,    i, j, _subcmdid, _optarg_id, _arg_arrl, _optargc, _rest_argc ){
 
     obj_prefix = SUBSEP jqu(1)   # Json Parser
 
@@ -105,18 +101,18 @@ function parse_args_to_env( args, argl, obj, obj_prefix, genv_table, lenv_table,
             j = parse_args_to_env___option( obj, obj_prefix, args, argl, arg, i, genv_table, lenv_table )
             if (j != 0) {
                 i = j - 1
-                _arg_id = aobj_get_id_by_name( obj, obj_prefix, arg )
-                obj_prefix = obj_prefix SUBSEP _arg_id
+                _optarg_id = aobj_get_id_by_name( obj, obj_prefix, arg )
+                obj_prefix = obj_prefix SUBSEP _optarg_id
                 break
             }
 
             _arg_arrl = split(arg, _arg_arr, "")
             for (j=2; j<=_arg_arrl; ++j) {
-                _arg_id = aobj_get_id_by_name( obj, obj_prefix, "-" _arg_arr[j] )
-                assert( _arg_id == "", "Fail at parsing: " arg ". Not Found: -" _arg_arr[j] )
-                _optargc = aobj_get_optargc( obj, obj_prefix, _arg_id )
+                _optarg_id = aobj_get_id_by_name( obj, obj_prefix, "-" _arg_arr[j] )
+                assert( _optarg_id == "", "Fail at parsing: " arg ". Not Found: -" _arg_arr[j] )
+                _optargc = aobj_get_optargc( obj, obj_prefix, _optarg_id )
                 if (_optargc == 0) {
-                    env_table_set_true( _arg_id, obj_prefix SUBSEP _arg_id SUBSEP k )
+                    env_table_set_true( _optarg_id, obj_prefix SUBSEP _optarg_id SUBSEP k )
                     continue
                 }
 
@@ -124,20 +120,14 @@ function parse_args_to_env( args, argl, obj, obj_prefix, genv_table, lenv_table,
 
                 for (k=1; k<=_optargc; ++k)  {
                     if ( i>=argl ) {
-                        advise_complete_option_value( args[i], genv_table, lenv_table, obj, obj_prefix, _arg_id, k )
+                        advise_complete_option_value( args[i], genv_table, lenv_table, obj, obj_prefix, _optarg_id, k )
                         return  # Not Running at all .. # TODO
                     }
-                    env_table_set( _arg_id, obj_prefix SUBSEP _arg_id SUBSEP k, args[ i++ ] )
+                    env_table_set( _optarg_id, obj_prefix SUBSEP _optarg_id SUBSEP k, args[ i++ ] )
                 }
             }
             continue
         }
-
-        # gt create repo :+wiki :-issue
-        # gt create repo --NoWiki --NoIssue --
-        # else if (arg ~ /^:[-+]/) {
-        #     continue
-        # }
         break
     }
     # handle it into argument
