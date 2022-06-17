@@ -1,6 +1,5 @@
 
 {
-    # if ($0 != "") jiparse_after_tokenize( obj, $0)
     if (NR>1) {
         # if ($0 != "") jiparse(obj, $0)
         if ($0 != "") jiparse_after_tokenize(obj, $0)
@@ -10,13 +9,12 @@
 }
 
 END{
-    # for (i in obj) print i "\t\t\t\t" obj[i]
     if (EXIT_CODE == 0) {
         # enhance_argument_parser( obj )
         parse_args_to_env( parsed_argarr, parsed_arglen, obj, "", genv_table, lenv_table )
         # showing candidate code
     }
-    print "CODE:" CODE
+    # print "CODE:" CODE
 }
 
 # Section: prepare argument
@@ -65,7 +63,7 @@ function parse_args_to_env___option( obj, obj_prefix, args, argl, arg, arg_idx, 
     for (k=1; k<=_optargc; ++k)  {
         if ( arg_idx >= argl ) {
             advise_complete_option_value( args[ arg_idx ], genv_table, lenv_table, obj, obj_prefix, _optarg_id, k )
-            return arg_idx # Not Running at all .. # TODO
+            exit(0) # Not Running at all .. # TODO
         }
         env_table_set( _optarg_id, obj_prefix SUBSEP _optarg_id SUBSEP k, args[ arg_idx++ ] )
     }
@@ -85,7 +83,7 @@ function parse_args_to_env( args, argl, obj, obj_prefix, genv_table, lenv_table,
             # TODO: Check all required options set
             if ( ! aobj_option_all_set( lenv_table, obj, obj_prefix ) ) {
                 # TODO: show message that it is wrong ...
-                print "all required options should be set"
+                panic("All required options should be set")
             }
             obj_prefix = obj_prefix SUBSEP _subcmdid
             delete lenv_table
@@ -93,17 +91,13 @@ function parse_args_to_env( args, argl, obj, obj_prefix, genv_table, lenv_table,
         }
 
         if (arg ~ /^--/) {
-            if ( false == parse_args_to_env___option( obj, obj_prefix, args, argl, arg, i, genv_table, lenv_table ) ){
-                i--
-                break
-            }
+            if ( false == parse_args_to_env___option( obj, obj_prefix, args, argl, arg, i, genv_table, lenv_table )) break
+            return
         } else if (arg ~ /^-/) {
             j = parse_args_to_env___option( obj, obj_prefix, args, argl, arg, i, genv_table, lenv_table )
             if (j != 0) {
-                i = j - 1
-                _optarg_id = aobj_get_id_by_name( obj, obj_prefix, arg )
-                obj_prefix = obj_prefix SUBSEP _optarg_id
-                break
+                i = j
+                continue
             }
 
             _arg_arrl = split(arg, _arg_arr, "")
@@ -112,11 +106,11 @@ function parse_args_to_env( args, argl, obj, obj_prefix, genv_table, lenv_table,
                 assert( _optarg_id == "", "Fail at parsing: " arg ". Not Found: -" _arg_arr[j] )
                 _optargc = aobj_get_optargc( obj, obj_prefix, _optarg_id )
                 if (_optargc == 0) {
-                    env_table_set_true( _optarg_id, obj_prefix SUBSEP _optarg_id SUBSEP k )
+                    env_table_set_true( _optarg_id, obj_prefix SUBSEP _optarg_id )
                     continue
                 }
 
-                assert( j==_arg_arrl, "Fail at parsing: " arg ". Accept at least one argument: -" _arg_arr[j] )
+                assert( j<_arg_arrl, "Fail at parsing: " arg ". Accept at least one argument: -" _arg_arr[j] )
 
                 for (k=1; k<=_optargc; ++k)  {
                     if ( i>=argl ) {
@@ -131,7 +125,6 @@ function parse_args_to_env( args, argl, obj, obj_prefix, genv_table, lenv_table,
         break
     }
     # handle it into argument
-
     for (j=1; i+j-1 < argl; ++j) {
         rest_arg[ j ] = args[ i+j-1 ]
     }
@@ -147,11 +140,9 @@ function parse_args_to_env( args, argl, obj, obj_prefix, genv_table, lenv_table,
     rest_argc_max = aobj_get_maximum_rest_argc( obj, obj_prefix )
 
     if (_rest_argc == rest_argc_max) {
-        # print  "_rest_argc: " _rest_argc "==" rest_argc_max
         # No Advise
     } else if (_rest_argc > rest_argc_max) {
         # No Advise. Show it is wrong.
-        # print  "_rest_argc: " _rest_argc ">" rest_argc_max
     } else {
         advise_complete_argument_value( args[i], genv_table, lenv_table, obj, obj_prefix, _rest_argc+1 )
     }

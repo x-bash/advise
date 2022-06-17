@@ -20,7 +20,7 @@
         "#exec": "ls"
     },
     "user": {
-        "#desc": "",
+        "#desc": "Desc user",
         "login": {
             "#desc": "test login"
         },
@@ -59,7 +59,7 @@
                 "#desc": "first argument",
                 "abc": 1,
                 "cde": 2,
-                "#cand": ["a", "b", "c"],
+                "#cand": ["va", "vb", "vc"],
                 "#rmatch": [],
                 "#exec": "ls"
             }

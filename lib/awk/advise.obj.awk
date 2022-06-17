@@ -33,7 +33,7 @@ function aobj_option_all_set( lenv_table, obj, obj_prefix,  i, l, k ){
     l = obj[ obj_prefix L ]
     for (i=1; i<=l; ++i) {
         k = obj[ obj_prefix, i ]
-        if (juq(k) ~ "^[^-]") continue
+        if (k ~ "^\"[^-]") continue
         if ( aobj_istrue(obj, obj_prefix SUBSEP k SUBSEP "#subcmd" ) ) continue
 
         if ( aobj_required(obj, obj_prefix SUBSEP k) ) {
@@ -57,7 +57,7 @@ function aobj_get_id_by_name( obj, obj_prefix, name, _res ){
 }
 
 function aobj_required( obj, kp ){
-    return (obj[ kp, jqu("#r") ] == "true" )
+    return (obj[ kp, "\"#r\"" ] == "true" )
 }
 
 function aobj_istrue( obj, kp ){
@@ -65,13 +65,22 @@ function aobj_istrue( obj, kp ){
 }
 
 function aobj_get_optargc( obj, obj_prefix, option_id,  _res, i ){
-    if ( "" != (_res = obj[ obj_prefix, option_id L "argc" ]) ) return _res
+    obj_prefix = obj_prefix SUBSEP option_id
+    if ( "" != (_res = obj[ obj_prefix L "argc" ]) ) return _res
     for (i=1; i<100; ++i) {     # 100 means MAXINT
-        if (obj[ obj_prefix, option_id, jqu("#" i) ] == "") break
+        if (obj[ obj_prefix, jqu("#" i) ] == "") break
     }
-    if (( i==1 ) && (obj[ obj_prefix, option_id ] == "[")) obj[ obj_prefix, option_id L "argc" ] = 1
-    else obj[ obj_prefix, option_id L "argc" ] = --i
-    return i
+    if (i != 1 ) return obj[ obj_prefix, option_id L "argc" ] = --i
+    else {
+        if ( obj[ obj_prefix ] == "[") return obj[ obj_prefix L "argc" ] = ( obj[ obj_prefix, option_id L ] != 0 )
+        l = obj[ obj_prefix L]
+        for (j=1; j<=l; ++j) {
+            v = obj[ obj_prefix, i ]
+            if (v ~ "^\"#") continue
+            return obj[ obj_prefix L "argc" ] = 1
+        }
+    }
+    return 0
 }
 
 function aobj_get_minimum_rest_argc( obj, obj_prefix, rest_arg_id,  _res ){
