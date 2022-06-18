@@ -71,6 +71,12 @@ function advise_complete_argument_value( curval, genv, lenv, obj, obj_prefix, nt
         return advise_complete___generic_value( curval, genv, lenv, obj, _kp )
     }
 
+    _kp = obj_prefix SUBSEP "\"#n\""
+    if (obj[ _kp ] != "") {
+        return advise_complete___generic_value( curval, genv, lenv, obj, _kp )
+    }
+
+    return advise_complete___generic_value( curval, genv, lenv, obj, obj_prefix )
 }
 
 # Most complicated
