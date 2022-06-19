@@ -7,10 +7,10 @@ ___advise_run(){
 
     local filepath
     case "$resname" in
-        /*) filepath="$resname" ;;
-        -)  filepath=/dev/stdin ;;
-        *)  filepath="$___ADVISE_RUN_CMD_FOLDER/$resname"
-            [ ! -d "$filepath" ] || filepath="$filepath/advise.json" ;;
+        /*)     filepath="$resname" ;;
+        -)      filepath=/dev/stdin ;;
+        *)      filepath="$___ADVISE_RUN_CMD_FOLDER/$resname"
+                [ ! -d "$filepath" ] || filepath="$filepath/advise.json" ;;
     esac
     [ -f "$filepath" ] || return
 
