@@ -87,7 +87,6 @@ ___advise_run(){
         COMP_CWORD="$(( ${#tmp[@]}-1 ))"
     fi
 
-    local OLDIFS="$IFS"
     local IFS=$'\n'
     local cmds
     cmds="$(___advise_get_result_from_awk)"
@@ -102,31 +101,24 @@ ___advise_run(){
         cmds+=("${i%% *}")
     done
 
-    if [ -n "$ZSH_VERSION" ];then
-        eval "desc=(${desc[*]})"
-        _describe 'commands' desc
-        compadd -a cmds
-    else
-        if [[ ! "$BASH_VERSION" =~ ^3.* ]];then
-            if [[ "$result" =~ [:=\/]$ ]];then
-                compopt -o nospace
-            else
-                compopt +o nospace
-            fi
+    if [[ ! "$BASH_VERSION" =~ ^3.* ]];then
+        if [[ "$result" =~ [:=\/]$ ]];then
+            compopt -o nospace
+        else
+            compopt +o nospace
         fi
-
-        # shellcheck disable=SC2207
-        COMPREPLY=(
-            $(
-                compgen -W "${cmds[*]}" -- "$cur"
-            )
-        )
-
-        __ltrim_completions "$cur" "@"
-        __ltrim_completions "$cur" ":"
-        __ltrim_completions "$cur" "="
     fi
-    IFS="$OLDIFS"
+
+    # shellcheck disable=SC2207
+    COMPREPLY=(
+        $(
+            compgen -W "${cmds[*]}" -- "$cur"
+        )
+    )
+
+    __ltrim_completions "$cur" "@"
+    __ltrim_completions "$cur" ":"
+    __ltrim_completions "$cur" "="
 }
 
 ## EndSection
