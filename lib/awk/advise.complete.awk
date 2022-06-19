@@ -42,12 +42,12 @@ function advise_complete_option_value( curval, genv, lenv, obj, obj_prefix, opti
 function advise_complete_argument_value( curval, genv, lenv, obj, obj_prefix, nth,      _kp, i, l , v, _option_id, _desc, _arr_value, _arr_valuel ){
 
     if (nth == 1) {
-        CODE = CODE "\n" "argument_arr=(" "\n"
+        CODE = CODE "\n" "complete_option_or_argument_name=(" "\n"
         l = obj[ obj_prefix L ]
         for (i=1; i<=l; ++i) {
             _option_id = obj[ obj_prefix, i ]
             if ( _option_id ~ "^\"#") continue
-            _desc = juq(obj[ obj_prefix SUBSEP _option_id SUBSEP "\"#desc\"" ])
+            _desc = ( ZSHVERSION != "" ) ? juq(obj[ obj_prefix SUBSEP _option_id SUBSEP "\"#desc\"" ]) : ""
             _arr_valuel = split( juq( _option_id ), _arr_value, "|" )
             for ( j=1; j<=_arr_valuel; ++j) {
                 v =_arr_value[j]
@@ -86,7 +86,7 @@ function advise_complete_option_name_or_argument_value( curval, genv, lenv, obj,
         CODE = CODE "\n" "candidate_arr=(" "\n"
         for (i=1; i<=_arrl; ++i) {
             _option_id = obj[ obj_prefix, i ]
-            _desc = juq(obj[ obj_prefix SUBSEP _option_id SUBSEP "\"#desc\"" ])
+            _desc = ( ZSHVERSION != "" ) ? juq(obj[ obj_prefix SUBSEP _option_id SUBSEP "\"#desc\"" ]) : ""
             _arr_valuel = split( juq(_option_id), _arr_value, "|" )
             for ( j=1; j<=_arr_valuel; ++j) {
                 v = _arr_value[j]
@@ -105,7 +105,7 @@ function advise_complete_option_name_or_argument_value( curval, genv, lenv, obj,
         CODE = CODE "\n" "candidate_arr=(" "\n"
         for (i=1; i<=_arrl; ++i) {
             _option_id = obj[ obj_prefix, i ]
-            _desc = juq(obj[ obj_prefix SUBSEP _option_id SUBSEP "\"#desc\"" ])
+            _desc = ( ZSHVERSION != "" ) ? juq(obj[ obj_prefix SUBSEP _option_id SUBSEP "\"#desc\"" ]) : ""
             _arr_valuel = split( juq( _option_id ), _arr_value, "|" )
             for ( j=1; j<=_arr_valuel; ++j) {
                 v = _arr_value[j]
