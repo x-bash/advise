@@ -7,7 +7,17 @@ else
 
 ___X_CMD_ADVISE_TMPDIR="${TMPDIR%/}/.x-cmd/advise_auto_json"
 
-xrc:mod advise/lib/helper advise/lib/main   # advise/lib/man
+xrc:mod:lib advise  helper util define main   # advise/lib/man
+
+if [ -n "$ZSH_VERSION" ]; then
+    xrc:mod advise/lib/main.zsh
+else
+    case "$BASH_VERSION" in
+        3*|4.1.*|4.2.*)     xrc:mod advise/lib/main.3.bash  ;;
+        *)                  xrc:mod advise/lib/main.bash    ;;
+    esac
+fi
+
 ___x_cmd_advise_man(){
     xrc:mod advise/lib/man && ___x_cmd_advise_man "$@"
 }
