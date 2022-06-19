@@ -1,43 +1,5 @@
 
 # Section : main
-___advise_get_result_from_awk(){
-    local result cmd_result
-    local IFS=$'\002'
-    local s="${COMP_WORDS[*]}"
-    s="${s#*"$IFS"}"
-
-    # Handle the case that the last word has "@" or ":" in bash.
-    COMP_LINE="${COMP_WORDS[*]}"
-    local cur_1="${COMP_WORDS[COMP_CWORD-1]}"
-    case "$cur_1" in
-        *@|*:)
-            if [ "${COMP_LINE% }" != "${COMP_LINE}" ]; then
-                s="${s%$cur_1$IFS$cur}"
-                s="${s}${cur_1}$cur"
-            fi
-            ;;
-        *)
-    esac
-
-    IFS=$'\n'
-    result="$(
-        {
-            cat "$filepath"
-            printf "\034%s\034" "$s"
-        } | awk -f "$___X_CMD_ROOT_MOD/advise/lib/advise.awk" 2>/dev/null
-    )"
-    local cmd="${result##*\#> }"
-    cmd_result=""
-
-    if [ "$cmd" != "$result" ]; then
-        cmd_result="$(eval "$cmd" 2>/dev/null)"
-        result="${result%%\#> *}"
-    fi
-
-    printf "%s" "$result
-$cmd_result"
-}
-
 ___advise_run(){
     local COMP_WORDS=("${words[@]}")
     local COMP_CWORD="$(( ${#words[@]}-1 ))"
@@ -55,17 +17,12 @@ ___advise_run(){
     esac
     [ -f "$filepath" ] || return
 
-    local IFS=$'\n'
-    local cmds
-    cmds="$(___advise_get_result_from_awk)"
-    local commands=($(printf "%s" "$cmds"))
-    desc=()
-    for i in "${commands[@]}"; do
-        desc+=("\"${i%% *}:${i#*--- }\"")
-    done
+    local complete_option_or_argument_name candidate_arr candidate_exec
+    eval "$(___advise_get_result_from_awk)" 2>/dev/null
+    local candidate_exec_arr=( $(eval "$candidate_exec" 2>/dev/null) )
 
-    eval "desc=(${desc[*]})"
-    _describe 'commands' desc
+    [ -z "$complete_option_or_argument_name" ] || _describe 'commands' complete_option_or_argument_name
+    [ -z "$candidate_arr" ] || _describe 'commands' candidate_arr
+    [ -z "$candidate_exec_arr" ] || _describe 'commands' candidate_exec_arr
 }
-
 ## EndSection

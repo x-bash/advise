@@ -85,3 +85,34 @@ ___advise_main(){
     fi
 }
 
+___advise_get_result_from_awk(){
+    local IFS=$'\002'
+    local s="${COMP_WORDS[*]}"
+    s="${s#*"$IFS"}"
+
+    # Handle the case that the last word has "@" or ":" in bash.
+    COMP_LINE="${COMP_WORDS[*]}"
+    local cur_1="${COMP_WORDS[COMP_CWORD-1]}"
+    case "$cur_1" in
+        *@|*:)
+            if [ "${COMP_LINE% }" != "${COMP_LINE}" ]; then
+                s="${s%$cur_1$IFS$cur}"
+                s="${s}${cur_1}$cur"
+            fi
+            ;;
+        *)
+    esac
+
+    {
+        printf "%s\n" "$s"
+        cat "$filepath"
+    } | awk \
+        -v ZSHVERSION="$ZSH_VERSION" \
+        -f "$___X_CMD_ROOT_MOD/awk/lib/default.awk" \
+        -f "$___X_CMD_ROOT_MOD/awk/lib/json.awk" \
+        -f "$___X_CMD_ROOT_MOD/awk/lib/jiter.awk" \
+        -f "$___X_CMD_ROOT_MOD/advise/lib/awk/advise.complete.awk" \
+        -f "$___X_CMD_ROOT_MOD/advise/lib/awk/advise.main.awk" \
+        -f "$___X_CMD_ROOT_MOD/advise/lib/awk/advise.obj.awk" \
+        -f "$___X_CMD_ROOT_MOD/advise/lib/awk/util.awk"
+}
