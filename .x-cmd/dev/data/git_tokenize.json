@@ -4,71 +4,139 @@
 {
 "-n|--dry-run"
 :
-"--- dry run"
+{
+"#desc"
+:
+"dry run"
+}
 ,
 "-v|--verbose"
 :
-"--- be verbose"
+{
+"#desc"
+:
+"be verbose"
+}
 ,
 "-i|--interactive"
 :
-"--- interactive picking"
+{
+"#desc"
+:
+"interactive picking"
+}
 ,
 "-p|--patch"
 :
-"--- select hunks interactively"
+{
+"#desc"
+:
+"select hunks interactively"
+}
 ,
 "-e|--edit"
 :
-"--- edit current diff and apply"
+{
+"#desc"
+:
+"edit current diff and apply"
+}
 ,
 "-f|--force"
 :
-"--- allow adding otherwise ignored files"
+{
+"#desc"
+:
+"allow adding otherwise ignored files"
+}
 ,
 "-u|--update"
 :
-"--- update tracked files"
+{
+"#desc"
+:
+"update tracked files"
+}
 ,
 "--renormalize"
 :
-"--- EOL of tracked files "
+{
+"#desc"
+:
+"EOL of tracked files "
+}
 ,
 "-N|--intent-to-add"
 :
-"--- record only the fact that the path will be added later"
+{
+"#desc"
+:
+"record only the fact that the path will be added later"
+}
 ,
 "-A|--all"
 :
-"--- add changes from all tracked and untracked files"
+{
+"#desc"
+:
+"add changes from all tracked and untracked files"
+}
 ,
 "--ignore-removal"
 :
-"--- ignore paths removed in the working tree "
+{
+"#desc"
+:
+"ignore paths removed in the working tree "
+}
 ,
 "--refresh"
 :
-"--- don't add, only refresh the index"
+{
+"#desc"
+:
+"don't add, only refresh the index"
+}
 ,
 "--ignore-errors"
 :
-"--- just skip files which cannot be added because of errors"
+{
+"#desc"
+:
+"just skip files which cannot be added because of errors"
+}
 ,
 "--ignore-missing"
 :
-"--- check if - even missing - files are ignored in dry run"
+{
+"#desc"
+:
+"check if - even missing - files are ignored in dry run"
+}
 ,
 "--chmod"
 :
-"--- x        override the executable bit of the listed files"
+{
+"#desc"
+:
+"x        override the executable bit of the listed files"
+}
 ,
 "--pathspec-from-file"
 :
-"--- x        override the executable bit of the listed files"
+{
+"#desc"
+:
+"x        override the executable bit of the listed files"
+}
 ,
 "--pathspec-file-nul"
 :
-"--- NUL character"
+{
+"#desc"
+:
+"NUL character"
+}
 ,
 "#desc"
 :
@@ -88,47 +156,91 @@
 {
 "--format"
 :
-"--- archive format"
+{
+"#desc"
+:
+"archive format"
+}
 ,
 "--prefix"
 :
-"--- prepend prefix to each pathname in the archive"
+{
+"#desc"
+:
+"prepend prefix to each pathname in the archive"
+}
 ,
 "-o|--output"
 :
-"--- write the archive to this file"
+{
+"#desc"
+:
+"write the archive to this file"
+}
 ,
 "--worktree-attributes"
 :
-"--- write the archive to this file"
+{
+"#desc"
+:
+"write the archive to this file"
+}
 ,
 "-v|--verbose"
 :
-"--- report archived files on stderr"
+{
+"#desc"
+:
+"report archived files on stderr"
+}
 ,
 "-0"
 :
-"--- store only"
+{
+"#desc"
+:
+"store only"
+}
 ,
 "-1"
 :
-"--- compress faster"
+{
+"#desc"
+:
+"compress faster"
+}
 ,
 "-9"
 :
-"--- compress better"
+{
+"#desc"
+:
+"compress better"
+}
 ,
 "-l|--list"
 :
-"--- list supported archive formats"
+{
+"#desc"
+:
+"list supported archive formats"
+}
 ,
 "--remote"
 :
-"--- retrieve the archive from remote repository "
+{
+"#desc"
+:
+"retrieve the archive from remote repository "
+}
 ,
 "--exec"
 :
-"--- path to the remote git-upload-archive command"
+{
+"#desc"
+:
+"path to the remote git-upload-archive command"
+}
 ,
 "#desc"
 :
@@ -156,7 +268,11 @@
 {
 "-v|--verbose"
 :
-"--- be verbose; must be placed before a subcommand"
+{
+"#desc"
+:
+"be verbose; must be placed before a subcommand"
+}
 ,
 "#desc"
 :
@@ -168,91 +284,179 @@
 {
 "-b"
 :
-"--- create and checkout a new branch"
+{
+"#desc"
+:
+"create and checkout a new branch"
+}
 ,
 "-B"
 :
-"--- create/reset and checkout a branch"
+{
+"#desc"
+:
+"create/reset and checkout a branch"
+}
 ,
 "-l"
 :
-"--- create reflog for new branch"
+{
+"#desc"
+:
+"create reflog for new branch"
+}
 ,
 "--guess"
 :
-"--- second guess 'git checkout default)"
+{
+"#desc"
+:
+"second guess 'git checkout default)"
+}
 ,
 "--overlay"
 :
-"--- use overlay mode "
+{
+"#desc"
+:
+"use overlay mode "
+}
 ,
 "-q|--quiet"
 :
-"--- suppress progress reporting"
+{
+"#desc"
+:
+"suppress progress reporting"
+}
 ,
 "--recurse-submodules"
 :
-"--- suppress progress reporting"
+{
+"#desc"
+:
+"suppress progress reporting"
+}
 ,
 "--progress"
 :
-"--- force progress reporting"
+{
+"#desc"
+:
+"force progress reporting"
+}
 ,
 "-m|--merge"
 :
-"--- perform a 3-way merge with the new branch"
+{
+"#desc"
+:
+"perform a 3-way merge with the new branch"
+}
 ,
 "--conflict"
 :
-"--- conflict style "
+{
+"#desc"
+:
+"conflict style "
+}
 ,
 "-d|--detach"
 :
-"--- HEAD at named commit"
+{
+"#desc"
+:
+"HEAD at named commit"
+}
 ,
 "-t|--track"
 :
-"--- set upstream info for new branch"
+{
+"#desc"
+:
+"set upstream info for new branch"
+}
 ,
 "-f|--force"
 :
-"--- force checkout "
+{
+"#desc"
+:
+"force checkout "
+}
 ,
 "--orphan"
 :
-"--- force checkout "
+{
+"#desc"
+:
+"force checkout "
+}
 ,
 "--overwrite-ignore"
 :
-"--- update ignored files "
+{
+"#desc"
+:
+"update ignored files "
+}
 ,
 "--ignore-other-worktrees"
 :
-"--- update ignored files "
+{
+"#desc"
+:
+"update ignored files "
+}
 ,
 "-2|--ours"
 :
-"--- checkout our version for unmerged files"
+{
+"#desc"
+:
+"checkout our version for unmerged files"
+}
 ,
 "-3|--theirs"
 :
-"--- checkout their version for unmerged files"
+{
+"#desc"
+:
+"checkout their version for unmerged files"
+}
 ,
 "-p|--patch"
 :
-"--- select hunks interactively"
+{
+"#desc"
+:
+"select hunks interactively"
+}
 ,
 "--ignore-skip-worktree-bits"
 :
-"--- select hunks interactively"
+{
+"#desc"
+:
+"select hunks interactively"
+}
 ,
 "--pathspec-from-file"
 :
-"--- select hunks interactively"
+{
+"#desc"
+:
+"select hunks interactively"
+}
 ,
 "--pathspec-file-nul"
 :
-"--- NUL character"
+{
+"#desc"
+:
+"NUL character"
+}
 ,
 "#desc"
 :
@@ -264,75 +468,147 @@
 {
 "--quit"
 :
-"--- end revert or cherry-pick sequence"
+{
+"#desc"
+:
+"end revert or cherry-pick sequence"
+}
 ,
 "--continue"
 :
-"--- resume revert or cherry-pick sequence"
+{
+"#desc"
+:
+"resume revert or cherry-pick sequence"
+}
 ,
 "--abort"
 :
-"--- cancel revert or cherry-pick sequence"
+{
+"#desc"
+:
+"cancel revert or cherry-pick sequence"
+}
 ,
 "--skip"
 :
-"--- skip current commit and continue"
+{
+"#desc"
+:
+"skip current commit and continue"
+}
 ,
 "--cleanup"
 :
-"--- how to strip spaces and #comments from message"
+{
+"#desc"
+:
+"how to strip spaces and #comments from message"
+}
 ,
 "-n|--no-commit"
 :
-"--- don't automatically commit"
+{
+"#desc"
+:
+"don't automatically commit"
+}
 ,
 "-e|--edit"
 :
-"--- edit the commit message"
+{
+"#desc"
+:
+"edit the commit message"
+}
 ,
 "-s|--signoff"
 :
-"--- Signed-off-by:"
+{
+"#desc"
+:
+"Signed-off-by:"
+}
 ,
 "-m|--mainline"
 :
-"--- Signed-off-by:"
+{
+"#desc"
+:
+"Signed-off-by:"
+}
 ,
 "--rerere-autoupdate"
 :
-"--- update the index with reused conflict resolution if possible"
+{
+"#desc"
+:
+"update the index with reused conflict resolution if possible"
+}
 ,
 "--strategy"
 :
-"--- update the index with reused conflict resolution if possible"
+{
+"#desc"
+:
+"update the index with reused conflict resolution if possible"
+}
 ,
 "-X|--strategy-option"
 :
-"--- update the index with reused conflict resolution if possible"
+{
+"#desc"
+:
+"update the index with reused conflict resolution if possible"
+}
 ,
 "-S|--gpg-sign"
 :
-"--- update the index with reused conflict resolution if possible"
+{
+"#desc"
+:
+"update the index with reused conflict resolution if possible"
+}
 ,
 "-x"
 :
-"--- append commit name"
+{
+"#desc"
+:
+"append commit name"
+}
 ,
 "--ff"
 :
-"--- allow fast-forward"
+{
+"#desc"
+:
+"allow fast-forward"
+}
 ,
 "--allow-empty"
 :
-"--- preserve initially empty commits"
+{
+"#desc"
+:
+"preserve initially empty commits"
+}
 ,
 "--allow-empty-message"
 :
-"--- preserve initially empty commits"
+{
+"#desc"
+:
+"preserve initially empty commits"
+}
 ,
 "--keep-redundant-commits"
 :
-"--- preserve initially empty commits"
+{
+"#desc"
+:
+"preserve initially empty commits"
+}
 ,
 "#desc"
 :
@@ -352,35 +628,67 @@
 {
 "-q|--quiet"
 :
-"--- do not print names of files removed"
+{
+"#desc"
+:
+"do not print names of files removed"
+}
 ,
 "-n|--dry-run"
 :
-"--- dry run"
+{
+"#desc"
+:
+"dry run"
+}
 ,
 "-f|--force"
 :
-"--- force"
+{
+"#desc"
+:
+"force"
+}
 ,
 "-i|--interactive"
 :
-"--- interactive cleaning"
+{
+"#desc"
+:
+"interactive cleaning"
+}
 ,
 "-d"
 :
-"--- remove whole directories"
+{
+"#desc"
+:
+"remove whole directories"
+}
 ,
 "-e|--exclude"
 :
-"--- remove whole directories"
+{
+"#desc"
+:
+"remove whole directories"
+}
 ,
 "-x"
 :
-"--- remove ignored files, too"
+{
+"#desc"
+:
+"remove ignored files, too"
+}
 ,
 "-X"
 :
-"--- remove only ignored files"
+{
+"#desc"
+:
+"remove only ignored files"
+}
 ,
 "#desc"
 :
@@ -400,59 +708,115 @@
 {
 "--contains"
 :
-"--- find the tag that comes after the commit"
+{
+"#desc"
+:
+"find the tag that comes after the commit"
+}
 ,
 "--debug"
 :
-"--- debug search strategy on stderr"
+{
+"#desc"
+:
+"debug search strategy on stderr"
+}
 ,
 "--all"
 :
-"--- use any ref"
+{
+"#desc"
+:
+"use any ref"
+}
 ,
 "--tags"
 :
-"--- use any tag, even unannotated"
+{
+"#desc"
+:
+"use any tag, even unannotated"
+}
 ,
 "--long"
 :
-"--- always use long format"
+{
+"#desc"
+:
+"always use long format"
+}
 ,
 "--first-parent"
 :
-"--- only follow first parent"
+{
+"#desc"
+:
+"only follow first parent"
+}
 ,
 "--abbrev[=gits"
 :
-"--- SHA-1s"
+{
+"#desc"
+:
+"SHA-1s"
+}
 ,
 "--exact-match"
 :
-"--- only output exact matches"
+{
+"#desc"
+:
+"only output exact matches"
+}
 ,
 "--candidates"
 :
-"--- st recent tags "
+{
+"#desc"
+:
+"st recent tags "
+}
 ,
 "--match"
 :
-"--- only consider tags matching "
+{
+"#desc"
+:
+"only consider tags matching "
+}
 ,
 "--exclude"
 :
-"--- do not consider tags matching "
+{
+"#desc"
+:
+"do not consider tags matching "
+}
 ,
 "--always"
 :
-"--- show abbreviated commit object as fallback"
+{
+"#desc"
+:
+"show abbreviated commit object as fallback"
+}
 ,
 "--dirty[="
 :
-"--- dirty working tree "
+{
+"#desc"
+:
+"dirty working tree "
+}
 ,
 "--broken[="
 :
-"--- broken working tree "
+{
+"#desc"
+:
+"broken working tree "
+}
 ,
 "#desc"
 :
@@ -472,135 +836,267 @@
 {
 "-v|--verbose"
 :
-"--- be more verbose"
+{
+"#desc"
+:
+"be more verbose"
+}
 ,
 "-q|--quiet"
 :
-"--- be more quiet"
+{
+"#desc"
+:
+"be more quiet"
+}
 ,
 "--all"
 :
-"--- fetch from all remotes"
+{
+"#desc"
+:
+"fetch from all remotes"
+}
 ,
 "--set-upstream"
 :
-"--- set upstream for git pull/fetch"
+{
+"#desc"
+:
+"set upstream for git pull/fetch"
+}
 ,
 "-a|--append"
 :
-"--- append to .git/FETCH_HEAD instead of overwriting"
+{
+"#desc"
+:
+"append to .git/FETCH_HEAD instead of overwriting"
+}
 ,
 "--upload-pack"
 :
-"--- ath to upload pack on remote end"
+{
+"#desc"
+:
+"ath to upload pack on remote end"
+}
 ,
 "-f|--force"
 :
-"--- force overwrite of local reference"
+{
+"#desc"
+:
+"force overwrite of local reference"
+}
 ,
 "-m|--multiple"
 :
-"--- fetch from multiple remotes"
+{
+"#desc"
+:
+"fetch from multiple remotes"
+}
 ,
 "-t|--tags"
 :
-"--- fetch all tags and associated objects"
+{
+"#desc"
+:
+"fetch all tags and associated objects"
+}
 ,
 "-n"
 :
-"--- do not fetch all tags "
+{
+"#desc"
+:
+"do not fetch all tags "
+}
 ,
 "-j|--jobs"
 :
-"--- number of submodules fetched in parallel"
+{
+"#desc"
+:
+"number of submodules fetched in parallel"
+}
 ,
 "-p|--prune"
 :
-"--- prune remote-tracking branches no longer on remote"
+{
+"#desc"
+:
+"prune remote-tracking branches no longer on remote"
+}
 ,
 "-P|--prune-tags"
 :
-"--- prune local tags no longer on remote and clobber changed tags"
+{
+"#desc"
+:
+"prune local tags no longer on remote and clobber changed tags"
+}
 ,
 "--recurse-submodules"
 :
-"--- prune local tags no longer on remote and clobber changed tags"
+{
+"#desc"
+:
+"prune local tags no longer on remote and clobber changed tags"
+}
 ,
 "--dry-run"
 :
-"--- dry run"
+{
+"#desc"
+:
+"dry run"
+}
 ,
 "-k|--keep"
 :
-"--- keep downloaded pack"
+{
+"#desc"
+:
+"keep downloaded pack"
+}
 ,
 "-u|--update-head-ok"
 :
-"--- HEAD ref"
+{
+"#desc"
+:
+"HEAD ref"
+}
 ,
 "--progress"
 :
-"--- force progress reporting"
+{
+"#desc"
+:
+"force progress reporting"
+}
 ,
 "--depth"
 :
-"--- deepen history of shallow clone"
+{
+"#desc"
+:
+"deepen history of shallow clone"
+}
 ,
 "--shallow-since"
 :
-"--- deepen history of shallow clone"
+{
+"#desc"
+:
+"deepen history of shallow clone"
+}
 ,
 "--shallow-exclude"
 :
-"--- deepen history of shallow clone"
+{
+"#desc"
+:
+"deepen history of shallow clone"
+}
 ,
 "--deepen"
 :
-"--- deepen history of shallow clone"
+{
+"#desc"
+:
+"deepen history of shallow clone"
+}
 ,
 "--unshallow"
 :
-"--- convert to a complete repository"
+{
+"#desc"
+:
+"convert to a complete repository"
+}
 ,
 "--update-shallow"
 :
-"--- accept refs that update .git/shallow"
+{
+"#desc"
+:
+"accept refs that update .git/shallow"
+}
 ,
 "--refmap"
 :
-"--- specify fetch refmap"
+{
+"#desc"
+:
+"specify fetch refmap"
+}
 ,
 "-o|--server-option"
 :
-"--- specify fetch refmap"
+{
+"#desc"
+:
+"specify fetch refmap"
+}
 ,
 "-4|--ipv4"
 :
-"--- IPv4 addresses only"
+{
+"#desc"
+:
+"IPv4 addresses only"
+}
 ,
 "-6|--ipv6"
 :
-"--- IPv6 addresses only"
+{
+"#desc"
+:
+"IPv6 addresses only"
+}
 ,
 "--negotiation-tip"
 :
-"--- IPv6 addresses only"
+{
+"#desc"
+:
+"IPv6 addresses only"
+}
 ,
 "--filter"
 :
-"--- object filtering"
+{
+"#desc"
+:
+"object filtering"
+}
 ,
 "--auto-gc"
 :
-"--- run 'gc --auto' after fetching"
+{
+"#desc"
+:
+"run 'gc --auto' after fetching"
+}
 ,
 "--show-forced-updates"
 :
-"--- run 'gc --auto' after fetching"
+{
+"#desc"
+:
+"run 'gc --auto' after fetching"
+}
 ,
 "--write-commit-graph"
 :
-"--- write the commit-graph after fetching"
+{
+"#desc"
+:
+"write the commit-graph after fetching"
+}
 ,
 "#desc"
 :
@@ -612,139 +1108,275 @@
 {
 "-n|--numbered"
 :
-"--- use  even with a single patch"
+{
+"#desc"
+:
+"use  even with a single patch"
+}
 ,
 "-N|--no-numbered"
 :
-"--- use  even with multiple patches"
+{
+"#desc"
+:
+"use  even with multiple patches"
+}
 ,
 "-s|--signoff"
 :
-"--- Signed-off-by:"
+{
+"#desc"
+:
+"Signed-off-by:"
+}
 ,
 "--stdout"
 :
-"--- print patches to standard out"
+{
+"#desc"
+:
+"print patches to standard out"
+}
 ,
 "--cover-letter"
 :
-"--- generate a cover letter"
+{
+"#desc"
+:
+"generate a cover letter"
+}
 ,
 "--numbered-files"
 :
-"--- use simple number sequence for output file names"
+{
+"#desc"
+:
+"use simple number sequence for output file names"
+}
 ,
 "--suffix"
 :
-"--- stead of '.patch'"
+{
+"#desc"
+:
+"stead of '.patch'"
+}
 ,
 "--start-number"
 :
-"--- stead of 1"
+{
+"#desc"
+:
+"stead of 1"
+}
 ,
 "-v|--reroll-count"
 :
-"--- stead of 1"
+{
+"#desc"
+:
+"stead of 1"
+}
 ,
 "--rfc"
 :
-"--- Use "
+{
+"#desc"
+:
+"Use "
+}
 ,
 "--cover-from-description"
 :
-"--- Use "
+{
+"#desc"
+:
+"Use "
+}
 ,
 "--subject-prefix"
 :
-"--- Use "
+{
+"#desc"
+:
+"Use "
+}
 ,
 "-o|--output-directory"
 :
-"--- Use "
+{
+"#desc"
+:
+"Use "
+}
 ,
 "-k|--keep-subject"
 :
-"--- don't strip/add "
+{
+"#desc"
+:
+"don't strip/add "
+}
 ,
 "--no-binary"
 :
-"--- don't output binary diffs"
+{
+"#desc"
+:
+"don't output binary diffs"
+}
 ,
 "--zero-commit"
 :
-"--- From header"
+{
+"#desc"
+:
+"From header"
+}
 ,
 "--ignore-if-in-upstream"
 :
-"--- From header"
+{
+"#desc"
+:
+"From header"
+}
 ,
 "-p|--no-stat"
 :
-"--- show patch format instead of default "
+{
+"#desc"
+:
+"show patch format instead of default "
+}
 ,
 "--add-header"
 :
-"--- show patch format instead of default "
+{
+"#desc"
+:
+"show patch format instead of default "
+}
 ,
 "--to"
 :
-"--- To: header"
+{
+"#desc"
+:
+"To: header"
+}
 ,
 "--cc"
 :
-"--- Cc: header"
+{
+"#desc"
+:
+"Cc: header"
+}
 ,
 "--from[=r"
 :
-"--- committer ident if absent)"
+{
+"#desc"
+:
+"committer ident if absent)"
+}
 ,
 "--in-reply-to"
 :
-"--- committer ident if absent)"
+{
+"#desc"
+:
+"committer ident if absent)"
+}
 ,
 "--attach"
 :
-"--- committer ident if absent)"
+{
+"#desc"
+:
+"committer ident if absent)"
+}
 ,
 "--inline"
 :
-"--- committer ident if absent)"
+{
+"#desc"
+:
+"committer ident if absent)"
+}
 ,
 "--thread[="
 :
-"--- enable message threading, styles: shallow, deep"
+{
+"#desc"
+:
+"enable message threading, styles: shallow, deep"
+}
 ,
 "--signature"
 :
-"--- enable message threading, styles: shallow, deep"
+{
+"#desc"
+:
+"enable message threading, styles: shallow, deep"
+}
 ,
 "--base"
 :
-"--- dd prerequisite tree info to the patch series"
+{
+"#desc"
+:
+"dd prerequisite tree info to the patch series"
+}
 ,
 "--signature-file"
 :
-"--- dd prerequisite tree info to the patch series"
+{
+"#desc"
+:
+"dd prerequisite tree info to the patch series"
+}
 ,
 "-q|--quiet"
 :
-"--- don't print the patch filenames"
+{
+"#desc"
+:
+"don't print the patch filenames"
+}
 ,
 "--progress"
 :
-"--- show progress while generating patches"
+{
+"#desc"
+:
+"show progress while generating patches"
+}
 ,
 "--interdiff"
 :
-"--- cover letter or single patch"
+{
+"#desc"
+:
+"cover letter or single patch"
+}
 ,
 "--range-diff"
 :
-"--- cover letter or single patch"
+{
+"#desc"
+:
+"cover letter or single patch"
+}
 ,
 "--creation-factor"
 :
-"--- cover letter or single patch"
+{
+"#desc"
+:
+"cover letter or single patch"
+}
 ,
 "#desc"
 :
@@ -772,191 +1404,379 @@
 {
 "--cached"
 :
-"--- search in index instead of in the work tree"
+{
+"#desc"
+:
+"search in index instead of in the work tree"
+}
 ,
 "--no-index"
 :
-"--- find in contents not managed by git"
+{
+"#desc"
+:
+"find in contents not managed by git"
+}
 ,
 "--untracked"
 :
-"--- search in both tracked and untracked files"
+{
+"#desc"
+:
+"search in both tracked and untracked files"
+}
 ,
 "--exclude-standard"
 :
-"--- ignore files specified via '.gitignore'"
+{
+"#desc"
+:
+"ignore files specified via '.gitignore'"
+}
 ,
 "--recurse-submodules"
 :
-"--- recursively search in each submodule"
+{
+"#desc"
+:
+"recursively search in each submodule"
+}
 ,
 "-v|--invert-match"
 :
-"--- show non-matching lines"
+{
+"#desc"
+:
+"show non-matching lines"
+}
 ,
 "-i|--ignore-case"
 :
-"--- case insensitive matching"
+{
+"#desc"
+:
+"case insensitive matching"
+}
 ,
 "-w|--word-regexp"
 :
-"--- match patterns only at word boundaries"
+{
+"#desc"
+:
+"match patterns only at word boundaries"
+}
 ,
 "-a|--text"
 :
-"--- process binary files as text"
+{
+"#desc"
+:
+"process binary files as text"
+}
 ,
 "-I"
 :
-"--- don't match patterns in binary files"
+{
+"#desc"
+:
+"don't match patterns in binary files"
+}
 ,
 "--textconv"
 :
-"--- process binary files with textconv filters"
+{
+"#desc"
+:
+"process binary files with textconv filters"
+}
 ,
 "-r|--recursive"
 :
-"--- search in subdirectories "
+{
+"#desc"
+:
+"search in subdirectories "
+}
 ,
 "--max-depth"
 :
-"--- vels"
+{
+"#desc"
+:
+"vels"
+}
 ,
 "-E|--extended-regexp"
 :
-"--- vels"
+{
+"#desc"
+:
+"vels"
+}
 ,
 "-G|--basic-regexp"
 :
-"--- POSIX regular expressions "
+{
+"#desc"
+:
+"POSIX regular expressions "
+}
 ,
 "-F|--fixed-strings"
 :
-"--- interpret patterns as fixed strings"
+{
+"#desc"
+:
+"interpret patterns as fixed strings"
+}
 ,
 "-P|--perl-regexp"
 :
-"--- Perl-compatible regular expressions"
+{
+"#desc"
+:
+"Perl-compatible regular expressions"
+}
 ,
 "-n|--line-number"
 :
-"--- show line numbers"
+{
+"#desc"
+:
+"show line numbers"
+}
 ,
 "--column"
 :
-"--- show column number of first match"
+{
+"#desc"
+:
+"show column number of first match"
+}
 ,
 "-h"
 :
-"--- don't show filenames"
+{
+"#desc"
+:
+"don't show filenames"
+}
 ,
 "-H"
 :
-"--- show filenames"
+{
+"#desc"
+:
+"show filenames"
+}
 ,
 "--full-name"
 :
-"--- show filenames relative to top directory"
+{
+"#desc"
+:
+"show filenames relative to top directory"
+}
 ,
 "-l|--files-with-matches"
 :
-"--- show filenames relative to top directory"
+{
+"#desc"
+:
+"show filenames relative to top directory"
+}
 ,
 "--name-only"
 :
-"--- synonym for --files-with-matches"
+{
+"#desc"
+:
+"synonym for --files-with-matches"
+}
 ,
 "-L|--files-without-match"
 :
-"--- synonym for --files-with-matches"
+{
+"#desc"
+:
+"synonym for --files-with-matches"
+}
 ,
 "-z|--null"
 :
-"--- NUL after filenames"
+{
+"#desc"
+:
+"NUL after filenames"
+}
 ,
 "-o|--only-matching"
 :
-"--- show only matching parts of a line"
+{
+"#desc"
+:
+"show only matching parts of a line"
+}
 ,
 "-c|--count"
 :
-"--- show the number of matches instead of matching lines"
+{
+"#desc"
+:
+"show the number of matches instead of matching lines"
+}
 ,
 "--color[="
 :
-"--- highlight matches"
+{
+"#desc"
+:
+"highlight matches"
+}
 ,
 "--break"
 :
-"--- print empty line between matches from different files"
+{
+"#desc"
+:
+"print empty line between matches from different files"
+}
 ,
 "--heading"
 :
-"--- show filename only once above matches from same file"
+{
+"#desc"
+:
+"show filename only once above matches from same file"
+}
 ,
 "-C|--context"
 :
-"--- ntext lines before and after matches"
+{
+"#desc"
+:
+"ntext lines before and after matches"
+}
 ,
 "-B|--before-context"
 :
-"--- ntext lines before and after matches"
+{
+"#desc"
+:
+"ntext lines before and after matches"
+}
 ,
 "-A|--after-context"
 :
-"--- ntext lines before and after matches"
+{
+"#desc"
+:
+"ntext lines before and after matches"
+}
 ,
 "--threads"
 :
-"--- rker threads"
+{
+"#desc"
+:
+"rker threads"
+}
 ,
 "-NUM"
 :
-"--- NUM"
+{
+"#desc"
+:
+"NUM"
+}
 ,
 "-p|--show-function"
 :
-"--- show a line with the function name before matches"
+{
+"#desc"
+:
+"show a line with the function name before matches"
+}
 ,
 "-W|--function-context"
 :
-"--- show a line with the function name before matches"
+{
+"#desc"
+:
+"show a line with the function name before matches"
+}
 ,
 "-f"
 :
-"--- read patterns from file"
+{
+"#desc"
+:
+"read patterns from file"
+}
 ,
 "-e"
 :
-"--- match "
+{
+"#desc"
+:
+"match "
+}
 ,
 "--and"
 :
-"--- combine patterns specified with -e"
+{
+"#desc"
+:
+"combine patterns specified with -e"
+}
 ,
 "--or"
 :
-"--- combine patterns specified with -e"
+{
+"#desc"
+:
+"combine patterns specified with -e"
+}
 ,
 "--not"
 :
-"--- combine patterns specified with -e"
+{
+"#desc"
+:
+"combine patterns specified with -e"
+}
 ,
 "-q|--quiet"
 :
-"--- indicate hit with exit status without output"
+{
+"#desc"
+:
+"indicate hit with exit status without output"
+}
 ,
 "--all-match"
 :
-"--- show only matches from files that match all patterns"
+{
+"#desc"
+:
+"show only matches from files that match all patterns"
+}
 ,
 "-O|--open-files-in-pager"
 :
-"--- show only matches from files that match all patterns"
+{
+"#desc"
+:
+"show only matches from files that match all patterns"
+}
 ,
 "--ext-grep"
 :
-"--- allow calling of grep"
+{
+"#desc"
+:
+"allow calling of grep"
+}
 ,
 "#desc"
 :
@@ -980,19 +1800,35 @@
 ,
 "--bare"
 :
-"--- create a bare repository"
+{
+"#desc"
+:
+"create a bare repository"
+}
 ,
 "--shared"
 :
-"--- create a bare repository"
+{
+"#desc"
+:
+"create a bare repository"
+}
 ,
 "-q|--quiet"
 :
-"--- be quiet"
+{
+"#desc"
+:
+"be quiet"
+}
 ,
 "--separate-git-dir"
 :
-"--- be quiet"
+{
+"#desc"
+:
+"be quiet"
+}
 ,
 "#desc"
 :
@@ -1004,31 +1840,59 @@
 {
 "-q|--quiet"
 :
-"--- suppress diff output"
+{
+"#desc"
+:
+"suppress diff output"
+}
 ,
 "--source"
 :
-"--- show source"
+{
+"#desc"
+:
+"show source"
+}
 ,
 "--use-mailmap"
 :
-"--- Use mail map file"
+{
+"#desc"
+:
+"Use mail map file"
+}
 ,
 "--decorate-refs"
 :
-"--- Use mail map file"
+{
+"#desc"
+:
+"Use mail map file"
+}
 ,
 "--decorate-refs-exclude"
 :
-"--- Use mail map file"
+{
+"#desc"
+:
+"Use mail map file"
+}
 ,
 "--decorate"
 :
-"--- decorate options"
+{
+"#desc"
+:
+"decorate options"
+}
 ,
 "-L"
 :
-"--- Process line range n,m in file, counting from 1"
+{
+"#desc"
+:
+"Process line range n,m in file, counting from 1"
+}
 ,
 "#desc"
 :
@@ -1048,19 +1912,35 @@
 {
 "-v|--verbose"
 :
-"--- be verbose"
+{
+"#desc"
+:
+"be verbose"
+}
 ,
 "-n|--dry-run"
 :
-"--- dry run"
+{
+"#desc"
+:
+"dry run"
+}
 ,
 "-f|--force"
 :
-"--- force move/rename even if target exists"
+{
+"#desc"
+:
+"force move/rename even if target exists"
+}
 ,
 "-k"
 :
-"--- skip move/rename errors"
+{
+"#desc"
+:
+"skip move/rename errors"
+}
 ,
 "#desc"
 :
@@ -1072,7 +1952,11 @@
 {
 "--ref"
 :
-"--- use notes from "
+{
+"#desc"
+:
+"use notes from "
+}
 ,
 "#desc"
 :
@@ -1084,155 +1968,307 @@
 {
 "-v|--verbose"
 :
-"--- be more verbose"
+{
+"#desc"
+:
+"be more verbose"
+}
 ,
 "-q|--quiet"
 :
-"--- be more quiet"
+{
+"#desc"
+:
+"be more quiet"
+}
 ,
 "--progress"
 :
-"--- force progress reporting"
+{
+"#desc"
+:
+"force progress reporting"
+}
 ,
 "--recurse-submodules"
 :
-"--- force progress reporting"
+{
+"#desc"
+:
+"force progress reporting"
+}
 ,
 "-r|--rebase"
 :
-"--- force progress reporting"
+{
+"#desc"
+:
+"force progress reporting"
+}
 ,
 "-n"
 :
-"--- do not show a diffstat at the end of the merge"
+{
+"#desc"
+:
+"do not show a diffstat at the end of the merge"
+}
 ,
 "--stat"
 :
-"--- show a diffstat at the end of the merge"
+{
+"#desc"
+:
+"show a diffstat at the end of the merge"
+}
 ,
 "--log[=ntries"
 :
-"--- from shortlog to merge commit message"
+{
+"#desc"
+:
+"from shortlog to merge commit message"
+}
 ,
 "--signoff"
 :
-"--- Signed-off-by:"
+{
+"#desc"
+:
+"Signed-off-by:"
+}
 ,
 "--squash"
 :
-"--- create a single commit instead of doing a merge"
+{
+"#desc"
+:
+"create a single commit instead of doing a merge"
+}
 ,
 "--commit"
 :
-"--- perform a commit if the merge succeeds "
+{
+"#desc"
+:
+"perform a commit if the merge succeeds "
+}
 ,
 "--edit"
 :
-"--- edit message before committing"
+{
+"#desc"
+:
+"edit message before committing"
+}
 ,
 "--cleanup"
 :
-"--- how to strip spaces and #comments from message"
+{
+"#desc"
+:
+"how to strip spaces and #comments from message"
+}
 ,
 "--ff"
 :
-"--- allow fast-forward"
+{
+"#desc"
+:
+"allow fast-forward"
+}
 ,
 "--ff-only"
 :
-"--- abort if fast-forward is not possible"
+{
+"#desc"
+:
+"abort if fast-forward is not possible"
+}
 ,
 "--verify-signatures"
 :
-"--- GPG signature"
+{
+"#desc"
+:
+"GPG signature"
+}
 ,
 "--autostash"
 :
-"--- automatically stash/stash pop before and after rebase"
+{
+"#desc"
+:
+"automatically stash/stash pop before and after rebase"
+}
 ,
 "-s|--strategy"
 :
-"--- automatically stash/stash pop before and after rebase"
+{
+"#desc"
+:
+"automatically stash/stash pop before and after rebase"
+}
 ,
 "-X|--strategy-option"
 :
-"--- automatically stash/stash pop before and after rebase"
+{
+"#desc"
+:
+"automatically stash/stash pop before and after rebase"
+}
 ,
 "-S|--gpg-sign"
 :
-"--- automatically stash/stash pop before and after rebase"
+{
+"#desc"
+:
+"automatically stash/stash pop before and after rebase"
+}
 ,
 "--allow-unrelated-histories"
 :
-"--- automatically stash/stash pop before and after rebase"
+{
+"#desc"
+:
+"automatically stash/stash pop before and after rebase"
+}
 ,
 "--all"
 :
-"--- fetch from all remotes"
+{
+"#desc"
+:
+"fetch from all remotes"
+}
 ,
 "-a|--append"
 :
-"--- append to .git/FETCH_HEAD instead of overwriting"
+{
+"#desc"
+:
+"append to .git/FETCH_HEAD instead of overwriting"
+}
 ,
 "--upload-pack"
 :
-"--- ath to upload pack on remote end"
+{
+"#desc"
+:
+"ath to upload pack on remote end"
+}
 ,
 "-f|--force"
 :
-"--- force overwrite of local branch"
+{
+"#desc"
+:
+"force overwrite of local branch"
+}
 ,
 "-t|--tags"
 :
-"--- fetch all tags and associated objects"
+{
+"#desc"
+:
+"fetch all tags and associated objects"
+}
 ,
 "-p|--prune"
 :
-"--- prune remote-tracking branches no longer on remote"
+{
+"#desc"
+:
+"prune remote-tracking branches no longer on remote"
+}
 ,
 "-j|--jobs[="
 :
-"--- number of submodules pulled in parallel"
+{
+"#desc"
+:
+"number of submodules pulled in parallel"
+}
 ,
 "--dry-run"
 :
-"--- dry run"
+{
+"#desc"
+:
+"dry run"
+}
 ,
 "-k|--keep"
 :
-"--- keep downloaded pack"
+{
+"#desc"
+:
+"keep downloaded pack"
+}
 ,
 "--depth"
 :
-"--- deepen history of shallow clone"
+{
+"#desc"
+:
+"deepen history of shallow clone"
+}
 ,
 "--unshallow"
 :
-"--- convert to a complete repository"
+{
+"#desc"
+:
+"convert to a complete repository"
+}
 ,
 "--update-shallow"
 :
-"--- accept refs that update .git/shallow"
+{
+"#desc"
+:
+"accept refs that update .git/shallow"
+}
 ,
 "--refmap"
 :
-"--- specify fetch refmap"
+{
+"#desc"
+:
+"specify fetch refmap"
+}
 ,
 "-4|--ipv4"
 :
-"--- IPv4 addresses only"
+{
+"#desc"
+:
+"IPv4 addresses only"
+}
 ,
 "-6|--ipv6"
 :
-"--- IPv6 addresses only"
+{
+"#desc"
+:
+"IPv6 addresses only"
+}
 ,
 "--show-forced-updates"
 :
-"--- IPv6 addresses only"
+{
+"#desc"
+:
+"IPv6 addresses only"
+}
 ,
 "--set-upstream"
 :
-"--- set upstream for git pull/fetch"
+{
+"#desc"
+:
+"set upstream for git pull/fetch"
+}
 ,
 "#desc"
 :
@@ -1244,103 +2280,203 @@
 {
 "-v|--verbose"
 :
-"--- be more verbose"
+{
+"#desc"
+:
+"be more verbose"
+}
 ,
 "-q|--quiet"
 :
-"--- be more quiet"
+{
+"#desc"
+:
+"be more quiet"
+}
 ,
 "--repo"
 :
-"--- repository"
+{
+"#desc"
+:
+"repository"
+}
 ,
 "--all"
 :
-"--- push all refs"
+{
+"#desc"
+:
+"push all refs"
+}
 ,
 "--mirror"
 :
-"--- mirror all refs"
+{
+"#desc"
+:
+"mirror all refs"
+}
 ,
 "-d|--delete"
 :
-"--- delete refs"
+{
+"#desc"
+:
+"delete refs"
+}
 ,
 "--tags"
 :
-"--- push tags "
+{
+"#desc"
+:
+"push tags "
+}
 ,
 "-n|--dry-run"
 :
-"--- dry run"
+{
+"#desc"
+:
+"dry run"
+}
 ,
 "--porcelain"
 :
-"--- machine-readable output"
+{
+"#desc"
+:
+"machine-readable output"
+}
 ,
 "-f|--force"
 :
-"--- force updates"
+{
+"#desc"
+:
+"force updates"
+}
 ,
 "--force-with-lease"
 :
-"--- force updates"
+{
+"#desc"
+:
+"force updates"
+}
 ,
 "--recurse-submodules"
 :
-"--- force updates"
+{
+"#desc"
+:
+"force updates"
+}
 ,
 "--thin"
 :
-"--- use thin pack"
+{
+"#desc"
+:
+"use thin pack"
+}
 ,
 "--receive-pack"
 :
-"--- use thin pack"
+{
+"#desc"
+:
+"use thin pack"
+}
 ,
 "--exec"
 :
-"--- use thin pack"
+{
+"#desc"
+:
+"use thin pack"
+}
 ,
 "-u|--set-upstream"
 :
-"--- set upstream for git pull/status"
+{
+"#desc"
+:
+"set upstream for git pull/status"
+}
 ,
 "--progress"
 :
-"--- force progress reporting"
+{
+"#desc"
+:
+"force progress reporting"
+}
 ,
 "--prune"
 :
-"--- prune locally removed refs"
+{
+"#desc"
+:
+"prune locally removed refs"
+}
 ,
 "--no-verify"
 :
-"--- bypass pre-push hook"
+{
+"#desc"
+:
+"bypass pre-push hook"
+}
 ,
 "--follow-tags"
 :
-"--- push missing but relevant tags"
+{
+"#desc"
+:
+"push missing but relevant tags"
+}
 ,
 "--signed"
 :
-"--- push missing but relevant tags"
+{
+"#desc"
+:
+"push missing but relevant tags"
+}
 ,
 "--atomic"
 :
-"--- request atomic transaction on remote side"
+{
+"#desc"
+:
+"request atomic transaction on remote side"
+}
 ,
 "-o|--push-option"
 :
-"--- request atomic transaction on remote side"
+{
+"#desc"
+:
+"request atomic transaction on remote side"
+}
 ,
 "-4|--ipv4"
 :
-"--- IPv4 addresses only"
+{
+"#desc"
+:
+"IPv4 addresses only"
+}
 ,
 "-6|--ipv6"
 :
-"--- IPv6 addresses only"
+{
+"#desc"
+:
+"IPv6 addresses only"
+}
 ,
 "#desc"
 :
@@ -1360,47 +2496,91 @@
 {
 "-q|--quiet"
 :
-"--- be quiet, only report errors"
+{
+"#desc"
+:
+"be quiet, only report errors"
+}
 ,
 "--mixed"
 :
-"--- HEAD and index"
+{
+"#desc"
+:
+"HEAD and index"
+}
 ,
 "--soft"
 :
-"--- HEAD"
+{
+"#desc"
+:
+"HEAD"
+}
 ,
 "--hard"
 :
-"--- HEAD, index and working tree"
+{
+"#desc"
+:
+"HEAD, index and working tree"
+}
 ,
 "--merge"
 :
-"--- HEAD, index and working tree"
+{
+"#desc"
+:
+"HEAD, index and working tree"
+}
 ,
 "--keep"
 :
-"--- HEAD but keep local changes"
+{
+"#desc"
+:
+"HEAD but keep local changes"
+}
 ,
 "--recurse-submodules"
 :
-"--- HEAD but keep local changes"
+{
+"#desc"
+:
+"HEAD but keep local changes"
+}
 ,
 "-p|--patch"
 :
-"--- select hunks interactively"
+{
+"#desc"
+:
+"select hunks interactively"
+}
 ,
 "-N|--intent-to-add"
 :
-"--- record only the fact that removed paths will be added later"
+{
+"#desc"
+:
+"record only the fact that removed paths will be added later"
+}
 ,
 "--pathspec-from-file"
 :
-"--- record only the fact that removed paths will be added later"
+{
+"#desc"
+:
+"record only the fact that removed paths will be added later"
+}
 ,
 "--pathspec-file-nul"
 :
-"--- NUL character"
+{
+"#desc"
+:
+"NUL character"
+}
 ,
 "#desc"
 :
@@ -1416,63 +2596,123 @@
 ,
 "-S|--staged"
 :
-"--- restore the index"
+{
+"#desc"
+:
+"restore the index"
+}
 ,
 "-W|--worktree"
 :
-"--- restore the working tree "
+{
+"#desc"
+:
+"restore the working tree "
+}
 ,
 "--ignore-unmerged"
 :
-"--- ignore unmerged entries"
+{
+"#desc"
+:
+"ignore unmerged entries"
+}
 ,
 "--overlay"
 :
-"--- use overlay mode"
+{
+"#desc"
+:
+"use overlay mode"
+}
 ,
 "-q|--quiet"
 :
-"--- suppress progress reporting"
+{
+"#desc"
+:
+"suppress progress reporting"
+}
 ,
 "--recurse-submodules"
 :
-"--- suppress progress reporting"
+{
+"#desc"
+:
+"suppress progress reporting"
+}
 ,
 "--progress"
 :
-"--- force progress reporting"
+{
+"#desc"
+:
+"force progress reporting"
+}
 ,
 "-m|--merge"
 :
-"--- perform a 3-way merge with the new branch"
+{
+"#desc"
+:
+"perform a 3-way merge with the new branch"
+}
 ,
 "--conflict"
 :
-"--- conflict style "
+{
+"#desc"
+:
+"conflict style "
+}
 ,
 "-2|--ours"
 :
-"--- checkout our version for unmerged files"
+{
+"#desc"
+:
+"checkout our version for unmerged files"
+}
 ,
 "-3|--theirs"
 :
-"--- checkout their version for unmerged files"
+{
+"#desc"
+:
+"checkout their version for unmerged files"
+}
 ,
 "-p|--patch"
 :
-"--- select hunks interactively"
+{
+"#desc"
+:
+"select hunks interactively"
+}
 ,
 "--ignore-skip-worktree-bits"
 :
-"--- select hunks interactively"
+{
+"#desc"
+:
+"select hunks interactively"
+}
 ,
 "--pathspec-from-file"
 :
-"--- select hunks interactively"
+{
+"#desc"
+:
+"select hunks interactively"
+}
 ,
 "--pathspec-file-nul"
 :
-"--- NUL character"
+{
+"#desc"
+:
+"NUL character"
+}
 ,
 "#desc"
 :
@@ -1484,55 +2724,107 @@
 {
 "--quit"
 :
-"--- end revert or cherry-pick sequence"
+{
+"#desc"
+:
+"end revert or cherry-pick sequence"
+}
 ,
 "--continue"
 :
-"--- resume revert or cherry-pick sequence"
+{
+"#desc"
+:
+"resume revert or cherry-pick sequence"
+}
 ,
 "--abort"
 :
-"--- cancel revert or cherry-pick sequence"
+{
+"#desc"
+:
+"cancel revert or cherry-pick sequence"
+}
 ,
 "--skip"
 :
-"--- skip current commit and continue"
+{
+"#desc"
+:
+"skip current commit and continue"
+}
 ,
 "--cleanup"
 :
-"--- how to strip spaces and #comments from message"
+{
+"#desc"
+:
+"how to strip spaces and #comments from message"
+}
 ,
 "-n|--no-commit"
 :
-"--- don't automatically commit"
+{
+"#desc"
+:
+"don't automatically commit"
+}
 ,
 "-e|--edit"
 :
-"--- edit the commit message"
+{
+"#desc"
+:
+"edit the commit message"
+}
 ,
 "-s|--signoff"
 :
-"--- Signed-off-by:"
+{
+"#desc"
+:
+"Signed-off-by:"
+}
 ,
 "-m|--mainline"
 :
-"--- Signed-off-by:"
+{
+"#desc"
+:
+"Signed-off-by:"
+}
 ,
 "--rerere-autoupdate"
 :
-"--- update the index with reused conflict resolution if possible"
+{
+"#desc"
+:
+"update the index with reused conflict resolution if possible"
+}
 ,
 "--strategy"
 :
-"--- update the index with reused conflict resolution if possible"
+{
+"#desc"
+:
+"update the index with reused conflict resolution if possible"
+}
 ,
 "-X|--strategy-option"
 :
-"--- update the index with reused conflict resolution if possible"
+{
+"#desc"
+:
+"update the index with reused conflict resolution if possible"
+}
 ,
 "-S|--gpg-sign"
 :
-"--- update the index with reused conflict resolution if possible"
+{
+"#desc"
+:
+"update the index with reused conflict resolution if possible"
+}
 ,
 "#desc"
 :
@@ -1544,27 +2836,51 @@
 {
 "-n|--dry-run"
 :
-"--- dry run"
+{
+"#desc"
+:
+"dry run"
+}
 ,
 "-q|--quiet"
 :
-"--- do not list removed files"
+{
+"#desc"
+:
+"do not list removed files"
+}
 ,
 "--cached"
 :
-"--- only remove from the index"
+{
+"#desc"
+:
+"only remove from the index"
+}
 ,
 "-f|--force"
 :
-"--- override the up-to-date check"
+{
+"#desc"
+:
+"override the up-to-date check"
+}
 ,
 "-r"
 :
-"--- allow recursive removal"
+{
+"#desc"
+:
+"allow recursive removal"
+}
 ,
 "--ignore-unmatch"
 :
-"--- exit with a zero status even if nothing matched"
+{
+"#desc"
+:
+"exit with a zero status even if nothing matched"
+}
 ,
 "#desc"
 :
@@ -1576,23 +2892,43 @@
 {
 "-c|--committer"
 :
-"--- Group by committer rather than author"
+{
+"#desc"
+:
+"Group by committer rather than author"
+}
 ,
 "-n|--numbered"
 :
-"--- sort output according to the number of commits per author"
+{
+"#desc"
+:
+"sort output according to the number of commits per author"
+}
 ,
 "-s|--summary"
 :
-"--- Suppress commit descriptions, only provides commit count"
+{
+"#desc"
+:
+"Suppress commit descriptions, only provides commit count"
+}
 ,
 "-e|--email"
 :
-"--- Show the email address of each author"
+{
+"#desc"
+:
+"Show the email address of each author"
+}
 ,
 "-w["
 :
-"--- Show the email address of each author"
+{
+"#desc"
+:
+"Show the email address of each author"
+}
 ,
 "#desc"
 :
@@ -1604,31 +2940,59 @@
 {
 "-q|--quiet"
 :
-"--- suppress diff output"
+{
+"#desc"
+:
+"suppress diff output"
+}
 ,
 "--source"
 :
-"--- show source"
+{
+"#desc"
+:
+"show source"
+}
 ,
 "--use-mailmap"
 :
-"--- Use mail map file"
+{
+"#desc"
+:
+"Use mail map file"
+}
 ,
 "--decorate-refs"
 :
-"--- Use mail map file"
+{
+"#desc"
+:
+"Use mail map file"
+}
 ,
 "--decorate-refs-exclude"
 :
-"--- Use mail map file"
+{
+"#desc"
+:
+"Use mail map file"
+}
 ,
 "--decorate"
 :
-"--- decorate options"
+{
+"#desc"
+:
+"decorate options"
+}
 ,
 "-L"
 :
-"--- Process line range n,m in file, counting from 1"
+{
+"#desc"
+:
+"Process line range n,m in file, counting from 1"
+}
 ,
 "#desc"
 :
@@ -1680,55 +3044,107 @@
 ,
 "--guess"
 :
-"--- second guess 'git switch '"
+{
+"#desc"
+:
+"second guess \\'git switch \\'"
+}
 ,
 "--discard-changes"
 :
-"--- throw away local modifications"
+{
+"#desc"
+:
+"throw away local modifications"
+}
 ,
 "-q|--quiet"
 :
-"--- suppress progress reporting"
+{
+"#desc"
+:
+"suppress progress reporting"
+}
 ,
 "--recurse-submodules"
 :
-"--- suppress progress reporting"
+{
+"#desc"
+:
+"suppress progress reporting"
+}
 ,
 "--progress"
 :
-"--- force progress reporting"
+{
+"#desc"
+:
+"force progress reporting"
+}
 ,
 "-m|--merge"
 :
-"--- perform a 3-way merge with the new branch"
+{
+"#desc"
+:
+"perform a 3-way merge with the new branch"
+}
 ,
 "--conflict"
 :
-"--- conflict style "
+{
+"#desc"
+:
+"conflict style "
+}
 ,
 "-d|--detach"
 :
-"--- HEAD at named commit"
+{
+"#desc"
+:
+"HEAD at named commit"
+}
 ,
 "-t|--track"
 :
-"--- set upstream info for new branch"
+{
+"#desc"
+:
+"set upstream info for new branch"
+}
 ,
 "-f|--force"
 :
-"--- force checkout "
+{
+"#desc"
+:
+"force checkout "
+}
 ,
 "--orphan"
 :
-"--- force checkout "
+{
+"#desc"
+:
+"force checkout "
+}
 ,
 "--overwrite-ignore"
 :
-"--- update ignored files "
+{
+"#desc"
+:
+"update ignored files "
+}
 ,
 "--ignore-other-worktrees"
 :
-"--- update ignored files "
+{
+"#desc"
+:
+"update ignored files "
+}
 ,
 "#desc"
 :
@@ -1740,95 +3156,187 @@
 {
 "-l|--list"
 :
-"--- list tag names"
+{
+"#desc"
+:
+"list tag names"
+}
 ,
 "-n[nes"
 :
-"--- of each tag message"
+{
+"#desc"
+:
+"of each tag message"
+}
 ,
 "-d|--delete"
 :
-"--- delete tags"
+{
+"#desc"
+:
+"delete tags"
+}
 ,
 "-v|--verify"
 :
-"--- verify tags"
+{
+"#desc"
+:
+"verify tags"
+}
 ,
 "-a|--annotate"
 :
-"--- annotated tag, needs a message"
+{
+"#desc"
+:
+"annotated tag, needs a message"
+}
 ,
 "-m|--message"
 :
-"--- annotated tag, needs a message"
+{
+"#desc"
+:
+"annotated tag, needs a message"
+}
 ,
 "-F|--file"
 :
-"--- read message from file"
+{
+"#desc"
+:
+"read message from file"
+}
 ,
 "-e|--edit"
 :
-"--- force edit of tag message"
+{
+"#desc"
+:
+"force edit of tag message"
+}
 ,
 "-s|--sign"
 :
-"--- GPG-signed tag"
+{
+"#desc"
+:
+"GPG-signed tag"
+}
 ,
 "--cleanup"
 :
-"--- how to strip spaces and #comments from message"
+{
+"#desc"
+:
+"how to strip spaces and #comments from message"
+}
 ,
 "-u|--local-user"
 :
-"--- how to strip spaces and #comments from message"
+{
+"#desc"
+:
+"how to strip spaces and #comments from message"
+}
 ,
 "-f|--force"
 :
-"--- replace the tag if exists"
+{
+"#desc"
+:
+"replace the tag if exists"
+}
 ,
 "--create-reflog"
 :
-"--- create a reflog"
+{
+"#desc"
+:
+"create a reflog"
+}
 ,
 "--column[="
 :
-"--- show tag list in columns"
+{
+"#desc"
+:
+"show tag list in columns"
+}
 ,
 "--contains"
 :
-"--- print only tags that contain the commit"
+{
+"#desc"
+:
+"print only tags that contain the commit"
+}
 ,
 "--no-contains"
 :
-"--- print only tags that contain the commit"
+{
+"#desc"
+:
+"print only tags that contain the commit"
+}
 ,
 "--merged"
 :
-"--- print only tags that are merged"
+{
+"#desc"
+:
+"print only tags that are merged"
+}
 ,
 "--no-merged"
 :
-"--- rint only tags that are not merged"
+{
+"#desc"
+:
+"rint only tags that are not merged"
+}
 ,
 "--sort"
 :
-"--- field name to sort on"
+{
+"#desc"
+:
+"field name to sort on"
+}
 ,
 "--points-at"
 :
-"--- rint only tags of the object"
+{
+"#desc"
+:
+"rint only tags of the object"
+}
 ,
 "--format"
 :
-"--- format to use for the output"
+{
+"#desc"
+:
+"format to use for the output"
+}
 ,
 "--color[="
 :
-"--- respect format colors"
+{
+"#desc"
+:
+"respect format colors"
+}
 ,
 "-i|--ignore-case"
 :
-"--- sorting and filtering are case insensitive"
+{
+"#desc"
+:
+"sorting and filtering are case insensitive"
+}
 ,
 "#desc"
 :
@@ -1848,127 +3356,251 @@
 {
 "--global"
 :
-"--- use global config file"
+{
+"#desc"
+:
+"use global config file"
+}
 ,
 "--system"
 :
-"--- use system config file"
+{
+"#desc"
+:
+"use system config file"
+}
 ,
 "--local"
 :
-"--- use repository config file"
+{
+"#desc"
+:
+"use repository config file"
+}
 ,
 "--worktree"
 :
-"--- use per-worktree config file"
+{
+"#desc"
+:
+"use per-worktree config file"
+}
 ,
 "-f|--file"
 :
-"--- use given config file"
+{
+"#desc"
+:
+"use given config file"
+}
 ,
 "--blob"
 :
-"--- read config from given blob object"
+{
+"#desc"
+:
+"read config from given blob object"
+}
 ,
 "--get"
 :
-"--- get value: name "
+{
+"#desc"
+:
+"get value: name "
+}
 ,
 "--get-all"
 :
-"--- get all values: key "
+{
+"#desc"
+:
+"get all values: key "
+}
 ,
 "--get-regexp"
 :
-"--- get values for regexp: name-regex "
+{
+"#desc"
+:
+"get values for regexp: name-regex "
+}
 ,
 "--get-urlmatch"
 :
-"--- URL: section URL"
+{
+"#desc"
+:
+"URL: section URL"
+}
 ,
 "--replace-all"
 :
-"--- replace all matching variables: name value "
+{
+"#desc"
+:
+"replace all matching variables: name value "
+}
 ,
 "--add"
 :
-"--- add a new variable: name value"
+{
+"#desc"
+:
+"add a new variable: name value"
+}
 ,
 "--unset"
 :
-"--- remove a variable: name "
+{
+"#desc"
+:
+"remove a variable: name "
+}
 ,
 "--unset-all"
 :
-"--- remove all matches: name "
+{
+"#desc"
+:
+"remove all matches: name "
+}
 ,
 "--rename-section"
 :
-"--- rename section: old-name new-name"
+{
+"#desc"
+:
+"rename section: old-name new-name"
+}
 ,
 "--remove-section"
 :
-"--- remove a section: name"
+{
+"#desc"
+:
+"remove a section: name"
+}
 ,
 "-l|--list"
 :
-"--- list all"
+{
+"#desc"
+:
+"list all"
+}
 ,
 "-e|--edit"
 :
-"--- open an editor"
+{
+"#desc"
+:
+"open an editor"
+}
 ,
 "--get-color"
 :
-"--- find the color configured: slot "
+{
+"#desc"
+:
+"find the color configured: slot "
+}
 ,
 "--get-colorbool"
 :
-"--- find the color setting: slot "
+{
+"#desc"
+:
+"find the color setting: slot "
+}
 ,
 "-t|--type"
 :
-"--- value is given this type"
+{
+"#desc"
+:
+"value is given this type"
+}
 ,
 "--bool"
 :
-"--- value is \"true\" or \"false \""
+{
+"#desc"
+:
+"value is \"true\" or \"false \""
+}
 ,
 "--int"
 :
-"--- value is decimal number"
+{
+"#desc"
+:
+"value is decimal number"
+}
 ,
 "--bool-or-int"
 :
-"--- value is --bool or --int"
+{
+"#desc"
+:
+"value is --bool or --int"
+}
 ,
 "--path"
 :
-"--- value is a path "
+{
+"#desc"
+:
+"value is a path "
+}
 ,
 "--expiry-date"
 :
-"--- value is an expiry date"
+{
+"#desc"
+:
+"value is an expiry date"
+}
 ,
 "-z|--null"
 :
-"--- NUL byte"
+{
+"#desc"
+:
+"NUL byte"
+}
 ,
 "--name-only"
 :
-"--- show variable names only"
+{
+"#desc"
+:
+"show variable names only"
+}
 ,
 "--includes"
 :
-"--- respect include directives on lookup"
+{
+"#desc"
+:
+"respect include directives on lookup"
+}
 ,
 "--show-origin"
 :
-"--- show origin of config "
+{
+"#desc"
+:
+"show origin of config "
+}
 ,
 "--default"
 :
-"--- with --get, use default value when missing entry"
+{
+"#desc"
+:
+"with --get, use default value when missing entry"
+}
 ,
 "#desc"
 :
@@ -1980,67 +3612,131 @@
 {
 "--progress"
 :
-"--- jects"
+{
+"#desc"
+:
+"jects"
+}
 ,
 "--signed-tags"
 :
-"--- elect handling of signed tags"
+{
+"#desc"
+:
+"elect handling of signed tags"
+}
 ,
 "--tag-of-filtered-object"
 :
-"--- elect handling of signed tags"
+{
+"#desc"
+:
+"elect handling of signed tags"
+}
 ,
 "--reencode"
 :
-"--- select handling of commit messages in an alternate encoding"
+{
+"#desc"
+:
+"select handling of commit messages in an alternate encoding"
+}
 ,
 "--export-marks"
 :
-"--- select handling of commit messages in an alternate encoding"
+{
+"#desc"
+:
+"select handling of commit messages in an alternate encoding"
+}
 ,
 "--import-marks"
 :
-"--- select handling of commit messages in an alternate encoding"
+{
+"#desc"
+:
+"select handling of commit messages in an alternate encoding"
+}
 ,
 "--import-marks-if-exists"
 :
-"--- select handling of commit messages in an alternate encoding"
+{
+"#desc"
+:
+"select handling of commit messages in an alternate encoding"
+}
 ,
 "--fake-missing-tagger"
 :
-"--- select handling of commit messages in an alternate encoding"
+{
+"#desc"
+:
+"select handling of commit messages in an alternate encoding"
+}
 ,
 "--full-tree"
 :
-"--- Output full tree for each commit"
+{
+"#desc"
+:
+"Output full tree for each commit"
+}
 ,
 "--use-done-feature"
 :
-"--- Use the done feature to terminate the stream"
+{
+"#desc"
+:
+"Use the done feature to terminate the stream"
+}
 ,
 "--no-data"
 :
-"--- Skip output of blob data"
+{
+"#desc"
+:
+"Skip output of blob data"
+}
 ,
 "--refspec"
 :
-"--- Apply refspec to exported refs"
+{
+"#desc"
+:
+"Apply refspec to exported refs"
+}
 ,
 "--anonymize"
 :
-"--- anonymize output"
+{
+"#desc"
+:
+"anonymize output"
+}
 ,
 "--reference-excluded-parents"
 :
-"--- anonymize output"
+{
+"#desc"
+:
+"anonymize output"
+}
 ,
 "--show-original-ids"
 :
-"--- Show original object ids of blobs/commits"
+{
+"#desc"
+:
+"Show original object ids of blobs/commits"
+}
 ,
 "--mark-tags"
 :
-"--- Label tags with mark ids"
+{
+"#desc"
+:
+"Label tags with mark ids"
+}
 ,
 "#desc"
 :
@@ -2068,11 +3764,19 @@
 {
 "--all"
 :
-"--- pack everything"
+{
+"#desc"
+:
+"pack everything"
+}
 ,
 "--prune"
 :
-"--- prune loose refs "
+{
+"#desc"
+:
+"prune loose refs "
+}
 ,
 "#desc"
 :
@@ -2084,23 +3788,43 @@
 {
 "-n|--dry-run"
 :
-"--- do not remove, show only"
+{
+"#desc"
+:
+"do not remove, show only"
+}
 ,
 "-v|--verbose"
 :
-"--- report pruned objects"
+{
+"#desc"
+:
+"report pruned objects"
+}
 ,
 "--progress"
 :
-"--- show progress"
+{
+"#desc"
+:
+"show progress"
+}
 ,
 "--expire"
 :
-"--- show progress"
+{
+"#desc"
+:
+"show progress"
+}
 ,
 "--exclude-promisor-objects"
 :
-"--- show progress"
+{
+"#desc"
+:
+"show progress"
+}
 ,
 "#desc"
 :
@@ -2120,7 +3844,11 @@
 {
 "-v|--verbose"
 :
-"--- be verbose; must be placed before a subcommand"
+{
+"#desc"
+:
+"be verbose; must be placed before a subcommand"
+}
 ,
 "#desc"
 :
@@ -2132,79 +3860,155 @@
 {
 "-a"
 :
-"--- pack everything in a single pack"
+{
+"#desc"
+:
+"pack everything in a single pack"
+}
 ,
 "-A"
 :
-"--- same as -a, and turn unreachable objects loose"
+{
+"#desc"
+:
+"same as -a, and turn unreachable objects loose"
+}
 ,
 "-d"
 :
-"--- remove redundant packs, and run git-prune-packed"
+{
+"#desc"
+:
+"remove redundant packs, and run git-prune-packed"
+}
 ,
 "-f"
 :
-"--- pass --no-reuse-delta to git-pack-objects"
+{
+"#desc"
+:
+"pass --no-reuse-delta to git-pack-objects"
+}
 ,
 "-F"
 :
-"--- pass --no-reuse-object to git-pack-objects"
+{
+"#desc"
+:
+"pass --no-reuse-object to git-pack-objects"
+}
 ,
 "-n"
 :
-"--- do not run git-update-server-info"
+{
+"#desc"
+:
+"do not run git-update-server-info"
+}
 ,
 "-q|--quiet"
 :
-"--- be quiet"
+{
+"#desc"
+:
+"be quiet"
+}
 ,
 "-l|--local"
 :
-"--- pass --local to git-pack-objects"
+{
+"#desc"
+:
+"pass --local to git-pack-objects"
+}
 ,
 "-b|--write-bitmap-index"
 :
-"--- pass --local to git-pack-objects"
+{
+"#desc"
+:
+"pass --local to git-pack-objects"
+}
 ,
 "-i|--delta-islands"
 :
-"--- pass --delta-islands to git-pack-objects"
+{
+"#desc"
+:
+"pass --delta-islands to git-pack-objects"
+}
 ,
 "--unpack-unreachable"
 :
-"--- pass --delta-islands to git-pack-objects"
+{
+"#desc"
+:
+"pass --delta-islands to git-pack-objects"
+}
 ,
 "-k|--keep-unreachable"
 :
-"--- pass --delta-islands to git-pack-objects"
+{
+"#desc"
+:
+"pass --delta-islands to git-pack-objects"
+}
 ,
 "--window"
 :
-"--- size of the window used for delta compression"
+{
+"#desc"
+:
+"size of the window used for delta compression"
+}
 ,
 "--window-memory"
 :
-"--- size of the window used for delta compression"
+{
+"#desc"
+:
+"size of the window used for delta compression"
+}
 ,
 "--depth"
 :
-"--- limits the maximum delta depth"
+{
+"#desc"
+:
+"limits the maximum delta depth"
+}
 ,
 "--threads"
 :
-"--- limits the maximum number of threads"
+{
+"#desc"
+:
+"limits the maximum number of threads"
+}
 ,
 "--max-pack-size"
 :
-"--- limits the maximum number of threads"
+{
+"#desc"
+:
+"limits the maximum number of threads"
+}
 ,
 "--pack-kept-objects"
 :
-"--- repack objects in packs marked with .keep"
+{
+"#desc"
+:
+"repack objects in packs marked with .keep"
+}
 ,
 "--keep-pack"
 :
-"--- do not repack this pack"
+{
+"#desc"
+:
+"do not repack this pack"
+}
 ,
 "#desc"
 :
@@ -2216,35 +4020,67 @@
 {
 "-l|--list"
 :
-"--- list replace refs"
+{
+"#desc"
+:
+"list replace refs"
+}
 ,
 "-d|--delete"
 :
-"--- delete replace refs"
+{
+"#desc"
+:
+"delete replace refs"
+}
 ,
 "-e|--edit"
 :
-"--- edit existing object"
+{
+"#desc"
+:
+"edit existing object"
+}
 ,
 "-g|--graft"
 :
-"--- change a commit's parents"
+{
+"#desc"
+:
+"change a commit's parents"
+}
 ,
 "--convert-graft-file"
 :
-"--- convert existing graft file"
+{
+"#desc"
+:
+"convert existing graft file"
+}
 ,
 "-f|--force"
 :
-"--- replace the ref if it exists"
+{
+"#desc"
+:
+"replace the ref if it exists"
+}
 ,
 "--raw"
 :
-"--- do not pretty-print contents for --edit"
+{
+"#desc"
+:
+"do not pretty-print contents for --edit"
+}
 ,
 "--format"
 :
-"--- use this format"
+{
+"#desc"
+:
+"use this format"
+}
 ,
 "#desc"
 :
@@ -2256,111 +4092,219 @@
 {
 "--incremental"
 :
-"--- Show blame entries as we find them, incrementally"
+{
+"#desc"
+:
+"Show blame entries as we find them, incrementally"
+}
 ,
 "-b"
 :
-"--- Show blank SHA-1 for boundary commits "
+{
+"#desc"
+:
+"Show blank SHA-1 for boundary commits "
+}
 ,
 "--root"
 :
-"--- Do not treat root commits as boundaries "
+{
+"#desc"
+:
+"Do not treat root commits as boundaries "
+}
 ,
 "--show-stats"
 :
-"--- Show work cost statistics"
+{
+"#desc"
+:
+"Show work cost statistics"
+}
 ,
 "--progress"
 :
-"--- Force progress reporting"
+{
+"#desc"
+:
+"Force progress reporting"
+}
 ,
 "--score-debug"
 :
-"--- Show output score for blame entries"
+{
+"#desc"
+:
+"Show output score for blame entries"
+}
 ,
 "-f|--show-name"
 :
-"--- Show original filename "
+{
+"#desc"
+:
+"Show original filename "
+}
 ,
 "-n|--show-number"
 :
-"--- Show original linenumber "
+{
+"#desc"
+:
+"Show original linenumber "
+}
 ,
 "-p|--porcelain"
 :
-"--- Show in a format designed for machine consumption"
+{
+"#desc"
+:
+"Show in a format designed for machine consumption"
+}
 ,
 "--line-porcelain"
 :
-"--- Show porcelain format with per-line commit information"
+{
+"#desc"
+:
+"Show porcelain format with per-line commit information"
+}
 ,
 "-c"
 :
-"--- Use the same output mode as git-annotate "
+{
+"#desc"
+:
+"Use the same output mode as git-annotate "
+}
 ,
 "-t"
 :
-"--- Show raw timestamp "
+{
+"#desc"
+:
+"Show raw timestamp "
+}
 ,
 "-l"
 :
-"--- Show long commit SHA1 "
+{
+"#desc"
+:
+"Show long commit SHA1 "
+}
 ,
 "-s"
 :
-"--- Suppress author name and timestamp "
+{
+"#desc"
+:
+"Suppress author name and timestamp "
+}
 ,
 "-e|--show-email"
 :
-"--- Show author email instead of name "
+{
+"#desc"
+:
+"Show author email instead of name "
+}
 ,
 "-w"
 :
-"--- Ignore whitespace differences"
+{
+"#desc"
+:
+"Ignore whitespace differences"
+}
 ,
 "--ignore-rev"
 :
-"--- en blaming"
+{
+"#desc"
+:
+"en blaming"
+}
 ,
 "--ignore-revs-file"
 :
-"--- en blaming"
+{
+"#desc"
+:
+"en blaming"
+}
 ,
 "--color-lines"
 :
-"--- color redundant metadata from previous line differently"
+{
+"#desc"
+:
+"color redundant metadata from previous line differently"
+}
 ,
 "--color-by-age"
 :
-"--- color lines by age"
+{
+"#desc"
+:
+"color lines by age"
+}
 ,
 "--minimal"
 :
-"--- Spend extra cycles to find better match"
+{
+"#desc"
+:
+"Spend extra cycles to find better match"
+}
 ,
 "-S"
 :
-"--- stead of calling git-rev-list"
+{
+"#desc"
+:
+"stead of calling git-rev-list"
+}
 ,
 "--contents"
 :
-"--- contents as the final image"
+{
+"#desc"
+:
+"contents as the final image"
+}
 ,
 "-C["
 :
-"--- Find line copies within and across files"
+{
+"#desc"
+:
+"Find line copies within and across files"
+}
 ,
 "-M["
 :
-"--- Find line movements within and across files"
+{
+"#desc"
+:
+"Find line movements within and across files"
+}
 ,
 "-L"
 :
-"--- Process only line range n,m, counting from 1"
+{
+"#desc"
+:
+"Process only line range n,m, counting from 1"
+}
 ,
 "--abbrev[=gits"
 :
-"--- SHA-1s"
+{
+"#desc"
+:
+"SHA-1s"
+}
 ,
 "#desc"
 :
@@ -2372,111 +4316,219 @@
 {
 "--incremental"
 :
-"--- Show blame entries as we find them, incrementally"
+{
+"#desc"
+:
+"Show blame entries as we find them, incrementally"
+}
 ,
 "-b"
 :
-"--- Show blank SHA-1 for boundary commits "
+{
+"#desc"
+:
+"Show blank SHA-1 for boundary commits "
+}
 ,
 "--root"
 :
-"--- Do not treat root commits as boundaries "
+{
+"#desc"
+:
+"Do not treat root commits as boundaries "
+}
 ,
 "--show-stats"
 :
-"--- Show work cost statistics"
+{
+"#desc"
+:
+"Show work cost statistics"
+}
 ,
 "--progress"
 :
-"--- Force progress reporting"
+{
+"#desc"
+:
+"Force progress reporting"
+}
 ,
 "--score-debug"
 :
-"--- Show output score for blame entries"
+{
+"#desc"
+:
+"Show output score for blame entries"
+}
 ,
 "-f|--show-name"
 :
-"--- Show original filename "
+{
+"#desc"
+:
+"Show original filename "
+}
 ,
 "-n|--show-number"
 :
-"--- Show original linenumber "
+{
+"#desc"
+:
+"Show original linenumber "
+}
 ,
 "-p|--porcelain"
 :
-"--- Show in a format designed for machine consumption"
+{
+"#desc"
+:
+"Show in a format designed for machine consumption"
+}
 ,
 "--line-porcelain"
 :
-"--- Show porcelain format with per-line commit information"
+{
+"#desc"
+:
+"Show porcelain format with per-line commit information"
+}
 ,
 "-c"
 :
-"--- Use the same output mode as git-annotate "
+{
+"#desc"
+:
+"Use the same output mode as git-annotate "
+}
 ,
 "-t"
 :
-"--- Show raw timestamp "
+{
+"#desc"
+:
+"Show raw timestamp "
+}
 ,
 "-l"
 :
-"--- Show long commit SHA1 "
+{
+"#desc"
+:
+"Show long commit SHA1 "
+}
 ,
 "-s"
 :
-"--- Suppress author name and timestamp "
+{
+"#desc"
+:
+"Suppress author name and timestamp "
+}
 ,
 "-e|--show-email"
 :
-"--- Show author email instead of name "
+{
+"#desc"
+:
+"Show author email instead of name "
+}
 ,
 "-w"
 :
-"--- Ignore whitespace differences"
+{
+"#desc"
+:
+"Ignore whitespace differences"
+}
 ,
 "--ignore-rev"
 :
-"--- en blaming"
+{
+"#desc"
+:
+"en blaming"
+}
 ,
 "--ignore-revs-file"
 :
-"--- en blaming"
+{
+"#desc"
+:
+"en blaming"
+}
 ,
 "--color-lines"
 :
-"--- color redundant metadata from previous line differently"
+{
+"#desc"
+:
+"color redundant metadata from previous line differently"
+}
 ,
 "--color-by-age"
 :
-"--- color lines by age"
+{
+"#desc"
+:
+"color lines by age"
+}
 ,
 "--minimal"
 :
-"--- Spend extra cycles to find better match"
+{
+"#desc"
+:
+"Spend extra cycles to find better match"
+}
 ,
 "-S"
 :
-"--- stead of calling git-rev-list"
+{
+"#desc"
+:
+"stead of calling git-rev-list"
+}
 ,
 "--contents"
 :
-"--- contents as the final image"
+{
+"#desc"
+:
+"contents as the final image"
+}
 ,
 "-C["
 :
-"--- Find line copies within and across files"
+{
+"#desc"
+:
+"Find line copies within and across files"
+}
 ,
 "-M["
 :
-"--- Find line movements within and across files"
+{
+"#desc"
+:
+"Find line movements within and across files"
+}
 ,
 "-L"
 :
-"--- Process only line range n,m, counting from 1"
+{
+"#desc"
+:
+"Process only line range n,m, counting from 1"
+}
 ,
 "--abbrev[=gits"
 :
-"--- SHA-1s"
+{
+"#desc"
+:
+"SHA-1s"
+}
 ,
 "#desc"
 :
@@ -2488,11 +4540,19 @@
 {
 "-v|--verbose"
 :
-"--- be verbose"
+{
+"#desc"
+:
+"be verbose"
+}
 ,
 "-H|--human-readable"
 :
-"--- print sizes in human readable format"
+{
+"#desc"
+:
+"print sizes in human readable format"
+}
 ,
 "#desc"
 :
@@ -2504,39 +4564,75 @@
 {
 "-g|--gui"
 :
-"--- use `diff.guitool` instead of `diff.tool`"
+{
+"#desc"
+:
+"use `diff.guitool` instead of `diff.tool`"
+}
 ,
 "-d|--dir-diff"
 :
-"--- perform a full-directory diff"
+{
+"#desc"
+:
+"perform a full-directory diff"
+}
 ,
 "-y|--no-prompt"
 :
-"--- do not prompt before launching a diff tool"
+{
+"#desc"
+:
+"do not prompt before launching a diff tool"
+}
 ,
 "--symlinks"
 :
-"--- use symlinks in dir-diff mode"
+{
+"#desc"
+:
+"use symlinks in dir-diff mode"
+}
 ,
 "-t|--tool"
 :
-"--- use the specified diff tool"
+{
+"#desc"
+:
+"use the specified diff tool"
+}
 ,
 "--tool-help"
 :
-"--- print a list of diff tools that may be used with `--tool`"
+{
+"#desc"
+:
+"print a list of diff tools that may be used with `--tool`"
+}
 ,
 "--trust-exit-code"
 :
-"--- make 'git-difftool' exit when an invoked diff tool returns a non - zero exit code"
+{
+"#desc"
+:
+"make 'git-difftool' exit when an invoked diff tool returns a non - zero exit code"
+}
 ,
 "-x|--extcmd"
 :
-"--- make 'git-difftool' exit when an invoked diff tool returns a non - zero exit code"
+{
+"#desc"
+:
+"make 'git-difftool' exit when an invoked diff tool returns a non - zero exit code"
+}
 ,
 "--no-index"
 :
-"--- passed to `diff`"
+{
+"#desc"
+:
+"passed to `diff`"
+}
 ,
 "#desc"
 :
@@ -2548,55 +4644,107 @@
 {
 "-v|--verbose"
 :
-"--- be verbose"
+{
+"#desc"
+:
+"be verbose"
+}
 ,
 "--unreachable"
 :
-"--- show unreachable objects"
+{
+"#desc"
+:
+"show unreachable objects"
+}
 ,
 "--dangling"
 :
-"--- show dangling objects"
+{
+"#desc"
+:
+"show dangling objects"
+}
 ,
 "--tags"
 :
-"--- report tags"
+{
+"#desc"
+:
+"report tags"
+}
 ,
 "--root"
 :
-"--- report root nodes"
+{
+"#desc"
+:
+"report root nodes"
+}
 ,
 "--cache"
 :
-"--- make index objects head nodes"
+{
+"#desc"
+:
+"make index objects head nodes"
+}
 ,
 "--reflogs"
 :
-"--- make reflogs head nodes "
+{
+"#desc"
+:
+"make reflogs head nodes "
+}
 ,
 "--full"
 :
-"--- also consider packs and alternate objects"
+{
+"#desc"
+:
+"also consider packs and alternate objects"
+}
 ,
 "--connectivity-only"
 :
-"--- check only connectivity"
+{
+"#desc"
+:
+"check only connectivity"
+}
 ,
 "--strict"
 :
-"--- enable more strict checking"
+{
+"#desc"
+:
+"enable more strict checking"
+}
 ,
 "--lost-found"
 :
-"--- write dangling objects in .git/lost-found"
+{
+"#desc"
+:
+"write dangling objects in .git/lost-found"
+}
 ,
 "--progress"
 :
-"--- show progress"
+{
+"#desc"
+:
+"show progress"
+}
 ,
 "--name-objects"
 :
-"--- show verbose names for reachable objects"
+{
+"#desc"
+:
+"show verbose names for reachable objects"
+}
 ,
 "#desc"
 :
@@ -2616,31 +4764,59 @@
 {
 "-a|--all"
 :
-"--- print all available commands"
+{
+"#desc"
+:
+"print all available commands"
+}
 ,
 "-g|--guides"
 :
-"--- print list of useful guides"
+{
+"#desc"
+:
+"print list of useful guides"
+}
 ,
 "-c|--config"
 :
-"--- print all configuration variable names"
+{
+"#desc"
+:
+"print all configuration variable names"
+}
 ,
 "-m|--man"
 :
-"--- show man page"
+{
+"#desc"
+:
+"show man page"
+}
 ,
 "-w|--web"
 :
-"--- show manual in web browser"
+{
+"#desc"
+:
+"show manual in web browser"
+}
 ,
 "-i|--info"
 :
-"--- show info page"
+{
+"#desc"
+:
+"show info page"
+}
 ,
 "-v|--verbose"
 :
-"--- print command description"
+{
+"#desc"
+:
+"print command description"
+}
 ,
 "#desc"
 :
@@ -2652,35 +4828,67 @@
 {
 "-l|--local"
 :
-"--- only bind on 127.0.0.1"
+{
+"#desc"
+:
+"only bind on 127.0.0.1"
+}
 ,
 "-p|--port"
 :
-"--- the port to bind to"
+{
+"#desc"
+:
+"the port to bind to"
+}
 ,
 "-d|--httpd"
 :
-"--- the command to launch"
+{
+"#desc"
+:
+"the command to launch"
+}
 ,
 "-b|--browser"
 :
-"--- the browser to launch"
+{
+"#desc"
+:
+"the browser to launch"
+}
 ,
 "-m|--module-path"
 :
-"--- the browser to launch"
+{
+"#desc"
+:
+"the browser to launch"
+}
 ,
 "--stop"
 :
-"--- stop the web server"
+{
+"#desc"
+:
+"stop the web server"
+}
 ,
 "--start"
 :
-"--- start the web server"
+{
+"#desc"
+:
+"start the web server"
+}
 ,
 "--restart"
 :
-"--- restart the web server"
+{
+"#desc"
+:
+"restart the web server"
+}
 ,
 "#desc"
 :
@@ -2700,7 +4908,11 @@
 {
 "--rerere-autoupdate"
 :
-"--- register clean resolutions in index"
+{
+"#desc"
+:
+"register clean resolutions in index"
+}
 ,
 "#desc"
 :
@@ -2712,63 +4924,123 @@
 {
 "-a|--all"
 :
-"--- show remote-tracking and local branches"
+{
+"#desc"
+:
+"show remote-tracking and local branches"
+}
 ,
 "-r|--remotes"
 :
-"--- show remote-tracking branches"
+{
+"#desc"
+:
+"show remote-tracking branches"
+}
 ,
 "--color[="
 :
-"--- color '*!+-' corresponding to the branch"
+{
+"#desc"
+:
+"color '*!+-' corresponding to the branch"
+}
 ,
 "--more[=re"
 :
-"--- commits after the common ancestor"
+{
+"#desc"
+:
+"commits after the common ancestor"
+}
 ,
 "--list"
 :
-"--- synonym to more=-1"
+{
+"#desc"
+:
+"synonym to more=-1"
+}
 ,
 "--no-name"
 :
-"--- suppress naming strings"
+{
+"#desc"
+:
+"suppress naming strings"
+}
 ,
 "--current"
 :
-"--- include the current branch"
+{
+"#desc"
+:
+"include the current branch"
+}
 ,
 "--sha1-name"
 :
-"--- name commits with their object names"
+{
+"#desc"
+:
+"name commits with their object names"
+}
 ,
 "--merge-base"
 :
-"--- show possible merge bases"
+{
+"#desc"
+:
+"show possible merge bases"
+}
 ,
 "--independent"
 :
-"--- show refs unreachable from any other ref"
+{
+"#desc"
+:
+"show refs unreachable from any other ref"
+}
 ,
 "--topo-order"
 :
-"--- show commits in topological order"
+{
+"#desc"
+:
+"show commits in topological order"
+}
 ,
 "--topics"
 :
-"--- show only commits not on the first branch"
+{
+"#desc"
+:
+"show only commits not on the first branch"
+}
 ,
 "--sparse"
 :
-"--- show merges reachable from only one tip"
+{
+"#desc"
+:
+"show merges reachable from only one tip"
+}
 ,
 "--date-order"
 :
-"--- topologically sort, maintaining date order where possible"
+{
+"#desc"
+:
+"topologically sort, maintaining date order where possible"
+}
 ,
 "-g|--reflog"
 :
-"--- topologically sort, maintaining date order where possible"
+{
+"#desc"
+:
+"topologically sort, maintaining date order where possible"
+}
 ,
 "#desc"
 :
@@ -2780,11 +5052,19 @@
 {
 "-v|--verbose"
 :
-"--- print commit contents"
+{
+"#desc"
+:
+"print commit contents"
+}
 ,
 "--raw"
 :
-"--- print raw gpg status output"
+{
+"#desc"
+:
+"print raw gpg status output"
+}
 ,
 "#desc"
 :
@@ -2796,15 +5076,27 @@
 {
 "-v|--verbose"
 :
-"--- print tag contents"
+{
+"#desc"
+:
+"print tag contents"
+}
 ,
 "--raw"
 :
-"--- print raw gpg status output"
+{
+"#desc"
+:
+"print raw gpg status output"
+}
 ,
 "--format"
 :
-"--- format to use for the output"
+{
+"#desc"
+:
+"format to use for the output"
+}
 ,
 "#desc"
 :
@@ -2816,31 +5108,59 @@
 {
 "-q|--quiet"
 :
-"--- suppress diff output"
+{
+"#desc"
+:
+"suppress diff output"
+}
 ,
 "--source"
 :
-"--- show source"
+{
+"#desc"
+:
+"show source"
+}
 ,
 "--use-mailmap"
 :
-"--- Use mail map file"
+{
+"#desc"
+:
+"Use mail map file"
+}
 ,
 "--decorate-refs"
 :
-"--- Use mail map file"
+{
+"#desc"
+:
+"Use mail map file"
+}
 ,
 "--decorate-refs-exclude"
 :
-"--- Use mail map file"
+{
+"#desc"
+:
+"Use mail map file"
+}
 ,
 "--decorate"
 :
-"--- decorate options"
+{
+"#desc"
+:
+"decorate options"
+}
 ,
 "-L"
 :
-"--- Process line range n,m in file, counting from 1"
+{
+"#desc"
+:
+"Process line range n,m in file, counting from 1"
+}
 ,
 "#desc"
 :
@@ -2876,15 +5196,27 @@
 {
 "-v|--verbose"
 :
-"--- be more verbose"
+{
+"#desc"
+:
+"be more verbose"
+}
 ,
 "-q|--quiet"
 :
-"--- be more quiet"
+{
+"#desc"
+:
+"be more quiet"
+}
 ,
 "--curl"
 :
-"--- IMAP server"
+{
+"#desc"
+:
+"IMAP server"
+}
 ,
 "#desc"
 :
@@ -2904,23 +5236,43 @@
 {
 "-n|--dry-run"
 :
-"--- dry run"
+{
+"#desc"
+:
+"dry run"
+}
 ,
 "--author"
 :
-"--- author name and email address for patches without any"
+{
+"#desc"
+:
+"author name and email address for patches without any"
+}
 ,
 "--patches"
 :
-"--- path to the quilt patches"
+{
+"#desc"
+:
+"path to the quilt patches"
+}
 ,
 "--series"
 :
-"--- path to the quilt series file"
+{
+"#desc"
+:
+"path to the quilt series file"
+}
 ,
 "--keep-non-patch"
 :
-"--- Pass -b to git mailinfo"
+{
+"#desc"
+:
+"Pass -b to git mailinfo"
+}
 ,
 "#desc"
 :
@@ -2932,7 +5284,11 @@
 {
 "-p"
 :
-"--- show patch text as well"
+{
+"#desc"
+:
+"show patch text as well"
+}
 ,
 "#desc"
 :
@@ -2960,115 +5316,227 @@
 {
 "--exclude"
 :
-"--- don't apply changes matching the given path"
+{
+"#desc"
+:
+"don't apply changes matching the given path"
+}
 ,
 "--include"
 :
-"--- apply changes matching the given path"
+{
+"#desc"
+:
+"apply changes matching the given path"
+}
 ,
 "-p"
 :
-"--- ading slashes from traditional diff paths"
+{
+"#desc"
+:
+"ading slashes from traditional diff paths"
+}
 ,
 "--no-add"
 :
-"--- ignore additions made by the patch"
+{
+"#desc"
+:
+"ignore additions made by the patch"
+}
 ,
 "--stat"
 :
-"--- instead of applying the patch, output diffstat for the input"
+{
+"#desc"
+:
+"instead of applying the patch, output diffstat for the input"
+}
 ,
 "--numstat"
 :
-"--- show number of added and deleted lines in decimal notation"
+{
+"#desc"
+:
+"show number of added and deleted lines in decimal notation"
+}
 ,
 "--summary"
 :
-"--- instead of applying the patch, output a summary for the input"
+{
+"#desc"
+:
+"instead of applying the patch, output a summary for the input"
+}
 ,
 "--check"
 :
-"--- instead of applying the patch, see if the patch is applicable"
+{
+"#desc"
+:
+"instead of applying the patch, see if the patch is applicable"
+}
 ,
 "--index"
 :
-"--- make sure the patch is applicable to the current index"
+{
+"#desc"
+:
+"make sure the patch is applicable to the current index"
+}
 ,
 "-N|--intent-to-add"
 :
-"--- mark new files with `git add --intent-to-add`"
+{
+"#desc"
+:
+"mark new files with `git add --intent-to-add`"
+}
 ,
 "--cached"
 :
-"--- apply a patch without touching the working tree"
+{
+"#desc"
+:
+"apply a patch without touching the working tree"
+}
 ,
 "--unsafe-paths"
 :
-"--- accept a patch that touches outside the working area"
+{
+"#desc"
+:
+"accept a patch that touches outside the working area"
+}
 ,
 "--apply"
 :
-"--- also apply the patch "
+{
+"#desc"
+:
+"also apply the patch "
+}
 ,
 "-3|--3way"
 :
-"--- attempt three-way merge if a patch does not apply"
+{
+"#desc"
+:
+"attempt three-way merge if a patch does not apply"
+}
 ,
 "--build-fake-ancestor"
 :
-"--- attempt three-way merge if a patch does not apply"
+{
+"#desc"
+:
+"attempt three-way merge if a patch does not apply"
+}
 ,
 "-z"
 :
-"--- NUL character"
+{
+"#desc"
+:
+"NUL character"
+}
 ,
 "-C"
 :
-"--- nes of context match"
+{
+"#desc"
+:
+"nes of context match"
+}
 ,
 "--whitespace"
 :
-"--- nes of context match"
+{
+"#desc"
+:
+"nes of context match"
+}
 ,
 "--ignore-space-change"
 :
-"--- nes of context match"
+{
+"#desc"
+:
+"nes of context match"
+}
 ,
 "--ignore-whitespace"
 :
-"--- ignore changes in whitespace when finding context"
+{
+"#desc"
+:
+"ignore changes in whitespace when finding context"
+}
 ,
 "-R|--reverse"
 :
-"--- apply the patch in reverse"
+{
+"#desc"
+:
+"apply the patch in reverse"
+}
 ,
 "--unidiff-zero"
 :
-"--- don't expect at least one line of context"
+{
+"#desc"
+:
+"don't expect at least one line of context"
+}
 ,
 "--reject"
 :
-"--- leave the rejected hunks in corresponding *.rej files"
+{
+"#desc"
+:
+"leave the rejected hunks in corresponding *.rej files"
+}
 ,
 "--allow-overlap"
 :
-"--- allow overlapping hunks"
+{
+"#desc"
+:
+"allow overlapping hunks"
+}
 ,
 "-v|--verbose"
 :
-"--- be verbose"
+{
+"#desc"
+:
+"be verbose"
+}
 ,
 "--inaccurate-eof"
 :
-"--- tolerate incorrectly detected missing new-line at the end of file"
+{
+"#desc"
+:
+"tolerate incorrectly detected missing new-line at the end of file"
+}
 ,
 "--recount"
 :
-"--- do not trust the line counts in the hunk headers"
+{
+"#desc"
+:
+"do not trust the line counts in the hunk headers"
+}
 ,
 "--directory"
 :
-"--- all filenames"
+{
+"#desc"
+:
+"all filenames"
+}
 ,
 "#desc"
 :
@@ -3104,31 +5572,59 @@
 {
 "-t"
 :
-"--- object type"
+{
+"#desc"
+:
+"object type"
+}
 ,
 "-w"
 :
-"--- write the object into the object database"
+{
+"#desc"
+:
+"write the object into the object database"
+}
 ,
 "--stdin"
 :
-"--- read the object from stdin"
+{
+"#desc"
+:
+"read the object from stdin"
+}
 ,
 "--stdin-paths"
 :
-"--- read file names from stdin"
+{
+"#desc"
+:
+"read file names from stdin"
+}
 ,
 "--no-filters"
 :
-"--- store file as is without filters"
+{
+"#desc"
+:
+"store file as is without filters"
+}
 ,
 "--literally"
 :
-"--- Git"
+{
+"#desc"
+:
+"Git"
+}
 ,
 "--path"
 :
-"--- process file as it were from this path"
+{
+"#desc"
+:
+"process file as it were from this path"
+}
 ,
 "#desc"
 :
@@ -3148,35 +5644,67 @@
 {
 "-p|--stdout"
 :
-"--- send results to standard output"
+{
+"#desc"
+:
+"send results to standard output"
+}
 ,
 "--diff3"
 :
-"--- use a diff3 based merge"
+{
+"#desc"
+:
+"use a diff3 based merge"
+}
 ,
 "--ours"
 :
-"--- for conflicts, use our version"
+{
+"#desc"
+:
+"for conflicts, use our version"
+}
 ,
 "--theirs"
 :
-"--- for conflicts, use their version"
+{
+"#desc"
+:
+"for conflicts, use their version"
+}
 ,
 "--union"
 :
-"--- for conflicts, use a union version"
+{
+"#desc"
+:
+"for conflicts, use a union version"
+}
 ,
 "--marker-size"
 :
-"--- for conflicts, use this marker size"
+{
+"#desc"
+:
+"for conflicts, use this marker size"
+}
 ,
 "-q|--quiet"
 :
-"--- do not warn about conflicts"
+{
+"#desc"
+:
+"do not warn about conflicts"
+}
 ,
 "-L"
 :
-"--- set labels for file1/orig-file/file2"
+{
+"#desc"
+:
+"set labels for file1/orig-file/file2"
+}
 ,
 "#desc"
 :
@@ -3204,15 +5732,27 @@
 {
 "-z"
 :
-"--- NUL terminated"
+{
+"#desc"
+:
+"NUL terminated"
+}
 ,
 "--missing"
 :
-"--- allow missing objects"
+{
+"#desc"
+:
+"allow missing objects"
+}
 ,
 "--batch"
 :
-"--- allow creation of more than one tree"
+{
+"#desc"
+:
+"allow creation of more than one tree"
+}
 ,
 "#desc"
 :
@@ -3224,15 +5764,27 @@
 {
 "--object-dir"
 :
-"--- object directory containing set of packfile and pack-index pairs"
+{
+"#desc"
+:
+"object directory containing set of packfile and pack-index pairs"
+}
 ,
 "--progress"
 :
-"--- force progress reporting"
+{
+"#desc"
+:
+"force progress reporting"
+}
 ,
 "--batch-size"
 :
-"--- during repack, collect pack-files of smaller size into a batch that is larger than this size"
+{
+"#desc"
+:
+"during repack, collect pack-files of smaller size into a batch that is larger than this size"
+}
 ,
 "#desc"
 :
@@ -3244,159 +5796,315 @@
 {
 "-q|--quiet"
 :
-"--- do not show progress meter"
+{
+"#desc"
+:
+"do not show progress meter"
+}
 ,
 "--progress"
 :
-"--- show progress meter"
+{
+"#desc"
+:
+"show progress meter"
+}
 ,
 "--all-progress"
 :
-"--- show progress meter during object writing phase"
+{
+"#desc"
+:
+"show progress meter during object writing phase"
+}
 ,
 "--all-progress-implied"
 :
-"--- show progress meter during object writing phase"
+{
+"#desc"
+:
+"show progress meter during object writing phase"
+}
 ,
 "--index-version"
 :
-"--- offset>]"
+{
+"#desc"
+:
+"offset>]"
+}
 ,
 "--max-pack-size"
 :
-"--- maximum size of each output pack file"
+{
+"#desc"
+:
+"maximum size of each output pack file"
+}
 ,
 "--local"
 :
-"--- ignore borrowed objects from alternate object store"
+{
+"#desc"
+:
+"ignore borrowed objects from alternate object store"
+}
 ,
 "--incremental"
 :
-"--- ignore packed objects"
+{
+"#desc"
+:
+"ignore packed objects"
+}
 ,
 "--window"
 :
-"--- limit pack window by objects"
+{
+"#desc"
+:
+"limit pack window by objects"
+}
 ,
 "--window-memory"
 :
-"--- limit pack window by memory in addition to object limit"
+{
+"#desc"
+:
+"limit pack window by memory in addition to object limit"
+}
 ,
 "--depth"
 :
-"--- maximum length of delta chain allowed in the resulting pack"
+{
+"#desc"
+:
+"maximum length of delta chain allowed in the resulting pack"
+}
 ,
 "--reuse-delta"
 :
-"--- reuse existing deltas"
+{
+"#desc"
+:
+"reuse existing deltas"
+}
 ,
 "--reuse-object"
 :
-"--- reuse existing objects"
+{
+"#desc"
+:
+"reuse existing objects"
+}
 ,
 "--delta-base-offset"
 :
-"--- OFS_DELTA objects"
+{
+"#desc"
+:
+"OFS_DELTA objects"
+}
 ,
 "--threads"
 :
-"--- use threads when searching for best delta matches"
+{
+"#desc"
+:
+"use threads when searching for best delta matches"
+}
 ,
 "--non-empty"
 :
-"--- do not create an empty pack output"
+{
+"#desc"
+:
+"do not create an empty pack output"
+}
 ,
 "--revs"
 :
-"--- read revision arguments from standard input"
+{
+"#desc"
+:
+"read revision arguments from standard input"
+}
 ,
 "--unpacked"
 :
-"--- limit the objects to those that are not yet packed"
+{
+"#desc"
+:
+"limit the objects to those that are not yet packed"
+}
 ,
 "--all"
 :
-"--- include objects reachable from any reference"
+{
+"#desc"
+:
+"include objects reachable from any reference"
+}
 ,
 "--reflog"
 :
-"--- include objects referred by reflog entries"
+{
+"#desc"
+:
+"include objects referred by reflog entries"
+}
 ,
 "--indexed-objects"
 :
-"--- include objects referred to by the index"
+{
+"#desc"
+:
+"include objects referred to by the index"
+}
 ,
 "--stdout"
 :
-"--- output pack to stdout"
+{
+"#desc"
+:
+"output pack to stdout"
+}
 ,
 "--include-tag"
 :
-"--- include tag objects that refer to objects to be packed"
+{
+"#desc"
+:
+"include tag objects that refer to objects to be packed"
+}
 ,
 "--keep-unreachable"
 :
-"--- keep unreachable objects"
+{
+"#desc"
+:
+"keep unreachable objects"
+}
 ,
 "--pack-loose-unreachable"
 :
-"--- keep unreachable objects"
+{
+"#desc"
+:
+"keep unreachable objects"
+}
 ,
 "--unpack-unreachable"
 :
-"--- keep unreachable objects"
+{
+"#desc"
+:
+"keep unreachable objects"
+}
 ,
 "--sparse"
 :
-"--- use the sparse reachability algorithm"
+{
+"#desc"
+:
+"use the sparse reachability algorithm"
+}
 ,
 "--thin"
 :
-"--- create thin packs"
+{
+"#desc"
+:
+"create thin packs"
+}
 ,
 "--shallow"
 :
-"--- create packs suitable for shallow fetches"
+{
+"#desc"
+:
+"create packs suitable for shallow fetches"
+}
 ,
 "--honor-pack-keep"
 :
-"--- ignore packs that have companion .keep file"
+{
+"#desc"
+:
+"ignore packs that have companion .keep file"
+}
 ,
 "--keep-pack"
 :
-"--- ignore this pack"
+{
+"#desc"
+:
+"ignore this pack"
+}
 ,
 "--compression"
 :
-"--- pack compression level"
+{
+"#desc"
+:
+"pack compression level"
+}
 ,
 "--keep-true-parents"
 :
-"--- do not hide commits by grafts"
+{
+"#desc"
+:
+"do not hide commits by grafts"
+}
 ,
 "--use-bitmap-index"
 :
-"--- use a bitmap index if available to speed up counting objects"
+{
+"#desc"
+:
+"use a bitmap index if available to speed up counting objects"
+}
 ,
 "--write-bitmap-index"
 :
-"--- write a bitmap index together with the pack index"
+{
+"#desc"
+:
+"write a bitmap index together with the pack index"
+}
 ,
 "--filter"
 :
-"--- object filtering"
+{
+"#desc"
+:
+"object filtering"
+}
 ,
 "--missing"
 :
-"--- handling for missing objects"
+{
+"#desc"
+:
+"handling for missing objects"
+}
 ,
 "--exclude-promisor-objects"
 :
-"--- handling for missing objects"
+{
+"#desc"
+:
+"handling for missing objects"
+}
 ,
 "--delta-islands"
 :
-"--- respect islands during delta compression"
+{
+"#desc"
+:
+"respect islands during delta compression"
+}
 ,
 "#desc"
 :
@@ -3408,11 +6116,19 @@
 {
 "-n|--dry-run"
 :
-"--- dry run"
+{
+"#desc"
+:
+"dry run"
+}
 ,
 "-q|--quiet"
 :
-"--- be quiet"
+{
+"#desc"
+:
+"be quiet"
+}
 ,
 "#desc"
 :
@@ -3428,63 +6144,123 @@
 ,
 "--empty"
 :
-"--- only empty the index"
+{
+"#desc"
+:
+"only empty the index"
+}
 ,
 "-v|--verbose"
 :
-"--- be verbose"
+{
+"#desc"
+:
+"be verbose"
+}
 ,
 "-m"
 :
-"--- perform a merge in addition to a read"
+{
+"#desc"
+:
+"perform a merge in addition to a read"
+}
 ,
 "--trivial"
 :
-"--- merge if no file level merging required"
+{
+"#desc"
+:
+"merge if no file level merging required"
+}
 ,
 "--aggressive"
 :
-"--- merge in presence of adds and removes"
+{
+"#desc"
+:
+"merge in presence of adds and removes"
+}
 ,
 "--reset"
 :
-"--- same as -m, but discard unmerged entries"
+{
+"#desc"
+:
+"same as -m, but discard unmerged entries"
+}
 ,
 "--prefix"
 :
-"--- same as -m, but discard unmerged entries"
+{
+"#desc"
+:
+"same as -m, but discard unmerged entries"
+}
 ,
 "-u"
 :
-"--- update working tree with merge result"
+{
+"#desc"
+:
+"update working tree with merge result"
+}
 ,
 "--exclude-per-directory"
 :
-"--- update working tree with merge result"
+{
+"#desc"
+:
+"update working tree with merge result"
+}
 ,
 "-i"
 :
-"--- don't check the working tree after merging"
+{
+"#desc"
+:
+"don't check the working tree after merging"
+}
 ,
 "-n|--dry-run"
 :
-"--- don't update the index or the work tree"
+{
+"#desc"
+:
+"don't update the index or the work tree"
+}
 ,
 "--no-sparse-checkout"
 :
-"--- skip applying sparse checkout filter"
+{
+"#desc"
+:
+"skip applying sparse checkout filter"
+}
 ,
 "--debug-unpack"
 :
-"--- debug unpack-trees"
+{
+"#desc"
+:
+"debug unpack-trees"
+}
 ,
 "--recurse-submodules"
 :
-"--- debug unpack-trees"
+{
+"#desc"
+:
+"debug unpack-trees"
+}
 ,
 "-q|--quiet"
 :
-"--- suppress feedback messages"
+{
+"#desc"
+:
+"suppress feedback messages"
+}
 ,
 "#desc"
 :
@@ -3496,19 +6272,35 @@
 {
 "-q|--quiet"
 :
-"--- suppress error message for non-symbolic  refs"
+{
+"#desc"
+:
+"suppress error message for non-symbolic  refs"
+}
 ,
 "-d|--delete"
 :
-"--- delete symbolic ref"
+{
+"#desc"
+:
+"delete symbolic ref"
+}
 ,
 "--short"
 :
-"--- shorten ref output"
+{
+"#desc"
+:
+"shorten ref output"
+}
 ,
 "-m"
 :
-"--- reason of the update"
+{
+"#desc"
+:
+"reason of the update"
+}
 ,
 "#desc"
 :
@@ -3536,27 +6328,51 @@
 {
 "-m"
 :
-"--- reason of the update"
+{
+"#desc"
+:
+"reason of the update"
+}
 ,
 "-d"
 :
-"--- delete the reference"
+{
+"#desc"
+:
+"delete the reference"
+}
 ,
 "--no-deref"
 :
-"--- update t the one it points to"
+{
+"#desc"
+:
+"update t the one it points to"
+}
 ,
 "-z"
 :
-"--- NUL-terminated arguments"
+{
+"#desc"
+:
+"NUL-terminated arguments"
+}
 ,
 "--stdin"
 :
-"--- read updates from stdin"
+{
+"#desc"
+:
+"read updates from stdin"
+}
 ,
 "--create-reflog"
 :
-"--- create a reflog"
+{
+"#desc"
+:
+"create a reflog"
+}
 ,
 "#desc"
 :
@@ -3568,11 +6384,19 @@
 {
 "--missing-ok"
 :
-"--- allow missing objects"
+{
+"#desc"
+:
+"allow missing objects"
+}
 ,
 "--prefix"
 :
-"--- write tree object for a subdirectory "
+{
+"#desc"
+:
+"write tree object for a subdirectory "
+}
 ,
 "#desc"
 :
@@ -3584,59 +6408,115 @@
 {
 "-t"
 :
-"--- show object type"
+{
+"#desc"
+:
+"show object type"
+}
 ,
 "-s"
 :
-"--- show object size"
+{
+"#desc"
+:
+"show object size"
+}
 ,
 "-e"
 :
-"--- exit with zero when there's no error"
+{
+"#desc"
+:
+"exit with zero when there's no error"
+}
 ,
 "-p"
 :
-"--- pretty-print object's content"
+{
+"#desc"
+:
+"pretty-print object's content"
+}
 ,
 "--textconv"
 :
-"--- for blob objects, run textconv on object's content"
+{
+"#desc"
+:
+"for blob objects, run textconv on object's content"
+}
 ,
 "--filters"
 :
-"--- for blob objects, run filters on object's content"
+{
+"#desc"
+:
+"for blob objects, run filters on object's content"
+}
 ,
 "--path"
 :
-"--- use a specific path for --textconv/--filters"
+{
+"#desc"
+:
+"use a specific path for --textconv/--filters"
+}
 ,
 "--allow-unknown-type"
 :
-"--- allow -s and -t to work with broken/corrupt objects"
+{
+"#desc"
+:
+"allow -s and -t to work with broken/corrupt objects"
+}
 ,
 "--buffer"
 :
-"--- buffer --batch output"
+{
+"#desc"
+:
+"buffer --batch output"
+}
 ,
 "--batch[="
 :
-"--- show info and content of objects fed from the standard input"
+{
+"#desc"
+:
+"show info and content of objects fed from the standard input"
+}
 ,
 "--batch-check"
 :
-"--- show info and content of objects fed from the standard input"
+{
+"#desc"
+:
+"show info and content of objects fed from the standard input"
+}
 ,
 "--follow-symlinks"
 :
-"--- follow in-tree symlinks "
+{
+"#desc"
+:
+"follow in-tree symlinks "
+}
 ,
 "--batch-all-objects"
 :
-"--- show all objects with --batch or --batch-check"
+{
+"#desc"
+:
+"show all objects with --batch or --batch-check"
+}
 ,
 "--unordered"
 :
-"--- do not order --batch-all-objects output"
+{
+"#desc"
+:
+"do not order --batch-all-objects output"
+}
 ,
 "#desc"
 :
@@ -3648,11 +6528,19 @@
 {
 "--abbrev[=gits"
 :
-"--- SHA-1s"
+{
+"#desc"
+:
+"SHA-1s"
+}
 ,
 "-v|--verbose"
 :
-"--- be verbose"
+{
+"#desc"
+:
+"be verbose"
+}
 ,
 "#desc"
 :
@@ -3688,59 +6576,115 @@
 {
 "-s|--shell"
 :
-"--- quote placeholders suitably for shells"
+{
+"#desc"
+:
+"quote placeholders suitably for shells"
+}
 ,
 "-p|--perl"
 :
-"--- quote placeholders suitably for perl"
+{
+"#desc"
+:
+"quote placeholders suitably for perl"
+}
 ,
 "--python"
 :
-"--- quote placeholders suitably for python"
+{
+"#desc"
+:
+"quote placeholders suitably for python"
+}
 ,
 "--tcl"
 :
-"--- Tcl"
+{
+"#desc"
+:
+"Tcl"
+}
 ,
 "--count"
 :
-"--- tched refs"
+{
+"#desc"
+:
+"tched refs"
+}
 ,
 "--format"
 :
-"--- format to use for the output"
+{
+"#desc"
+:
+"format to use for the output"
+}
 ,
 "--color[="
 :
-"--- respect format colors"
+{
+"#desc"
+:
+"respect format colors"
+}
 ,
 "--sort"
 :
-"--- field name to sort on"
+{
+"#desc"
+:
+"field name to sort on"
+}
 ,
 "--points-at"
 :
-"--- rint only refs which points at the given object"
+{
+"#desc"
+:
+"rint only refs which points at the given object"
+}
 ,
 "--merged"
 :
-"--- print only refs that are merged"
+{
+"#desc"
+:
+"print only refs that are merged"
+}
 ,
 "--no-merged"
 :
-"--- rint only refs that are not merged"
+{
+"#desc"
+:
+"rint only refs that are not merged"
+}
 ,
 "--contains"
 :
-"--- print only refs which contain the commit"
+{
+"#desc"
+:
+"print only refs which contain the commit"
+}
 ,
 "--no-contains"
 :
-"--- print only refs which contain the commit"
+{
+"#desc"
+:
+"print only refs which contain the commit"
+}
 ,
 "--ignore-case"
 :
-"--- sorting and filtering are case insensitive"
+{
+"#desc"
+:
+"sorting and filtering are case insensitive"
+}
 ,
 "#desc"
 :
@@ -3768,43 +6712,83 @@
 {
 "-q|--quiet"
 :
-"--- URL"
+{
+"#desc"
+:
+"URL"
+}
 ,
 "--upload-pack"
 :
-"--- ath of git-upload-pack on the remote host"
+{
+"#desc"
+:
+"ath of git-upload-pack on the remote host"
+}
 ,
 "-t|--tags"
 :
-"--- limit to tags"
+{
+"#desc"
+:
+"limit to tags"
+}
 ,
 "-h|--heads"
 :
-"--- limit to heads"
+{
+"#desc"
+:
+"limit to heads"
+}
 ,
 "--refs"
 :
-"--- do not show peeled tags"
+{
+"#desc"
+:
+"do not show peeled tags"
+}
 ,
 "--get-url"
 :
-"--- take url.steadOf into account"
+{
+"#desc"
+:
+"take url.steadOf into account"
+}
 ,
 "--sort"
 :
-"--- field name to sort on"
+{
+"#desc"
+:
+"field name to sort on"
+}
 ,
 "--exit-code"
 :
-"--- exit with exit code 2 if no matching refs are found"
+{
+"#desc"
+:
+"exit with exit code 2 if no matching refs are found"
+}
 ,
 "--symref"
 :
-"--- show underlying ref in addition to the object pointed by it"
+{
+"#desc"
+:
+"show underlying ref in addition to the object pointed by it"
+}
 ,
 "-o|--server-option"
 :
-"--- show underlying ref in addition to the object pointed by it"
+{
+"#desc"
+:
+"show underlying ref in addition to the object pointed by it"
+}
 ,
 "#desc"
 :
@@ -3816,43 +6800,83 @@
 {
 "-d"
 :
-"--- only show trees"
+{
+"#desc"
+:
+"only show trees"
+}
 ,
 "-r"
 :
-"--- recurse into subtrees"
+{
+"#desc"
+:
+"recurse into subtrees"
+}
 ,
 "-t"
 :
-"--- show trees when recursing"
+{
+"#desc"
+:
+"show trees when recursing"
+}
 ,
 "-z"
 :
-"--- NUL byte"
+{
+"#desc"
+:
+"NUL byte"
+}
 ,
 "-l|--long"
 :
-"--- include object size"
+{
+"#desc"
+:
+"include object size"
+}
 ,
 "--name-only"
 :
-"--- list only filenames"
+{
+"#desc"
+:
+"list only filenames"
+}
 ,
 "--name-status"
 :
-"--- list only filenames"
+{
+"#desc"
+:
+"list only filenames"
+}
 ,
 "--full-name"
 :
-"--- use full path names"
+{
+"#desc"
+:
+"use full path names"
+}
 ,
 "--full-tree"
 :
-"--- list entire tree; not just current directory "
+{
+"#desc"
+:
+"list entire tree; not just current directory "
+}
 ,
 "--abbrev[=gits"
 :
-"--- SHA-1s"
+{
+"#desc"
+:
+"SHA-1s"
+}
 ,
 "#desc"
 :
@@ -3864,23 +6888,43 @@
 {
 "-a|--all"
 :
-"--- output all common ancestors"
+{
+"#desc"
+:
+"output all common ancestors"
+}
 ,
 "--octopus"
 :
-"--- find ancestors for a single n-way merge"
+{
+"#desc"
+:
+"find ancestors for a single n-way merge"
+}
 ,
 "--independent"
 :
-"--- list revs not reachable from others"
+{
+"#desc"
+:
+"list revs not reachable from others"
+}
 ,
 "--is-ancestor"
 :
-"--- is the first one ancestor of the other?"
+{
+"#desc"
+:
+"is the first one ancestor of the other?"
+}
 ,
 "--fork-point"
 :
-"--- find where rked from reflog of "
+{
+"#desc"
+:
+"find where rked from reflog of "
+}
 ,
 "#desc"
 :
@@ -3892,35 +6936,67 @@
 {
 "--name-only"
 :
-"--- print only names "
+{
+"#desc"
+:
+"print only names "
+}
 ,
 "--tags"
 :
-"--- only use tags to name the commits"
+{
+"#desc"
+:
+"only use tags to name the commits"
+}
 ,
 "--refs"
 :
-"--- only use refs matching "
+{
+"#desc"
+:
+"only use refs matching "
+}
 ,
 "--exclude"
 :
-"--- ignore refs matching "
+{
+"#desc"
+:
+"ignore refs matching "
+}
 ,
 "--all"
 :
-"--- list all commits reachable from all refs"
+{
+"#desc"
+:
+"list all commits reachable from all refs"
+}
 ,
 "--stdin"
 :
-"--- read from stdin"
+{
+"#desc"
+:
+"read from stdin"
+}
 ,
 "--undefined"
 :
-"--- allow to print `undefined` names "
+{
+"#desc"
+:
+"allow to print `undefined` names "
+}
 ,
 "--always"
 :
-"--- show abbreviated commit object as fallback"
+{
+"#desc"
+:
+"show abbreviated commit object as fallback"
+}
 ,
 "#desc"
 :
@@ -3964,39 +7040,75 @@
 {
 "--tags"
 :
-"--- only show tags "
+{
+"#desc"
+:
+"only show tags "
+}
 ,
 "--heads"
 :
-"--- only show heads "
+{
+"#desc"
+:
+"only show heads "
+}
 ,
 "--verify"
 :
-"--- stricter reference checking, requires exact ref path"
+{
+"#desc"
+:
+"stricter reference checking, requires exact ref path"
+}
 ,
 "--head"
 :
-"--- HEAD reference, even if it would be filtered out"
+{
+"#desc"
+:
+"HEAD reference, even if it would be filtered out"
+}
 ,
 "-d|--dereference"
 :
-"--- IDs"
+{
+"#desc"
+:
+"IDs"
+}
 ,
 "-s|--hash[=gits"
 :
-"--- IDs"
+{
+"#desc"
+:
+"IDs"
+}
 ,
 "--abbrev[=gits"
 :
-"--- SHA-1s"
+{
+"#desc"
+:
+"SHA-1s"
+}
 ,
 "-q|--quiet"
 :
-"--- do not print results to stdout "
+{
+"#desc"
+:
+"do not print results to stdout "
+}
 ,
 "--exclude-existing"
 :
-"--- do not print results to stdout "
+{
+"#desc"
+:
+"do not print results to stdout "
+}
 ,
 "#desc"
 :
@@ -4024,11 +7136,19 @@
 {
 "-v|--verbose"
 :
-"--- verbose"
+{
+"#desc"
+:
+"verbose"
+}
 ,
 "-s|--stat-only"
 :
-"--- show statistics only"
+{
+"#desc"
+:
+"show statistics only"
+}
 ,
 "#desc"
 :
@@ -4056,79 +7176,147 @@
 {
 "--all"
 :
-"--- and explicit ecification are mutually exclusive."
+{
+"#desc"
+:
+"and explicit ecification are mutually exclusive."
+}
 ,
 "-v|--verbose"
 :
-"--- be more verbose"
+{
+"#desc"
+:
+"be more verbose"
+}
 ,
 "-q|--quiet"
 :
-"--- be more quiet"
+{
+"#desc"
+:
+"be more quiet"
+}
 ,
 "--receive-pack"
 :
-"--- be more quiet"
+{
+"#desc"
+:
+"be more quiet"
+}
 ,
 "--exec"
 :
-"--- be more quiet"
+{
+"#desc"
+:
+"be more quiet"
+}
 ,
 "--remote"
 :
-"--- remote name"
-,
-"--all"
+{
+"#desc"
 :
-"--- push all refs"
+"remote name"
+}
 ,
 "-n|--dry-run"
 :
-"--- dry run"
+{
+"#desc"
+:
+"dry run"
+}
 ,
 "--mirror"
 :
-"--- mirror all refs"
+{
+"#desc"
+:
+"mirror all refs"
+}
 ,
 "-f|--force"
 :
-"--- force updates"
+{
+"#desc"
+:
+"force updates"
+}
 ,
 "--signed"
 :
-"--- force updates"
+{
+"#desc"
+:
+"force updates"
+}
 ,
 "--push-option"
 :
-"--- force updates"
+{
+"#desc"
+:
+"force updates"
+}
 ,
 "--progress"
 :
-"--- force progress reporting"
+{
+"#desc"
+:
+"force progress reporting"
+}
 ,
 "--thin"
 :
-"--- use thin pack"
+{
+"#desc"
+:
+"use thin pack"
+}
 ,
 "--atomic"
 :
-"--- request atomic transaction on remote side"
+{
+"#desc"
+:
+"request atomic transaction on remote side"
+}
 ,
 "--stateless-rpc"
 :
-"--- RPC protocol"
+{
+"#desc"
+:
+"RPC protocol"
+}
 ,
 "--stdin"
 :
-"--- read refs from stdin"
+{
+"#desc"
+:
+"read refs from stdin"
+}
 ,
 "--helper-status"
 :
-"--- print status from remote helper"
+{
+"#desc"
+:
+"print status from remote helper"
+}
 ,
 "--force-with-lease"
 :
-"--- print status from remote helper"
+{
+"#desc"
+:
+"print status from remote helper"
+}
 ,
 "#desc"
 :
@@ -4140,7 +7328,11 @@
 {
 "-f|--force"
 :
-"--- update the info files from scratch"
+{
+"#desc"
+:
+"update the info files from scratch"
+}
 ,
 "#desc"
 :
@@ -4152,19 +7344,35 @@
 {
 "-a|--all"
 :
-"--- report all attributes set on file"
+{
+"#desc"
+:
+"report all attributes set on file"
+}
 ,
 "--cached"
 :
-"--- use .gitattributes only from the index"
+{
+"#desc"
+:
+"use .gitattributes only from the index"
+}
 ,
 "--stdin"
 :
-"--- read file names from stdin"
+{
+"#desc"
+:
+"read file names from stdin"
+}
 ,
 "-z"
 :
-"--- NUL character"
+{
+"#desc"
+:
+"NUL character"
+}
 ,
 "#desc"
 :
@@ -4176,27 +7384,51 @@
 {
 "-q|--quiet"
 :
-"--- suppress progress reporting"
+{
+"#desc"
+:
+"suppress progress reporting"
+}
 ,
 "-v|--verbose"
 :
-"--- be verbose"
+{
+"#desc"
+:
+"be verbose"
+}
 ,
 "--stdin"
 :
-"--- read file names from stdin"
+{
+"#desc"
+:
+"read file names from stdin"
+}
 ,
 "-z"
 :
-"--- NUL character"
+{
+"#desc"
+:
+"NUL character"
+}
 ,
 "-n|--non-matching"
 :
-"--- show non-matching input paths"
+{
+"#desc"
+:
+"show non-matching input paths"
+}
 ,
 "--no-index"
 :
-"--- ignore index when checking"
+{
+"#desc"
+:
+"ignore index when checking"
+}
 ,
 "#desc"
 :
@@ -4208,7 +7440,11 @@
 {
 "--stdin"
 :
-"--- also read contacts from stdin"
+{
+"#desc"
+:
+"also read contacts from stdin"
+}
 ,
 "#desc"
 :
@@ -4228,31 +7464,59 @@
 {
 "--command"
 :
-"--- lookup config vars"
+{
+"#desc"
+:
+"lookup config vars"
+}
 ,
 "--mode[="
 :
-"--- layout to use"
+{
+"#desc"
+:
+"layout to use"
+}
 ,
 "--raw-mode"
 :
-"--- layout to use"
+{
+"#desc"
+:
+"layout to use"
+}
 ,
 "--width"
 :
-"--- Maximum width"
+{
+"#desc"
+:
+"Maximum width"
+}
 ,
 "--indent"
 :
-"--- Padding space on left border"
+{
+"#desc"
+:
+"Padding space on left border"
+}
 ,
 "--nl"
 :
-"--- Padding space on right border"
+{
+"#desc"
+:
+"Padding space on right border"
+}
 ,
 "--padding"
 :
-"--- Padding space between columns"
+{
+"#desc"
+:
+"Padding space between columns"
+}
 ,
 "#desc"
 :
@@ -4272,11 +7536,19 @@
 {
 "--timeout"
 :
-"--- number of seconds to cache credentials"
+{
+"#desc"
+:
+"number of seconds to cache credentials"
+}
 ,
 "--socket"
 :
-"--- path of cache-daemon socket"
+{
+"#desc"
+:
+"path of cache-daemon socket"
+}
 ,
 "#desc"
 :
@@ -4288,7 +7560,11 @@
 {
 "--file"
 :
-"--- fetch and store credentials in "
+{
+"#desc"
+:
+"fetch and store credentials in "
+}
 ,
 "#desc"
 :
@@ -4300,15 +7576,27 @@
 {
 "--log[=tries"
 :
-"--- from shortlog"
+{
+"#desc"
+:
+"from shortlog"
+}
 ,
 "-m|--message"
 :
-"--- start of message"
+{
+"#desc"
+:
+"start of message"
+}
 ,
 "-F|--file"
 :
-"--- file to read from"
+{
+"#desc"
+:
+"file to read from"
+}
 ,
 "#desc"
 :
@@ -4320,47 +7608,91 @@
 {
 "--in-place"
 :
-"--- edit files in place"
+{
+"#desc"
+:
+"edit files in place"
+}
 ,
 "--trim-empty"
 :
-"--- trim empty trailers"
+{
+"#desc"
+:
+"trim empty trailers"
+}
 ,
 "--where"
 :
-"--- where to place the new trailer"
+{
+"#desc"
+:
+"where to place the new trailer"
+}
 ,
 "--if-exists"
 :
-"--- ction if trailer already exists"
+{
+"#desc"
+:
+"ction if trailer already exists"
+}
 ,
 "--if-missing"
 :
-"--- ction if trailer already exists"
+{
+"#desc"
+:
+"ction if trailer already exists"
+}
 ,
 "--only-trailers"
 :
-"--- output only the trailers"
+{
+"#desc"
+:
+"output only the trailers"
+}
 ,
 "--only-input"
 :
-"--- do not apply config rules"
+{
+"#desc"
+:
+"do not apply config rules"
+}
 ,
 "--unfold"
 :
-"--- join whitespace-continued values"
+{
+"#desc"
+:
+"join whitespace-continued values"
+}
 ,
 "--parse"
 :
-"--- set parsing options"
+{
+"#desc"
+:
+"set parsing options"
+}
 ,
 "--no-divider"
 :
-"--- do not treat --- specially"
+{
+"#desc"
+:
+"do not treat --- specially"
+}
 ,
 "--trailer"
 :
-"--- trailer to add"
+{
+"#desc"
+:
+"trailer to add"
+}
 ,
 "#desc"
 :
@@ -4420,11 +7752,19 @@
 {
 "-s|--strip-comments"
 :
-"--- skip and remove all lines starting with comment character"
+{
+"#desc"
+:
+"skip and remove all lines starting with comment character"
+}
 ,
 "-c|--comment-lines"
 :
-"--- prepend comment character and space to each line"
+{
+"#desc"
+:
+"prepend comment character and space to each line"
+}
 ,
 "#desc"
 :
