@@ -55,43 +55,17 @@ ___advise_run(){
     esac
     [ -f "$filepath" ] || return
 
-    if [ -n "$BASH_VERSION" ] && [ "${BASH_VERSION#3}" = "${BASH_VERSION}" ]; then
-        local last="${COMP_WORDS[COMP_CWORD]}"
-        case "$last" in
-            \"*|\'*)
-                COMP_LINE="${COMP_LINE%"$last"}"
-                tmp=( $COMP_LINE )
-                tmp+=("$last")
-                ;;
-            *)
-                tmp=( $COMP_LINE )
-                ;;
-        esac
-
-        # Ends with space
-        if [ "${COMP_LINE% }" != "${COMP_LINE}" ]; then
-            tmp+=( "" )
-        fi
-
-        COMP_WORDS=("${tmp[@]}")
-        COMP_CWORD="$(( ${#tmp[@]}-1 ))"
-    fi
-
-    local OLDIFS="$IFS"
     local IFS=$'\n'
     local cmds
     cmds="$(___advise_get_result_from_awk)"
     local commands=($(printf "%s" "$cmds"))
     desc=()
-    cmds=()
     for i in "${commands[@]}"; do
         desc+=("\"${i%% *}:${i#*--- }\"")
     done
 
     eval "desc=(${desc[*]})"
     _describe 'commands' desc
-    compadd -a cmds
-
 }
 
 ## EndSection
