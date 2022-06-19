@@ -39,43 +39,26 @@ $cmd_result"
 }
 
 ___advise_run(){
-    local resname cur
-    if [ -n "$ZSH_VERSION" ];then
-        local COMP_WORDS=("${words[@]}")
-        local COMP_CWORD="$(( ${#words[@]}-1 ))"
-        cur="${COMP_WORDS[COMP_CWORD+1]}"
-        resname="${1:-${COMP_WORDS[1]}}"
-    else
-        cur="${COMP_WORDS[COMP_CWORD]}"
-        resname="${1:-${COMP_WORDS[0]}}"
-    fi
+    local cur="${COMP_WORDS[COMP_CWORD]}"
+    local resname="${1:-${COMP_WORDS[0]}}"
+
+    [ -z "$___ADVISE_RUN_CMD_FOLDER" ] && ___ADVISE_RUN_CMD_FOLDER="$___X_CMD_ADVISE_TMPDIR"
 
     local filepath
-    [ -z "$___ADVISE_RUN_CMD_FOLDER" ] && ___ADVISE_RUN_CMD_FOLDER="$___X_CMD_ADVISE_TMPDIR"
     case "$resname" in
         /*) filepath="$resname" ;;
         -)  filepath=/dev/stdin ;;
-        *)
-            if [ -d "$___ADVISE_RUN_CMD_FOLDER/$resname" ]; then
-                filepath="$___ADVISE_RUN_CMD_FOLDER/$resname/advise.json"
-            else
-                filepath="$___ADVISE_RUN_CMD_FOLDER/$resname"
-            fi
-            ;;
+        *)  filepath="$___ADVISE_RUN_CMD_FOLDER/$resname"
+            [ ! -d "$filepath" ] || filepath="$filepath/advise.json" ;;
     esac
     [ -f "$filepath" ] || return
 
-    if [ -n "$BASH_VERSION" ] && [ "${BASH_VERSION#3}" = "${BASH_VERSION}" ]; then
+    if [ "${BASH_VERSION#3}" = "${BASH_VERSION}" ]; then
         local last="${COMP_WORDS[COMP_CWORD]}"
         case "$last" in
-            \"*|\'*)
-                COMP_LINE="${COMP_LINE%"$last"}"
-                tmp=( $COMP_LINE )
-                tmp+=("$last")
-                ;;
-            *)
-                tmp=( $COMP_LINE )
-                ;;
+            \"*|\'*)    COMP_LINE="${COMP_LINE%"$last"}"
+                        tmp=( $COMP_LINE ); tmp+=("$last")  ;;
+            *)          tmp=( $COMP_LINE ) ;;
         esac
 
         # Ends with space
@@ -87,18 +70,13 @@ ___advise_run(){
         COMP_CWORD="$(( ${#tmp[@]}-1 ))"
     fi
 
+    local candidate_array
+    candidate_array="$(___advise_get_result_from_awk)"
     local IFS=$'\n'
-    local cmds
-    cmds="$(___advise_get_result_from_awk)"
-    local commands=($(printf "%s" "$cmds"))
-    desc=()
-    cmds=()
-    for i in "${commands[@]}"; do
-        if [ ! "$i" = "${i%%---*}" ] && [ -n "$ZSH_VERSION" ];then
-            desc+=("\"${i%% *}:${i#*--- }\"")
-            continue
-        fi
-        cmds+=("${i%% *}")
+    local awk_candidate_array=( $(printf "%s" "$candidate_array") )
+    candidate_array=()
+    for i in "${awk_candidate_array[@]}"; do
+        candidate_array+=("${i%% *}")
     done
 
     if [[ ! "$BASH_VERSION" =~ ^3.* ]];then
@@ -112,7 +90,7 @@ ___advise_run(){
     # shellcheck disable=SC2207
     COMPREPLY=(
         $(
-            compgen -W "${cmds[*]}" -- "$cur"
+            compgen -W "${candidate_array[*]}" -- "$cur"
         )
     )
 

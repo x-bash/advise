@@ -39,29 +39,19 @@ $cmd_result"
 }
 
 ___advise_run(){
-    local resname cur
-    if [ -n "$ZSH_VERSION" ];then
-        local COMP_WORDS=("${words[@]}")
-        local COMP_CWORD="$(( ${#words[@]}-1 ))"
-        cur="${COMP_WORDS[COMP_CWORD+1]}"
-        resname="${1:-${COMP_WORDS[1]}}"
-    else
-        cur="${COMP_WORDS[COMP_CWORD]}"
-        resname="${1:-${COMP_WORDS[0]}}"
-    fi
+    local COMP_WORDS=("${words[@]}")
+    local COMP_CWORD="$(( ${#words[@]}-1 ))"
+    local cur="${COMP_WORDS[COMP_CWORD+1]}"
+    local resname="${1:-${COMP_WORDS[1]}}"
+
+    [ -z "$___ADVISE_RUN_CMD_FOLDER" ] && ___ADVISE_RUN_CMD_FOLDER="$___X_CMD_ADVISE_TMPDIR"
 
     local filepath
-    [ -z "$___ADVISE_RUN_CMD_FOLDER" ] && ___ADVISE_RUN_CMD_FOLDER="$___X_CMD_ADVISE_TMPDIR"
     case "$resname" in
         /*) filepath="$resname" ;;
         -)  filepath=/dev/stdin ;;
-        *)
-            if [ -d "$___ADVISE_RUN_CMD_FOLDER/$resname" ]; then
-                filepath="$___ADVISE_RUN_CMD_FOLDER/$resname/advise.json"
-            else
-                filepath="$___ADVISE_RUN_CMD_FOLDER/$resname"
-            fi
-            ;;
+        *)  filepath="$___ADVISE_RUN_CMD_FOLDER/$resname"
+            [ ! -d "$filepath" ] || filepath="$filepath/advise.json" ;;
     esac
     [ -f "$filepath" ] || return
 
@@ -95,38 +85,13 @@ ___advise_run(){
     desc=()
     cmds=()
     for i in "${commands[@]}"; do
-        if [ ! "$i" = "${i%%---*}" ] && [ -n "$ZSH_VERSION" ];then
-            desc+=("\"${i%% *}:${i#*--- }\"")
-            continue
-        fi
-        cmds+=("${i%% *}")
+        desc+=("\"${i%% *}:${i#*--- }\"")
     done
 
-    if [ -n "$ZSH_VERSION" ];then
-        eval "desc=(${desc[*]})"
-        _describe 'commands' desc
-        compadd -a cmds
-    else
-        if [[ ! "$BASH_VERSION" =~ ^3.* ]];then
-            if [[ "$result" =~ [:=\/]$ ]];then
-                compopt -o nospace
-            else
-                compopt +o nospace
-            fi
-        fi
+    eval "desc=(${desc[*]})"
+    _describe 'commands' desc
+    compadd -a cmds
 
-        # shellcheck disable=SC2207
-        COMPREPLY=(
-            $(
-                compgen -W "${cmds[*]}" -- "$cur"
-            )
-        )
-
-        __ltrim_completions "$cur" "@"
-        __ltrim_completions "$cur" ":"
-        __ltrim_completions "$cur" "="
-    fi
-    IFS="$OLDIFS"
 }
 
 ## EndSection
