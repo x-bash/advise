@@ -37,7 +37,7 @@ ___advise_run(){
     eval "$(___advise_get_result_from_awk)" 2>/dev/null
     local OLDIFS="$IFS"
     local IFS=$'\n'
-    local candidate_exec_arr=( $("$candidate_exec" 2>/dev/null) )
+    local candidate_exec_arr=( $(eval "$candidate_exec" 2>/dev/null) )
 
     # if [[ ! "$BASH_VERSION" =~ ^3.* ]];then
     #     if [[ "$result" =~ [:=\/]$ ]];then
