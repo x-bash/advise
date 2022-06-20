@@ -35,7 +35,6 @@ ___advise_run(){
 
     local candidate_arr candidate_exec
     eval "$(___advise_get_result_from_awk)" 2>/dev/null
-    local OLDIFS="$IFS"
     local IFS=$'\n'
     local candidate_exec_arr=( $(eval "$candidate_exec" 2>/dev/null) )
 
@@ -47,7 +46,7 @@ ___advise_run(){
     #     fi
     # fi
 
-    IFS="$OLDIFS"
+    IFS=$' '$'\t'$'\n'
     COMPREPLY=(
         $(
             compgen -W "${candidate_arr[*]} ${candidate_exec_arr[*]}" -- "$cur"
