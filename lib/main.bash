@@ -1,4 +1,4 @@
-
+# shellcheck disable=SC2207
 # Section : main
 ___advise_run(){
     local cur="${COMP_WORDS[COMP_CWORD]}"
@@ -32,9 +32,12 @@ ___advise_run(){
         COMP_CWORD="$(( ${#tmp[@]}-1 ))"
     fi
 
+
     local candidate_arr candidate_exec
     eval "$(___advise_get_result_from_awk)" 2>/dev/null
-    local candidate_exec_arr=( $(eval "$candidate_exec" 2>/dev/null) )
+    local OLDIFS="$IFS"
+    local IFS=$'\n'
+    local candidate_exec_arr=( $("$candidate_exec" 2>/dev/null) )
 
     # if [[ ! "$BASH_VERSION" =~ ^3.* ]];then
     #     if [[ "$result" =~ [:=\/]$ ]];then
@@ -44,7 +47,7 @@ ___advise_run(){
     #     fi
     # fi
 
-    # shellcheck disable=SC2207
+    IFS="$OLDIFS"
     COMPREPLY=(
         $(
             compgen -W "${candidate_arr[*]} ${candidate_exec_arr[*]}" -- "$cur"
