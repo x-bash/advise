@@ -1,23 +1,45 @@
 
 # shellcheck shell=bash
 
-function advise_complete___generic_value( curval, genv, lenv, obj, kp,      i, v, _cand_key_arr, _cand_key_arrl, _exec_val, _desc ){
+# get the candidate value
+function advise_get_candidate_code( curval, genv, lenv, obj, kp,        _candidate_code, i, j, l, v, _option_id, _cand_key, _cand_l, _desc, _arr_value, _arr_valuel ) {
+    l = obj[ kp L ]
+    for (i=1; i<=l; ++i) {
+        _option_id = obj[ kp, i ]
 
-    _cand_key_arr = kp SUBSEP "\"#cand\""
-    _cand_key_arrl = obj[ _cand_key_arr L ]
-    if ( _cand_key_arrl != "" ) {
-        CODE = CODE "\n" "candidate_arr=(" "\n"
-        for (i=1; i<=_cand_key_arrl; ++i) {
-            v = obj[ _cand_key_arr, "\"" i "\"" ]
-            if( v ~ "^\"" curval ) CODE = CODE v "\n"
+        if ( _option_id == "\"#cand\"" ) {
+            _cand_key = kp SUBSEP _option_id
+            _cand_l = obj[ _cand_key L ]
+            for (j=1; j<=_cand_l; ++j) {
+                v = obj[ _cand_key, "\"" j "\"" ]
+                if( v ~ "^\"" curval ) _candidate_code = _candidate_code v "\n"
+            }
         }
-        CODE = CODE ")"
+        if ( _option_id ~ "^\"#") continue
+
+        _desc = ( ZSHVERSION != "" ) ? juq(obj[ kp SUBSEP _option_id SUBSEP "\"#desc\"" ]) : ""
+        _arr_valuel = split( juq( _option_id ), _arr_value, "|" )
+        for ( j=1; j<=_arr_valuel; ++j) {
+            v =_arr_value[j]
+            if (v ~ "^"curval) {
+                if (( curval == "" ) && ( v ~ "^-" )) if ( ! aobj_required(obj, kp SUBSEP i) ) continue
+                if ( _desc != "" ) _candidate_code = _candidate_code jqu(v ":" _desc) "\n"
+                else _candidate_code = _candidate_code jqu(v) "\n"
+            }
+        }
     }
+    return _candidate_code
+}
+
+function advise_complete___generic_value( curval, genv, lenv, obj, kp, _candidate_code,         _exec_val, _regex_key_arr, _regex_key_arrl, i ){
+
+    CODE = CODE "\n" "candidate_arr=(" "\n"
+    if ( _candidate_code != "" ) CODE = CODE "\n" _candidate_code
+    CODE = CODE advise_get_candidate_code( curval, genv, lenv, obj, kp )
+    CODE = CODE ")"
 
     _exec_val = obj[ kp SUBSEP "\"#exec\"" ]
-    if ( _exec_val != "" ) {
-        CODE = CODE "\n" "candidate_exec=" _exec_val ";"
-    }
+    if ( _exec_val != "" ) CODE = CODE "\n" "candidate_exec=" _exec_val ";"
 
     _regex_key_arr = kp SUBSEP "\"#regex\""
     _regex_key_arrl = obj[ _regex_key_arr L ]
@@ -39,36 +61,14 @@ function advise_complete_option_value( curval, genv, lenv, obj, obj_prefix, opti
 }
 
 # Just tell me the arguments
-function advise_complete_argument_value( curval, genv, lenv, obj, obj_prefix, nth,      _kp, i, l , v, _option_id, _desc, _arr_value, _arr_valuel ){
+function advise_complete_argument_value( curval, genv, lenv, obj, obj_prefix, nth,      _kp, _candidate_code ){
 
     if (nth == 1) {
-        CODE = CODE "\n" "complete_option_or_argument_name=(" "\n"
-        l = obj[ obj_prefix L ]
-        for (i=1; i<=l; ++i) {
-            _option_id = obj[ obj_prefix, i ]
-            if ( _option_id ~ "^\"#") continue
-            _desc = ( ZSHVERSION != "" ) ? juq(obj[ obj_prefix SUBSEP _option_id SUBSEP "\"#desc\"" ]) : ""
-            _arr_valuel = split( juq( _option_id ), _arr_value, "|" )
-            for ( j=1; j<=_arr_valuel; ++j) {
-                v =_arr_value[j]
-                if (v ~ "^"curval) {
-                    if (( curval == "" ) && ( v ~ "^-" )) if ( ! aobj_required(obj, obj_prefix SUBSEP i) ) continue
-                    if ( _desc != "" ) CODE = CODE jqu(v ":" _desc) "\n"
-                    else CODE = CODE jqu(v) "\n"
-                }
-            }
-        }
-        CODE = CODE ")"
+        _candidate_code = advise_get_candidate_code( curval, genv, lenv, obj, obj_prefix )
     }
-
     _kp = obj_prefix SUBSEP "\"#" nth "\""
     if (obj[ _kp ] != "") {
-        return advise_complete___generic_value( curval, genv, lenv, obj, _kp )
-    }
-
-    _kp = obj_prefix SUBSEP "\"#n\""
-    if (obj[ _kp ] != "") {
-        return advise_complete___generic_value( curval, genv, lenv, obj, _kp )
+        return advise_complete___generic_value( curval, genv, lenv, obj, _kp, _candidate_code )
     }
 
     _kp = obj_prefix SUBSEP "\"#n\""

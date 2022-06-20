@@ -1,3 +1,4 @@
+# shellcheck disable=SC2207
 # Section : main
 ___advise_run(){
     local cur="${COMP_WORDS[COMP_CWORD]}"
@@ -7,21 +8,22 @@ ___advise_run(){
 
     local filepath
     case "$resname" in
-        /*)     filepath="$resname" ;;
-        -)      filepath=/dev/stdin ;;
-        *)      filepath="$___ADVISE_RUN_CMD_FOLDER/$resname"
-                [ ! -d "$filepath" ] || filepath="$filepath/advise.json" ;;
+        /*) filepath="$resname" ;;
+        -)  filepath=/dev/stdin ;;
+        *)  filepath="$___ADVISE_RUN_CMD_FOLDER/$resname"
+            [ ! -d "$filepath" ] || filepath="$filepath/advise.json" ;;
     esac
     [ -f "$filepath" ] || return
 
-    local complete_option_or_argument_name candidate_arr candidate_exec
+    local candidate_arr candidate_exec
     eval "$(___advise_get_result_from_awk)" 2>/dev/null
+    local IFS=$'\n'
     local candidate_exec_arr=( $(eval "$candidate_exec" 2>/dev/null) )
 
-    # shellcheck disable=SC2207
+    IFS=$' '$'\t'$'\n'
     COMPREPLY=(
         $(
-            compgen -W "${complete_option_or_argument_name[*]} ${candidate_arr[*]} ${candidate_exec_arr[*]}" -- "$cur"
+            compgen -W "${candidate_arr[*]} ${candidate_exec_arr[*]}" -- "$cur"
         )
     )
 

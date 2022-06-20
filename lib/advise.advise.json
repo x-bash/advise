@@ -1,30 +1,52 @@
 {
-    "ls": "--- Show all available advise json obj",
+    "ls": {
+        "#desc": "Show all available advise json obj"
+    },
     "rm": {
-        "#1": "ls \"$___X_CMD_ADVISE_TMPDIR\"",
-        "#desc": "Remove one obj, if no obj is given, remove all obj"
+        "#desc": "Remove one obj, if no obj is given, remove all obj",
+        "#1": {
+            "#exec": "ls \"$___X_CMD_ADVISE_TMPDIR\""
+        }
     },
     "which": {
-        "#1": "ls \"$___X_CMD_ADVISE_TMPDIR\"",
-        "#desc": "Show the path of the obj"
+        "#desc": "Show the path of the obj",
+        "#1": {
+            "#exec": "ls \"$___X_CMD_ADVISE_TMPDIR\""
+        }
     },
     "cat": {
-        "#n": "ls \"$___X_CMD_ADVISE_TMPDIR\"",
-        "#desc": "Show the content of the obj"
+        "#desc": "Show the content of the obj",
+        "#n": {
+            "#exec": "ls \"$___X_CMD_ADVISE_TMPDIR\""
+        }
     },
-    "init|new": "--- Create a new obj",
+    "init|new": {
+        "#desc": "Create a new obj"
+    },
     "man": {
+        "#desc": "Manager for x-cmd/advise",
         "ls": null,
         "update": null,
-        "rm": "___advise_man_ls",
-        "which": "___advise_man_ls",
-        "load": "___advise_man_ls",
-        "#desc": "Manager for x-cmd/advise"
+        "rm": {
+            "#1": {
+                "#exec": "___x_cmd_advise_man ls"
+            }
+        },
+        "which": {
+            "#1": {
+                "#exec": "___x_cmd_advise_man ls"
+            }
+        },
+        "load": {
+            "#1": {
+                "#exec": "___x_cmd_advise_man ls"
+            }
+        }
     },
     "del": null,
     "obj-new": null,
     "obj-del": null,
     "clear": {
-        "desc": "Clear all of the advise cache."
+        "#desc": "Clear all of the advise cache."
     }
 }
