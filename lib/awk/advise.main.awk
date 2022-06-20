@@ -79,7 +79,6 @@ function parse_args_to_env( args, argl, obj, obj_prefix, genv_table, lenv_table,
 
         _subcmdid = aobj_get_subcmdid_by_name( obj, obj_prefix, arg )
         if (_subcmdid != "") {
-            # TODO: Check all required options set
             if ( ! aobj_option_all_set( lenv_table, obj, obj_prefix ) ) {
                 # TODO: show message that it is wrong ...
                 panic("All required options should be set")
