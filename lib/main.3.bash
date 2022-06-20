@@ -14,14 +14,14 @@ ___advise_run(){
     esac
     [ -f "$filepath" ] || return
 
-    local complete_option_or_argument_name candidate_arr candidate_exec
+    local candidate_arr candidate_exec
     eval "$(___advise_get_result_from_awk)" 2>/dev/null
     local candidate_exec_arr=( $(eval "$candidate_exec" 2>/dev/null) )
 
     # shellcheck disable=SC2207
     COMPREPLY=(
         $(
-            compgen -W "${complete_option_or_argument_name[*]} ${candidate_arr[*]} ${candidate_exec_arr[*]}" -- "$cur"
+            compgen -W "${candidate_arr[*]} ${candidate_exec_arr[*]}" -- "$cur"
         )
     )
 

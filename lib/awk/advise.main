@@ -5,10 +5,12 @@ advise_test(){
     local IFS=$'\002'
     {
         printf "%s\n" "$*"
-        cat .x-cmd/dev/data/advise.json
+        # cat .x-cmd/dev/data/advise.json
+        # cat /home/qiakai/xbash/x-cmd/lib/x.json
+        cat /home/qiakai/xbash/advise/lib/advise.advise.json
         # cat .x-cmd/dev/data/git.json
         # cat .x-cmd/dev/data/git_tokenize.json
-    } | mawk \
+    } | awk \
         -v ZSHVERSION="$ZSH_VERSION" \
         -f "$___X_CMD_ROOT_MOD/awk/lib/default.awk" \
         -f "$___X_CMD_ROOT_MOD/awk/lib/json.awk" \
