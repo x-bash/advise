@@ -15,9 +15,7 @@ function advise_complete___generic_value( curval, genv, lenv, obj, kp,      i, v
     }
 
     _exec_val = obj[ kp SUBSEP "\"#exec\"" ]
-    if ( _exec_val != "" ) {
-        CODE = CODE "\n" "candidate_exec=" _exec_val ";"
-    }
+    if ( _exec_val != "" ) CODE = CODE "\n" "candidate_exec=" _exec_val ";"
 
     _regex_key_arr = kp SUBSEP "\"#regex\""
     _regex_key_arrl = obj[ _regex_key_arr L ]
@@ -39,13 +37,14 @@ function advise_complete_option_value( curval, genv, lenv, obj, obj_prefix, opti
 }
 
 # Just tell me the arguments
-function advise_complete_argument_value( curval, genv, lenv, obj, obj_prefix, nth,      _kp, i, l , v, _option_id, _desc, _arr_value, _arr_valuel ){
+function advise_complete_argument_value( curval, genv, lenv, obj, obj_prefix, nth,      _kp, i, l , v, _option_id, _desc, _exec_val, _arr_value, _arr_valuel ){
 
     if (nth == 1) {
         CODE = CODE "\n" "complete_option_or_argument_name=(" "\n"
         l = obj[ obj_prefix L ]
         for (i=1; i<=l; ++i) {
             _option_id = obj[ obj_prefix, i ]
+            if ( _option_id == "\"#exec\"" ) _exec_val = obj[ obj_prefix SUBSEP "\"#exec\"" ]
             if ( _option_id ~ "^\"#") continue
             _desc = ( ZSHVERSION != "" ) ? juq(obj[ obj_prefix SUBSEP _option_id SUBSEP "\"#desc\"" ]) : ""
             _arr_valuel = split( juq( _option_id ), _arr_value, "|" )
@@ -59,6 +58,7 @@ function advise_complete_argument_value( curval, genv, lenv, obj, obj_prefix, nt
             }
         }
         CODE = CODE ")"
+        if ( _exec_val != "" ) CODE = CODE "\n" "candidate_exec=" _exec_val ";"
     }
 
     _kp = obj_prefix SUBSEP "\"#" nth "\""
