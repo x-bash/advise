@@ -20,7 +20,11 @@ ___advise_run(){
     local candidate_arr candidate_exec
     eval "$(___advise_get_result_from_awk)" 2>/dev/null
     local IFS=$'\n'
-    local candidate_exec_arr=( $(eval "$candidate_exec" 2>/dev/null) )
+    if command -v "___x_cmd_advise__$candidate_exec" >/dev/null; then
+        local candidate_exec_arr=( $(eval "___x_cmd_advise__$candidate_exec" 2>/dev/null) )
+    else
+        "$candidate_exec" >/dev/null
+    fi
 
     [ -z "$candidate_arr" ] || _describe 'commands' candidate_arr
     [ -z "$candidate_exec_arr" ] || _describe 'commands' candidate_exec_arr
