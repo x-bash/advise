@@ -18,7 +18,7 @@ ___advise_run(){
     local candidate_arr candidate_exec
     eval "$(___advise_get_result_from_awk)" 2>/dev/null
     local IFS=$'\n'
-    local candidate_exec_arr=( $(eval "$candidate_exec" 2>/dev/null) )
+    eval "$candidate_exec" 2>/dev/null
 
     IFS=$' '$'\t'$'\n'
     COMPREPLY=(

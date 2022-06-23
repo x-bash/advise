@@ -14,7 +14,7 @@ ___advise_ls_grep(){
     ls | grep -E "${localopt}" 2>/dev/null
 }
 
-___advise_ls(){
+___x_cmd_advise__stdout_ls(){
     local localdir="${1:-${cur:-""}}"
 
     if [ -z "$localdir" ]; then
@@ -81,7 +81,7 @@ A
 
 }
 
-___x_cmd_advise_get_result(){
+___x_cmd_advise_stdout_get_result(){
     local offset="${1:-1}"
     local remain_len=$((COMP_CWORD-offset))
     [ -n "$ZSH_VERSION" ] && offset=$((offset+1)) && setopt aliases

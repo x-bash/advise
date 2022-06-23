@@ -5,19 +5,19 @@
     "rm": {
         "#desc": "Remove one obj, if no obj is given, remove all obj",
         "#1": {
-            "#exec": "ls \"$___X_CMD_ADVISE_TMPDIR\""
+            "#exec": "candidate_exec_arr=( $(ls $___X_CMD_ADVISE_TMPDIR) )"
         }
     },
     "which": {
         "#desc": "Show the path of the obj",
         "#1": {
-            "#exec": "ls \"$___X_CMD_ADVISE_TMPDIR\""
+            "#exec": "candidate_exec_arr=( $(ls $___X_CMD_ADVISE_TMPDIR) )"
         }
     },
     "cat": {
         "#desc": "Show the content of the obj",
         "#n": {
-            "#exec": "ls \"$___X_CMD_ADVISE_TMPDIR\""
+            "#exec": "candidate_exec_arr=( $(ls $___X_CMD_ADVISE_TMPDIR) )"
         }
     },
     "init|new": {
@@ -29,17 +29,17 @@
         "update": null,
         "rm": {
             "#1": {
-                "#exec": "___x_cmd_advise_man ls"
+                "#exec": "candidate_exec_arr=( $(___x_cmd_advise_man ls) )"
             }
         },
         "which": {
             "#1": {
-                "#exec": "___x_cmd_advise_man ls"
+                "#exec": "candidate_exec_arr=( $(___x_cmd_advise_man ls) )"
             }
         },
         "load": {
             "#1": {
-                "#exec": "___x_cmd_advise_man ls"
+                "#exec": "candidate_exec_arr=( $(___x_cmd_advise_man ls) )"
             }
         }
     },

@@ -17,15 +17,12 @@ ___advise_run(){
     esac
     [ -f "$filepath" ] || return
 
-    local candidate_arr candidate_exec
+    local candidate_arr
+    local candidate_exec
+    local candidate_exec_arr
     eval "$(___advise_get_result_from_awk)" 2>/dev/null
     local IFS=$'\n'
-    if command -v "___x_cmd_advise__$candidate_exec" >/dev/null; then
-        local candidate_exec_arr=( $(eval "___x_cmd_advise__$candidate_exec" 2>/dev/null) )
-    else
-        "$candidate_exec" >/dev/null
-    fi
-
+    eval "$candidate_exec" 2>/dev/null
     [ -z "$candidate_arr" ] || _describe 'commands' candidate_arr
     [ -z "$candidate_exec_arr" ] || _describe 'commands' candidate_exec_arr
 }
