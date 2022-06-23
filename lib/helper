@@ -1,24 +1,24 @@
-
+# shellcheck disable=SC2207,SC2034
 # Section : adviser helper function: ls lsd seq get_result
 
 ___x_cmd_advise__lsd(){
     local l
     local localdir="${1:-${cur:-""}}"
-    compgen -d "${localdir}" 2>/dev/null | while read -r l; do
+    candidate_exec_arr=( $(compgen -d "${localdir}" 2>/dev/null | while read -r l; do
         printf "%s/\n" "${l%/}"
-    done
+    done ) )
 }
 
 ___x_cmd_advise__ls_grep(){
     local localopt="${1:-${cur:-""}}"
-    ls | grep -E "${localopt}" 2>/dev/null
+    candidate_exec_arr=( $(ls | grep -E "${localopt}" 2>/dev/null) )
 }
 
 ___x_cmd_advise__ls(){
     local localdir="${1:-${cur:-""}}"
 
     if [ -z "$localdir" ]; then
-        ls
+        candidate_exec_arr=( $(ls) )
         return
     fi
 
@@ -30,20 +30,13 @@ ___x_cmd_advise__ls(){
         folder="${localdir%/*}"
         pattern="${localdir##*/}"
     fi
-
-    ls "${folder:-.}" | awk -v folder="$folder" -v pattern="$pattern" 'match($0, "^" pattern){
-        if (folder == "") {
-            print $0
-        } else {
-            print folder "/" $0
-        }
-    }' 2>/dev/null
+    candidate_exec_arr=( $(ls "${folder:-.}" | awk -v folder="$folder" -v pattern="$pattern" 'match($0, "^" pattern){ if (folder == "") print $0; else print folder "/" $0}') )>/dev/null
 }
 
 # 1-10
 ___x_cmd_advise__seq(){
     local cur="${cur:-""}"
-    awk -v range="$1" -v cur="$cur" '
+    candidate_exec_arr=( $(awk -v range="$1" -v cur="$cur" '
 function inside(num, start, end, step){
     if ( (num < start) || (num > end) ) return 0
     if ( ( num - start ) % step == 0 ) return 1
@@ -78,6 +71,7 @@ BEGIN{
 }
 ' <<A
 A
+    ))
 
 }
 
