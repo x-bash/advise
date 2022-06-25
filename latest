@@ -35,7 +35,7 @@ ___x_cmd_advise(){
                                     if [ "$#" -eq 0 ]; then     printf "%s" "$___X_CMD_ADVISE_TMPDIR"
                                     else                        printf "%s/%s" "$___X_CMD_ADVISE_TMPDIR" "$1"
                                     fi ;;
-        cat)                        (cd "$___X_CMD_ADVISE_TMPDIR" && cat "$@")  ;;
+        cat)                        (cd "$___X_CMD_ADVISE_TMPDIR" && < "$@" x jo)  ;;
         load)                       ___advise_load;;
         man)                        ___x_cmd_advise_man "$@" ;;
         init|new)                   ___advise_main "$@" ;;
