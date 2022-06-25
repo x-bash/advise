@@ -5,19 +5,19 @@
     "rm": {
         "#desc": "Remove one obj, if no obj is given, remove all obj",
         "#1": {
-            "#exec": "candidate_exec_arr=( $(ls $___X_CMD_ADVISE_TMPDIR) )"
+            "#exec": "___x_cmd_advise__ls $___X_CMD_ADVISE_TMPDIR"
         }
     },
     "which": {
         "#desc": "Show the path of the obj",
         "#1": {
-            "#exec": "candidate_exec_arr=( $(ls $___X_CMD_ADVISE_TMPDIR) )"
+            "#exec": "___x_cmd_advise__ls $___X_CMD_ADVISE_TMPDIR"
         }
     },
     "cat": {
         "#desc": "Show the content of the obj",
         "#n": {
-            "#exec": "candidate_exec_arr=( $(ls $___X_CMD_ADVISE_TMPDIR) )"
+            "#exec": "___x_cmd_advise__ls $___X_CMD_ADVISE_TMPDIR"
         }
     },
     "init|new": {

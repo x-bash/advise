@@ -39,14 +39,6 @@ ___advise_run(){
     local IFS=$'\n'
     eval "$candidate_exec" 2>/dev/null
 
-    # if [[ ! "$BASH_VERSION" =~ ^3.* ]];then
-    #     if [[ "$result" =~ [:=\/]$ ]];then
-    #         compopt -o nospace
-    #     else
-    #         compopt +o nospace
-    #     fi
-    # fi
-
     IFS=$' '$'\t'$'\n'
     COMPREPLY=(
         $(
