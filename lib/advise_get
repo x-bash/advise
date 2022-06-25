@@ -2,17 +2,21 @@
 
 ___x_cmd_advise_get_complete(){
     local filePath="${1:?"Provide advise json path"}"; [ "$#" -gt 0 ] && shift
-    local awkFile
-    awkFile="$(xrc which advise/lib/advise.awk)"
     local IFS
-    IFS="$(printf "\002")"
+    IFS=$'\002'
     local s="$*"
-    if [ -f "$filePath" ] && [ -f "$awkFile" ];then
-        {
-            cat "$filePath"
-            printf "\034%s\034" "$s"
-        } | awk -f "$awkFile"
-    fi
+    {
+        printf "%s\n" "$s"
+        cat "$filePath"
+    } | awk \
+    -v ZSHVERSION="1" \
+    -f "$___X_CMD_ROOT_MOD/awk/lib/default.awk" \
+    -f "$___X_CMD_ROOT_MOD/awk/lib/json.awk" \
+    -f "$___X_CMD_ROOT_MOD/awk/lib/jiter.awk" \
+    -f "$___X_CMD_ROOT_MOD/advise/lib/awk/advise.complete.awk" \
+    -f "$___X_CMD_ROOT_MOD/advise/lib/awk/advise.main.awk" \
+    -f "$___X_CMD_ROOT_MOD/advise/lib/awk/advise.obj.awk" \
+    -f "$___X_CMD_ROOT_MOD/advise/lib/awk/util.awk" 2>/dev/null
 }
 
 ___x_cmd_advise_get_help(){
@@ -21,19 +25,22 @@ ___x_cmd_advise_get_help(){
     IFS="$(printf "\002")"
     local s="$*"
     if [ -f "$filePath" ]; then
-        ___x_cmd_advise_get_complete "$filePath" "$s" | awk 'BEGIN{max=0}{
-            if(match($0, " --- ")){
-                str = arr[substr($0, RSTART+4)] "|" substr($0, 1, RSTART-1)
-                arr[substr($0, RSTART+4)] = str
-                len = length(str)
-                arr_len[substr($0, RSTART+4) "#len"] = len
-                if(max < len) max = len
+        ___x_cmd_advise_get_complete "$filePath" "$s" | awk "$(xrc cat awk/lib/default.awk)"'
+        {
+            $0 = juq($0)
+            _idx = index($0, ":")
+            if (_idx != 0) {
+                _desc = substr($0, _idx+1)
+                _str = arr[ _desc ]
+                arr[ _desc ] = (_str != "") ? _str "|" substr($0, 1, _idx-1) : substr($0, 1, _idx-1)
+                _l = length( arr[_desc] )
+                arr_len[ _desc ] = _lx
+                if (_l > MAX_LEN) MAX_LEN = _l
             }
-        }END{
-            if (max > 0){
-                print "SUBCOMMAND:"
-            }
-            for(i in arr){print "    " substr(arr[i], 2) sprintf("%" max - arr_len[i "#len"] "s", "") "   " i}
-        }'
+        }
+        END{
+            for ( i in arr ) print "    " arr[i]  sprintf("%" MAX_LEN - arr_len[ i ] "s", "") "  " i
+        }
+        '
     fi
 }

@@ -3,21 +3,21 @@
         "#desc": "",
         "#cand": ["a", "b", "c"],
         "#rmatch": [],
-        "#exec": "ls",
+        "#exec": "___x_cmd_advise__ls",
         "#r": true
     },
     "#9": {
         "#desc": "",
         "#cand": ["a", "b", "c"],
         "#rmatch": [],
-        "#exec": "ls",
+        "#exec": "___x_cmd_advise__ls",
         "#r": true
     },
     "#n": {
         "#desc": "",
         "#cand": ["a", "b", "c"],
         "#rmatch": [],
-        "#exec": "ls"
+        "#exec": "___x_cmd_advise__ls"
     },
     "user": {
         "#desc": "Desc user",
@@ -61,7 +61,7 @@
                 "cde": 2,
                 "#cand": ["va", "vb", "vc"],
                 "#rmatch": [],
-                "#exec": "ls"
+                "#exec": "___x_cmd_advise__ls"
             }
         },
         "cmd|command": {
@@ -88,6 +88,7 @@
         },
         "--tuple": {
             "#multiple": true,
+            "#r": true,
             "#desc": "test tuple",
             "#1": {
                 "#desc": "first argument"

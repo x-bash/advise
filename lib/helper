@@ -9,30 +9,31 @@ ___x_cmd_advise__lsd(){
     done ) )
 }
 
-___x_cmd_advise__ls_grep(){
-    local localopt="${1:-${cur:-""}}"
-    candidate_exec_arr=( $(ls | grep -E "${localopt}" 2>/dev/null) )
+___x_cmd_advise__ls(){
+    candidate_exec_arr=( $(ls "$@") )
 }
 
-___x_cmd_advise__ls(){
-    local localdir="${1:-${cur:-""}}"
+# TODO: same as _files
+___x_cmd_advise__file(){
+    local localdir="${cur:-""}"
 
-    if [ -z "$localdir" ]; then
-        candidate_exec_arr=( $(ls) )
+    if [ -n "$ZSH_VERSION" ]; then
+        _files
         return
     fi
-
-    if [ "${localdir%/*}" = "${localdir}" ]; then
-        folder=""
-        pattern="${localdir}"
-
-    else
-        folder="${localdir%/*}"
-        pattern="${localdir##*/}"
-    fi
-    candidate_exec_arr=( $(ls "${folder:-.}" | awk -v folder="$folder" -v pattern="$pattern" 'match($0, "^" pattern){ if (folder == "") print $0; else print folder "/" $0}') )>/dev/null
+    ___x_cmd_advise_set_nospace
+    candidate_exec_arr=( $(compgen -f -- "$localdir") )
 }
 
+___x_cmd_advise_set_nospace(){
+    if [[ ! "$BASH_VERSION" =~ ^3.* ]];then
+        compopt -o nospace
+    fi
+    # TODO: ZSH
+    if [ -n "$ZSH_VERSION" ]; then
+        zstyle ':completion:*' add-space false
+    fi
+}
 # 1-10
 ___x_cmd_advise__seq(){
     local cur="${cur:-""}"
@@ -106,6 +107,7 @@ ___x_cmd_advise__get_result(){
     COMP_WORDS=("${tmp[@]}")
     COMP_CWORD="$(( ${#tmp[@]}-1 ))"
 
+    candidate_exec=
     eval "$(___advise_get_result_from_awk)" 2>/dev/null
     local IFS=$'\n'
     eval "$candidate_exec" 2>/dev/null
