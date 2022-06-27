@@ -1,0 +1,36 @@
+advise_test(){
+    local IFS=$'\002'
+    {
+        printf "%s\n" "$*"
+        cat "$(x wsroot)"/.x-cmd/dev/data/advise.json
+    } | awk \
+        -v ZSHVERSION="$ZSH_VERSION" \
+        -f "$___X_CMD_ROOT_MOD/awk/lib/default.awk" \
+        -f "$___X_CMD_ROOT_MOD/awk/lib/json.awk" \
+        -f "$___X_CMD_ROOT_MOD/awk/lib/jiter.awk" \
+        -f "$___X_CMD_ROOT_MOD/advise/lib/awk/advise.complete.awk" \
+        -f "$___X_CMD_ROOT_MOD/advise/lib/awk/advise.main.awk" \
+        -f "$___X_CMD_ROOT_MOD/advise/lib/awk/advise.obj.awk" \
+        -f "$___X_CMD_ROOT_MOD/advise/lib/awk/util.awk"
+}
+test_1(){
+    @assert stdout advise_test '' <<A
+candidate_arr=(
+
+"user:Desc user"
+"a"
+"b"
+"c"
+)
+candidate_exec="___x_cmd_advise__ls";
+A
+}
+test_2(){
+    @assert stdout advise_test a a <<A
+candidate_arr=(
+"an"
+)
+candidate_exec="___x_cmd_advise__ls";%
+A
+}
+@assert:file:func
