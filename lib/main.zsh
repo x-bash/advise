@@ -20,11 +20,13 @@ ___advise_run(){
     local candidate_arr
     local candidate_exec
     local candidate_exec_arr
+    local _message_str
     eval "$(___advise_get_result_from_awk)" 2>/dev/null
     local IFS=$'\n'
     eval "$candidate_exec" 2>/dev/null
 
     [ -z "$candidate_arr" ] || _describe 'commands' candidate_arr
     [ -z "$candidate_exec_arr" ] || _describe 'commands' candidate_exec_arr
+    [ -z "$_message_str" ] || _message -r "$_message_str"
 }
 ## EndSection

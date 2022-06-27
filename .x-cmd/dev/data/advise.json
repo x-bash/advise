@@ -53,8 +53,8 @@
             },
             "-J": "",
             "-L": [],
-            ":+debug|:+d": {},
-            ":-reset|:-r": {}
+            "+debug|+d": {},
+            "-reset|-r": {}
         },
         "--t|--theme": {
             "#desc": "set the vtop theme [acid|becca|brew|certs|dark|gooey|gruvbox|monokai|nord|parallax|seti|wizard]",

@@ -7,7 +7,7 @@ BEGIN{
 }
 
 function panic(msg){
-    print "[PANIC]: " msg >"/dev/stderr"
+    print "_message_str='\033[33;1m[PANIC]: " msg "'\033[0m"
     EXIT_CODE = 1
     exit(1)
 }
