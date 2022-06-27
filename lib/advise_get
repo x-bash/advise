@@ -34,7 +34,7 @@ ___x_cmd_advise_get_help(){
                 _str = arr[ _desc ]
                 arr[ _desc ] = (_str != "") ? _str "|" substr($0, 1, _idx-1) : substr($0, 1, _idx-1)
                 _l = length( arr[_desc] )
-                arr_len[ _desc ] = _lx
+                arr_len[ _desc ] = _l
                 if (_l > MAX_LEN) MAX_LEN = _l
             }
         }

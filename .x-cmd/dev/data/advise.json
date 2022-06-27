@@ -66,8 +66,8 @@
             "#desc": "test version",
             "#1": {
                 "#desc": "first argument",
-                "abc": 1,
-                "cde": 2,
+                "abc": null,
+                "cde": {},
                 "#cand": ["va", "vb", "vc"],
                 "#rmatch": [],
                 "#exec": "___x_cmd_advise__ls"
@@ -107,6 +107,7 @@
         },
         "--tuple": {
             "#multiple": true,
+            "#r": true,
             "#desc": "test tuple",
             "#1": {
                 "#desc": "first argument"
