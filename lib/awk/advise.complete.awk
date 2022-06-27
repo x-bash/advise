@@ -6,7 +6,6 @@ function advise_get_candidate_code( curval, genv, lenv, obj, kp,        _candida
     l = obj[ kp L ]
     for (i=1; i<=l; ++i) {
         _option_id = obj[ kp, i ]
-
         if ( _option_id == "\"#cand\"" ) {
             _cand_key = kp SUBSEP _option_id
             _cand_l = obj[ _cand_key L ]
@@ -21,8 +20,9 @@ function advise_get_candidate_code( curval, genv, lenv, obj, kp,        _candida
         _arr_valuel = split( juq( _option_id ), _arr_value, "|" )
         for ( j=1; j<=_arr_valuel; ++j) {
             v =_arr_value[j]
-            if (v ~ "^"curval) {
-                if (( curval == "" ) && ( v ~ "^-" )) if ( ! aobj_required(obj, kp SUBSEP i) ) continue
+            if ((v ~ "^"curval) && (lenv[ _option_id ] == "")) {
+                if (( curval == "" ) && ( v ~ "^-" )) if ( ! aobj_istrue(obj, kp SUBSEP _option_id SUBSEP "\"#subcmd\"" ) ) continue
+                if (( curval == "-" ) && ( v ~ "^--" )) continue
                 if ( _desc != "" ) _candidate_code = _candidate_code jqu(v ":" _desc) "\n"
                 else _candidate_code = _candidate_code jqu(v) "\n"
             }
@@ -61,11 +61,8 @@ function advise_complete_option_value( curval, genv, lenv, obj, obj_prefix, opti
 }
 
 # Just tell me the arguments
-function advise_complete_argument_value( curval, genv, lenv, obj, obj_prefix, nth,      _kp, _candidate_code ){
+function advise_complete_argument_value( curval, genv, lenv, obj, obj_prefix, nth, _candidate_code,      _kp ){
 
-    if (nth == 1) {
-        _candidate_code = advise_get_candidate_code( curval, genv, lenv, obj, obj_prefix )
-    }
     _kp = obj_prefix SUBSEP "\"#" nth "\""
     if (obj[ _kp ] != "") {
         return advise_complete___generic_value( curval, genv, lenv, obj, _kp, _candidate_code )
@@ -73,75 +70,71 @@ function advise_complete_argument_value( curval, genv, lenv, obj, obj_prefix, nt
 
     _kp = obj_prefix SUBSEP "\"#n\""
     if (obj[ _kp ] != "") {
-        return advise_complete___generic_value( curval, genv, lenv, obj, _kp )
+        return advise_complete___generic_value( curval, genv, lenv, obj, _kp, _candidate_code )
     }
 
     return advise_complete___generic_value( curval, genv, lenv, obj, obj_prefix )
 }
 
-# Most complicated
-function advise_complete_option_name_or_argument_value( curval, genv, lenv, obj, obj_prefix,        _option_id, i, j, k, v, _arrl, _desc, _arr_valuel, _arr_value ){
-    if ( curval ~ /^--/ ) {
-        _arrl = obj[ obj_prefix L ]
-        CODE = CODE "\n" "candidate_arr=(" "\n"
-        for (i=1; i<=_arrl; ++i) {
-            _option_id = obj[ obj_prefix, i ]
-            _desc = ( ZSHVERSION != "" ) ? juq(obj[ obj_prefix SUBSEP _option_id SUBSEP "\"#desc\"" ]) : ""
-            _arr_valuel = split( juq(_option_id), _arr_value, "|" )
-            for ( j=1; j<=_arr_valuel; ++j) {
-                v = _arr_value[j]
-                if ((v ~ curval) && (lenv[ _option_id ] == "")) {
-                    if ( _desc != "" ) CODE = CODE jqu(v ":" _desc) "\n"
-                    else CODE = CODE jqu(v) "\n"
-                }
-            }
-        }
-        CODE = CODE ")"
-        return CODE
-    }
-
-    if ( curval ~ /^-/ ) {
-        _arrl = obj[ obj_prefix L ]
-        CODE = CODE "\n" "candidate_arr=(" "\n"
-        for (i=1; i<=_arrl; ++i) {
-            _option_id = obj[ obj_prefix, i ]
-            _desc = ( ZSHVERSION != "" ) ? juq(obj[ obj_prefix SUBSEP _option_id SUBSEP "\"#desc\"" ]) : ""
-            _arr_valuel = split( juq( _option_id ), _arr_value, "|" )
-            for ( j=1; j<=_arr_valuel; ++j) {
-                v = _arr_value[j]
-                if ((v ~ "--") || ( v !~ "^-")) continue
-                if ((v ~ curval) && (lenv[ _option_id ] == "")) {
-                    if ( _desc != "" ) CODE = CODE jqu(v ":" _desc) "\n"
-                    else CODE = CODE jqu(v) "\n"
-                }
-            }
-        }
-        CODE = CODE ")"
-        return CODE
-    }
-
-    # if ( aobj_option_all_set( lenv, obj, obj_prefix ) ) {
-        return advise_complete_argument_value( curval, genv, lenv, obj, obj_prefix, 1 )
-    # }
-
-    # l = obj[ obj_prefix L ]
-
-    # CODE = CODE "\n" "candidate_arr=(" "\n"
-    # for (i=1; i<=l; ++i) {
-    #     k = obj[ obj_prefix, i ]
-    #     if (k ~ "^[^-]") continue
-    #     if ( aobj_istrue(obj, obj_prefix SUBSEP k SUBSEP "\"#subcmd\"" ) ) continue
-
-    #     if ( aobj_required(obj, obj_prefix SUBSEP k) ) {
-    #         _cand_key_desc = obj_prefix SUBSEP k SUBSEP "\"#desc\""
-    #         _desc = obj[ _cand_key_desc ]
-    #         if ( lenv_table[ k ] == "" ) {
-    #             if( _desc != "" )   CODE = CODE k ":" _desc "\n"
-    #             else CODE = CODE k "\n"
+# Most complicated #1
+function advise_complete_option_name_or_argument_value( curval, genv, lenv, obj, obj_prefix,        _option_id, i, j, k, v, _arrl, _desc, _arr_valuel, _arr_value, _required_options ){
+    # if ( curval ~ /^--/ ) {
+    #     _arrl = obj[ obj_prefix L ]
+    #     CODE = CODE "\n" "candidate_arr=(" "\n"
+    #     for (i=1; i<=_arrl; ++i) {
+    #         _option_id = obj[ obj_prefix, i ]
+    #         _desc = ( ZSHVERSION != "" ) ? juq(obj[ obj_prefix SUBSEP _option_id SUBSEP "\"#desc\"" ]) : ""
+    #         _arr_valuel = split( juq(_option_id), _arr_value, "|" )
+    #         for ( j=1; j<=_arr_valuel; ++j) {
+    #             v = _arr_value[j]
+    #             if ((v ~ curval) && (lenv[ _option_id ] == "")) {
+    #                 if ( _desc != "" ) CODE = CODE jqu(v ":" _desc) "\n"
+    #                 else CODE = CODE jqu(v) "\n"
+    #             }
     #         }
     #     }
+    #     CODE = CODE ")"
+    #     return CODE
     # }
 
-    # CODE = CODE ")"
-    # return CODE
+    # if ( curval ~ /^-/ ) {
+    #     CODE = CODE "\n" "candidate_arr=(" "\n"
+    #     _arrl = obj[ obj_prefix L ]
+    #     for (i=1; i<=_arrl; ++i) {
+    #         _option_id = obj[ obj_prefix, i ]
+    #         _desc = ( ZSHVERSION != "" ) ? juq(obj[ obj_prefix SUBSEP _option_id SUBSEP "\"#desc\"" ]) : ""
+    #         _arr_valuel = split( juq( _option_id ), _arr_value, "|" )
+    #         for ( j=1; j<=_arr_valuel; ++j) {
+    #             v = _arr_value[j]
+    #             if ((v ~ "--") || ( v !~ "^-")) continue
+    #             if ((v ~ curval) && (lenv[ _option_id ] == "")) {
+    #                 if ( _desc != "" ) CODE = CODE jqu(v ":" _desc) "\n"
+    #                 else CODE = CODE jqu(v) "\n"
+    #             }
+    #         }
+    #     }
+    #     # CODE = CODE advise_get_candidate_code( curval, genv, lenv, obj, obj_prefix )
+    #     CODE = CODE ")"
+    #     return CODE
+    # }
+    _candidate_code = advise_get_candidate_code( curval, genv, lenv, obj, obj_prefix )
+
+    if ( ( curval == "" ) || ( curval ~ /^-/ ) || (aobj_option_all_set( lenv, obj, obj_prefix ))) {
+        return advise_complete_argument_value( curval, genv, lenv, obj, obj_prefix, 1, _candidate_code)
+    }
+
+    l = obj[ obj_prefix L ]
+    for (i=1; i<=l; ++i) {
+        k = obj[ obj_prefix, i ]
+        if (k ~ "^\"[^-]") continue
+        if ( aobj_istrue(obj, obj_prefix SUBSEP k SUBSEP "\"#subcmd\"" ) ) continue
+
+        if ( aobj_required(obj, obj_prefix SUBSEP k) ) {
+            if ( lenv_table[ k ] == "" ) {
+                _required_options = (_required_options == "") ? k : _required_options ", " k
+            }
+        }
+    }
+    panic("Required options [ " _required_options " ] should be set")
+
 }

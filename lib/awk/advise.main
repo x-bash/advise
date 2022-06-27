@@ -5,9 +5,10 @@ advise_test(){
     local IFS=$'\002'
     {
         printf "%s\n" "$*"
-        # cat .x-cmd/dev/data/advise.json
+        cat .x-cmd/dev/data/advise.json
         # cat /home/qiakai/xbash/x-cmd/lib/x.json
-        cat /home/qiakai/xbash/advise/lib/advise.advise.json
+        # cat /home/qiakai/xbash/advise/lib/advise.advise.json
+        # cat /home/qiakai/xbash/ja/lib/ja.advise.json
         # cat /tmp/.x-cmd/advise_auto_json/___x_cmd_tldr
         # cat .x-cmd/dev/data/git.json
         # cat .x-cmd/dev/data/git_tokenize.json
