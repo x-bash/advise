@@ -1,7 +1,6 @@
 # shellcheck disable=SC2207
 # Section : main
 ___advise_run(){
-    local cur="${COMP_WORDS[COMP_CWORD]}"
     local resname="${1:-${COMP_WORDS[0]}}"
 
     [ -z "$___ADVISE_RUN_CMD_FOLDER" ] && ___ADVISE_RUN_CMD_FOLDER="$___X_CMD_ADVISE_TMPDIR"
@@ -32,6 +31,7 @@ ___advise_run(){
         COMP_CWORD="$(( ${#tmp[@]}-1 ))"
     fi
 
+    local cur="${COMP_WORDS[COMP_CWORD]}"
     local candidate_arr
     local candidate_exec
     local candidate_exec_arr
