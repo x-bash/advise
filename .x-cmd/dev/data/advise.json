@@ -6,16 +6,16 @@
         "#exec": "___x_cmd_advise__ls",
         "#r": true
     },
-    "#9": {
+    "#5": {
         "#desc": "",
-        "#cand": ["a", "b", "c"],
+        "#cand": ["a5", "b5", "c5"],
         "#rmatch": [],
         "#exec": "___x_cmd_advise__ls",
         "#r": true
     },
     "#n": {
         "#desc": "",
-        "#cand": ["a", "b", "c"],
+        "#cand": ["an", "bn", "cn"],
         "#rmatch": [],
         "#exec": "___x_cmd_advise__ls"
     },
@@ -30,7 +30,8 @@
                 "#desc": "test install",
                 "#1": {
                     "#cand": ["aaa", "bbb"]
-                }
+                },
+                "#r": true
             },
             "-K|--kill": {
                 "#desc": "test kill",
@@ -39,26 +40,34 @@
                 },
                 "#2": {
                     "#cand": ["ccc", "ddd"]
-                }
-
+                },
+                "#r": true
             },
             "-A": {
-                "#desc": "AAA"
+                "#desc": "AAA",
+                "#r": true
             },
             "-B": {
-                "#desc": "BBB"
+                "#desc": "BBB",
+                "#subcmd": true
             },
             "-J": "",
             "-L": [],
-            ":+debug|:+d": {},
-            ":-reset|:-r": {}
+            "+debug|+d": {},
+            "-reset|-r": {}
+        },
+        "--t|--theme": {
+            "#desc": "set the vtop theme [acid|becca|brew|certs|dark|gooey|gruvbox|monokai|nord|parallax|seti|wizard]",
+            "#1": {
+                "#cand": [ "acid","becca", "brew","certsdark","gooey","gruvbox","monokai","nord","parallax","seti","wizard" ]
+            }
         },
         "--version|-v": {
             "#desc": "test version",
             "#1": {
                 "#desc": "first argument",
-                "abc": 1,
-                "cde": 2,
+                "abc": null,
+                "cde": {},
                 "#cand": ["va", "vb", "vc"],
                 "#rmatch": [],
                 "#exec": "___x_cmd_advise__ls"
@@ -75,12 +84,22 @@
                 "#exec": "___advise_sub_shell_exec"
             }
         },
-        "--@": ["@a1", "@a2", "@a3", "@b", "@c"],
+        "--@": {
+            "#1": {
+                "#cand": ["@a1", "@a2", "@a3", "@b", "@c"]
+            }
+        },
         "--required": {
             "#desc": "test required",
-            "#1": ["adc=sss", "scs=bbb", "scs=aaa"],
-            "#2": ["www:a", ":b", ":c"],
-            "#3": ["10", "11", "12", "/[1-9][0-9]?|100/"]
+            "#1": {
+                "#cand": ["adc=sss", "scs=bbb", "scs=aaa"]
+            },
+            "#2": {
+                "#cand": ["www:a", ":b", ":c"]
+            },
+            "#3": {
+                "#regex": ["10", "11", "12", "/[1-9][0-9]?|100/"]
+            }
         },
         "--flag|-f": null,
         "-V": {

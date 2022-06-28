@@ -34,7 +34,7 @@ function aobj_option_all_set( lenv_table, obj, obj_prefix,  i, l, k ){
     for (i=1; i<=l; ++i) {
         k = obj[ obj_prefix, i ]
         if (k ~ "^\"[^-]") continue
-        if ( aobj_istrue(obj, obj_prefix SUBSEP k SUBSEP "#subcmd" ) ) continue
+        if ( aobj_istrue(obj, obj_prefix SUBSEP k SUBSEP "\"#subcmd\"" ) ) continue
 
         if ( aobj_required(obj, obj_prefix SUBSEP k) ) {
             if ( lenv_table[ k ] == "" )  return false

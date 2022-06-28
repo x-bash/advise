@@ -1,2 +1,3 @@
 test:debug "copy all files from ./* to ~/.x-cmd/advise/"
 cp -r "$(x wsroot)"/* "$___X_CMD_ROOT_MOD/advise/"
+# xws install
