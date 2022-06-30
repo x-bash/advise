@@ -10,7 +10,7 @@
         "-v": {
             "abc": 1,
             "cde": 2,
-            "#candidate": [ "a", "b", "c" ],
+            "#cand": [ "a", "b", "c" ],
             "#rmatch": []
         }
     },

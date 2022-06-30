@@ -21,7 +21,10 @@
         }
     },
     "init|new": {
-        "#desc": "Create a new obj"
+        "#desc": "Create a new obj",
+        "#2": {
+            "#exec": "___x_cmd_advise__file"
+        }
     },
     "man": {
         "#desc": "Manager for x-cmd/advise",
