@@ -1,37 +1,39 @@
 # shellcheck disable=SC2207,SC2034
 # Section : adviser helper function: ls lsd seq get_result
 
-___x_cmd_advise__lsd(){
-    local l
-    local localdir="${1:-${cur:-""}}"
-    candidate_exec_arr=( $(compgen -d "${localdir}" 2>/dev/null | while read -r l; do
-        printf "%s/\n" "${l%/}"
-    done ) )
-}
-
 ___x_cmd_advise__ls(){
     candidate_exec_arr=( $(ls "$@") )
 }
 
+___x_cmd_advise__dir(){
+    local localdir="${1:-${cur:-""}}"
+    if [ -n "$ZSH_VERSION" ]; then
+        _path_files -/
+        return
+    fi
+    ___x_cmd_advise_set_nospace
+    candidate_exec_arr=( $(compgen -d "$localdir" 2>/dev/null) )
+}
+
 # TODO: same as _files
 ___x_cmd_advise__file(){
-    local localdir="${cur:-""}"
-
+    local localdir="${1:-${cur:-""}}"
     if [ -n "$ZSH_VERSION" ]; then
         _files
         return
     fi
     ___x_cmd_advise_set_nospace
-    candidate_exec_arr=( $(compgen -f -- "$localdir") )
+    candidate_exec_arr=( $(compgen -f "$localdir" 2>/dev/null) )
 }
 
 ___x_cmd_advise_set_nospace(){
     if [[ ! "$BASH_VERSION" =~ ^3.* ]];then
         compopt -o nospace
     fi
-    # TODO: ZSH
+    # TODO: ZSH complete no add space
     if [ -n "$ZSH_VERSION" ]; then
         zstyle ':completion:*' add-space false
+        # zstyle ':completion:*' insert-tab false
     fi
 }
 # 1-10
