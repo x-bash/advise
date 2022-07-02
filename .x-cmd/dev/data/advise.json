@@ -45,6 +45,9 @@
             },
             "-A": {
                 "#desc": "AAA",
+                "#1": {
+                    "#exec": "___x_cmd_advise__lsd"
+                },
                 "#r": true
             },
             "-B": {
@@ -107,7 +110,6 @@
         },
         "--tuple": {
             "#multiple": true,
-            "#r": true,
             "#desc": "test tuple",
             "#1": {
                 "#desc": "first argument"
