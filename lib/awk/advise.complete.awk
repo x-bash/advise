@@ -10,8 +10,15 @@ function advise_get_candidate_code( curval, genv, lenv, obj, kp,        _candida
             _cand_key = kp SUBSEP _option_id
             _cand_l = obj[ _cand_key L ]
             for (j=1; j<=_cand_l; ++j) {
-                v = obj[ _cand_key, "\"" j "\"" ]
-                if( v ~ "^\"" curval ) _candidate_code = _candidate_code v "\n"
+                v = juq(obj[ _cand_key, "\"" j "\"" ])
+                if (match( v, " --- ")) {
+                    _desc = ( ZSHVERSION != "" ) ? substr(v, RSTART+RLENGTH) : ""
+                    v = substr( v, 1, RSTART-1)
+                }
+                if( v ~ "^" curval ){
+                    if ( _desc != "" ) _candidate_code = _candidate_code jqu(v ":" _desc) "\n"
+                    else _candidate_code = _candidate_code jqu(v) "\n"
+                }
             }
         }
         if ( _option_id ~ "^\"#") continue

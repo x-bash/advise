@@ -32,7 +32,7 @@
             "-I|--install": {
                 "#desc": "test install",
                 "#1": {
-                    "#cand": ["aaa", "bbb"]
+                    "#cand": ["aaa --- Desc aaa", "bbb --- Desc bbb"]
                 },
                 "#r": true
             },
@@ -57,6 +57,7 @@
                 "#desc": "BBB",
                 "#subcmd": true
             },
+            "-?": null,
             "-J": "",
             "-L": [],
             "+debug|+d": {},
