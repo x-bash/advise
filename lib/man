@@ -1,8 +1,9 @@
+# shellcheck disable=SC2207,SC2034
 
 ___x_cmd_advise_man(){
     local op="${1:?Provide subcommand}"; shift
     case "$op" in
-        ls)         ___x_cmd_advise_man_ls              ;;
+        ls)         ___x_cmd_advise_man_ls "$@"         ;;
         update)     ___x_cmd_advise_man_update          ;;
         which)      ___x_cmd_advise_man_which "$@"      ;;
         load)       ___x_cmd_advise_man_load "$@"       ;;
@@ -11,30 +12,30 @@ ___x_cmd_advise_man(){
     esac
 }
 
+___X_CMD_ADVISE_MAN_SRC_FOLDER="$___X_CMD_ROOT/.tmp/advise/src"
 ___x_cmd_advise_man_exists(){
-    [ -d "$___X_CMD_ROOT/.tmp/advise/src" ]
+    [ -d "$___X_CMD_ADVISE_MAN_SRC_FOLDER" ]
 }
 
 ___x_cmd_advise_man_update(){
     local CACHE="$___X_CMD_ROOT/.tmp/advise/all.tgz"
     if ___x_cmd_httpget_gitx x-cmd advise main "dist/all.tgz" "$CACHE" -; then
-        local srcfolder="$___X_CMD_ROOT/.tmp/advise/src"
-        [ -d "$srcfolder" ] && rm -rf "$srcfolder"
-        mkdir -p "$srcfolder"
-        tar xvf "$CACHE" -C "$srcfolder"
+        [ -d "$___X_CMD_ADVISE_MAN_SRC_FOLDER" ] && rm -rf "$___X_CMD_ADVISE_MAN_SRC_FOLDER"
+        mkdir -p "$___X_CMD_ADVISE_MAN_SRC_FOLDER"
+        tar xvf "$CACHE" -C "$___X_CMD_ADVISE_MAN_SRC_FOLDER" >/dev/null
     fi
 }
 
 ___x_cmd_advise_man_ls(){
     if ___x_cmd_advise_man_exists || ___x_cmd_advise_man_update; then
-        ls "$___X_CMD_ROOT/.tmp/advise/src"
+        ls "$___X_CMD_ADVISE_MAN_SRC_FOLDER/$*"
     fi
 }
 
 ___x_cmd_advise_man_which(){
     local name="${1:?Provide name}"
     if ___x_cmd_advise_man_exists || ___x_cmd_advise_man_update; then
-        local p="$___X_CMD_ROOT/.tmp/advise/src/$name/advise.json"
+        local p="$___X_CMD_ADVISE_MAN_SRC_FOLDER/$name/advise.json"
         [ -f "$p" ] && printf "%s" "$p"
     fi
 
@@ -74,7 +75,7 @@ ___x_cmd_advise_man_load(){
 
 ___x_cmd_advise_man_rm(){
     local name="${1:-}"
-    local srcfolder="$___X_CMD_ROOT/.tmp/advise/src/$name"
+    local srcfolder="$___X_CMD_ADVISE_MAN_SRC_FOLDER/$name"
     if ___x_cmd_advise_man_exists; then
         rm -rf "$srcfolder"
     fi
@@ -82,7 +83,16 @@ ___x_cmd_advise_man_rm(){
 
 ___x_cmd_advise_man_completer() {
     # Interesting ... Passing
-    ___ADVISE_RUN_CMD_FOLDER="$___X_CMD_ROOT/.tmp/advise/src/" ___advise_run ""
+    ___ADVISE_RUN_CMD_FOLDER="$___X_CMD_ADVISE_MAN_SRC_FOLDER" ___advise_run ""
 }
 
 
+## Section man advise
+___x_cmd_advise_man__list(){
+    if [ -n "$1" ]; then
+        candidate_exec_arr=( $(ls $___X_CMD_ADVISE_MAN_SRC_FOLDER/$1/_ | awk '{gsub(".json", "", $0); print $0}'))
+    else
+        candidate_exec_arr=( $(ls $___X_CMD_ADVISE_MAN_SRC_FOLDER) )
+    fi
+}
+## EndSection

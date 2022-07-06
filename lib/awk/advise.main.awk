@@ -121,15 +121,20 @@ function parse_args_to_env( args, argl, obj, obj_prefix, genv_table, lenv_table,
             }
             continue
         }
-        i = i - 1
+        i = i - 1 # subcmd complete
         break
     }
     # handle it into argument
-    for (j=1; i+j-1 < argl; ++j) {
-        rest_arg[ j ] = args[ i+j-1 ]
-    }
+    # for (j=1; i+j-1 < argl; ++j) {
+    #     rest_arg[ j ] = args[ i+j-1 ]
+    # }
+    # _rest_argc = j - 1
 
-    _rest_argc = j - 1
+    for (j=0; i+j < argl; ++j) {
+        rest_arg[ j ] = args[ i+j ]
+    }
+    _rest_argc = j
+
     if (_rest_argc == 0) {
         advise_complete_option_name_or_argument_value( args[ argl ], genv_table, lenv_table, obj, obj_prefix )
         return
