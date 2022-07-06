@@ -1,11 +1,4 @@
 {
-    "#1": {
-        "#desc": "",
-        "#cand": ["a", "b", "c"],
-        "#rmatch": [],
-        "#exec": "___x_cmd_advise__ls",
-        "#r": true
-    },
     "#5": {
         "#desc": "",
         "#cand": ["a5", "b5", "c5"],
@@ -15,12 +8,22 @@
     },
     "#n": {
         "#desc": "",
-        "#cand": ["an", "bn", "cn"],
+        "#cand": ["a-n", "bn", "cn"],
         "#rmatch": [],
         "#exec": "___x_cmd_advise__ls"
     },
+    "-v|--val": {
+        "#multiple": true,
+        "#1": null
+    },
+    "-f|--file": {
+        "#multiple": true,
+        "#1": {
+            "#exec": "___x_cmd_advise__file"
+        }
+    },
     "user": {
-        "#desc": "Desc user",
+        "#desc": "Desc $user",
         "login": {
             "#desc": "test login"
         },
