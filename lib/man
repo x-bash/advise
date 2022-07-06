@@ -28,7 +28,10 @@ ___x_cmd_advise_man_update(){
 
 ___x_cmd_advise_man_ls(){
     if ___x_cmd_advise_man_exists || ___x_cmd_advise_man_update; then
-        ls "$___X_CMD_ADVISE_MAN_SRC_FOLDER/$*"
+        local line
+        ls "$___X_CMD_ADVISE_MAN_SRC_FOLDER/$*" | while read -r line; do
+            [ "$line" = "LICENSE" ] || printf "%s\n" "$line"
+        done
     fi
 }
 
@@ -90,9 +93,9 @@ ___x_cmd_advise_man_completer() {
 ## Section man advise
 ___x_cmd_advise_man__list(){
     if [ -n "$1" ]; then
-        candidate_exec_arr=( $(ls $___X_CMD_ADVISE_MAN_SRC_FOLDER/$1/_ | awk '{gsub(".json", "", $0); print $0}'))
+        candidate_exec_arr=( $(ls $___X_CMD_ADVISE_MAN_SRC_FOLDER/$1/_ ))
     else
-        candidate_exec_arr=( $(ls $___X_CMD_ADVISE_MAN_SRC_FOLDER) )
+        candidate_exec_arr=( $( ___x_cmd_advise_man_ls ) )
     fi
 }
 ## EndSection
