@@ -23,7 +23,7 @@
         }
     },
     "user": {
-        "#desc": "Desc $user",
+        "#desc": "Desc $user   `cscs`",
         "login": {
             "#desc": "test login"
         },
