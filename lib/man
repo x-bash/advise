@@ -35,7 +35,7 @@ ___x_cmd_advise_man_ls(){
 ___x_cmd_advise_man_which(){
     local name="${1:?Provide name}"
     if ___x_cmd_advise_man_exists || ___x_cmd_advise_man_update; then
-        local p="$___X_CMD_ADVISE_MAN_SRC_FOLDER/$name/advise.json"
+        local p="$___X_CMD_ADVISE_MAN_SRC_FOLDER/$name/advise.t.json"
         [ -f "$p" ] && printf "%s" "$p"
     fi
 
