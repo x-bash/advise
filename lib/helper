@@ -105,7 +105,9 @@ ___x_cmd_advise__offset(){
         ___x_cmd_advise_man_load "$module"
         filepath="$(___x_cmd_advise_man_which "$module")"
     elif [ "$module_prefix" = "docker" ]; then
-        filepath="$(___x_cmd_advise_man_which "${COMP_WORDS[offset+1]}")"
+        offset=$((offset+1))
+        filepath="$(___x_cmd_advise_man_which "${COMP_WORDS[offset]}")"
+        remain_len=$((remain_len-1))
     fi
     [ -f "$filepath" ] || return
 
