@@ -78,33 +78,46 @@ A
 
 }
 
-___x_cmd_advise__get_result(){
+___x_cmd_advise__offset(){
     local offset="${1:-1}"
     local remain_len=$((COMP_CWORD-offset))
     [ -n "$ZSH_VERSION" ] && offset=$((offset+1)) && setopt aliases
 
-    local module="${COMP_WORDS[offset]}"
-    local which_one_result
-    which_one_result="$(xrc which "$module")"
-    [ -n "$which_one_result" ] || return
-
-    local main_func
-    main_func="$(___x_cmd_ldict_get ___X_CMD_XRC_SET_MAIN_DICT "$which_one_result")"
-
-    # Generate the advise json file.
-    if [ -z "$main_func" ]; then
-        ___x_cmd_xrc_source_file_main "$which_one_result"
-        main_func="$(___x_cmd_ldict_get ___X_CMD_XRC_SET_MAIN_DICT "$which_one_result")"
+    local module_prefix="$2"
+    if [ -z "$module_prefix" ];then
+        module_prefix="${COMP_WORDS[0]}"
+        [ -z "$ZSH_VERSION" ] || module_prefix="${COMP_WORDS[1]}"
     fi
+    local module="${COMP_WORDS[offset]}"
+    local filepath
+    if [ "$module_prefix" = "x" ]; then
+        local which_one_result
+        which_one_result="$(xrc which "$module")"
+        [ -n "$which_one_result" ] || return
 
-    ___advise_main "$main_func"
-    local filepath="${TMPDIR%/}/.x-cmd/advise_auto_json/$main_func"
+        local main_func
+        main_func="$(___x_cmd_ldict_get ___X_CMD_XRC_SET_MAIN_DICT "$which_one_result")"
+
+        # Generate the advise json file.
+        if [ -z "$main_func" ]; then
+            ___x_cmd_xrc_source_file_main "$which_one_result"
+            main_func="$(___x_cmd_ldict_get ___X_CMD_XRC_SET_MAIN_DICT "$which_one_result")"
+        fi
+
+        ___advise_main "$main_func"
+        filepath="${TMPDIR%/}/.x-cmd/advise_auto_json/$main_func"
+    elif [  "$module_prefix" = "npx" ] || [ "$module_prefix" = "pipx" ]; then
+        ___x_cmd_advise_man_load "$module"
+        filepath="$(___x_cmd_advise_man_which "$module")"
+    fi
     [ -f "$filepath" ] || return
 
     # Delete $offset numbers from the COMP_WORDS
-    local i tmp=()
-    for ((i=0; i<=remain_len; ++i)); do
+    local i=0
+    local tmp=()
+    while [ "$i" -le "$remain_len" ]; do
         tmp+=( "${COMP_WORDS[i+offset]}" )
+        i=$(( i + 1 ))
     done
     COMP_WORDS=("${tmp[@]}")
     COMP_CWORD="$(( ${#tmp[@]}-1 ))"
