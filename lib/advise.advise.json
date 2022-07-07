@@ -32,17 +32,17 @@
         "update": null,
         "rm": {
             "#1": {
-                "#exec": "candidate_exec_arr=( $(___x_cmd_advise_man ls) )"
+                "#exec": "___x_cmd_advise_man__list"
             }
         },
         "which": {
             "#1": {
-                "#exec": "candidate_exec_arr=( $(___x_cmd_advise_man ls) )"
+                "#exec": "___x_cmd_advise_man__list"
             }
         },
         "load": {
             "#1": {
-                "#exec": "candidate_exec_arr=( $(___x_cmd_advise_man ls) )"
+                "#exec": "___x_cmd_advise_man__list"
             }
         }
     },

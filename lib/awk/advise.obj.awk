@@ -76,6 +76,7 @@ function aobj_get_optargc( obj, obj_prefix, option_id,  _res, i ){
         l = obj[ obj_prefix L]
         for (i=1; i<=l; ++i) {
             v = obj[ obj_prefix, i ]
+            if ((v ~ "^\"#exec") || (v ~ "^\"#cand") || v ~ "^\"#regex") return obj[ obj_prefix L "argc" ] = 1
             if (v ~ "^\"#") continue
             return obj[ obj_prefix L "argc" ] = 1
         }
