@@ -11,6 +11,7 @@ function advise_get_candidate_code( curval, genv, lenv, obj, kp,        _candida
             _cand_l = obj[ _cand_key L ]
             for (j=1; j<=_cand_l; ++j) {
                 v = juq(obj[ _cand_key, "\"" j "\"" ])
+                _desc = ""
                 if (match( v, " --- ")) {
                     _desc = ( ZSHVERSION != "" ) ? substr(v, RSTART+RLENGTH) : ""
                     gsub("\\$", "\\$", _desc)

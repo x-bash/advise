@@ -28,18 +28,23 @@ ___x_cmd_advise_man_update(){
 
 ___x_cmd_advise_man_ls(){
     if ___x_cmd_advise_man_exists || ___x_cmd_advise_man_update; then
-        ls "$___X_CMD_ADVISE_MAN_SRC_FOLDER/$*"
+        local line
+        ls "$___X_CMD_ADVISE_MAN_SRC_FOLDER/$*" | while read -r line; do
+            [ "$line" = "LICENSE" ] || printf "%s\n" "$line"
+        done
     fi
 }
 
 ___x_cmd_advise_man_which(){
     local name="${1:?Provide name}"
+    local file
     if ___x_cmd_advise_man_exists || ___x_cmd_advise_man_update; then
-        local p="$___X_CMD_ADVISE_MAN_SRC_FOLDER/$name/advise.t.json"
-        [ -f "$p" ] && printf "%s" "$p"
+        [ -f "$file" ] || file="$___X_CMD_ADVISE_MAN_SRC_FOLDER/$name/advise.t.json"
+        [ -f "$file" ] || file="$___X_CMD_ADVISE_MAN_SRC_FOLDER/npx/_/$name/advise.t.json"
+        [ -f "$file" ] || file="$___X_CMD_ADVISE_MAN_SRC_FOLDER/pipx/_/$name/advise.t.json"
+        [ -f "$file" ] || return 1
+        printf "%s\n" "$file"
     fi
-
-    return 1
 }
 
 ___x_cmd_advise_man_load(){
@@ -90,9 +95,9 @@ ___x_cmd_advise_man_completer() {
 ## Section man advise
 ___x_cmd_advise_man__list(){
     if [ -n "$1" ]; then
-        candidate_exec_arr=( $(ls $___X_CMD_ADVISE_MAN_SRC_FOLDER/$1/_ | awk '{gsub(".json", "", $0); print $0}'))
+        candidate_exec_arr=( $(ls $___X_CMD_ADVISE_MAN_SRC_FOLDER/$1/_ ))
     else
-        candidate_exec_arr=( $(ls $___X_CMD_ADVISE_MAN_SRC_FOLDER) )
+        candidate_exec_arr=( $( ___x_cmd_advise_man_ls ) )
     fi
 }
 ## EndSection

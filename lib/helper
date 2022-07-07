@@ -78,33 +78,45 @@ A
 
 }
 
-___x_cmd_advise__get_result(){
-    local offset="${1:-1}"
+___x_cmd_advise__offset(){
+    local module_prefix="${1:-x}"
     local remain_len=$((COMP_CWORD-offset))
     [ -n "$ZSH_VERSION" ] && offset=$((offset+1)) && setopt aliases
 
     local module="${COMP_WORDS[offset]}"
-    local which_one_result
-    which_one_result="$(xrc which "$module")"
-    [ -n "$which_one_result" ] || return
+    local filepath
+    if [ "$module_prefix" = "x" ]; then
+        local which_one_result
+        which_one_result="$(xrc which "$module")"
+        [ -n "$which_one_result" ] || return
 
-    local main_func
-    main_func="$(___x_cmd_ldict_get ___X_CMD_XRC_SET_MAIN_DICT "$which_one_result")"
-
-    # Generate the advise json file.
-    if [ -z "$main_func" ]; then
-        ___x_cmd_xrc_source_file_main "$which_one_result"
+        local main_func
         main_func="$(___x_cmd_ldict_get ___X_CMD_XRC_SET_MAIN_DICT "$which_one_result")"
-    fi
 
-    ___advise_main "$main_func"
-    local filepath="${TMPDIR%/}/.x-cmd/advise_auto_json/$main_func"
+        # Generate the advise json file.
+        if [ -z "$main_func" ]; then
+            ___x_cmd_xrc_source_file_main "$which_one_result"
+            main_func="$(___x_cmd_ldict_get ___X_CMD_XRC_SET_MAIN_DICT "$which_one_result")"
+        fi
+
+        ___advise_main "$main_func"
+        filepath="${TMPDIR%/}/.x-cmd/advise_auto_json/$main_func"
+    elif [  "$module_prefix" = "npx" ] || [ "$module_prefix" = "pipx" ]; then
+        ___x_cmd_advise_man_load "$module"
+        filepath="$(___x_cmd_advise_man_which "$module")"
+    elif [ "$module_prefix" = "docker" ]; then
+        offset=$((offset+1))
+        filepath="$(___x_cmd_advise_man_which "${COMP_WORDS[offset]}")"
+        remain_len=$((remain_len-1))
+    fi
     [ -f "$filepath" ] || return
 
     # Delete $offset numbers from the COMP_WORDS
-    local i tmp=()
-    for ((i=0; i<=remain_len; ++i)); do
+    local i=0
+    local tmp=()
+    while [ "$i" -le "$remain_len" ]; do
         tmp+=( "${COMP_WORDS[i+offset]}" )
+        i=$(( i + 1 ))
     done
     COMP_WORDS=("${tmp[@]}")
     COMP_CWORD="$(( ${#tmp[@]}-1 ))"
@@ -114,5 +126,4 @@ ___x_cmd_advise__get_result(){
     local IFS=$'\n'
     eval "$candidate_exec" 2>/dev/null
 }
-
 ## EndSection

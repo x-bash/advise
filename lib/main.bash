@@ -11,7 +11,8 @@ ___advise_run(){
         -)  filepath=/dev/stdin ;;
         *)  filepath="$___ADVISE_RUN_CMD_FOLDER/$resname"
             [ ! -d "$filepath" ] || filepath="$___ADVISE_RUN_CMD_FOLDER/$resname/advise.json"
-            [ -f "$filepath" ] || filepath="$___ADVISE_RUN_CMD_FOLDER/$resname/advise.t.json";;
+            [ -f "$filepath" ] || filepath="$___ADVISE_RUN_CMD_FOLDER/$resname/advise.t.json"
+            [ -f "$filepath" ] || filepath="$(___x_cmd_advise_man_which "$resname")" ;;
     esac
     [ -f "$filepath" ] || return
 
@@ -36,6 +37,7 @@ ___advise_run(){
     local candidate_arr
     local candidate_exec
     local candidate_exec_arr
+    local offset
     eval "$(___advise_get_result_from_awk)" 2>/dev/null
     local IFS=$'\n'
     eval "$candidate_exec" 2>/dev/null
