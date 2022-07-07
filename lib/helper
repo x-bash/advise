@@ -79,15 +79,10 @@ A
 }
 
 ___x_cmd_advise__offset(){
-    local offset="${1:-1}"
+    local module_prefix="${1:-x}"
     local remain_len=$((COMP_CWORD-offset))
     [ -n "$ZSH_VERSION" ] && offset=$((offset+1)) && setopt aliases
 
-    local module_prefix="$2"
-    if [ -z "$module_prefix" ];then
-        module_prefix="${COMP_WORDS[0]}"
-        [ -z "$ZSH_VERSION" ] || module_prefix="${COMP_WORDS[1]}"
-    fi
     local module="${COMP_WORDS[offset]}"
     local filepath
     if [ "$module_prefix" = "x" ]; then
@@ -109,6 +104,8 @@ ___x_cmd_advise__offset(){
     elif [  "$module_prefix" = "npx" ] || [ "$module_prefix" = "pipx" ]; then
         ___x_cmd_advise_man_load "$module"
         filepath="$(___x_cmd_advise_man_which "$module")"
+    elif [ "$module_prefix" = "docker" ]; then
+        filepath="$(___x_cmd_advise_man_which "${COMP_WORDS[offset+1]}")"
     fi
     [ -f "$filepath" ] || return
 
@@ -127,5 +124,4 @@ ___x_cmd_advise__offset(){
     local IFS=$'\n'
     eval "$candidate_exec" 2>/dev/null
 }
-
 ## EndSection

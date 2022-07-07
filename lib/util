@@ -102,7 +102,6 @@ ___advise_get_result_from_awk(){
             ;;
         *)
     esac
-
     {
         printf "%s\n" "$s"
         cat "$filepath"

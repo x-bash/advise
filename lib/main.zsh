@@ -23,6 +23,7 @@ ___advise_run(){
     local candidate_exec
     local candidate_exec_arr
     local _message_str
+    local offset
     eval "$(___advise_get_result_from_awk)" 2>/dev/null
     local IFS=$'\n'
     eval "$candidate_exec" 2>/dev/null
