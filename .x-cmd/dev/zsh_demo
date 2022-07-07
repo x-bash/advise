@@ -1,0 +1,113 @@
+# shellcheck shell=bash
+
+_test1(){
+   _alternative \
+    'args:custom arg:((a\:"desc a" b\:"desc b" c\:"desc c"))' \
+    "dirs:user directory:($userdirs)" \
+    "pids:process ID:($(ps -A | awk '{print $1}' | head -n 3))" \
+    'files:filename: _files /'
+}
+
+compdef _test1 t1
+
+_test2(){
+    # --explain is a option with one argument
+    local -a result=(
+        {-d,--debug}'[Prompts before each remote command execution]' \
+        {-e,--explain}'[Displays help (if available) for the task]:task' \
+        {-F,--default-config}'[Always use default config, even with -f]'
+    )
+    _arguments -s $result
+}
+compdef _test2 t2
+
+_test3(){
+    local -a result1 result2
+    result1=(
+        "stopped:Output the list of stopped downloads."
+        "info:Output information regarding the given GIDs."
+        "files:Output the files owned by the downloads corresponding to the given GIDs."
+    )
+    result2=(
+        "-c:desc ccc"
+        "--C:desc ccc"
+        "-d:desc ddd"
+        "--D:desc ddd"
+    )
+    _describe 'commands' result1 -- result2
+}
+compdef _test3 t3
+
+_test4(){
+    _gnu_generic
+}
+compdef _test4 t4
+
+_test5(){
+    _regex_arguments
+}
+compdef _test5 t5
+
+_test6(){
+    local -a firstword firstword2 secondword secondword2
+
+    _regex_words word1 'The second word' 'woo:tang clan' 'hoo:not me'
+    secondword=("$reply[@]")
+    _regex_words word2 'Another second word' 'yee:thou' 'haa:very funny!'
+    secondword2=("$reply[@]")
+    _regex_words commands 'The first word' 'foo:do foo' 'man:yeah man' 'chu:at chu'
+    firstword=("$reply[@]")
+    _regex_words word4 'Another first word' 'boo:scare somebody:$secondword' 'ga:baby noise:$secondword' \
+    'loo:go to the toilet:$secondword2'
+    firstword2=("$reply[@]")
+
+    _regex_arguments _hello /$'[^\0]##\0'/ "${firstword[@]}" "${firstword2[@]}"
+
+    _hello
+}
+
+compdef _test6 t6
+
+#####################
+
+_test7(){
+    _values 'dance' $(ls)
+}
+compdef _test7 t7
+
+_test8(){
+    _multi_parts : '(00:11:22:33:44:55 00:23:34:45:56:67 00:23:45:56:67:78)'
+}
+compdef _test8 t8
+
+_test9(){
+    _sep_parts '(foo bar)' @ '(news ftp)' : '(woo laa)'
+}
+compdef _test9 t9
+
+_test10(){
+    _values -s , 'session id' "${(uonzf)$(ls)}"
+}
+compdef _test10 t10
+
+_test11(){
+    _parameters
+}
+compdef _test11 t11
+
+_test12(){
+    _users
+}
+compdef _test12 t12
+
+_test13(){
+    # _path_files       #	Used to complete filepaths. Take several options to control behaviour.
+    # _files	        #   Calls _path_files with all options except -g and -/. These options depend on file-patterns style setting.
+    # _net_interfaces	    #   Used for completing network interface names
+    # _users	        #   Used for completing user names
+    # _groups	        #   Used for completing group names
+    # _options	        #   Used for completing the names of shell options.
+    # _parameters	    #   Used for completing the names of shell parameters/variables (can restrict to those matching a pattern)
+    :
+}
+compdef _test13 t13
