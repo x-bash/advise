@@ -24,7 +24,7 @@
     },
     "user": {
         "#desc": "Desc $user   `cscs`",
-        "login": {
+        "login\\:in": {
             "#desc": "test login"
         },
         "logout": {
