@@ -108,6 +108,10 @@ ___x_cmd_advise__offset(){
         offset=$((offset+1))
         filepath="$(___x_cmd_advise_man_which "${COMP_WORDS[offset]}")"
         remain_len=$((remain_len-1))
+        if [ "$remain_len" = 0 ]; then
+            ___x_cmd_advise_man__list
+            return
+        fi
     fi
     [ -f "$filepath" ] || return
 
