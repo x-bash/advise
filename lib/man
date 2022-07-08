@@ -95,7 +95,7 @@ ___x_cmd_advise_man_completer() {
 ## Section man advise
 ___x_cmd_advise_man__list(){
     if [ -n "$1" ]; then
-        candidate_exec_arr=( $(ls $___X_CMD_ADVISE_MAN_SRC_FOLDER/$1/_ ))
+        candidate_exec_arr=( $(___x_cmd_advise_man_ls $1/_ ))
     else
         candidate_exec_arr=( $( ___x_cmd_advise_man_ls ) )
     fi
