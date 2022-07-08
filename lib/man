@@ -13,10 +13,28 @@ ___x_cmd_advise_man(){
 }
 
 ___X_CMD_ADVISE_MAN_SRC_FOLDER="$___X_CMD_ROOT/.tmp/advise/src"
+___X_CMD_ADVISE_MAN_COMPLETIONS_FOLDER="$___X_CMD_ROOT/.tmp/advise/completions"
 ___x_cmd_advise_man_exists(){
     [ -d "$___X_CMD_ADVISE_MAN_SRC_FOLDER" ]
 }
+___x_cmd_advise_completions_exists(){
+    [ -d "$___X_CMD_ADVISE_MAN_COMPLETIONS_FOLDER" ]
+}
 
+___x_cmd_advise_completion_update(){
+    local CACHE_ZSH_COMPLETIONS="$___X_CMD_ROOT/.tmp/advise/zsh-completions.7z"
+    local CACHE_BASH_COMPLETIONS="$___X_CMD_ROOT/.tmp/advise/bash-completions.7z"
+    if ___x_cmd_httpget_gitx static-build zsh-completions main "zsh-completions.7z" "$CACHE_ZSH_COMPLETIONS" ; then
+        [ -d "$___X_CMD_ADVISE_MAN_COMPLETIONS_FOLDER/zsh-completions" ] && rm -rf "$___X_CMD_ADVISE_MAN_COMPLETIONS_FOLDER/zsh-completions"
+        mkdir -p "$___X_CMD_ADVISE_MAN_COMPLETIONS_FOLDER/zsh-completions"
+        x uz "$CACHE_ZSH_COMPLETIONS" "$___X_CMD_ADVISE_MAN_COMPLETIONS_FOLDER/zsh-completions" >/dev/null
+    fi
+    if ___x_cmd_httpget_gitx static-build bash-completions main "bash-completions.7z" "$CACHE_BASH_COMPLETIONS" ; then
+        [ -d "$___X_CMD_ADVISE_MAN_COMPLETIONS_FOLDER/bash-completions" ] && rm -rf "$___X_CMD_ADVISE_MAN_COMPLETIONS_FOLDER/bash-completions"
+        mkdir -p "$___X_CMD_ADVISE_MAN_COMPLETIONS_FOLDER/bash-completions"
+        x uz "$CACHE_BASH_COMPLETIONS" "$___X_CMD_ADVISE_MAN_COMPLETIONS_FOLDER/bash-completions" >/dev/null
+    fi
+}
 ___x_cmd_advise_man_update(){
     local CACHE="$___X_CMD_ROOT/.tmp/advise/all.tgz"
     if ___x_cmd_httpget_gitx x-cmd advise main "dist/all.tgz" "$CACHE" -; then
@@ -57,6 +75,15 @@ ___x_cmd_advise_man_load(){
             fi
         else
             compdef "___x_cmd_advise_man_completer" "$1" && return 1
+        fi
+    fi
+    if ___x_cmd_advise_completions_exists || ___x_cmd_advise_completion_update 2>/dev/null; then
+        if [ -n "$ZSH_VERSION" ]; then
+            x:info "source zsh completions"
+            .  "$___X_CMD_ADVISE_MAN_COMPLETIONS_FOLDER/zsh-completions/zsh-completions.plugin.zsh"
+        else
+            x:info "source bash completions"
+            . "$___X_CMD_ADVISE_MAN_COMPLETIONS_FOLDER/bash-completions/etc/profile.d/bash_completion.sh"
         fi
     fi
     local i
