@@ -76,7 +76,7 @@ ___x_cmd_advise_man_load(){
         fi
     fi
     if ___x_cmd_advise_completions_exists || ___x_cmd_advise_completion_update 1>/dev/null 2>&1; then
-        x:info "source $___X_CMD_CUR_SHELL completions"
+        x:debug "source $___X_CMD_CUR_SHELL completions"
         .  "$___X_CMD_ADVISE_MAN_COMPLETIONS_FOLDER/$___X_CMD_CUR_SHELL-completions/completions.sh"
     fi
     local i
@@ -115,9 +115,9 @@ ___x_cmd_advise_man_completer() {
 ## Section man advise
 ___x_cmd_advise_man__list(){
     if [ -n "$1" ]; then
-        candidate_exec_arr=( $(___x_cmd_advise_man_ls $1/_ ))
+        candidate_exec_arr=( $(___x_cmd_advise_man_ls "$1"/_ ))
     else
-        candidate_exec_arr=( $( ___x_cmd_advise_man_ls ) )
+        candidate_exec_arr=( $(___x_cmd_advise_man_ls ) )
     fi
 }
 ## EndSection
