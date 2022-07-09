@@ -19,7 +19,7 @@ ___x_cmd_advise_man_exists(){
     [ -d "$___X_CMD_ADVISE_MAN_SRC_FOLDER" ]
 }
 ___x_cmd_advise_completions_exists(){
-    [ -d "$___X_CMD_ADVISE_MAN_COMPLETIONS_FOLDER" ]
+    [ -d "$___X_CMD_ADVISE_MAN_COMPLETIONS_FOLDER/$___X_CMD_CUR_SHELL-completions" ]
 }
 
 ___x_cmd_advise_completion_update(){
