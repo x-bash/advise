@@ -97,7 +97,7 @@ ___x_cmd_advise__offset(){
     COMP_CWORD="$(( ${#tmp[@]}-1 ))"
 
     local filepath
-    if [ "$module_prefix" = "x" ]; then
+    if [ "$module_prefix" = "x" ]; then                     # x module
         local which_one_result
         which_one_result="$(xrc which "$module")"
         [ -n "$which_one_result" ] || return
@@ -115,13 +115,15 @@ ___x_cmd_advise__offset(){
         filepath="${TMPDIR%/}/.x-cmd/advise_auto_json/$main_func"
     elif [  "$module_prefix" = "npx" ] || [ "$module_prefix" = "pipx" ]; then
         ___x_cmd_advise_man_load "$module"
-        filepath="$(___x_cmd_advise_man_which "$module")"
+        filepath="$(___x_cmd_advise_man_which "$module")"   # npx/pipx
     elif [ "$module_prefix" = "docker" ]; then
-        filepath="$(___x_cmd_advise_man_which "$module")" # x-cmd/advise
-        if [ ! -f "$filepath" ]; then
+        filepath="$(___x_cmd_advise_man_which "$module")"   # x-cmd/advise
+        if [ ! -f "$filepath" ]; then                       # zsh/bash-completions
             words=("${tmp[@]}")
             CURRENT=$((CURRENT-offset+1))
             eval "_$module"
+            [ -n "$BASH_VERSION" ] || return
+            candidate_exec_arr=( "${COMPREPLY[@]}" )
             return
         fi
     fi
