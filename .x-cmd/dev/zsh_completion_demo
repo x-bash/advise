@@ -1,0 +1,46 @@
+# shellcheck shell=bash
+
+_demo(){
+    local cmd="${1}"
+    local offset=2
+    local remain_len=$((COMP_CWORD-offset))
+    CURRENT=$((CURRENT-offset))
+    offset=$((offset+1))
+    service="$COMP_WORDS[offset]"
+
+    local i=0
+    local tmp=()
+    while [ "$i" -le "$remain_len" ]; do
+        tmp+=( "${COMP_WORDS[i+offset]}" )
+        i=$(( i + 1 ))
+    done
+    words=("${tmp[@]}")
+    eval "$cmd"
+}
+
+x advise d - <<A
+{
+    "run": {
+        "#desc": "bootrc consider external module",
+        "http": {
+            "#desc": "http",
+            "#n": {
+                "#exec": "_demo _httpie"
+            }
+        },
+        "du": {
+            "#desc": "du",
+            "#n": {
+                "#exec": "_demo _du"
+            }
+        },
+        "git": {
+            "#desc": "git",
+            "#n": {
+                "#exec": "_demo _git"
+            }
+        }
+    }
+}
+A
+
