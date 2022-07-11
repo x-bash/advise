@@ -1,4 +1,4 @@
-# shellcheck disable=SC2207,SC2034
+# shellcheck disable=SC2207,SC2034,SC1090
 # Section : adviser helper function: ls lsd seq get_result
 
 ___x_cmd_advise__ls(){
@@ -119,11 +119,17 @@ ___x_cmd_advise__offset(){
     elif [ "$module_prefix" = "docker" ]; then
         filepath="$(___x_cmd_advise_man_which "$module")"   # x-cmd/advise
         if [ ! -f "$filepath" ]; then                       # zsh/bash-completions
-            words=("${tmp[@]}")
-            CURRENT=$((CURRENT-offset+1))
-            eval "_$module"
-            [ -n "$BASH_VERSION" ] || return
-            candidate_exec_arr=( "${COMPREPLY[@]}" )
+            if [ -n "$ZSH_VERSION" ]; then
+                words=("${tmp[@]}")
+                CURRENT=$((CURRENT-offset+1))
+                eval "_$module"
+            else
+                filepath="$___X_CMD_ADVISE_MAN_COMPLETIONS_FOLDER/bash-completions/share/bash-completion/completions/_$module"
+                [ -f "$filepath" ] || return
+                . "$filepath" 2>/dev/null
+                eval "_$module"
+                candidate_exec_arr=( "${COMPREPLY[@]}" )
+            fi
             return
         fi
     fi
