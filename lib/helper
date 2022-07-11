@@ -80,10 +80,22 @@ A
 
 ___x_cmd_advise__offset(){
     local module_prefix="${1:-x}"
+    local move="${2:-0}"
+    local offset=$((offset+move))
     local remain_len=$((COMP_CWORD-offset))
     [ -n "$ZSH_VERSION" ] && offset=$((offset+1)) && setopt aliases
-
     local module="${COMP_WORDS[offset]}"
+
+    # Delete $offset numbers from the COMP_WORDS
+    local i=0
+    local tmp=()
+    while [ "$i" -le "$remain_len" ]; do
+        tmp+=( "${COMP_WORDS[i+offset]}" )
+        i=$(( i + 1 ))
+    done
+    COMP_WORDS=("${tmp[@]}")
+    COMP_CWORD="$(( ${#tmp[@]}-1 ))"
+
     local filepath
     if [ "$module_prefix" = "x" ]; then
         local which_one_result
@@ -105,25 +117,15 @@ ___x_cmd_advise__offset(){
         ___x_cmd_advise_man_load "$module"
         filepath="$(___x_cmd_advise_man_which "$module")"
     elif [ "$module_prefix" = "docker" ]; then
-        offset=$((offset+1))
-        filepath="$(___x_cmd_advise_man_which "${COMP_WORDS[offset]}")"
-        remain_len=$((remain_len-1))
-        if [ "$remain_len" = 0 ]; then
-            ___x_cmd_advise_man__list
+        filepath="$(___x_cmd_advise_man_which "$module")" # x-cmd/advise
+        if [ ! -f "$filepath" ]; then
+            words=("${tmp[@]}")
+            CURRENT=$((CURRENT-offset+1))
+            eval "_$module"
             return
         fi
     fi
     [ -f "$filepath" ] || return
-
-    # Delete $offset numbers from the COMP_WORDS
-    local i=0
-    local tmp=()
-    while [ "$i" -le "$remain_len" ]; do
-        tmp+=( "${COMP_WORDS[i+offset]}" )
-        i=$(( i + 1 ))
-    done
-    COMP_WORDS=("${tmp[@]}")
-    COMP_CWORD="$(( ${#tmp[@]}-1 ))"
 
     candidate_exec=
     eval "$(___advise_get_result_from_awk)" 2>/dev/null
