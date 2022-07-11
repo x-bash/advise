@@ -95,6 +95,7 @@ ___x_cmd_advise__offset(){
     done
     COMP_WORDS=("${tmp[@]}")
     COMP_CWORD="$(( ${#tmp[@]}-1 ))"
+    COMP_LINE="${tmp[*]}"
 
     local filepath
     if [ "$module_prefix" = "x" ]; then                     # x module
