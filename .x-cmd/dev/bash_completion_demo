@@ -1,2 +1,43 @@
 # shellcheck shell=bash
 
+_demo(){
+    local cmd="${1}"
+    local offset=2
+    local remain_len=$((COMP_CWORD-offset))
+
+    local i=0
+    local tmp=()
+    while [ "$i" -le "$remain_len" ]; do
+        tmp+=( "${COMP_WORDS[i+offset]}" )
+        i=$(( i + 1 ))
+    done
+    COMP_WORDS=("${tmp[@]}")
+    COMP_CWORD=$((COMP_CWORD-offset))
+
+    # TODO: More enviroment should be change, such as COMP_POINT COMP_LINE ..
+    eval "$cmd"
+
+    candidate_exec_arr=( "${COMPREPLY[@]}" )
+}
+
+# Refer: https://gitee.com/x-cmd/advise-manager/blob/main/reference/oh-my-bash/go.completion.sh
+
+x advise d - <<A
+{
+    "run": {
+        "#desc": "bootrc consider external module",
+        "bind": {
+            "#desc": "bind",
+            "#n": {
+                "#exec": "_demo _bind"
+            }
+        },
+        "go": {
+            "#desc": "go",
+            "#n": {
+                "#exec": "_demo _go"
+            }
+        }
+    }
+}
+A
