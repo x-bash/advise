@@ -86,12 +86,13 @@ ___x_cmd_advise__shift_comp_words(){
     else
         local tmp=("${COMP_WORDS[@]:$offset}")
         COMP_WORDS=("${tmp[@]}")
-        COMP_CWORD="$(( ${#tmp[@]} ))"
         COMP_LINE="${tmp[*]}"
+        COMP_CWORD="${#tmp[@]}"
         module="${COMP_WORDS[1]}"
+
         [ -z "$ZSH_VERSION" ] ||  return
-        module="${COMP_WORDS[0]}"
         COMP_CWORD=$((COMP_CWORD-1))
+        module="${COMP_WORDS[0]}"
     fi
 }
 
