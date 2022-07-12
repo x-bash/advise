@@ -28,10 +28,39 @@ x advise d - <<A
         }
     },
     "from_x_cmd":{
-
+        "#desc": "use advise json from x-cmd/advise",
+        "#1": {
+            "#exec": "___x_cmd_advise_man__list"
+        },
+        "#n": {
+            "#exec": "___x_cmd_advise__command_completion_from_x_cmd"
+        }
     },
-    "from_completion":{
-
+    "from_completions":{
+        "#desc": "use advise json from zsh/bash-completions",
+        "#1": {
+            "#cand": [
+                "cal --- test bash-completions",
+                "su --- test bash-completions",
+                "yarn --- test zsh-completions",
+                "cf --- test zsh-completions"
+            ]
+        },
+        "#n": {
+            "#exec": "___x_cmd_advise__command_completion_form_completions"
+        }
+    },
+    "docker_run": {
+        "#desc": "docker run use x-cmd/advise and zsh/bash-completions",
+        "#1": {
+            "#exec": "___x_cmd_advise_man__list docker"
+        },
+        "#2": {
+            "#exec": "___x_cmd_advise_man__list"
+        },
+        "#n": {
+            "#exec": "___x_cmd_advise__command_completion 1"
+        }
     }
 }
 A
