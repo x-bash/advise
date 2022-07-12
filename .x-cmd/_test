@@ -1,7 +1,62 @@
-xrc advise
-
-advise rm min
-advise min "$(x wsroot)/.x-cmd/dev/testcase/min_test.json"
-
-advise rm compt
-advise compt "$(x wsroot)/.x-cmd/dev/testcase/test.json"
+{
+    "from_x": {
+        "#desc": "use advise json from x",
+        "#1": {
+            "#cand": [
+                "cd --- Change the working directory",
+                "hub --- Manage your script file in x-service",
+                "yanfa",
+                "man --- An interface to the system reference manuals",
+                "env --- Inject the environment",
+                "advise --- Generate command completion based on advise json",
+                "theme --- Change terminal theme",
+                "tldr --- Collaborative cheatsheets for console commands",
+                "install --- Install Command-line tools",
+                "proxy --- Setting up mirror sources for various package management",
+                "cowsay --- Generates ASCII art pictures of a cow with a message",
+                "jo --- Command-line incomplete JSON processor",
+                "npx --- Run a command from a local or remote npm package",
+                "pipx",
+                "license"
+            ]
+        },
+        "#n": {
+            "#exec": "___x_cmd_advise__comp_from_x"
+        }
+    },
+    "from_x_cmd":{
+        "#desc": "use advise json from x-cmd/advise",
+        "#1": {
+            "#exec": "___x_cmd_advise_man__list"
+        },
+        "#n": {
+            "#exec": "___x_cmd_advise__comp_from_xcmd"
+        }
+    },
+    "from_completions":{
+        "#desc": "use advise json from zsh/bash-completions",
+        "#1": {
+            "#cand": [
+                "cal --- test bash-completions",
+                "su --- test bash-completions",
+                "yarn --- test zsh-completions",
+                "cf --- test zsh-completions"
+            ]
+        },
+        "#n": {
+            "#exec": "___x_cmd_advise__comp_from_origin"
+        }
+    },
+    "docker_run": {
+        "#desc": "docker run use x-cmd/advise and zsh/bash-completions",
+        "#1": {
+            "#exec": "___x_cmd_advise_man__list docker"
+        },
+        "#2": {
+            "#exec": "___x_cmd_advise_man__list"
+        },
+        "#n": {
+            "#exec": "___x_cmd_advise__comp_from_xcmd_and_origin $((offset+1))"
+        }
+    }
+}

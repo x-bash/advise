@@ -6,7 +6,7 @@ _demo(){
     local remain_len=$((COMP_CWORD-offset))
     CURRENT=$((CURRENT-offset))
     offset=$((offset+1))
-    service="$COMP_WORDS[offset]"
+    service="${COMP_WORDS[offset]}"
 
     local i=0
     local tmp=()

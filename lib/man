@@ -1,10 +1,11 @@
-# shellcheck disable=SC2207,SC2034
+# shellcheck disable=SC2207,SC2034,SC2012,SC1090,SC1091
 
 ___x_cmd_advise_man(){
     local op="${1:?Provide subcommand}"; shift
     case "$op" in
         ls)         ___x_cmd_advise_man_ls "$@"         ;;
-        update)     ___x_cmd_advise_man_update          ;;
+        update)     ___x_cmd_advise_man_update
+                    ___x_cmd_advise_completion_update   ;;
         which)      ___x_cmd_advise_man_which "$@"      ;;
         load)       ___x_cmd_advise_man_load "$@"       ;;
         rm)         ___x_cmd_advise_man_rm "$@"         ;;
@@ -13,8 +14,22 @@ ___x_cmd_advise_man(){
 }
 
 ___X_CMD_ADVISE_MAN_SRC_FOLDER="$___X_CMD_ROOT/.tmp/advise/src"
+___X_CMD_ADVISE_MAN_COMPLETIONS_FOLDER="$___X_CMD_ROOT/.tmp/advise/completions"
 ___x_cmd_advise_man_exists(){
     [ -d "$___X_CMD_ADVISE_MAN_SRC_FOLDER" ]
+}
+___x_cmd_advise_completions_exists(){
+    [ -d "$___X_CMD_ADVISE_MAN_COMPLETIONS_FOLDER/$___X_CMD_CUR_SHELL-completions" ]
+}
+
+___x_cmd_advise_completion_update(){
+    local CACHE_COMPLETIONS="$___X_CMD_ROOT/.tmp/advise/$___X_CMD_CUR_SHELL-completions.7z"
+    if ___x_cmd_httpget_gitx static-build "$___X_CMD_CUR_SHELL"-completions main "$___X_CMD_CUR_SHELL-completions.7z" "$CACHE_COMPLETIONS"; then
+        [ -d "$___X_CMD_ADVISE_MAN_COMPLETIONS_FOLDER/$___X_CMD_CUR_SHELL-completions" ] && rm -rf "$___X_CMD_ADVISE_MAN_COMPLETIONS_FOLDER/$___X_CMD_CUR_SHELL-completions" 1>/dev/null 2>&1
+        mkdir -p "$___X_CMD_ADVISE_MAN_COMPLETIONS_FOLDER/$___X_CMD_CUR_SHELL-completions"
+        x uz "$CACHE_COMPLETIONS" "$___X_CMD_ADVISE_MAN_COMPLETIONS_FOLDER/$___X_CMD_CUR_SHELL-completions" >/dev/null
+        x rmrf "$CACHE_COMPLETIONS" 1>/dev/null 2>&1
+    fi
 }
 
 ___x_cmd_advise_man_update(){
@@ -23,6 +38,7 @@ ___x_cmd_advise_man_update(){
         [ -d "$___X_CMD_ADVISE_MAN_SRC_FOLDER" ] && rm -rf "$___X_CMD_ADVISE_MAN_SRC_FOLDER"
         mkdir -p "$___X_CMD_ADVISE_MAN_SRC_FOLDER"
         tar xvf "$CACHE" -C "$___X_CMD_ADVISE_MAN_SRC_FOLDER" >/dev/null
+        x rmrf "$CACHE" 1>/dev/null 2>&1
     fi
 }
 
@@ -48,6 +64,7 @@ ___x_cmd_advise_man_which(){
 }
 
 ___x_cmd_advise_man_load(){
+
     if [[ ! "${1:-""}" == "" ]]; then
         if [ -z "$ZSH_VERSION" ];then
             if [[ ! "$BASH_VERSION" =~ (^3.*|^4.[0-3]) ]]; then
@@ -59,7 +76,13 @@ ___x_cmd_advise_man_load(){
             compdef "___x_cmd_advise_man_completer" "$1" && return 1
         fi
     fi
+
+    if ___x_cmd_advise_completions_exists || ___x_cmd_advise_completion_update 1>/dev/null 2>&1; then
+        x:debug "source $___X_CMD_CUR_SHELL completions"
+        .  "$___X_CMD_ADVISE_MAN_COMPLETIONS_FOLDER/$___X_CMD_CUR_SHELL-completions/completions.sh"
+    fi
     local i
+    local s
     for i in $(___x_cmd_advise_man_ls); do
         if [ -z "$ZSH_VERSION" ];then
             if s=$(complete -p "$i" 1>/dev/null 2>&1); then
@@ -95,9 +118,9 @@ ___x_cmd_advise_man_completer() {
 ## Section man advise
 ___x_cmd_advise_man__list(){
     if [ -n "$1" ]; then
-        candidate_exec_arr=( $(ls $___X_CMD_ADVISE_MAN_SRC_FOLDER/$1/_ ))
+        candidate_exec_arr=( $(___x_cmd_advise_man_ls "$1"/_ ))
     else
-        candidate_exec_arr=( $( ___x_cmd_advise_man_ls ) )
+        candidate_exec_arr=( $(___x_cmd_advise_man_ls ) )
     fi
 }
 ## EndSection
