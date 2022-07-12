@@ -79,16 +79,17 @@ A
 }
 
 ___x_cmd_advise__shift_comp_words(){
-    [ -n "$ZSH_VERSION" ] || move=$((move-1))
-    local tmp=("${COMP_WORDS[@]:$move}")
-    module="${COMP_WORDS[move+1]}"
+    [ "$offset" -gt 0 ] || return
+    [ -z "$BASH_VERSION" ] || offset=$((offset-1))
+    local tmp=("${COMP_WORDS[@]:$offset}")
+    module="${COMP_WORDS[offset+1]}"
     COMP_WORDS=("${tmp[@]}")
     COMP_CWORD="$(( ${#tmp[@]} ))"
     COMP_LINE="${tmp[*]}"
 }
 
 ___x_cmd_advise__comp_from_x(){
-    local move="${1:-$offset}"
+    local offset="${1:-$offset}"
     local module
     ___x_cmd_advise__shift_comp_words
 
@@ -116,7 +117,7 @@ ___x_cmd_advise__comp_from_x(){
 }
 
 ___x_cmd_advise__comp_from_xcmd(){
-    local move="${1:-$offset}"
+    local offset="${1:-$offset}"
     local module
     ___x_cmd_advise__shift_comp_words
 
@@ -131,7 +132,7 @@ ___x_cmd_advise__comp_from_xcmd(){
 }
 
 ___x_cmd_advise__comp_from_origin(){
-    local move="${1:-$offset}"
+    local offset="${1:-$offset}"
     local module
     ___x_cmd_advise__shift_comp_words
 
@@ -150,7 +151,7 @@ ___x_cmd_advise__comp_from_origin(){
 }
 
 ___x_cmd_advise__comp_from_xcmd_and_origin(){
-    local move="${1:-$offset}"
+    local offset="${1:-$offset}"
     local module
     ___x_cmd_advise__shift_comp_words
 
