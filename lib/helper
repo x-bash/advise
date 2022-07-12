@@ -79,7 +79,7 @@ A
 }
 
 ___x_cmd_advise__shift_comp_words(){
-    [ -n "$ZSH_VERSION" ] && move=$((move+1))
+    [ -n "$ZSH_VERSION" ] || move=$((move-1))
     local tmp=("${COMP_WORDS[@]:$move}")
     module="${COMP_WORDS[move+1]}"
     COMP_WORDS=("${tmp[@]}")

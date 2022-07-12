@@ -24,7 +24,7 @@ x advise d - <<A
             ]
         },
         "#n": {
-            "#exec": "___x_cmd_advise__comp_from_x"
+            "#exec": "___x_cmd_advise__comp_from_x 2"
         }
     },
     "from_x_cmd":{
@@ -33,7 +33,7 @@ x advise d - <<A
             "#exec": "___x_cmd_advise_man__list"
         },
         "#n": {
-            "#exec": "___x_cmd_advise__comp_from_x_cmd"
+            "#exec": "___x_cmd_advise__comp_from_x_cmd 2"
         }
     },
     "from_completions":{
@@ -47,7 +47,7 @@ x advise d - <<A
             ]
         },
         "#n": {
-            "#exec": "___x_cmd_advise__comp_form_origin"
+            "#exec": "___x_cmd_advise__comp_form_origin 2"
         }
     },
     "docker_run": {
@@ -59,7 +59,7 @@ x advise d - <<A
             "#exec": "___x_cmd_advise_man__list"
         },
         "#n": {
-            "#exec": "___x_cmd_advise__comp_from_xcmd_and_origin \\\$offset"
+            "#exec": "___x_cmd_advise__comp_from_xcmd_and_origin \\\$((offset+1))"
         }
     }
 }
