@@ -1,4 +1,4 @@
-# shellcheck disable=SC2207,SC2034,SC1090
+# shellcheck shell=bash disable=SC2207,SC2034,SC1090
 # Section : adviser helper function: ls lsd seq get_result
 
 ___x_cmd_advise__ls(){
@@ -78,7 +78,7 @@ A
 
 }
 
-___x_cmd_advise__command_base(){
+___x_cmd_advise__shift_comp_words(){
     local offset="$offset"
     local tmp=("${COMP_WORDS[@]:$((offset))}")
     [ -z "$ZSH_VERSION" ] || tmp=("${COMP_WORDS[@]:$((offset-1))}")
@@ -90,7 +90,7 @@ ___x_cmd_advise__command_base(){
 ___x_cmd_advise__command_completion_from_x(){
     local move="${1:-0}"
     local offset=$((offset+move))
-    [ -n "$ZSH_VERSION" ] && offset=$((offset+1)) && setopt aliases
+    [ -n "$ZSH_VERSION" ] && offset=$((offset+1))
 
     local module="${COMP_WORDS[offset]}"
     local which_one_result
@@ -110,7 +110,7 @@ ___x_cmd_advise__command_completion_from_x(){
     filepath="${TMPDIR%/}/.x-cmd/advise_auto_json/$main_func"
     [ -f "$filepath" ] || return 1
 
-    ___x_cmd_advise__command_base
+    ___x_cmd_advise__shift_comp_words
 
     candidate_exec=
     eval "$(___advise_get_result_from_awk)" 2>/dev/null
@@ -122,14 +122,14 @@ ___x_cmd_advise__command_completion_from_x(){
 ___x_cmd_advise__command_completion_from_x_cmd(){
     local move="${1:-0}"
     local offset=$((offset+move))
-    [ -n "$ZSH_VERSION" ] && offset=$((offset+1)) && setopt aliases
+    [ -n "$ZSH_VERSION" ] && offset=$((offset+1))
 
     local module="${COMP_WORDS[offset]}"
     ___x_cmd_advise_man_load "$module"
     filepath="$(___x_cmd_advise_man_which "$module")"
 
     [ -f "$filepath" ] || return 1
-    ___x_cmd_advise__command_base
+    ___x_cmd_advise__shift_comp_words
 
     candidate_exec=
     eval "$(___advise_get_result_from_awk)" 2>/dev/null
@@ -141,10 +141,10 @@ ___x_cmd_advise__command_completion_from_x_cmd(){
 ___x_cmd_advise__command_completion_form_completions(){
     local move="${1:-0}"
     local offset=$((offset+move))
-    [ -n "$ZSH_VERSION" ] && offset=$((offset+1)) && setopt aliases
+    [ -n "$ZSH_VERSION" ] && offset=$((offset+1))
     local module="${COMP_WORDS[offset]}"
 
-    ___x_cmd_advise__command_base
+    ___x_cmd_advise__shift_comp_words
     if [ -n "$ZSH_VERSION" ]; then
         words=( "${COMP_WORDS[@]}" )
         CURRENT=$((CURRENT-offset+1))
