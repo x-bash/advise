@@ -85,11 +85,10 @@ ___x_cmd_advise__shift_comp_words(){
     COMP_WORDS=("${tmp[@]}")
     COMP_CWORD="$(( ${#tmp[@]} ))"
     COMP_LINE="${tmp[*]}"
-    # echo "$move || ${COMP_WORDS[*]} || $COMP_CWORD || $COMP_LINE || $module" > ddd
 }
 
 ___x_cmd_advise__comp_from_x(){
-    local move="${1:-1}"
+    local move="${1:-$offset}"
     local module
     ___x_cmd_advise__shift_comp_words
 
@@ -114,11 +113,10 @@ ___x_cmd_advise__comp_from_x(){
     eval "$(___advise_get_result_from_awk)" 2>/dev/null
     local IFS=$'\n'
     eval "$candidate_exec" 2>/dev/null
-    return 0
 }
 
 ___x_cmd_advise__comp_from_xcmd(){
-    local move="${1:-1}"
+    local move="${1:-$offset}"
     local module
     ___x_cmd_advise__shift_comp_words
 
@@ -130,18 +128,17 @@ ___x_cmd_advise__comp_from_xcmd(){
     eval "$(___advise_get_result_from_awk)" 2>/dev/null
     local IFS=$'\n'
     eval "$candidate_exec" 2>/dev/null
-    return 0
 }
 
 ___x_cmd_advise__comp_from_origin(){
-    local move="${1:-1}"
+    local move="${1:-$offset}"
     local module
     ___x_cmd_advise__shift_comp_words
 
     if [ -n "$ZSH_VERSION" ]; then
         words=( "${COMP_WORDS[@]}" )
-        CURRENT=$((CURRENT-move+1))
-        type "_$module" 1>/dev/null 2>&1 || return 1
+        CURRENT="$COMP_CWORD"
+        command -v "_$module" >/dev/null || return 1
         eval "_$module"
     else
         filepath="$___X_CMD_ADVISE_MAN_COMPLETIONS_FOLDER/bash-completions/share/bash-completion/completions/_$module"
@@ -150,12 +147,15 @@ ___x_cmd_advise__comp_from_origin(){
         eval "_$module"
         candidate_exec_arr=( "${COMPREPLY[@]}" )
     fi
-    return 0
 }
 
 ___x_cmd_advise__comp_from_xcmd_and_origin(){
-    ___x_cmd_advise__comp_from_xcmd "$1" \
-    || ___x_cmd_advise__comp_from_origin "$1"
+    local move="${1:-$offset}"
+    local module
+    ___x_cmd_advise__shift_comp_words
+
+    ___x_cmd_advise__comp_from_xcmd 0 \
+        || ___x_cmd_advise__comp_from_origin 0
 }
 
 ## EndSection

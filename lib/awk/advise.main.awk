@@ -14,7 +14,7 @@ END{
         parse_args_to_env( parsed_argarr, parsed_arglen, obj, "", genv_table, lenv_table )
         # showing candidate code
     }
-    printf( "%s\noffset=%s", CODE, OFFSET)
+    printf( "offset=%s\n%s", OFFSET, CODE)
 }
 
 # Section: prepare argument
