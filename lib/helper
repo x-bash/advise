@@ -79,13 +79,18 @@ A
 }
 
 ___x_cmd_advise__shift_comp_words(){
-    [ "$offset" -gt 0 ] || return
-    [ -z "$BASH_VERSION" ] || offset=$((offset-1))
-    local tmp=("${COMP_WORDS[@]:$offset}")
-    module="${COMP_WORDS[offset+1]}"
-    COMP_WORDS=("${tmp[@]}")
-    COMP_CWORD="$(( ${#tmp[@]} ))"
-    COMP_LINE="${tmp[*]}"
+
+    if [ "$offset" -le 0 ]; then
+        module="${COMP_WORDS[0]}"
+        [ -z "$ZSH_VERSION" ] || module="${COMP_WORDS[1]}"
+    else
+        [ -z "$BASH_VERSION" ] || offset=$((offset-1))
+        local tmp=("${COMP_WORDS[@]:$offset}")
+        module="${COMP_WORDS[offset+1]}"
+        COMP_WORDS=("${tmp[@]}")
+        COMP_CWORD="$(( ${#tmp[@]} ))"
+        COMP_LINE="${tmp[*]}"
+    fi
 }
 
 ___x_cmd_advise__comp_from_x(){
@@ -136,6 +141,7 @@ ___x_cmd_advise__comp_from_origin(){
     local module
     ___x_cmd_advise__shift_comp_words
 
+    # TODO: must have map from command to function name and script path
     if [ -n "$ZSH_VERSION" ]; then
         words=( "${COMP_WORDS[@]}" )
         CURRENT="$COMP_CWORD"
@@ -150,7 +156,7 @@ ___x_cmd_advise__comp_from_origin(){
     fi
 }
 
-___x_cmd_advise__comp_from_xcmd_and_origin(){
+___x_cmd_advise__comp_from_xcmd_or_origin(){
     local offset="${1:-$offset}"
     local module
     ___x_cmd_advise__shift_comp_words
