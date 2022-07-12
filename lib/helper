@@ -79,20 +79,20 @@ A
 }
 
 ___x_cmd_advise__shift_comp_words(){
-    local offset="$offset"
+    [ -n "$ZSH_VERSION" ] && offset=$((offset+1))
     local tmp=("${COMP_WORDS[@]:$((offset))}")
-    [ -z "$ZSH_VERSION" ] || tmp=("${COMP_WORDS[@]:$((offset-1))}")
+    module="${COMP_WORDS[offset+1]}"
     COMP_WORDS=("${tmp[@]}")
-    COMP_CWORD="$(( ${#tmp[@]}-1 ))"
+    COMP_CWORD="$(( ${#tmp[@]} ))"
     COMP_LINE="${tmp[*]}"
+    # echo "${COMP_WORDS[*]} || $COMP_CWORD || $COMP_LINE || $module" > ddd
 }
 
-___x_cmd_advise__command_completion_from_x(){
-    local move="${1:-0}"
-    local offset=$((offset+move))
-    [ -n "$ZSH_VERSION" ] && offset=$((offset+1))
+___x_cmd_advise__comp_from_x(){
+    local offset="${1:-1}"
+    local module
+    ___x_cmd_advise__shift_comp_words
 
-    local module="${COMP_WORDS[offset]}"
     local which_one_result
     which_one_result="$(xrc which "$module")"
     [ -n "$which_one_result" ] || return 1
@@ -110,8 +110,6 @@ ___x_cmd_advise__command_completion_from_x(){
     filepath="${TMPDIR%/}/.x-cmd/advise_auto_json/$main_func"
     [ -f "$filepath" ] || return 1
 
-    ___x_cmd_advise__shift_comp_words
-
     candidate_exec=
     eval "$(___advise_get_result_from_awk)" 2>/dev/null
     local IFS=$'\n'
@@ -119,17 +117,14 @@ ___x_cmd_advise__command_completion_from_x(){
     return 0
 }
 
-___x_cmd_advise__command_completion_from_x_cmd(){
-    local move="${1:-0}"
-    local offset=$((offset+move))
-    [ -n "$ZSH_VERSION" ] && offset=$((offset+1))
+___x_cmd_advise__comp_from_xcmd(){
+    local offset="${1:-1}"
+    local module
+    ___x_cmd_advise__shift_comp_words
 
-    local module="${COMP_WORDS[offset]}"
     ___x_cmd_advise_man_load "$module"
     filepath="$(___x_cmd_advise_man_which "$module")"
-
     [ -f "$filepath" ] || return 1
-    ___x_cmd_advise__shift_comp_words
 
     candidate_exec=
     eval "$(___advise_get_result_from_awk)" 2>/dev/null
@@ -138,13 +133,11 @@ ___x_cmd_advise__command_completion_from_x_cmd(){
     return 0
 }
 
-___x_cmd_advise__command_completion_form_completions(){
-    local move="${1:-0}"
-    local offset=$((offset+move))
-    [ -n "$ZSH_VERSION" ] && offset=$((offset+1))
-    local module="${COMP_WORDS[offset]}"
-
+___x_cmd_advise__comp_from_origin(){
+    local offset="${1:-1}"
+    local module
     ___x_cmd_advise__shift_comp_words
+
     if [ -n "$ZSH_VERSION" ]; then
         words=( "${COMP_WORDS[@]}" )
         CURRENT=$((CURRENT-offset+1))
@@ -160,9 +153,9 @@ ___x_cmd_advise__command_completion_form_completions(){
     return 0
 }
 
-___x_cmd_advise__command_completion(){
-    ___x_cmd_advise__command_completion_from_x_cmd "$1" \
-    || ___x_cmd_advise__command_completion_form_completions "$1"
+___x_cmd_advise__comp_from_xcmd_and_origin(){
+    ___x_cmd_advise__comp_from_xcmd "$1" \
+    || ___x_cmd_advise__comp_from_origin "$1"
 }
 
 ## EndSection
