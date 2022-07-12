@@ -79,17 +79,17 @@ A
 }
 
 ___x_cmd_advise__shift_comp_words(){
-    [ -n "$ZSH_VERSION" ] && offset=$((offset+1))
-    local tmp=("${COMP_WORDS[@]:$((offset))}")
-    module="${COMP_WORDS[offset+1]}"
+    [ -n "$ZSH_VERSION" ] && move=$((move+1))
+    local tmp=("${COMP_WORDS[@]:$move}")
+    module="${COMP_WORDS[move+1]}"
     COMP_WORDS=("${tmp[@]}")
     COMP_CWORD="$(( ${#tmp[@]} ))"
     COMP_LINE="${tmp[*]}"
-    # echo "${COMP_WORDS[*]} || $COMP_CWORD || $COMP_LINE || $module" > ddd
+    # echo "$move || ${COMP_WORDS[*]} || $COMP_CWORD || $COMP_LINE || $module" > ddd
 }
 
 ___x_cmd_advise__comp_from_x(){
-    local offset="${1:-1}"
+    local move="${1:-1}"
     local module
     ___x_cmd_advise__shift_comp_words
 
@@ -118,7 +118,7 @@ ___x_cmd_advise__comp_from_x(){
 }
 
 ___x_cmd_advise__comp_from_xcmd(){
-    local offset="${1:-1}"
+    local move="${1:-1}"
     local module
     ___x_cmd_advise__shift_comp_words
 
@@ -134,13 +134,13 @@ ___x_cmd_advise__comp_from_xcmd(){
 }
 
 ___x_cmd_advise__comp_from_origin(){
-    local offset="${1:-1}"
+    local move="${1:-1}"
     local module
     ___x_cmd_advise__shift_comp_words
 
     if [ -n "$ZSH_VERSION" ]; then
         words=( "${COMP_WORDS[@]}" )
-        CURRENT=$((CURRENT-offset+1))
+        CURRENT=$((CURRENT-move+1))
         type "_$module" 1>/dev/null 2>&1 || return 1
         eval "_$module"
     else

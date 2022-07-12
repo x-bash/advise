@@ -59,7 +59,7 @@ x advise d - <<A
             "#exec": "___x_cmd_advise_man__list"
         },
         "#n": {
-            "#exec": "___x_cmd_advise__comp_from_xcmd_and_origin 2"
+            "#exec": "___x_cmd_advise__comp_from_xcmd_and_origin \\\$offset"
         }
     }
 }
