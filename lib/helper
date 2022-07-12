@@ -84,12 +84,14 @@ ___x_cmd_advise__shift_comp_words(){
         module="${COMP_WORDS[0]}"
         [ -z "$ZSH_VERSION" ] || module="${COMP_WORDS[1]}"
     else
-        [ -z "$BASH_VERSION" ] || offset=$((offset-1))
         local tmp=("${COMP_WORDS[@]:$offset}")
-        module="${COMP_WORDS[offset+1]}"
         COMP_WORDS=("${tmp[@]}")
         COMP_CWORD="$(( ${#tmp[@]} ))"
         COMP_LINE="${tmp[*]}"
+        module="${COMP_WORDS[1]}"
+        [ -z "$ZSH_VERSION" ] ||  return
+        module="${COMP_WORDS[0]}"
+        COMP_CWORD=$((COMP_CWORD-1))
     fi
 }
 
