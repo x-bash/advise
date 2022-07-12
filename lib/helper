@@ -78,67 +78,91 @@ A
 
 }
 
-___x_cmd_advise__offset(){
-    local module_prefix="${1:-x}"
-    local move="${2:-0}"
-    local offset=$((offset+move))
-    local remain_len=$((COMP_CWORD-offset))
-    [ -n "$ZSH_VERSION" ] && offset=$((offset+1)) && setopt aliases
-    local module="${COMP_WORDS[offset]}"
-
-    # Delete $offset numbers from the COMP_WORDS
-    local i=0
-    local tmp=()
-    while [ "$i" -le "$remain_len" ]; do
-        tmp+=( "${COMP_WORDS[i+offset]}" )
-        i=$(( i + 1 ))
-    done
+___x_cmd_advise__command_base(){
+    local offset="$offset"
+    local tmp=("${COMP_WORDS[@]:$((offset))}")
+    [ -z "$ZSH_VERSION" ] || tmp=("${COMP_WORDS[@]:$((offset-1))}")
     COMP_WORDS=("${tmp[@]}")
     COMP_CWORD="$(( ${#tmp[@]}-1 ))"
     COMP_LINE="${tmp[*]}"
+}
 
-    local filepath
-    if [ "$module_prefix" = "x" ]; then                     # x module
-        local which_one_result
-        which_one_result="$(xrc which "$module")"
-        [ -n "$which_one_result" ] || return
+___x_cmd_advise__command_completion_from_x(){
+    local move="${1:-0}"
+    local offset=$((offset+move))
+    [ -n "$ZSH_VERSION" ] && offset=$((offset+1)) && setopt aliases
 
-        local main_func
+    local module="${COMP_WORDS[offset]}"
+    local which_one_result
+    which_one_result="$(xrc which "$module")"
+    [ -n "$which_one_result" ] || return 1
+
+    local main_func
+    main_func="$(___x_cmd_ldict_get ___X_CMD_XRC_SET_MAIN_DICT "$which_one_result")"
+
+    # Generate the advise json file.
+    if [ -z "$main_func" ]; then
+        ___x_cmd_xrc_source_file_main "$which_one_result"
         main_func="$(___x_cmd_ldict_get ___X_CMD_XRC_SET_MAIN_DICT "$which_one_result")"
-
-        # Generate the advise json file.
-        if [ -z "$main_func" ]; then
-            ___x_cmd_xrc_source_file_main "$which_one_result"
-            main_func="$(___x_cmd_ldict_get ___X_CMD_XRC_SET_MAIN_DICT "$which_one_result")"
-        fi
-
-        ___advise_main "$main_func"
-        filepath="${TMPDIR%/}/.x-cmd/advise_auto_json/$main_func"
-    elif [  "$module_prefix" = "npx" ] || [ "$module_prefix" = "pipx" ]; then
-        ___x_cmd_advise_man_load "$module"
-        filepath="$(___x_cmd_advise_man_which "$module")"   # npx/pipx
-    elif [ "$module_prefix" = "docker" ]; then
-        filepath="$(___x_cmd_advise_man_which "$module")"   # x-cmd/advise
-        if [ ! -f "$filepath" ]; then                       # zsh/bash-completions
-            if [ -n "$ZSH_VERSION" ]; then
-                words=("${tmp[@]}")
-                CURRENT=$((CURRENT-offset+1))
-                eval "_$module"
-            else
-                filepath="$___X_CMD_ADVISE_MAN_COMPLETIONS_FOLDER/bash-completions/share/bash-completion/completions/_$module"
-                [ -f "$filepath" ] || return
-                . "$filepath" 2>/dev/null
-                eval "_$module"
-                candidate_exec_arr=( "${COMPREPLY[@]}" )
-            fi
-            return
-        fi
     fi
-    [ -f "$filepath" ] || return
+
+    ___advise_main "$main_func"
+    filepath="${TMPDIR%/}/.x-cmd/advise_auto_json/$main_func"
+    [ -f "$filepath" ] || return 1
+
+    ___x_cmd_advise__command_base
 
     candidate_exec=
     eval "$(___advise_get_result_from_awk)" 2>/dev/null
     local IFS=$'\n'
     eval "$candidate_exec" 2>/dev/null
+    return 0
 }
+
+___x_cmd_advise__command_completion_from_x_cmd(){
+    local move="${1:-0}"
+    local offset=$((offset+move))
+    [ -n "$ZSH_VERSION" ] && offset=$((offset+1)) && setopt aliases
+
+    local module="${COMP_WORDS[offset]}"
+    ___x_cmd_advise_man_load "$module"
+    filepath="$(___x_cmd_advise_man_which "$module")"
+
+    [ -f "$filepath" ] || return 1
+    ___x_cmd_advise__command_base
+
+    candidate_exec=
+    eval "$(___advise_get_result_from_awk)" 2>/dev/null
+    local IFS=$'\n'
+    eval "$candidate_exec" 2>/dev/null
+    return 0
+}
+
+___x_cmd_advise__command_completion_form_completions(){
+    local move="${1:-0}"
+    local offset=$((offset+move))
+    [ -n "$ZSH_VERSION" ] && offset=$((offset+1)) && setopt aliases
+    local module="${COMP_WORDS[offset]}"
+
+    ___x_cmd_advise__command_base
+    if [ -n "$ZSH_VERSION" ]; then
+        words=( "${COMP_WORDS[@]}" )
+        CURRENT=$((CURRENT-offset+1))
+        type "_$module" 1>/dev/null 2>&1 || return 1
+        eval "_$module"
+    else
+        filepath="$___X_CMD_ADVISE_MAN_COMPLETIONS_FOLDER/bash-completions/share/bash-completion/completions/_$module"
+        [ -f "$filepath" ] || return 1
+        . "$filepath" 2>/dev/null
+        eval "_$module"
+        candidate_exec_arr=( "${COMPREPLY[@]}" )
+    fi
+    return 0
+}
+
+___x_cmd_advise__command_completion(){
+    ___x_cmd_advise__command_completion_from_x_cmd "$1" \
+    || ___x_cmd_advise__command_completion_form_completions "$1"
+}
+
 ## EndSection
