@@ -78,7 +78,6 @@ ___x_cmd_advise_man_load(){
     fi
 
     if ___x_cmd_advise_completions_exists || ___x_cmd_advise_completion_update 1>/dev/null 2>&1; then
-        x:debug "source $___X_CMD_CUR_SHELL completions"
         .  "$___X_CMD_ADVISE_MAN_COMPLETIONS_FOLDER/$___X_CMD_CUR_SHELL-completions/completions.sh"
     fi
     local i
