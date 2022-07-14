@@ -79,20 +79,19 @@ A
 }
 
 ___x_cmd_advise__shift_comp_words(){
-
-    if [ "$offset" -le 0 ]; then
-        module="${COMP_WORDS[0]}"
-        [ -z "$ZSH_VERSION" ] || module="${COMP_WORDS[1]}"
-    else
+    if [ "$offset" -gt 0 ]; then
         local tmp=("${COMP_WORDS[@]:$offset}")
         COMP_WORDS=("${tmp[@]}")
         COMP_LINE="${tmp[*]}"
         COMP_CWORD="${#tmp[@]}"
-        module="${COMP_WORDS[1]}"
+        [ -n "$ZSH_VERSION" ] || COMP_CWORD=$((COMP_CWORD-1))
+    fi
 
-        [ -z "$ZSH_VERSION" ] ||  return
-        COMP_CWORD=$((COMP_CWORD-1))
+    if [ -z "$ZSH_VERSION" ]; then
         module="${COMP_WORDS[0]}"
+    else
+        module="${COMP_WORDS[1]}"
+        setopt aliases
     fi
 }
 
