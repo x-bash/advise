@@ -87,12 +87,8 @@ ___x_cmd_advise__shift_comp_words(){
         [ -n "$ZSH_VERSION" ] || COMP_CWORD=$((COMP_CWORD-1))
     fi
 
-    if [ -z "$ZSH_VERSION" ]; then
-        module="${COMP_WORDS[0]}"
-    else
-        module="${COMP_WORDS[1]}"
-        setopt aliases
-    fi
+    module="${COMP_WORDS[0]}"
+    [ -z "$ZSH_VERSION" ] || module="${COMP_WORDS[1]}"
 }
 
 ___x_cmd_advise__comp_from_x(){
@@ -109,6 +105,7 @@ ___x_cmd_advise__comp_from_x(){
 
     # Generate the advise json file.
     if [ -z "$main_func" ]; then
+        [ -z "$ZSH_VERSION" ] || setopt aliases
         ___x_cmd_xrc_source_file_main "$which_one_result"
         main_func="$(___x_cmd_ldict_get ___X_CMD_XRC_SET_MAIN_DICT "$which_one_result")"
     fi
