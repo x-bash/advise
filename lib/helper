@@ -87,11 +87,8 @@ ___x_cmd_advise__shift_comp_words(){
         [ -n "$ZSH_VERSION" ] || COMP_CWORD=$((COMP_CWORD-1))
     fi
 
-    if [ -z "$ZSH_VERSION" ]; then
-        module="${COMP_WORDS[0]}"
-    else
-        module="${COMP_WORDS[1]}"
-    fi
+    module="${COMP_WORDS[0]}"
+    [ -z "$ZSH_VERSION" ] || module="${COMP_WORDS[1]}"
 }
 
 ___x_cmd_advise__comp_from_x(){
