@@ -45,26 +45,21 @@ function advise_get_candidate_code( curval, genv, lenv, obj, kp,        _candida
     return _candidate_code
 }
 
-function advise_complete___generic_value( curval, genv, lenv, obj, kp, _candidate_code,         _exec_val, _regex_key_arr, _regex_key_arrl, i ){
+function advise_complete___generic_value( curval, genv, lenv, obj, kp, _candidate_code,         _exec_val, _regex_key_arr, _regex_key_arrl, _regex_id, i ){
 
-    CODE = CODE "\n" "candidate_arr=(" "\n"
-    if ( _candidate_code != "" ) CODE = CODE "\n" _candidate_code
-    CODE = CODE advise_get_candidate_code( curval, genv, lenv, obj, kp )
-    CODE = CODE ")"
+    _candidate_code = _candidate_code advise_get_candidate_code( curval, genv, lenv, obj, kp )
 
     _exec_val = obj[ kp SUBSEP "\"#exec\"" ]
-    if ( _exec_val != "" ) CODE = CODE "\n" "candidate_exec=" _exec_val ";"
+    if ( _exec_val != "" ) CODE = CODE "candidate_exec=" _exec_val ";\n"
 
     _regex_key_arr = kp SUBSEP "\"#regex\""
     _regex_key_arrl = obj[ _regex_key_arr L ]
-    if ( _regex_key_arrl != "" ) {
-        CODE = CODE "\n" "candidate_regex=(" "\n"
-        for (i=1; i<=_regex_key_arrl; ++i) {
-            CODE = CODE obj[ _regex_key_arr, "\"" i "\"" ] "\n"
-        }
-        CODE = CODE ")"
+    for ( i=1; i<=_regex_key_arrl; ++i ) {
+        _regex_id = obj[ _regex_key_arr, i ]
+        if (curval ~ "^"juq( _regex_id )"$" ) return advise_complete___generic_value(curval, genv, lenv, obj, _regex_key_arr SUBSEP _regex_id , _candidate_code)
     }
 
+    if ( _candidate_code != "" ) CODE = CODE "candidate_arr=(\n" _candidate_code ")\n"
     # TODO: Other code
     return CODE
 }

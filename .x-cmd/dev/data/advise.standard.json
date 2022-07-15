@@ -18,13 +18,15 @@
         "#exec": ""
     },
     "#n": {
-        "#rexec": {
-            "/.+": [ "/a/b", "/a/c" ],
-            "-.+": {
-                "#cand": []
+        "#regex": {
+            "/.*": {
+                "#cand": [ "/a/b", "/a/c" ]
             },
-            "\\+.+": {
-                "#exec": "_ls | awk '{ print(\"+\" \\$0 ) }' "
+            "-.*": {
+                "#exec": "candidate_exec_arr=($(ls|awk -v p='-' '{print p $0}'))"
+            },
+            "+.*": {
+                "#exec": "candidate_exec_arr=($(ls|awk -v p='+' '{print p $0}'))"
             }
         }
     }
