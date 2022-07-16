@@ -1,6 +1,6 @@
 {
     "user": {
-        "#desc": "",
+        "#desc": "Desc \\$a $a `cv` 'cvc \"cvccvcds\"",
         "login": {
             "#desc": ""
         },
@@ -14,7 +14,7 @@
             "#rmatch": []
         }
     },
-    "#1": {
+    "aaa": {
         "#exec": ""
     },
     "#n": {
@@ -25,7 +25,7 @@
             "-.*": {
                 "#exec": "candidate_exec_arr=($(ls|awk -v p='-' '{print p $0}'))"
             },
-            "+.*": {
+            "\\+.*": {
                 "#exec": "candidate_exec_arr=($(ls|awk -v p='+' '{print p $0}'))"
             }
         }
