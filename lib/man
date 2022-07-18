@@ -37,7 +37,7 @@ ___x_cmd_advise_man_update(){
     if ___x_cmd_httpget_gitx x-cmd advise main "dist/all.tgz" "$CACHE" -; then
         [ -d "$___X_CMD_ADVISE_MAN_SRC_FOLDER" ] && rm -rf "$___X_CMD_ADVISE_MAN_SRC_FOLDER"
         mkdir -p "$___X_CMD_ADVISE_MAN_SRC_FOLDER"
-        tar xvf "$CACHE" -C "$___X_CMD_ADVISE_MAN_SRC_FOLDER" >/dev/null
+        x uz "$CACHE" "$___X_CMD_ADVISE_MAN_SRC_FOLDER" >/dev/null
         x rmrf "$CACHE" 1>/dev/null 2>&1
     fi
 }
@@ -77,17 +77,16 @@ ___x_cmd_advise_man_load(){
         fi
     fi
 
-    if ___x_cmd_advise_completions_exists || ___x_cmd_advise_completion_update 1>/dev/null 2>&1; then
-        x:debug "source $___X_CMD_CUR_SHELL completions"
-        .  "$___X_CMD_ADVISE_MAN_COMPLETIONS_FOLDER/$___X_CMD_CUR_SHELL-completions/completions.sh"
+    if ___x_cmd_advise_completions_exists || ___x_cmd_advise_completion_update; then
+        local filename="$___X_CMD_ADVISE_MAN_COMPLETIONS_FOLDER/$___X_CMD_CUR_SHELL-completions/completions.sh"
+        if [ -f "$filename" ]; then
+            x:debug "source $___X_CMD_CUR_SHELL completions from $filename"
+            .  "$filename"
+        fi
     fi
-    local i
-    local s
-    for i in $(___x_cmd_advise_man_ls); do
+    local i; for i in $(___x_cmd_advise_man_ls); do
         if [ -z "$ZSH_VERSION" ];then
-            if s=$(complete -p "$i" 1>/dev/null 2>&1); then
-                [[ "$s" == *___advise_completer* ]] && continue
-            fi
+            [[ ! $(complete -p "$i" 2>/dev/null) == *___x_cmd_advise_man_completer* ]] || continue
 
             if [[ ! "$BASH_VERSION" =~ (^3.*|^4.[0-3]) ]]; then
                 complete -o nosort -F "___x_cmd_advise_man_completer" "$i"

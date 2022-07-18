@@ -46,7 +46,7 @@ function advise_complete___generic_value( curval, genv, lenv, obj, kp, _candidat
     _candidate_code = _candidate_code advise_get_candidate_code( curval, genv, lenv, obj, kp )
 
     _exec_val = obj[ kp SUBSEP "\"#exec\"" ]
-    if ( _exec_val != "" ) CODE = CODE "candidate_exec=" _exec_val ";\n"
+    if ( _exec_val != "" ) CODE = CODE "candidate_exec=\"" juq(_exec_val) "\";\n"
 
     _regex_key_arr = kp SUBSEP "\"#regex\""
     _regex_key_arrl = obj[ _regex_key_arr L ]
