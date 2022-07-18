@@ -14,21 +14,17 @@ function advise_get_candidate_code( curval, genv, lenv, obj, kp,        _candida
                 _desc = ""
                 if (match( v, " --- ")) {
                     _desc = ( ZSHVERSION != "" ) ? substr(v, RSTART+RLENGTH) : ""
-                    gsub("\\$", "\\$", _desc)
-                    gsub("`", "\\`", _desc)
                     v = substr( v, 1, RSTART-1)
                 }
                 if( v ~ "^" curval ){
-                    if ( _desc != "" ) _candidate_code = _candidate_code jqu(v ":" _desc) "\n"
-                    else _candidate_code = _candidate_code jqu(v) "\n"
+                    if ( _desc != "" ) _candidate_code = _candidate_code shqu1(v ":" _desc) "\n"
+                    else _candidate_code = _candidate_code shqu1(v) "\n"
                 }
             }
         }
         if ( _option_id ~ "^\"#") continue
 
         _desc = ( ZSHVERSION != "" ) ? juq(obj[ kp SUBSEP _option_id SUBSEP "\"#desc\"" ]) : ""
-        gsub("\\$", "\\$", _desc)
-        gsub("`", "\\`", _desc)
         _arr_valuel = split( juq( _option_id ), _arr_value, "|" )
         for ( j=1; j<=_arr_valuel; ++j) {
             v =_arr_value[j]
@@ -36,8 +32,8 @@ function advise_get_candidate_code( curval, genv, lenv, obj, kp,        _candida
                 if ( aobj_istrue( obj, kp SUBSEP _option_id SUBSEP "\"#multiple\"" ) || (lenv[ _option_id ] == "")) {
                     if (( curval == "" ) && ( v ~ "^-" )) if ( ! aobj_istrue(obj, kp SUBSEP _option_id SUBSEP "\"#subcmd\"" ) ) continue
                     if (( curval == "-" ) && ( v ~ "^--" )) continue
-                    if ( _desc != "" ) _candidate_code = _candidate_code jqu(v ":" _desc) "\n"
-                    else _candidate_code = _candidate_code jqu(v) "\n"
+                    if ( _desc != "" ) _candidate_code = _candidate_code shqu1(v ":" _desc) "\n"
+                    else _candidate_code = _candidate_code shqu1(v) "\n"
                 }
             }
         }

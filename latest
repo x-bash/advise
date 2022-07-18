@@ -80,6 +80,7 @@ if [ -n "$ZSH_VERSION" ] && [ -z "$___X_CMD_ADVISE_ZSH_COMPLETE_LOADED" ] ; then
     zstyle ':completion:*' matcher-list 'm:{a-zA-Z-_}={A-Za-z_-}' 'r:|=*' 'l:|=* r:|=*'
     zstyle ':completion:*' sort false
     if ! command -v compinit > /dev/null; then
+        x:debug "autoload compinit"
         autoload -Uz compinit && compinit
     fi
 fi
