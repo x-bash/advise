@@ -65,9 +65,10 @@ ___x_cmd_advise(){
                                         unset -f "______adviser_of_$op"
                                     fi
                                     ;;
-         _x_cmd_advise_json)        cat "$___X_CMD_ROOT_MOD/advise/lib/advise.advise.json";;
+        # genjson)                    ___X_CMD_META_MODE=1 X_CMD_ADVISE_FUNC_NAME="$1" "$1" _x_cmd_advise_json ;;
+        _x_cmd_advise_json)         cat "$___X_CMD_ROOT_MOD/advise/lib/advise.advise.json";;
         ""|help)                    cat "$___X_CMD_ROOT_MOD/advise/lib/help.txt" >&2; return 1;;
-        *)                          ___advise_main "$op" "$@" ;;
+        *)                          ___advise_main "$op" "$@" ;;    # TODO: open app.
     esac
 }
 

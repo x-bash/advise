@@ -48,7 +48,7 @@ ___advise_main(){
         if [ ! -f "$filepath" ]; then
             local content
             x:debug "Start gen advise for $func"
-            content="$(X_CMD_ADVISE_FUNC_NAME=$func "$func" _x_cmd_advise_json)"
+            content="$(___X_CMD_META_MODE=1 X_CMD_ADVISE_FUNC_NAME=$func "$func" _x_cmd_advise_json)"
             x:debug "Finished gen advise for $func"
             if [ $? -eq 0 ]; then
                 printf "%s" "$content" >"$filepath"
