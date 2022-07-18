@@ -109,6 +109,7 @@ ___advise_get_result_from_awk(){
     } | awk \
         -v ZSHVERSION="$ZSH_VERSION" \
         -f "$___X_CMD_ROOT_MOD/awk/lib/default.awk" \
+        -f "$___X_CMD_ROOT_MOD/awk/lib/sh.awk" \
         -f "$___X_CMD_ROOT_MOD/awk/lib/json.awk" \
         -f "$___X_CMD_ROOT_MOD/awk/lib/jiter.awk" \
         -f "$___X_CMD_ROOT_MOD/advise/lib/awk/advise.complete.awk" \

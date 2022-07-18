@@ -17,8 +17,8 @@ function advise_get_candidate_code( curval, genv, lenv, obj, kp,        _candida
                     v = substr( v, 1, RSTART-1)
                 }
                 if( v ~ "^" curval ){
-                    if ( _desc != "" ) _candidate_code = _candidate_code shqu(v ":" _desc) "\n"
-                    else _candidate_code = _candidate_code shqu(v) "\n"
+                    if ( _desc != "" ) _candidate_code = _candidate_code shqu1(v ":" _desc) "\n"
+                    else _candidate_code = _candidate_code shqu1(v) "\n"
                 }
             }
         }
@@ -32,8 +32,8 @@ function advise_get_candidate_code( curval, genv, lenv, obj, kp,        _candida
                 if ( aobj_istrue( obj, kp SUBSEP _option_id SUBSEP "\"#multiple\"" ) || (lenv[ _option_id ] == "")) {
                     if (( curval == "" ) && ( v ~ "^-" )) if ( ! aobj_istrue(obj, kp SUBSEP _option_id SUBSEP "\"#subcmd\"" ) ) continue
                     if (( curval == "-" ) && ( v ~ "^--" )) continue
-                    if ( _desc != "" ) _candidate_code = _candidate_code shqu(v ":" _desc) "\n"
-                    else _candidate_code = _candidate_code shqu(v) "\n"
+                    if ( _desc != "" ) _candidate_code = _candidate_code shqu1(v ":" _desc) "\n"
+                    else _candidate_code = _candidate_code shqu1(v) "\n"
                 }
             }
         }
