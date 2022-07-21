@@ -33,7 +33,10 @@ ___x_cmd_advise(){
                                     fi ;;
         which)
                                     if [ "$#" -eq 0 ]; then     printf "%s" "$___X_CMD_ADVISE_TMPDIR"
-                                    else                        printf "%s/%s" "$___X_CMD_ADVISE_TMPDIR" "$1"
+                                    else
+                                        local filepath="$___X_CMD_ADVISE_TMPDIR/$1"
+                                        [ -f "$filepath" ] || return 1
+                                        printf "%s" "$filepath"
                                     fi ;;
         cat)                        (cd "$___X_CMD_ADVISE_TMPDIR" && < "$@" x jo)  ;;
         load)                       ___advise_load;;
