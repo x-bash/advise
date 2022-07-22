@@ -104,13 +104,13 @@ ___x_cmd_advise__comp_from_x(){
     main_func="$(___x_cmd_ldict_get ___X_CMD_XRC_SET_MAIN_DICT "$which_one_result")"
 
     # Generate the advise json file.
+    [ -z "$ZSH_VERSION" ] || setopt aliases
     if [ -z "$main_func" ]; then
-        [ -z "$ZSH_VERSION" ] || setopt aliases
         ___x_cmd_xrc_source_file_main "$which_one_result"
         main_func="$(___x_cmd_ldict_get ___X_CMD_XRC_SET_MAIN_DICT "$which_one_result")"
     fi
 
-    ___advise_main "$main_func"
+    ___advise_main "$main_func" 2>/dev/null
     filepath="${TMPDIR%/}/.x-cmd/advise_auto_json/$main_func"
     [ -f "$filepath" ] || return 1
 
@@ -148,6 +148,7 @@ ___x_cmd_advise__comp_from_origin(){
         eval "_$module"
     else
         filepath="$___X_CMD_ADVISE_MAN_COMPLETIONS_FOLDER/bash-completions/share/bash-completion/completions/_$module"
+        [ -f "$filepath" ] || filepath="$___X_CMD_ADVISE_MAN_COMPLETIONS_FOLDER/bash-completions/share/bash-completion/completions/$module"
         [ -f "$filepath" ] || return 1
         . "$filepath" 2>/dev/null
         eval "_$module"

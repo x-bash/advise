@@ -1,0 +1,39 @@
+# shellcheck shell=bash disable=SC2206,SC2207,SC2034,SC1090
+
+___x_cmd_a(){
+    alias "$1"
+    local alias_name="${1%%=*}"
+    if [ -z "$ZSH_VERSION" ];then
+        if [[ ! "$BASH_VERSION" =~ (^3.*|^4.[0-3]) ]]; then
+            complete -o nosort -F "___x_cmd_advise_alias_completer" "$alias_name" && return 1
+        else
+            complete -F "___x_cmd_advise_alias_completer" "$alias_name" && return 1
+        fi
+    fi
+}
+___x_cmd_advise_alias_completer(){
+    local alias_name="${1:-${COMP_WORDS[1]}}"
+    local val
+    val="$(alias "$alias_name" 2>/dev/null)"
+    val="${val#*\'}"
+    val="${val%\'*}"
+    local tmp=( $val )
+    tmp+=( "${COMP_WORDS[@]:1}" )
+    local COMP_WORDS=( "${tmp[@]}" )
+    local COMP_CWORD="$(( ${#tmp[@]}-1 ))"
+    local resname="${COMP_WORDS[0]}"
+    local COMP_LINE="${COMP_WORDS[*]}"
+
+    if [ -f "$___X_CMD_ADVISE_TMPDIR/$resname" ]; then
+        ___ADVISE_RUN_CMD_FOLDER= ___advise_run ""
+    elif [ -d "$___X_CMD_ADVISE_MAN_SRC_FOLDER/$resname" ] || [ -d "$___X_CMD_ADVISE_MAN_SRC_FOLDER/npx/_/$resname" ] || [ -d "$___X_CMD_ADVISE_MAN_SRC_FOLDER/pipx/_/$resname" ]; then # resname in ___X_CMD_ADVISE_MAN_SRC_FOLDER x-cmd
+        ___ADVISE_RUN_CMD_FOLDER="$___X_CMD_ADVISE_MAN_SRC_FOLDER" ___advise_run ""
+    else
+        local filepath="$___X_CMD_ADVISE_MAN_COMPLETIONS_FOLDER/bash-completions/share/bash-completion/completions/_$resname"
+        [ -f "$filepath" ] || filepath="$___X_CMD_ADVISE_MAN_COMPLETIONS_FOLDER/bash-completions/share/bash-completion/completions/$resname"
+        [ -f "$filepath" ] || return
+        . "$filepath" 2>/dev/null
+        eval "_$resname"
+        candidate_exec_arr=( "${COMPREPLY[@]}" )
+    fi
+}

@@ -12,6 +12,7 @@ advise_test(){
         # cat /home/qiakai/xbash/x-cmd/lib/x.json
         # cat /tmp/.x-cmd/advise_auto_json/___x_cmd_advise
         # cat /home/qiakai/xbash/advise/lib/advise.advise.json
+        # cat /home/qiakai/xbash/env/lib/env.advise.json
         cat /home/qiakai/xbash/env/lib/env.advise.json
         # cat /home/qiakai/xbash/ja/lib/ja.advise.json
         # cat /tmp/.x-cmd/advise_auto_json/___x_cmd_tldr

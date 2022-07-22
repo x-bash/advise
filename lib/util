@@ -49,7 +49,6 @@ ___advise_main(){
             local content
             x:debug "Start gen advise for $func"
             content="$(___X_CMD_META_MODE=1 X_CMD_ADVISE_FUNC_NAME=$func "$func" _x_cmd_advise_json)"
-            x:debug "Finished gen advise for $func"
             if [ $? -eq 0 ]; then
                 printf "%s" "$content" >"$filepath"
                 x:debug "Finished gen advise for $func"
@@ -106,7 +105,7 @@ ___advise_get_result_from_awk(){
     {
         printf "%s\n" "$s"
         cat "$filepath"
-    } | awk \
+    } | command awk \
         -v ZSHVERSION="$ZSH_VERSION" \
         -f "$___X_CMD_ROOT_MOD/awk/lib/default.awk" \
         -f "$___X_CMD_ROOT_MOD/awk/lib/sh.awk" \
