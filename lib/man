@@ -117,11 +117,5 @@ ___x_cmd_advise_man_completer() {
 }
 
 ## Section man advise
-___x_cmd_advise_man__list(){
-    if [ -n "$1" ]; then
-        candidate_exec_arr=( $(___x_cmd_advise_man_ls "$1"/_ ))
-    else
-        candidate_exec_arr=( $(___x_cmd_advise_man_ls ) )
-    fi
-}
+___x_cmd_advise_man__list(){            candidate_exec_arr=( $(___x_cmd_advise_man_ls ${1:+"$1"/_} ) );      }
 ## EndSection
