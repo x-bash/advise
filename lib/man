@@ -74,16 +74,14 @@ A
 }
 
 ___x_cmd_advise_man_load_one(){
-    while [ "$#" -ge 1 ]; do
-        if [ -n "$ZSH_VERSION" ];then
-            compdef "___x_cmd_advise_man_completer" "$1"
-        elif [[ ! "$BASH_VERSION" =~ (^3.*|^4.[0-3]) ]]; then
-            complete -o nosort -F "___x_cmd_advise_man_completer" "$1"
-        else
-            complete -F "___x_cmd_advise_man_completer" "$1"
-        fi
-        shift
-    done
+    if [ -n "$ZSH_VERSION" ];then
+        compdef "___x_cmd_advise_man_completer" "$@"
+    elif [[ ! "$BASH_VERSION" =~ (^3.*|^4.[0-3]) ]]; then
+        complete -o nosort -F "___x_cmd_advise_man_completer" "$@"
+    else
+        complete -F "___x_cmd_advise_man_completer" "$@"
+    fi
+    shift
 }
 
 ___x_cmd_advise_man_load(){
