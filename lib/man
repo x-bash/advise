@@ -29,25 +29,21 @@ ___x_cmd_advise_completion_update(){
         return 1
     }
 
-    {
-        [ ! -d "$folder" ] || x rmrf "$folder"
-        x mkdirp "$folder"
-        x uz "$CACHE_COMPLETIONS" "$folder"
-        x rmrf "$CACHE_COMPLETIONS"
-    } 1>/dev/null 2>&1
+    { x rmrf "$folder";   x mkdirp "$folder"; } 1>/dev/null 2>&1
+    x uz "$CACHE_COMPLETIONS" "$folder"
+    x rmrf "$CACHE_COMPLETIONS"
 }
 
 ___x_cmd_advise_man_update(){
     local CACHE="$___X_CMD_ROOT/.tmp/advise/all.tgz"
-    if ___x_cmd_httpget_gitx x-cmd advise main "dist/all.tgz" "$CACHE" -; then
-        [ -d "$___X_CMD_ADVISE_MAN_SRC_FOLDER" ] && rm -rf "$___X_CMD_ADVISE_MAN_SRC_FOLDER"
-        mkdir -p "$___X_CMD_ADVISE_MAN_SRC_FOLDER"
-        x uz "$CACHE" "$___X_CMD_ADVISE_MAN_SRC_FOLDER" >/dev/null
-        x rmrf "$CACHE" 1>/dev/null 2>&1
-    else
+    ___x_cmd_httpget_gitx x-cmd advise main "dist/all.tgz" "$CACHE" - || {
         x:log "Fail to update from x-cmd/advise."
         return 1
-    fi
+    }
+
+    { x rmrf "$___X_CMD_ADVISE_MAN_SRC_FOLDER";   x mkdirp "$___X_CMD_ADVISE_MAN_SRC_FOLDER"; }1>/dev/null 2>&1
+    x uz "$CACHE" "$___X_CMD_ADVISE_MAN_SRC_FOLDER"
+    x rmrf "$CACHE"
 }
 
 ___x_cmd_advise_man_ls(){
