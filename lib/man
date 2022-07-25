@@ -23,15 +23,18 @@ ___x_cmd_advise_completions_exists(){
 
 ___x_cmd_advise_completion_update(){
     local CACHE_COMPLETIONS="$___X_CMD_ROOT/.tmp/advise/$___X_CMD_CUR_SHELL-completions.7z"
-    if ___x_cmd_httpget_gitx static-build "$___X_CMD_CUR_SHELL"-completions main "$___X_CMD_CUR_SHELL-completions.7z" "$CACHE_COMPLETIONS"; then
-        [ -d "$___X_CMD_ADVISE_MAN_COMPLETIONS_FOLDER/$___X_CMD_CUR_SHELL-completions" ] && rm -rf "$___X_CMD_ADVISE_MAN_COMPLETIONS_FOLDER/$___X_CMD_CUR_SHELL-completions" 1>/dev/null 2>&1
-        mkdir -p "$___X_CMD_ADVISE_MAN_COMPLETIONS_FOLDER/$___X_CMD_CUR_SHELL-completions"
-        x uz "$CACHE_COMPLETIONS" "$___X_CMD_ADVISE_MAN_COMPLETIONS_FOLDER/$___X_CMD_CUR_SHELL-completions" >/dev/null
-        x rmrf "$CACHE_COMPLETIONS" 1>/dev/null 2>&1
-    else
+    local folder="$___X_CMD_ADVISE_MAN_COMPLETIONS_FOLDER/$___X_CMD_CUR_SHELL-completions"
+    ___x_cmd_httpget_gitx static-build "$___X_CMD_CUR_SHELL"-completions main "$___X_CMD_CUR_SHELL-completions.7z" "$CACHE_COMPLETIONS" || {
         x:log "Fail to update $___X_CMD_CUR_SHELL-completion.7z from x-cmd/advise."
         return 1
-    fi
+    }
+
+    {
+        [ ! -d "$folder" ] || x rmrf "$folder"
+        x mkdirp "$folder"
+        x uz "$CACHE_COMPLETIONS" "$folder"
+        x rmrf "$CACHE_COMPLETIONS"
+    } 1>/dev/null 2>&1
 }
 
 ___x_cmd_advise_man_update(){
