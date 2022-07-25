@@ -1,20 +1,27 @@
 # shellcheck disable=SC2207
 # Section : main
-___advise_run(){
-    local resname="${1:-${COMP_WORDS[0]}}"
 
+___advise_run_filepath_(){
+    case "$1" in
+        /*) ___ADVISE_RUN_FILEPATH_="$1" ;;
+        -)  ___ADVISE_RUN_FILEPATH_=/dev/stdin ;;
+        *)  ___ADVISE_RUN_FILEPATH_="$___ADVISE_RUN_CMD_FOLDER/$1"
+            [ -d "$___ADVISE_RUN_FILEPATH_" ] || return 1
+            ___ADVISE_RUN_FILEPATH_="$___ADVISE_RUN_CMD_FOLDER/$1/advise.json"
+            [ ! -f "$___ADVISE_RUN_FILEPATH_" ] || return 0
+            ___ADVISE_RUN_FILEPATH_="$___ADVISE_RUN_CMD_FOLDER/$1/advise.t.json"
+            [ ! -f "$___ADVISE_RUN_FILEPATH_" ] || return 0
+            ___ADVISE_RUN_FILEPATH_="$(___x_cmd_advise_man_which "$1")"
+            ;;
+    esac
+    [ ! -f "$___ADVISE_RUN_FILEPATH_" ] || return 0
+    return 1
+}
+
+___advise_run(){
     [ -z "$___ADVISE_RUN_CMD_FOLDER" ] && ___ADVISE_RUN_CMD_FOLDER="$___X_CMD_ADVISE_TMPDIR"
 
-    local filepath
-    case "$resname" in
-        /*) filepath="$resname" ;;
-        -)  filepath=/dev/stdin ;;
-        *)  filepath="$___ADVISE_RUN_CMD_FOLDER/$resname"
-            [ ! -d "$filepath" ] || filepath="$___ADVISE_RUN_CMD_FOLDER/$resname/advise.json"
-            [ -f "$filepath" ] || filepath="$___ADVISE_RUN_CMD_FOLDER/$resname/advise.t.json"
-            [ -f "$filepath" ] || filepath="$(___x_cmd_advise_man_which "$resname")" ;;
-    esac
-    [ -f "$filepath" ] || return
+    local ___ADVISE_RUN_FILEPATH_;  ___advise_run_filepath_ "${1:-${COMP_WORDS[0]}}" || return 1
 
     if [ "${BASH_VERSION#3}" = "${BASH_VERSION}" ]; then
         local last="${COMP_WORDS[COMP_CWORD]}"
@@ -38,7 +45,7 @@ ___advise_run(){
     local candidate_exec
     local candidate_exec_arr
     local offset
-    eval "$(___advise_get_result_from_awk)" 2>/dev/null
+    eval "$(___advise_get_result_from_awk "$___ADVISE_RUN_FILEPATH_")" 2>/dev/null
     local IFS=$'\n'
     eval "$candidate_exec" 2>/dev/null
 

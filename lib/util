@@ -85,6 +85,8 @@ ___advise_main(){
 }
 
 ___advise_get_result_from_awk(){
+    local filepath="${1:?Provide filepath}"
+
     local IFS=$'\002'
     local s="${COMP_WORDS[*]}"
     s="${s#*"$IFS"}"
