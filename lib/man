@@ -84,9 +84,6 @@ ___x_cmd_advise_man_load_all(){
         (NR % 50 == 0){             print "___x_cmd_advise_man_load_one" code;      code = ""   }
         END {   if (code != "")     print "___x_cmd_advise_man_load_one" code;                  }
     ')"
-#     x args 50 '___x_cmd_advise_man_load_one "$@"' <<A
-# $(___x_cmd_advise_man_ls)
-# A
 }
 
 ___x_cmd_advise_man_load(){
