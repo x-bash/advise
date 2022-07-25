@@ -5,7 +5,7 @@ ___advise_run(){
 
     local ___ADVISE_RUN_FILEPATH_;  ___advise_run_filepath_ "${1:-${COMP_WORDS[0]}}" || return 1
 
-    if [ "${BASH_VERSION#3}" = "${BASH_VERSION}" ]; then
+    {   # Only different from main.3.bash
         local last="${COMP_WORDS[COMP_CWORD]}"
         case "$last" in
             \"*|\'*)    COMP_LINE="${COMP_LINE%"$last"}"
@@ -20,7 +20,7 @@ ___advise_run(){
 
         COMP_WORDS=("${tmp[@]}")
         COMP_CWORD="$(( ${#tmp[@]}-1 ))"
-    fi
+    }
 
     local candidate_arr
     local candidate_exec
