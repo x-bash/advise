@@ -62,7 +62,7 @@ ___x_cmd_advise_man_which(){
     ___x_cmd_advise_man_exists || ___x_cmd_advise_man_update || return
 
     local IFS=" ";
-    local i; for i in "$name/advise.t.json" "npx/_/$name/advise.t.json" "pipx/_/$name/advise.t.json"; do
+    local file; for file in "$name/advise.t.json" "npx/_/$name/advise.t.json" "pipx/_/$name/advise.t.json"; do
         file="$___X_CMD_ADVISE_MAN_SRC_FOLDER/$file"
         [ -f "$file" ] || continue
         printf "%s\n" "$file"
