@@ -1,5 +1,4 @@
-# shellcheck disable=SC2207,SC2034,SC2012,SC1090,SC1091
-
+# shellcheck shell=bash
 ___x_cmd_advise_man(){
     local op="${1:?Provide subcommand}"; shift
     case "$op" in
@@ -72,12 +71,22 @@ ___x_cmd_advise_man_which(){
 ___x_cmd_advise_man_load_one(){
     if [ -n "$ZSH_VERSION" ];then
         compdef "___x_cmd_advise_man_completer" "$@"
-    elif [[ ! "$BASH_VERSION" =~ (^3.*|^4.[0-3]) ]]; then
-        complete -o nosort -F "___x_cmd_advise_man_completer" "$@"
-    else
+    elif [[ "$BASH_VERSION" =~ (^3.*|^4.[0-3]) ]]; then
         complete -F "___x_cmd_advise_man_completer" "$@"
+    else
+        complete -o nosort -F "___x_cmd_advise_man_completer" "$@"
     fi
-    shift
+}
+
+___x_cmd_advise_man_load_all(){
+    eval "$(___x_cmd_advise_man_ls | command awk '
+        {                           code = code " " $1;                                         }
+        (NR % 50 == 0){             print "___x_cmd_advise_man_load_one" code;      code = ""   }
+        END {   if (code != "")     print "___x_cmd_advise_man_load_one" code;                  }
+    ')"
+#     x args 50 '___x_cmd_advise_man_load_one "$@"' <<A
+# $(___x_cmd_advise_man_ls)
+# A
 }
 
 ___x_cmd_advise_man_load(){
@@ -89,29 +98,9 @@ ___x_cmd_advise_man_load(){
         fi
     fi
 
-    if [ "$#" -ge 1 ]; then
-        ___x_cmd_advise_man_load_one "$@"
-        return
+    if [ "$#" -ge 1 ]; then     ___x_cmd_advise_man_load_one "$@"
+    else                        ___x_cmd_advise_man_load_all
     fi
-
-    eval "$(___x_cmd_advise_man_ls | command awk '
-{
-    code = code " " $1
-    if (NR % 50 == 0) {
-        print "___x_cmd_advise_man_load_one" code
-        code = ""
-    }
-}
-END {
-    if (code != "") print "___x_cmd_advise_man_load_one" code
-}
-
-')"
-
-#     x args 50 '___x_cmd_advise_man_load_one "$@"' <<A
-# $(___x_cmd_advise_man_ls)
-# A
-
 }
 
 ___x_cmd_advise_man_rm(){
@@ -126,7 +115,6 @@ ___x_cmd_advise_man_completer() {
     # Interesting ... Passing
     ___ADVISE_RUN_CMD_FOLDER="$___X_CMD_ADVISE_MAN_SRC_FOLDER" ___advise_run ""
 }
-
 
 ## Section man advise
 ___x_cmd_advise_man__list(){
