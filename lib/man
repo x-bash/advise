@@ -98,20 +98,24 @@ ___x_cmd_advise_man_load(){
         fi
     fi
 
-    local i; for i in $(___x_cmd_advise_man_ls); do
-        if [ -z "$ZSH_VERSION" ];then
-            [[ ! $(complete -p "$i" 2>/dev/null) == *___x_cmd_advise_man_completer* ]] || continue
+    eval "$(___x_cmd_advise_man_ls | command awk '
+{
+    code = code " " $1
+    if (NR % 50 == 0) {
+        print "___x_cmd_advise_man_load_one" code
+        code = ""
+    }
+}
+END {
+    if (code != "") print "___x_cmd_advise_man_load_one" code
+}
 
-            if [[ ! "$BASH_VERSION" =~ (^3.*|^4.[0-3]) ]]; then
-                complete -o nosort -F "___x_cmd_advise_man_completer" "$i"
-            else
-                complete -F "___x_cmd_advise_man_completer" "$i"
-            fi
+')"
 
-        else
-            compdef "___x_cmd_advise_man_completer" "$i"
-        fi
-    done
+#     x args 50 '___x_cmd_advise_man_load_one "$@"' <<A
+# $(___x_cmd_advise_man_ls)
+# A
+
 }
 
 ___x_cmd_advise_man_rm(){
