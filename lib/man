@@ -69,12 +69,9 @@ ___x_cmd_advise_man_which(){
 }
 
 ___x_cmd_advise_man_load_one(){
-    if [ -n "$ZSH_VERSION" ];then
-        compdef "___x_cmd_advise_man_completer" "$@"
-    elif [[ "$BASH_VERSION" =~ (^3.*|^4.[0-3]) ]]; then
-        complete -F "___x_cmd_advise_man_completer" "$@"
-    else
-        complete -o nosort -F "___x_cmd_advise_man_completer" "$@"
+    if [ -n "$ZSH_VERSION" ];then                                   compdef "___x_cmd_advise_man_completer" "$@"
+    elif [[ "$BASH_VERSION" =~ (^3.*|^4.[0-3]) ]]; then             complete -F "___x_cmd_advise_man_completer" "$@"
+    else                                                            complete -o nosort -F "___x_cmd_advise_man_completer" "$@"
     fi
 }
 
