@@ -1,0 +1,128 @@
+{
+  "#desc": "",
+  "repo|re": {
+    "#desc": "repo command",
+    "#1": {
+      "#desc": "use the selected file to rollback",
+      "#exec": "___x_cmd_tldr_lsname"
+    },
+    "create": {
+      "#desc": "create repo"
+    },
+    "rm": {
+      "#desc": "remove repo"
+    }
+  },
+  "current": {
+    "#desc": "set current owner, repo"
+  },
+  "release": {
+    "#desc": "manage release",
+    "#1": {
+      "#desc": "use the selected file to rollback",
+      "#exec": "___x_cmd_tldr_lang"
+    }
+  },
+  "member": {
+    "#desc": "Authorize gh"
+  },
+  "del": {
+    "#desc": "delete org"
+  },
+  "--mul_line_arg|-m": {
+    "#desc": "Test multiple line argument",
+    "#arguments_str": " <mline_arg>",
+    "#1": {
+      "#desc": ""
+    }
+  },
+  "--regex_arg1": {
+    "#desc": "Test an argument with regex 1",
+    "#arguments_str": " <>",
+    "#1": {
+      "#desc": "",
+      "#cand_regex": [
+        "[0-9]*"
+      ],
+      "#default": "0"
+    }
+  },
+  "--regex_arg2": {
+    "#desc": "Test an argument with regex 2",
+    "#arguments_str": " <>",
+    "#1": {
+      "#desc": "",
+      "#cand_regex": [
+        "([1-9]?[0-9]|100)"
+      ],
+      "#default": "20"
+    }
+  },
+  "--repo|-r": {
+    "#desc": "Provide repo name",
+    "#arguments_str": " <>",
+    "#1": {
+      "#desc": "",
+      "#cand_regex": [
+        "abc",
+        "cde",
+        "def"
+      ]
+    }
+  },
+  "--repo2|-b": {
+    "#desc": "Provide two repo name",
+    "#arguments_str": " <arg1> <arg2>",
+    "#1": {
+      "#desc": "",
+      "#cand": [
+        "abc",
+        "cde",
+        "def"
+      ]
+    },
+    "#2": {
+      "#desc": "",
+      "#cand_regex": [
+        "cde",
+        "def"
+      ]
+    }
+  },
+  "--priviledge|-p": {
+    "#desc": "Provide privilidge",
+    "#arguments_str": " <priviledge_type>",
+    "#1": {
+      "#desc": "",
+      "#cand": [
+        "private",
+        "public"
+      ],
+      "#default": "private"
+    }
+  },
+  "--no_type_arg|-n": {
+    "#desc": "Test no type argument but have default",
+    "#arguments_str": " <no_type_arg>",
+    "#1": {
+      "#desc": "",
+      "#default": "default"
+    }
+  },
+  "--flag1|-f": {
+    "#desc": "Flag1 that you can use $\{flag1:-false} to get the bool value"
+  },
+  "--flag1222|-g": {
+    "#desc": "Flag1222 that you can use $\{flag1222:-false} to get the bool value"
+  },
+  "#1": {
+    "#desc": "Test rest argument #1 when exist option and flag",
+    "#exec": "list_repo"
+  },
+  "#222222": {
+    "#desc": "Provide number #2"
+  },
+  "#3": {
+    "#desc": "Provide number #3"
+  }
+}

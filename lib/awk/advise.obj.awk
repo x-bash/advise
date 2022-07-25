@@ -64,7 +64,7 @@ function aobj_istrue( obj, kp ){
     return (obj[ kp ] == "true" )
 }
 
-function aobj_get_optargc( obj, obj_prefix, option_id,  _res, i ){
+function aobj_get_optargc( obj, obj_prefix, option_id,  _res, i, l, v ){
     obj_prefix = obj_prefix SUBSEP option_id
     if ( "" != (_res = obj[ obj_prefix L "argc" ]) ) return _res
     for (i=1; i<100; ++i) {     # 100 means MAXINT
