@@ -13,10 +13,7 @@ ___advise_run(){
             *)          tmp=( $COMP_LINE ) ;;
         esac
 
-        # Ends with space
-        if [ "${COMP_LINE% }" != "${COMP_LINE}" ]; then
-            tmp+=( "" )
-        fi
+        [ "${COMP_LINE% }" = "${COMP_LINE}" ] || tmp+=( "" )        # Ends with space
 
         COMP_WORDS=("${tmp[@]}")
         COMP_CWORD="$(( ${#tmp[@]}-1 ))"
