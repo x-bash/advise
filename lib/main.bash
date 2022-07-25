@@ -40,12 +40,14 @@ ___advise_run(){
         COMP_CWORD="$(( ${#tmp[@]}-1 ))"
     fi
 
-    local cur="${COMP_WORDS[COMP_CWORD]}"
 
     local candidate_arr
     local candidate_exec
     local candidate_exec_arr
-    local offset                # Used in `eval "$candidate_exec"`
+
+    local cur="${COMP_WORDS[COMP_CWORD]}"       # Used in `eval "$candidate_exec"`
+    local offset                                # Used in `eval "$candidate_exec"`
+
     eval "$(___advise_get_result_from_awk "$___ADVISE_RUN_FILEPATH_")" 2>/dev/null
     local IFS=$'\n'
     eval "$candidate_exec" 2>/dev/null
