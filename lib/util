@@ -125,7 +125,7 @@ ___advise_run_filepath_(){
         /*) ___ADVISE_RUN_FILEPATH_="$1" ;;
         -)  ___ADVISE_RUN_FILEPATH_=/dev/stdin ;;
         *)  ___ADVISE_RUN_FILEPATH_="$___ADVISE_RUN_CMD_FOLDER/$1"
-            [ -d "$___ADVISE_RUN_FILEPATH_" ] || return 1
+            [ ! -f "$___ADVISE_RUN_FILEPATH_" ] || return 0
             ___ADVISE_RUN_FILEPATH_="$___ADVISE_RUN_CMD_FOLDER/$1/advise.json"
             [ ! -f "$___ADVISE_RUN_FILEPATH_" ] || return 0
             ___ADVISE_RUN_FILEPATH_="$___ADVISE_RUN_CMD_FOLDER/$1/advise.t.json"

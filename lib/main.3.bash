@@ -1,5 +1,5 @@
-# shellcheck disable=SC2207
-# Section : main
+# shellcheck shell=bash disable=SC2207
+
 ___advise_run(){
     [ -z "$___ADVISE_RUN_CMD_FOLDER" ] && ___ADVISE_RUN_CMD_FOLDER="$___X_CMD_ADVISE_TMPDIR"
 
@@ -13,19 +13,14 @@ ___advise_run(){
     local cur="${COMP_WORDS[COMP_CWORD]}"
     local offset
 
-    eval "$(___advise_get_result_from_awk)" 2>/dev/null
+    eval "$(___advise_get_result_from_awk  "$___ADVISE_RUN_FILEPATH_")" 2>/dev/null
     local IFS=$'\n'
     eval "$candidate_exec" 2>/dev/null
 
     IFS=$' '$'\t'$'\n'
-    COMPREPLY=(
-        $(
-            compgen -W "${candidate_arr[*]} ${candidate_exec_arr[*]}" -- "$cur"
-        )
-    )
+    COMPREPLY=($( compgen -W "${candidate_arr[*]} ${candidate_exec_arr[*]}" -- "$cur"))
 
     __ltrim_completions "$cur" "@"
     __ltrim_completions "$cur" ":"
     __ltrim_completions "$cur" "="
 }
-## EndSection

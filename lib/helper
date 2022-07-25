@@ -115,7 +115,7 @@ ___x_cmd_advise__comp_from_x(){
     [ -f "$filepath" ] || return 1
 
     candidate_exec=
-    eval "$(___advise_get_result_from_awk)" 2>/dev/null
+    eval "$(___advise_get_result_from_awk "$filepath")" 2>/dev/null
     local IFS=$'\n'
     eval "$candidate_exec" 2>/dev/null
 }
@@ -130,7 +130,7 @@ ___x_cmd_advise__comp_from_xcmd(){
     [ -f "$filepath" ] || return 1
 
     candidate_exec=
-    eval "$(___advise_get_result_from_awk)" 2>/dev/null
+    eval "$(___advise_get_result_from_awk "$filepath")" 2>/dev/null
     local IFS=$'\n'
     eval "$candidate_exec" 2>/dev/null
 }
