@@ -1,22 +1,4 @@
-# shellcheck disable=SC2207
-# Section : main
-
-___advise_run_filepath_(){
-    case "$1" in
-        /*) ___ADVISE_RUN_FILEPATH_="$1" ;;
-        -)  ___ADVISE_RUN_FILEPATH_=/dev/stdin ;;
-        *)  ___ADVISE_RUN_FILEPATH_="$___ADVISE_RUN_CMD_FOLDER/$1"
-            [ -d "$___ADVISE_RUN_FILEPATH_" ] || return 1
-            ___ADVISE_RUN_FILEPATH_="$___ADVISE_RUN_CMD_FOLDER/$1/advise.json"
-            [ ! -f "$___ADVISE_RUN_FILEPATH_" ] || return 0
-            ___ADVISE_RUN_FILEPATH_="$___ADVISE_RUN_CMD_FOLDER/$1/advise.t.json"
-            [ ! -f "$___ADVISE_RUN_FILEPATH_" ] || return 0
-            ___ADVISE_RUN_FILEPATH_="$(___x_cmd_advise_man_which "$1")"
-            ;;
-    esac
-    [ ! -f "$___ADVISE_RUN_FILEPATH_" ] || return 0
-    return 1
-}
+# shellcheck shell=bash
 
 ___advise_run(){
     [ -z "$___ADVISE_RUN_CMD_FOLDER" ] && ___ADVISE_RUN_CMD_FOLDER="$___X_CMD_ADVISE_TMPDIR"
@@ -40,13 +22,13 @@ ___advise_run(){
         COMP_CWORD="$(( ${#tmp[@]}-1 ))"
     fi
 
-
     local candidate_arr
     local candidate_exec
     local candidate_exec_arr
 
-    local cur="${COMP_WORDS[COMP_CWORD]}"       # Used in `eval "$candidate_exec"`
-    local offset                                # Used in `eval "$candidate_exec"`
+    # Used in `eval "$candidate_exec"`
+    local cur="${COMP_WORDS[COMP_CWORD]}"
+    local offset
 
     eval "$(___advise_get_result_from_awk "$___ADVISE_RUN_FILEPATH_")" 2>/dev/null
     local IFS=$'\n'
@@ -63,4 +45,3 @@ ___advise_run(){
     __ltrim_completions "$cur" ":"
     __ltrim_completions "$cur" "="
 }
-## EndSection
