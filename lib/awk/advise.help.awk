@@ -60,7 +60,7 @@ function get_option_string( obj, obj_prefix, v,         _str){
 
 function str_joinwrap2(sep, obj, prefix, start, end,     i, _result) {
     _result = (start <= end) ? obj[prefix SUBSEP "\""start"\""] : ""
-    for (i=start+1; i<=end; ++i) _result = _result sep obj[prefix SUBSEP "\""start"\""]
+    for (i=start+1; i<=end; ++i) _result = _result sep obj[prefix SUBSEP "\""i"\""]
     return _result
 }
 
