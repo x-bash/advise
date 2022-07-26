@@ -83,16 +83,16 @@ ___x_cmd_advise_man_load_all(){
 }
 
 ___x_cmd_advise_man_load(){
-    if ___x_cmd_advise_completions_exists || ___x_cmd_advise_completion_update; then
-        local filename="$___X_CMD_ADVISE_MAN_COMPLETIONS_FOLDER/$___X_CMD_CUR_SHELL-completions/completions.sh"
-        if [ -f "$filename" ]; then
-            x:debug "source $___X_CMD_CUR_SHELL completions from $filename"
-            .  "$filename"
-        fi
-    fi
-
     if [ "$#" -ge 1 ]; then     ___x_cmd_advise_man_load_one "$@"
-    else                        ___x_cmd_advise_man_load_all
+    else
+        ___x_cmd_advise_man_load_all
+        if ___x_cmd_advise_completions_exists || ___x_cmd_advise_completion_update; then
+            local filename="$___X_CMD_ADVISE_MAN_COMPLETIONS_FOLDER/$___X_CMD_CUR_SHELL-completions/completions.sh"
+            if [ -f "$filename" ]; then
+                x:debug "source $___X_CMD_CUR_SHELL completions from $filename"
+                .  "$filename"
+            fi
+        fi
     fi
 }
 
