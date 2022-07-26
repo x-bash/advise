@@ -17,17 +17,9 @@ BEGIN{
 }
 
 # Section: prepare argument
-function prepare_argarr( argstr,        i, l, _arg ){
-    if ( argstr == "" ) argstr = "" # "." "\002"
-
-    gsub("\n", "\001", argstr)
+function prepare_argarr( argstr,        i, l ){
+    if ( argstr == "" ) return
     l = split(argstr, parsed_argarr, "\002")
-
-    for (i=1; i<=parsed_arglen; ++i) {
-        _arg = parsed_argarr[i]
-        gsub("\001", "\n", _arg)
-        parsed_argarr[i] = _arg
-    }
     parsed_argarr[L] = l
 }
 
@@ -127,8 +119,15 @@ function generate_help( obj, obj_prefix, arr, text,          i, v, _str, _max_le
 function print_helpdoc( args, obj,          obj_prefix, argl, i, l, v, _str){
     obj_prefix = SUBSEP "\"1\""   # Json Parser
     argl = args[L]
-    for (i =1; i<=argl; ++i){
-        obj_prefix = obj_prefix SUBSEP jqu(args[i])
+    for (i=1; i<=argl; ++i){
+        l = obj[obj_prefix L]
+        for (j=1; j<=l; ++j) {
+            optarg_id = obj[obj_prefix SUBSEP j]
+            if ("|"juq(optarg_id)"|" ~ "\\|"args[i]"\\|") {
+                obj_prefix = obj_prefix SUBSEP optarg_id
+                break
+            }
+        }
     }
 
     l = obj[ obj_prefix L]
