@@ -94,6 +94,7 @@ ___x_cmd_advise__shift_comp_words(){
 ___x_cmd_advise__comp_from_x(){
     local offset="${1:-$offset}"
     local module
+    local IFS
     ___x_cmd_advise__shift_comp_words
 
     local which_one_result
@@ -116,13 +117,14 @@ ___x_cmd_advise__comp_from_x(){
 
     candidate_exec=
     eval "$(___advise_get_result_from_awk "$filepath")" 2>/dev/null
-    local IFS=$'\n'
+    IFS=$'\n'
     eval "$candidate_exec" 2>/dev/null
 }
 
 ___x_cmd_advise__comp_from_xcmd(){
     local offset="${1:-$offset}"
     local module
+    local IFS
     ___x_cmd_advise__shift_comp_words
 
     ___x_cmd_advise_man_load "$module"
@@ -131,13 +133,14 @@ ___x_cmd_advise__comp_from_xcmd(){
 
     candidate_exec=
     eval "$(___advise_get_result_from_awk "$filepath")" 2>/dev/null
-    local IFS=$'\n'
+    IFS=$'\n'
     eval "$candidate_exec" 2>/dev/null
 }
 
 ___x_cmd_advise__comp_from_origin(){
     local offset="${1:-$offset}"
     local module
+    local IFS
     ___x_cmd_advise__shift_comp_words
 
     # TODO: must have map from command to function name and script path
