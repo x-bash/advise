@@ -1,7 +1,6 @@
 
 {
     if (NR>1) {
-        # if ($0 != "") jiparse(obj, $0)
         if ($0 != "") jiparse_after_tokenize(obj, $0)
     } else {
         prepare_argarr( $0 )
@@ -9,9 +8,9 @@
 }
 
 END{
-    FG_BLUE = "\033[36m"
-    FG_RED  = "\033[91m"
-    UI_END  = "\033[0m"
+    UI_LEFT  = ( UI_LEFT == "" ) ? "\033[36m" : UI_LEFT
+    UI_RIGHT = ( UI_RIGHT == "" ) ? "\033[91m" : UI_RIGHT
+    UI_END   = "\033[0m"
     HELP_INDENT_STR = "    "
     DESC_INDENT_STR = "   "
     print_helpdoc( parsed_argarr, obj )
@@ -32,7 +31,24 @@ function prepare_argarr( argstr,        i, l, _arg ){
     parsed_argarr[L] = l
 }
 
-function aobj_get_optargc( obj, obj_prefix, option_id,  _res, i, l, v ){
+function cut_line( _line, _space_len,               _max_len_line, l, _len, i){
+    if( COLUMNS == "" )     return _line
+
+    _max_len_line = COLUMNS - _space_len - 3 - 4
+    if ( length(_line) < _max_len_line )  return _line
+
+    l = split( _line, _arr, " " )
+    for(i=1; i<=l; ++i){
+        _len += length(_arr[i]) + 1
+        if (_len >= _max_len_line) {
+            _len -= ( length(_arr[i]) + 1 )
+            break
+        }
+    }
+    return substr(_line, 1, _len) "\n" str_rep(" ", _space_len+7)  cut_line( substr(_line, _len + 1 ), _space_len )
+}
+
+function aobj_get_optargc( obj, obj_prefix, option_id,              _res, i, l, v ){
     obj_prefix = obj_prefix SUBSEP option_id
     if ( "" != (_res = obj[ obj_prefix L "argc" ]) ) return _res
     for (i=1; i<100; ++i) {     # 100 means MAXINT
@@ -93,23 +109,6 @@ function generate_optarg_rule_string(obj, obj_prefix, option_id,     _str, _dafa
     return _str
 }
 
-function cut_line( _line, _space_len,               _max_len_line, _option_after_arrl, _part_len, key){
-    if( COLUMNS == "" )     return _line
-
-    _max_len_line = COLUMNS - _space_len - 3 - 4
-    if ( length(_line) < _max_len_line )  return _line
-
-    _option_after_arrl = split( _line, _option_after_arr, " " )
-    for(key=1; key<=_option_after_arrl; ++key){
-        _part_len += length(_option_after_arr[key]) + 1
-        if (_part_len >= _max_len_line) {
-            _part_len -= ( length(_option_after_arr[key]) + 1 )
-            break
-        }
-    }
-    return substr(_line, 1, _part_len) "\n" str_rep(" ", _space_len+7)  cut_line( substr(_line, _part_len + 1 ), _space_len )
-}
-
 function generate_help( obj, obj_prefix, arr, text,          i, v, _str, _max_len, opt_text_arr, _option_after ){
     arr_clone( arr, opt_text_arr )
     _max_len = generate_help_for_namedoot_cal_maxlen_desc( obj, obj_prefix, opt_text_arr )
@@ -118,8 +117,8 @@ function generate_help( obj, obj_prefix, arr, text,          i, v, _str, _max_le
         v = arr[ i ]
         _option_after = juq(obj[ obj_prefix, v, "\"#desc\"" ]) UI_END generate_optarg_rule_string(obj, obj_prefix, v)
         _str = _str HELP_INDENT_STR sprintf("%s" DESC_INDENT_STR "%s\n",
-            FG_BLUE         str_pad_right(opt_text_arr[i], _max_len),
-            FG_RED          cut_line( _option_after, _max_len ))
+            UI_LEFT         str_pad_right(opt_text_arr[i], _max_len),
+            UI_RIGHT        cut_line( _option_after, _max_len ))
     }
     if (text == "SUBCOMMANDS") _str = _str "\nRun 'CMD SUBCOMMAND --help' for more information on a command."
     return _str
