@@ -1,10 +1,9 @@
-# shellcheck shell=bash
+# shellcheck shell=bash disable=SC2207
 
 ___advise_run(){
     [ -z "$___ADVISE_RUN_CMD_FOLDER" ] && ___ADVISE_RUN_CMD_FOLDER="$___X_CMD_ADVISE_TMPDIR"
 
     local ___ADVISE_RUN_FILEPATH_;  ___advise_run_filepath_ "${1:-${COMP_WORDS[0]}}" || return 1
-
     {   # Only different from main.3.bash
         local last="${COMP_WORDS[COMP_CWORD]}"
         case "$last" in
@@ -32,11 +31,7 @@ ___advise_run(){
     eval "$candidate_exec" 2>/dev/null
 
     IFS=$' '$'\t'$'\n'
-    COMPREPLY=(
-        $(
-            compgen -W "${candidate_arr[*]} ${candidate_exec_arr[*]}" -- "$cur"
-        )
-    )
+    COMPREPLY=($( compgen -W "${candidate_arr[*]} ${candidate_exec_arr[*]}" -- "$cur"))
 
     __ltrim_completions "$cur" "@"
     __ltrim_completions "$cur" ":"
