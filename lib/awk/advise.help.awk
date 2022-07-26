@@ -1,10 +1,7 @@
 
 {
-    if (NR>1) {
-        if ($0 != "") jiparse_after_tokenize(obj, $0)
-    } else {
-        prepare_argarr( $0 )
-    }
+    if (NR == 1) { prepare_argarr( $0 ); next; }
+    if ($0 != "") jiparse_after_tokenize(obj, $0)
 }
 
 BEGIN{
