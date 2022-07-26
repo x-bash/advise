@@ -3,6 +3,7 @@
 ___x_cmd_advise_get_help(){
     local filePath="${1:?"Provide advise json path"}"; shift
     [ -f "$filePath" ] || return
+    local IS_INTERACTIVE=0;      [ -t 0 ] && [ "${-#*i}" != "$-" ]   && IS_INTERACTIVE=1
     local IFS=$'\002'
     {
         printf "%s\n" "$*"
@@ -10,6 +11,7 @@ ___x_cmd_advise_get_help(){
     } | awk \
     -v COLUMNS="$COLUMNS" \
     -v UI_LEFT="\\033[${___X_CMD_THEME_COLOR_CODE}m" \
+    -v IS_INTERACTIVE="$IS_INTERACTIVE" \
     -f "$___X_CMD_ROOT_MOD/awk/lib/default.awk" \
     -f "$___X_CMD_ROOT_MOD/awk/lib/str.awk" \
     -f "$___X_CMD_ROOT_MOD/awk/lib/sh.awk" \

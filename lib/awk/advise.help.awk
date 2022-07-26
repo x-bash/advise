@@ -7,13 +7,16 @@
     }
 }
 
-END{
-    UI_LEFT  = ( UI_LEFT == "" ) ? "\033[36m" : UI_LEFT
-    UI_RIGHT = ( UI_RIGHT == "" ) ? "\033[91m" : UI_RIGHT
-    UI_END   = "\033[0m"
+BEGIN{
+    if (IS_INTERACTIVE == 1) {
+        UI_LEFT  = ( UI_LEFT == "" ) ? "\033[36m" : UI_LEFT
+        UI_RIGHT = ( UI_RIGHT == "" ) ? "\033[91m" : UI_RIGHT
+        UI_END   = "\033[0m"
+    } else {
+        UI_LEFT = UI_RIGHT = UI_END = ""
+    }
     HELP_INDENT_STR = "    "
     DESC_INDENT_STR = "   "
-    print_helpdoc( parsed_argarr, obj )
 }
 
 # Section: prepare argument
@@ -147,3 +150,5 @@ function print_helpdoc( args, obj,          obj_prefix, argl, i, l, v, _str){
     if ( arr_len(subcmd) != 0 )  _str = _str generate_help( obj, obj_prefix, subcmd, "SUBCOMMANDS" )
     print _str
 }
+
+END{ print_helpdoc( parsed_argarr, obj ) > "/dev/stderr"; }
