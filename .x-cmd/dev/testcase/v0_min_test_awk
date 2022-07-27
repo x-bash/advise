@@ -2,8 +2,8 @@
 
 test_first(){
     @assert stdout min ''<<A
-desc --- cmd for 中文 测试 description
-#> advise ls
+desc  description
+#> advise ls--- cmd for 中文 测试
 A
     @assert stdout min desc ''<<A
 update
