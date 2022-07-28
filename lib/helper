@@ -94,6 +94,7 @@ ___x_cmd_advise__shift_comp_words(){
 ___x_cmd_advise__comp_from_x(){
     local offset="${1:-$offset}"
     local module
+    local IFS
     ___x_cmd_advise__shift_comp_words
 
     local which_one_result
@@ -122,6 +123,7 @@ ___x_cmd_advise__comp_from_x(){
 ___x_cmd_advise__comp_from_xcmd(){
     local offset="${1:-$offset}"
     local module
+    local IFS
     ___x_cmd_advise__shift_comp_words
 
     ___x_cmd_advise_man_load "$module"
@@ -136,6 +138,7 @@ ___x_cmd_advise__comp_from_xcmd(){
 ___x_cmd_advise__comp_from_origin(){
     local offset="${1:-$offset}"
     local module
+    local IFS
     ___x_cmd_advise__shift_comp_words
 
     # TODO: must have map from command to function name and script path
