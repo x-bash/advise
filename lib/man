@@ -110,5 +110,5 @@ ___x_cmd_advise_man_completer() {
 }
 
 ## Section man advise
-___x_cmd_advise_man__list(){            candidate_exec_arr=( $(___x_cmd_advise_man_ls ${1:+"$1"/_} ) );      }
+___x_cmd_advise_man__list(){ local IFS=$'\n'; candidate_exec_arr=( $(___x_cmd_advise_man_ls ${1:+"$1"/_} ) ); }
 ## EndSection
