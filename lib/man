@@ -94,7 +94,6 @@ ___x_cmd_advise_man_load(){
             fi
         fi
     fi
-    ___advise_main x
 }
 
 ___x_cmd_advise_man_rm(){
