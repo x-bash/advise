@@ -95,13 +95,14 @@ function parse_args_to_env( args, argl, obj, obj_prefix, genv_table, lenv_table,
             else break
         } else if (arg ~ /^-/) {
             j = parse_args_to_env___option( obj, obj_prefix, args, argl, arg, i, genv_table, lenv_table )
+
             if (j > argl) return            # Not Running at all
             else if (j != 0) { i = j; continue }
 
             _arg_arrl = split(arg, _arg_arr, "")
             for (j=2; j<=_arg_arrl; ++j) {
                 _optarg_id = aobj_get_id_by_name( obj, obj_prefix, "-" _arg_arr[j] )
-                assert( _optarg_id == "", "Fail at parsing: " arg ". Not Found: -" _arg_arr[j] )
+                if ( _optarg_id == "" ) break
                 _optargc = aobj_get_optargc( obj, obj_prefix, _optarg_id )
                 if (_optargc == 0) {
                     env_table_set_true( _optarg_id, obj_prefix SUBSEP _optarg_id )
@@ -124,16 +125,13 @@ function parse_args_to_env( args, argl, obj, obj_prefix, genv_table, lenv_table,
         break
     }
     # handle it into argument
-    # for (j=1; i+j-1 < argl; ++j) {
-    #     rest_arg[ j ] = args[ i+j-1 ]
-    # }
-    # _rest_argc = j - 1
+
     OFFSET = i
 
-    for (j=0; i+j < argl; ++j) {
-        rest_arg[ j ] = args[ i+j ]
+    for (j=1; i+j-1 < argl; ++j) {
+        rest_arg[ j ] = args[ i+j-1 ]
     }
-    _rest_argc = j
+    _rest_argc = j - 1
 
     if (_rest_argc == 0) {
         advise_complete_option_name_or_argument_value( args[ argl ], genv_table, lenv_table, obj, obj_prefix )
