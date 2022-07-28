@@ -110,7 +110,7 @@ ___x_cmd_advise__comp_from_x(){
         main_func="$(___x_cmd_ldict_get ___X_CMD_XRC_SET_MAIN_DICT "$which_one_result")"
     fi
 
-    ___advise_main "$main_func" 2>/dev/null
+    ___advise_main "$main_func" "" "$module" 2>/dev/null
     filepath="${TMPDIR%/}/.x-cmd/advise_auto_json/$main_func"
     [ -f "$filepath" ] || return 1
 

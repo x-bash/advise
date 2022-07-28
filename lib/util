@@ -37,7 +37,7 @@ ___advise_main(){
     local tmp_filepath
     tmp_filepath=${advise_json_dir}/$func
 
-    [ ! -d "$advise_json_dir" ] && mkdir -p "$advise_json_dir"
+    x mkdirp "$advise_json_dir"
 
     if [ "-" = "$filepath" ]; then
         filepath=$tmp_filepath
@@ -49,12 +49,12 @@ ___advise_main(){
             local content
             x:debug "Start gen advise for $func"
             content="$(___X_CMD_META_MODE=1 X_CMD_ADVISE_FUNC_NAME=$func "$func" _x_cmd_advise_json)"
-            if [ $? -eq 0 ]; then
-                printf "%s" "$content" >"$filepath"
-                x:debug "Finished gen advise for $func"
-            else
-                x:error "$func: Failed gen advise json, you should define _x_cmd_advise_json subcmd or use param"
+            if [ ! $? -eq 0 ]; then
+                x:error "___advise_main $*: Failed gen advise json"
+                return 1
             fi
+            printf "%s" "$content" >"$filepath"
+            x:debug "Finished gen advise for $func"
         fi
     else
         cp "$filepath" "$tmp_filepath"
