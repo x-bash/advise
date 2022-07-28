@@ -83,21 +83,21 @@ function generate_help_for_namedoot_cal_maxlen_desc( obj, obj_prefix, opt_text_a
     return _max_len
 }
 
-function generate_optarg_rule_string_inner(obj, obj_prefix, option_id,     _str, _dafault, _regexl, _candl){
-    _default = obj[ obj_prefix SUBSEP option_id SUBSEP "\"#default\"" ]
-    _regexl = obj[ obj_prefix SUBSEP option_id SUBSEP "\"#cand_regex\"" L]
-    _candl = obj[ obj_prefix SUBSEP option_id SUBSEP "\"#cand\"" L]
+function generate_optarg_rule_string_inner(obj, obj_prefix,     _str, _dafault, _regexl, _candl){
+    _default = obj[ obj_prefix SUBSEP "\"#default\"" ]
+    _regexl = obj[ obj_prefix SUBSEP "\"#cand_regex\"" L]
+    _candl = obj[ obj_prefix SUBSEP "\"#cand\"" L]
     if (_default != "" ) _str = _str " [default: "   juq(_default) "]"
-    if ( _regexl > 0 )   _str = _str " [regex: "     str_joinwrap2( "|", obj, obj_prefix SUBSEP option_id SUBSEP "\"#cand_regex\"" , 1, _regexl ) "]"
-    if ( _candl > 0  )   _str = _str " [candidate: " str_joinwrap2( ", ", obj, obj_prefix SUBSEP option_id SUBSEP "\"#cand\"" , 1, _candl ) "]"
+    if ( _regexl > 0 )   _str = _str " [regex: "     str_joinwrap2( "|", obj, obj_prefix SUBSEP "\"#cand_regex\"" , 1, _regexl ) "]"
+    if ( _candl > 0  )   _str = _str " [candidate: " str_joinwrap2( ", ", obj, obj_prefix SUBSEP "\"#cand\"" , 1, _candl ) "]"
     return _str
 }
 
 function generate_optarg_rule_string(obj, obj_prefix, option_id,     _str, _dafault, _regexl, _candl, l, i) {
     l = aobj_get_optargc( obj, obj_prefix, option_id )
-    _str = _str generate_optarg_rule_string_inner(obj, obj_prefix, option_id)
+    _str = _str generate_optarg_rule_string_inner(obj, obj_prefix SUBSEP option_id)
     obj_prefix = obj_prefix SUBSEP option_id
-    for (i=1; i<=l; ++i) _str = _str generate_optarg_rule_string_inner(obj, obj_prefix, "\"#"i"\"")
+    for (i=1; i<=l; ++i) _str = _str generate_optarg_rule_string_inner(obj, obj_prefix SUBSEP "\"#"i"\"")
     return _str
 }
 
@@ -119,7 +119,7 @@ function generate_help( obj, obj_prefix, arr, text,          i, v, _str, _max_le
 function print_helpdoc( args, obj,          obj_prefix, argl, i, l, v, _str){
     obj_prefix = SUBSEP "\"1\""   # Json Parser
     argl = args[L]
-    for (i=1; i<=argl; ++i){
+    for (i=2; i<=argl; ++i){
         l = obj[obj_prefix L]
         for (j=1; j<=l; ++j) {
             optarg_id = obj[obj_prefix SUBSEP j]
