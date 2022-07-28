@@ -25,7 +25,7 @@ ___x_cmd_advise_completion_update(){
     local CACHE_COMPLETIONS="$___X_CMD_ROOT/.tmp/advise/$___X_CMD_CUR_SHELL-completions.7z"
     local folder="$___X_CMD_ADVISE_MAN_COMPLETIONS_FOLDER/$___X_CMD_CUR_SHELL-completions"
     ___x_cmd_httpget_gitx static-build "$___X_CMD_CUR_SHELL"-completions main "$___X_CMD_CUR_SHELL-completions.7z" "$CACHE_COMPLETIONS" || {
-        x:log "Fail to update $___X_CMD_CUR_SHELL-completion.7z from x-cmd/advise."
+        x:log "Fail to update $___X_CMD_CUR_SHELL-completions.7z from x-cmd/advise."
         return 1
     }
 
