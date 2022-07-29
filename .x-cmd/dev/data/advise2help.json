@@ -110,10 +110,10 @@
     }
   },
   "--flag1|-f": {
-    "#desc": "Flag1 that you can use $\{flag1:-false} to get the bool value"
+    "#desc": "Flag1 that you can use ${flag1:-false} to get the bool value"
   },
   "--flag1222|-g": {
-    "#desc": "Flag1222 that you can use $\{flag1222:-false} to get the bool value"
+    "#desc": "Flag1222 that you can use ${flag1222:-false} to get the bool value"
   },
   "#1": {
     "#desc": "Test rest argument #1 when exist option and flag",

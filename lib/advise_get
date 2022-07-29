@@ -20,3 +20,5 @@ ___x_cmd_advise_get_help(){
     -f "$___X_CMD_ROOT_MOD/advise/lib/awk/advise.obj.awk" \
     -f "$___X_CMD_ROOT_MOD/advise/lib/awk/advise.help.awk"
 }
+
+# ___x_cmd_advise_get_help .x-cmd/dev/data/advise2help.json "$@"
