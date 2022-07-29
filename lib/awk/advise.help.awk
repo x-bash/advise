@@ -1,9 +1,3 @@
-
-{
-    if (NR == 1) { prepare_argarr( $0 ); next; }
-    if ($0 != "") jiparse_after_tokenize(obj, $0)
-}
-
 BEGIN{
     UI_LEFT  = ( UI_LEFT == "" ) ? "\033[36m" : UI_LEFT
     UI_RIGHT = ( UI_RIGHT == "" ) ? "\033[91m" : UI_RIGHT
@@ -123,6 +117,11 @@ function print_helpdoc( args, obj,          obj_prefix, argl, i, l, v, _str){
     if ( arr_len(restopt) != 0 ) _str = _str generate_help( obj, obj_prefix, restopt, "ARGS" )
     if ( arr_len(subcmd) != 0 )  _str = _str generate_help( obj, obj_prefix, subcmd, "SUBCOMMANDS" )
     print _str
+}
+
+{
+    if (NR == 1) { prepare_argarr( $0 ); next; }
+    if ($0 != "") jiparse_after_tokenize(obj, $0)
 }
 
 END{ print_helpdoc( args, obj ) > "/dev/stderr"; }
