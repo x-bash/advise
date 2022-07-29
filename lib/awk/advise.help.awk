@@ -63,7 +63,7 @@ function generate_optarg_rule_string_inner(obj, obj_prefix,     _str, _dafault, 
     return _str
 }
 
-function generate_optarg_rule_string(obj, obj_prefix, option_id,     _str, _dafault, _regexl, _candl, l, i) {
+function generate_optarg_rule_string(obj, obj_prefix, option_id,     _str, l, i) {
     l = aobj_get_optargc( obj, obj_prefix, option_id )
     _str = _str generate_optarg_rule_string_inner(obj, obj_prefix SUBSEP option_id)
     obj_prefix = obj_prefix SUBSEP option_id
