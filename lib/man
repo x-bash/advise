@@ -25,24 +25,24 @@ ___x_cmd_advise_completion_update(){
     local CACHE_COMPLETIONS="$___X_CMD_ROOT/.tmp/advise/$___X_CMD_CUR_SHELL-completions.7z"
     local folder="$___X_CMD_ADVISE_MAN_COMPLETIONS_FOLDER/$___X_CMD_CUR_SHELL-completions"
     ___x_cmd_httpget_gitx static-build "$___X_CMD_CUR_SHELL"-completions main "$___X_CMD_CUR_SHELL-completions.7z" "$CACHE_COMPLETIONS" || {
-        x:error "Fail to update $___X_CMD_CUR_SHELL-completions.7z from x-cmd/advise."
+        advise:error "Fail to update $___X_CMD_CUR_SHELL-completions.7z from x-cmd/advise."
         return 1
     }
 
     { x rmrf "$folder";   x mkdirp "$folder"; } 1>/dev/null 2>&1
-    x uz "$CACHE_COMPLETIONS" "$folder"
+    ! x uz "$CACHE_COMPLETIONS" "$folder" || advise:info "Decompress: advise/$___X_CMD_CUR_SHELL-completions.7z to $folder"
     x rmrf "$CACHE_COMPLETIONS"
 }
 
 ___x_cmd_advise_man_update(){
     local CACHE="$___X_CMD_ROOT/.tmp/advise/all.tgz"
     ___x_cmd_httpget_gitx x-cmd advise main "dist/all.tgz" "$CACHE" - || {
-        x:error "Fail to update from x-cmd/advise."
+        advise:error "Fail to update from x-cmd/advise."
         return 1
     }
 
     { x rmrf "$___X_CMD_ADVISE_MAN_SRC_FOLDER";   x mkdirp "$___X_CMD_ADVISE_MAN_SRC_FOLDER"; } 1>/dev/null 2>&1
-    x uz "$CACHE" "$___X_CMD_ADVISE_MAN_SRC_FOLDER"
+    ! x uz "$CACHE" "$___X_CMD_ADVISE_MAN_SRC_FOLDER" || advise:info "Decompress: advise/all.tgz to $___X_CMD_ADVISE_MAN_SRC_FOLDER"
     x rmrf "$CACHE"
 }
 
@@ -89,7 +89,7 @@ ___x_cmd_advise_man_load(){
         if ___x_cmd_advise_completions_exists || ___x_cmd_advise_completion_update; then
             local filename="$___X_CMD_ADVISE_MAN_COMPLETIONS_FOLDER/$___X_CMD_CUR_SHELL-completions/completions.sh"
             if [ -f "$filename" ]; then
-                x:debug "source $___X_CMD_CUR_SHELL completions from $filename"
+                advise:debug "source $___X_CMD_CUR_SHELL completions from $filename"
                 .  "$filename"
             fi
         fi
