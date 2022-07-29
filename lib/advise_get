@@ -8,15 +8,15 @@ ___x_cmd_advise_get_help(){
     {
         printf "%s\n" "$*"
         cat "$filePath"
-    } | awk \
+    } | command awk \
     -v COLUMNS="$COLUMNS" \
     -v UI_LEFT="\\033[${___X_CMD_THEME_COLOR_CODE}m" \
     -v IS_INTERACTIVE="$IS_INTERACTIVE" \
     -f "$___X_CMD_ROOT_MOD/awk/lib/default.awk" \
     -f "$___X_CMD_ROOT_MOD/awk/lib/str.awk" \
-    -f "$___X_CMD_ROOT_MOD/awk/lib/sh.awk" \
     -f "$___X_CMD_ROOT_MOD/awk/lib/json.awk" \
     -f "$___X_CMD_ROOT_MOD/awk/lib/jiter.awk" \
     -f "$___X_CMD_ROOT_MOD/awk/lib/arr.awk" \
+    -f "$___X_CMD_ROOT_MOD/advise/lib/awk/advise.obj.awk" \
     -f "$___X_CMD_ROOT_MOD/advise/lib/awk/advise.help.awk"
 }
