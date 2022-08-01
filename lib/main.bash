@@ -27,10 +27,9 @@ ___advise_run(){
     local offset
 
     eval "$(___advise_get_result_from_awk "$___ADVISE_RUN_FILEPATH_")" 2>/dev/null
-    local IFS=$'\n'
+    local IFS=$' '$'\t'$'\n'
     eval "$candidate_exec" 2>/dev/null
 
-    IFS=$' '$'\t'$'\n'
     COMPREPLY=($( compgen -W "${candidate_arr[*]} ${candidate_exec_arr[*]}" -- "$cur"))
 
     __ltrim_completions "$cur" "@"

@@ -1,8 +1,9 @@
 # Author:       Li Junhao           l@x-cmd.com             # xrc
 # shellcheck    shell=bash          disable=SC2039,3043
 
+x log init advise
 if [ -z "${ZSH_VERSION}${BASH_VERSION}" ]; then
-    x:info "advise is only available in 'bash' or 'zsh'."
+    advise:info "advise is only available in 'bash' or 'zsh'."
 else
 
 ___X_CMD_ADVISE_TMPDIR="${TMPDIR%/}/.x-cmd/advise_auto_json"
@@ -70,7 +71,7 @@ ___x_cmd_advise(){
                                     ;;
         # genjson)                    ___X_CMD_META_MODE=1 X_CMD_ADVISE_FUNC_NAME="$1" "$1" _x_cmd_advise_json ;;
         _x_cmd_advise_json)         cat "$___X_CMD_ROOT_MOD/advise/lib/advise.advise.json";;
-        ""|help)                    cat "$___X_CMD_ROOT_MOD/advise/lib/help.txt" >&2; return 1;;
+        ""|help)                    ___x_cmd_advise_get_help "/home/qiakai/xbash/advise/lib/advise.advise.json" ;;
         *)                          ___advise_main "$op" "$@" ;;    # TODO: open app.
     esac
 }
@@ -83,7 +84,7 @@ if [ -n "$ZSH_VERSION" ] && [ -z "$___X_CMD_ADVISE_ZSH_COMPLETE_LOADED" ] ; then
     zstyle ':completion:*' matcher-list 'm:{a-zA-Z-_}={A-Za-z_-}' 'r:|=*' 'l:|=* r:|=*'
     zstyle ':completion:*' sort false
     if ! command -v compinit > /dev/null; then
-        x:debug "autoload compinit"
+        advise:debug "autoload compinit"
         autoload -Uz compinit && compinit
     fi
 fi

@@ -41,20 +41,20 @@
     "#arguments_str": " <>",
     "#1": {
       "#desc": "",
-      "#cand_regex": [
-        "[0-9]*"
-      ],
+      "#regex": {
+        "[0-9]*": ""
+      },
       "#default": "0"
     }
   },
   "--regex_arg2": {
-    "#desc": "Test an argument with regex 2",
+    "#desc": "Test an argument with regex 2Test an argument with regex 2Test an argument with regex 2Test an argument with regex 2Test an argument with",
     "#arguments_str": " <>",
     "#1": {
       "#desc": "",
-      "#cand_regex": [
-        "([1-9]?[0-9]|100)"
-      ],
+      "#regex": {
+        "([1-9]?[0-9]|100)": ""
+      },
       "#default": "20"
     }
   },
@@ -63,11 +63,11 @@
     "#arguments_str": " <>",
     "#1": {
       "#desc": "",
-      "#cand_regex": [
-        "abc",
-        "cde",
-        "def"
-      ]
+      "#regex": {
+        "abc": "",
+        "cde": "",
+        "def": ""
+      }
     }
   },
   "--repo2|-b": {
@@ -83,10 +83,10 @@
     },
     "#2": {
       "#desc": "",
-      "#cand_regex": [
-        "cde",
-        "def"
-      ]
+      "#regex": {
+        "cde": "",
+        "def": ""
+      }
     }
   },
   "--priviledge|-p": {
@@ -106,14 +106,14 @@
     "#arguments_str": " <no_type_arg>",
     "#1": {
       "#desc": "",
-      "#default": "default"
+      "#default": "123"
     }
   },
   "--flag1|-f": {
-    "#desc": "Flag1 that you can use $\{flag1:-false} to get the bool value"
+    "#desc": "Flag1 that you can use ${flag1:-false} to get the bool value"
   },
   "--flag1222|-g": {
-    "#desc": "Flag1222 that you can use $\{flag1222:-false} to get the bool value"
+    "#desc": "Flag1222 that you can use ${flag1222:-false} to get the bool value"
   },
   "#1": {
     "#desc": "Test rest argument #1 when exist option and flag",

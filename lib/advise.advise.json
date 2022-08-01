@@ -45,11 +45,5 @@
                 "#exec": "___x_cmd_advise_man__list"
             }
         }
-    },
-    "del": null,
-    "obj-new": null,
-    "obj-del": null,
-    "clear": {
-        "#desc": "Clear all of the advise cache."
     }
 }
