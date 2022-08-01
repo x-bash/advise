@@ -98,4 +98,28 @@ function aobj_get_maximum_rest_argc( obj, obj_prefix, rest_arg_id, _res ){
     return obj[ obj_prefix, L "restargc__max" ]
 }
 
+function aobj_get( obj, obj_prefix ){
+    return obj[ obj_prefix ]
+}
+
+function aobj_len( obj, obj_prefix ){
+    return obj[ obj_prefix L ]
+}
+
+function aobj_get_special_value_id( obj_prefix, v ){
+    return obj_prefix SUBSEP "\"#" v "\""
+}
+
+function aobj_get_special_value( obj, obj_prefix, v ){
+    return obj[ obj_prefix SUBSEP "\"#" v "\""]
+}
+
+function aobj_get_description( obj, obj_prefix ){
+    return aobj_get_special_value(obj, obj_prefix, "desc")
+}
+
+function aobj_get_default( obj, obj_prefix ){
+    return aobj_get_special_value(obj, obj_prefix, "default")
+}
+
 

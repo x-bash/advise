@@ -17,7 +17,7 @@ function prepare_argarr( argstr,        i, l ){
 function cut_line( _line, _space_len,               _max_len_line, l, _len, i){
     if( COLUMNS == "" )     return _line
 
-    _max_len_line = COLUMNS - _space_len - 3 - 4
+    _max_len_line = COLUMNS - _space_len
     if ( length(_line) < _max_len_line )  return _line
 
     l = split( _line, _arr, " " )
@@ -28,38 +28,45 @@ function cut_line( _line, _space_len,               _max_len_line, l, _len, i){
             break
         }
     }
-    return substr(_line, 1, _len) "\n" str_rep(" ", _space_len+7)  cut_line( substr(_line, _len + 1 ), _space_len )
-}
-
-function str_joinwrap2(sep, obj, prefix, start, end,     i, _result) {
-    _result = (start <= end) ? obj[prefix, "\""start"\""] : ""
-    for (i=start+1; i<=end; ++i) _result = _result sep obj[prefix, "\""i"\""]
-    return _result
+    return substr(_line, 1, _len) "\n" str_rep(" ", _space_len)  cut_line( substr(_line, _len + 1 ), _space_len )
 }
 
 function get_option_string( obj, obj_prefix, v,         _str){
     _str = juq(v)
     gsub("\\|", ",", _str)
-    return _str juq(obj[ obj_prefix, v, "\"#arguments_str\""])
+    return _str juq( aobj_get_special_value(obj, obj_prefix SUBSEP v, "arguments_str") )
 }
 
 function generate_help_for_namedoot_cal_maxlen_desc( obj, obj_prefix, _text_arr,            l, i, _len, _max_len, _opt_help_doc ){
-    l = _text_arr[ L ]
+    l = arr_len(_text_arr)
     for ( i=1; i<=l; ++i ) {
-        _text_arr[ i ]   =  _opt_help_doc    = get_option_string( obj, obj_prefix, _text_arr[ i ] )
+        _text_arr[ i ]   = _opt_help_doc     = get_option_string( obj, obj_prefix, _text_arr[ i ] )
         _text_arr[ i L ] = _len              = length( _opt_help_doc )        # TODO: Might using wcswidth
         if ( _len > _max_len )    _max_len = _len
     }
     return _max_len
 }
 
-function generate_optarg_rule_string_inner(obj, obj_prefix,     _str, _dafault, _regexl, _candl){
-    _default = arr_get(obj, obj_prefix SUBSEP "\"#default\"" )
-    _regexl  = arr_get(obj, obj_prefix SUBSEP "\"#cand_regex\"" L)
-    _candl   = arr_get(obj, obj_prefix SUBSEP "\"#cand\"" L)
-    if (_default != "" ) _str = _str " [default: "   juq(_default) "]"
-    if ( _regexl > 0 )   _str = _str " [regex: "     str_joinwrap2( "|", obj, obj_prefix SUBSEP "\"#cand_regex\"" , 1, _regexl ) "]"
-    if ( _candl > 0  )   _str = _str " [candidate: " str_joinwrap2( ", ", obj, obj_prefix SUBSEP "\"#cand\"" , 1, _candl ) "]"
+function generate_optarg_rule_string_inner(obj, obj_prefix,     _str, _dafault, _regexl, _candl, i){
+    _default = aobj_get_default(obj, obj_prefix)
+    if (_default != "" ) _str = _str " [default: " _default "]"
+
+    _regex_id = aobj_get_special_value_id( obj_prefix, "regex")
+    _cand_id = aobj_get_special_value_id( obj_prefix, "cand")
+    _regexl  = aobj_len(obj, _regex_id)
+    _candl   = aobj_len(obj, _cand_id)
+    if ( _regexl > 0 ) {
+        _str = _str " [regex: "
+        _str = _str juq( aobj_get(obj, _regex_id SUBSEP 1) )
+        for (i=2; i<=_regexl; ++i ) _str = _str "|" juq( aobj_get(obj, _regex_id SUBSEP i) )
+        _str = _str "]"
+    }
+    if ( _candl > 0  ) {
+        _str = _str " [candidate: "
+        _str = _str aobj_get(obj, _cand_id SUBSEP "\""1"\"")
+        for (i=2; i<=_candl; ++i ) _str = _str ", " aobj_get(obj, _cand_id SUBSEP "\""i"\"")
+        _str = _str "]"
+    }
     return _str
 }
 
@@ -77,11 +84,11 @@ function generate_help( obj, obj_prefix, arr, text,          i, v, _str, _max_le
     _str = "\n" text ":\n"
     for ( i=1; i<=arr_len(arr); ++i ) {
         v = arr[ i ]
-        _option_after = juq(obj[ obj_prefix, v, "\"#desc\"" ]) UI_END generate_optarg_rule_string(obj, obj_prefix, v)
+        _option_after = juq( aobj_get_description(obj, obj_prefix SUBSEP v) ) UI_END generate_optarg_rule_string(obj, obj_prefix, v)
 
         _str = _str HELP_INDENT_STR sprintf("%s" DESC_INDENT_STR "%s\n",
             UI_LEFT         str_pad_right( _text_arr[i], _max_len ),
-            UI_RIGHT        cut_line( _option_after, _max_len ))
+            UI_RIGHT        cut_line( _option_after, _max_len + 7 ))
     }
     if (text == "SUBCOMMANDS") _str = _str "\nRun 'CMD SUBCOMMAND --help' for more information on a command."
     return _str
@@ -91,9 +98,9 @@ function print_helpdoc( args, obj,          obj_prefix, argl, i, l, v, _str){
     obj_prefix = SUBSEP "\"1\""   # Json Parser
     argl = args[L]
     for (i=2; i<=argl; ++i){
-        l = obj[obj_prefix L]
+        l = aobj_len( obj, obj_prefix )
         for (j=1; j<=l; ++j) {
-            optarg_id = obj[obj_prefix, j]
+            optarg_id = aobj_get( obj, obj_prefix SUBSEP j)
             if ("|"juq(optarg_id)"|" ~ "\\|"args[i]"\\|") {
                 obj_prefix = obj_prefix SUBSEP optarg_id
                 break
@@ -101,10 +108,10 @@ function print_helpdoc( args, obj,          obj_prefix, argl, i, l, v, _str){
         }
     }
 
-    l = obj[ obj_prefix L]
+    l = aobj_len( obj, obj_prefix )
     for (i=1; i<=l; ++i) {
-        v = obj[ obj_prefix, i ]
-        if (( v ~ "^\"-" ) && ( obj[ obj_prefix, v, "\"#subcmd\"" ] != "true" )) {
+        v = aobj_get( obj, obj_prefix SUBSEP i)
+        if (( v ~ "^\"-" ) && ( ! aobj_istrue(obj, aobj_get_special_value_id(obj_prefix SUBSEP v, "subcmd")) )) {
             if (aobj_get_optargc( obj, obj_prefix, v ) > 0) arr_push( option, v)
             else arr_push( flag, v )
         }
