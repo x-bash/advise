@@ -21,12 +21,16 @@ function str_cut_line( _line, indent,               _max_len, _len, l, i){
     if ( length(_line) < _max_len )  return _line
 
     l = split( _line, _arr, " " )
-    for(i=1; i<=l; ++i){
-        _len += length(_arr[i]) + 1
-        if (_len >= _max_len) {
-            _len -= ( length(_arr[i]) + 1 )
-            break
+    if ( length(_arr[1]) < _max_len ){
+        for(i=1; i<=l; ++i){
+            _len += ( length(_arr[i]) + 1)
+            if (_len >= _max_len) {
+                _len -= ( length(_arr[i]) + 1 )
+                break
+            }
         }
+    } else {
+        _len = _max_len
     }
     return substr(_line, 1, _len) "\n" str_rep(" ", indent)  str_cut_line( substr(_line, _len + 1 ), indent )
 }

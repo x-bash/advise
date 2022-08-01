@@ -48,7 +48,7 @@
     }
   },
   "--regex_arg2": {
-    "#desc": "Test an argument with regex 2",
+    "#desc": "Test an argument with regex 2Test an argument with regex 2Test an argument with regex 2Test an argument with regex 2Test an argument with",
     "#arguments_str": " <>",
     "#1": {
       "#desc": "",
