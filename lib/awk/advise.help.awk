@@ -14,21 +14,21 @@ function prepare_argarr( argstr,        i, l ){
     args[L] = l
 }
 
-function cut_line( _line, _space_len,               _max_len_line, l, _len, i){
+function str_cut_line( _line, indent,               _max_len, _len, l, i){
     if( COLUMNS == "" )     return _line
 
-    _max_len_line = COLUMNS - _space_len
-    if ( length(_line) < _max_len_line )  return _line
+    _max_len = COLUMNS - indent
+    if ( length(_line) < _max_len )  return _line
 
     l = split( _line, _arr, " " )
     for(i=1; i<=l; ++i){
         _len += length(_arr[i]) + 1
-        if (_len >= _max_len_line) {
+        if (_len >= _max_len) {
             _len -= ( length(_arr[i]) + 1 )
             break
         }
     }
-    return substr(_line, 1, _len) "\n" str_rep(" ", _space_len)  cut_line( substr(_line, _len + 1 ), _space_len )
+    return substr(_line, 1, _len) "\n" str_rep(" ", indent)  str_cut_line( substr(_line, _len + 1 ), indent )
 }
 
 function get_option_string( obj, obj_prefix, v,         _str){
@@ -88,7 +88,7 @@ function generate_help( obj, obj_prefix, arr, text,          i, v, _str, _max_le
 
         _str = _str HELP_INDENT_STR sprintf("%s" DESC_INDENT_STR "%s\n",
             UI_LEFT         str_pad_right( _text_arr[i], _max_len ),
-            UI_RIGHT        cut_line( _option_after, _max_len + 7 ))
+            UI_RIGHT        str_cut_line( _option_after, _max_len + 7 ))
     }
     if (text == "SUBCOMMANDS") _str = _str "\nRun 'CMD SUBCOMMAND --help' for more information on a command."
     return _str
