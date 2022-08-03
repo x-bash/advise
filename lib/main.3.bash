@@ -5,21 +5,18 @@ ___advise_run(){
 
     local ___ADVISE_RUN_FILEPATH_;  ___advise_run_filepath_ "${1:-${COMP_WORDS[0]}}" || return 1
 
-    local candidate_arr
-    local candidate_exec
-    local candidate_exec_arr
-
     # Used in `eval "$candidate_exec"`
     local cur="${COMP_WORDS[COMP_CWORD]}"
-    local offset
+    local COMP_WORDS=("${COMP_WORDS[@]:0:$((COMP_CWORD+1))}")
 
+    local candidate_arr
+    local candidate_exec
+    local offset
     eval "$(___advise_get_result_from_awk  "$___ADVISE_RUN_FILEPATH_")" 2>/dev/null
+
     local IFS=$' '$'\t'$'\n'
+    local candidate_exec_arr
     eval "$candidate_exec" 2>/dev/null
 
     COMPREPLY=($( compgen -W "${candidate_arr[*]} ${candidate_exec_arr[*]}" -- "$cur"))
-
-    __ltrim_completions "$cur" "@"
-    __ltrim_completions "$cur" ":"
-    __ltrim_completions "$cur" "="
 }

@@ -1,18 +1,4 @@
-
-__ltrim_completions()
-{
-    local i=${#COMPREPLY[*]}
-    ((i == 0)) && return 0
-    if [[ $1 == *$2* && $COMP_WORDBREAKS == *$2* ]]; then
-        # Remove colon-word prefix from COMPREPLY items
-        local colon_word=${1%"${1##*"$2"}"}
-        COMPREPLY=("${COMPREPLY[@]}")
-        while ((i-- > 0)); do
-            COMPREPLY[i]=${COMPREPLY[i]#"$colon_word"}
-        done
-    fi
-}
-
+# shellcheck shell=bash
 ___advise_completer() {
     # Interesting ... Passing
     ___ADVISE_RUN_CMD_FOLDER= ___advise_run ""
